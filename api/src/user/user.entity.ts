@@ -5,9 +5,11 @@ import {
   ManyToMany,
   JoinTable,
   OneToMany,
+  ManyToOne,
 } from 'typeorm';
 import { Office } from '../office/Office.entity';
 import { Review } from '../review/Review.entity';
+import { Localization } from '../location/localization.entity';
 
 @Entity()
 export class User {
@@ -38,8 +40,8 @@ export class User {
   @Column({ type: 'date' })
   birthday: Date;
 
-  @Column()
-  location: string;
+  @ManyToOne(() => Localization, (localization) => localization.users)
+  localization: Localization;
 
   @ManyToMany(() => Office)
   @JoinTable()
