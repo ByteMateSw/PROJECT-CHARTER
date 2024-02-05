@@ -3,11 +3,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { User } from './user/user.entity';
-import { Office } from './office/Office.entity';
+import { Office } from './office/office.entity';
 import { Category } from './category/Category.entity';
 import { Hiring } from './hiring/Hiring.entity';
 import { Review } from './review/Review.entity';
 import { UserModule } from './user/user.module';
+import { OfficeModule } from './office/office.module';
 
 require('dotenv').config();
 const {
@@ -34,6 +35,7 @@ const {
       subscribers: [],
     }),
     UserModule,
+    OfficeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

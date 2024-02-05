@@ -6,7 +6,7 @@ import {
   JoinTable,
   OneToMany,
 } from 'typeorm';
-import { Office } from '../office/Office.entity';
+import { Office } from '../office/office.entity';
 import { Review } from '../review/Review.entity';
 
 @Entity()
