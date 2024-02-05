@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, Patch, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/createUser.dto';
 
@@ -23,6 +23,24 @@ export class UserController {
       await this.userService.create(createUserDto)
     } catch(error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  @Delete(":id")
+  async delete(@Param("id") id:number) {
+    try {
+      await this.userService.delete(id)
+    } catch(error) {
+      throw new HttpException(error.message, HttpStatus.FORBIDDEN)
+    }
+  }
+
+  @Patch(":id")
+  async update(@Body() createUserDto: CreateUserDto) {
+    try {
+      await this.userService.update(createUserDto)
+    } catch(error) {
+      throw new HttpException(error.message, HttpStatus.FORBIDDEN)
     }
   }
 }
