@@ -19,7 +19,7 @@ export async function SendVerificationMail(direccion): Promise<string> { //se ti
       to: direccion,
       subject: "Hello ✔",
       text: "Hello world?",
-      html: CreateVerificationMail(token), //aca va el token que se crea en el registro de usuarios
+      html: CreateVerificationMail("token"), //aca va el token que se crea en el registro de usuarios
     })
     return "Mail enviado correctamente"
   } catch (error) {
