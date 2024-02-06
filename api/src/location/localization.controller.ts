@@ -4,13 +4,14 @@ import {
   Post,
   Put,
   Body,
-  Patch,
   ParseIntPipe,
   Param,
   Delete,
 } from '@nestjs/common';
 import { LocalizationService } from './localization.service';
 import { UpdateLocalizationDto } from './dto/update-localization.dto';
+import { Localization } from './localization.entity';
+import { CreateLocalizationDto } from './dto/create-location.dto';
 
 @Controller('localization')
 export class LocalizationController {
@@ -27,7 +28,7 @@ export class LocalizationController {
   }
 
   @Post('/save')
-  createLocation(@Body() newLocalization) {
+  createLocation(@Body() newLocalization: CreateLocalizationDto) {
     return this.localizationService.createLocalization(newLocalization);
   }
 

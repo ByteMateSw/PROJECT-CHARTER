@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Localization } from './localization.entity';
 import { Repository } from 'typeorm';
 import { UpdateLocalizationDto } from './dto/update-localization.dto';
+import { CreateLocalizationDto } from './dto/create-location.dto';
+
 const citiesData = require('../../src/cities.json');
 
 @Injectable()
@@ -11,33 +13,86 @@ export class LocalizationService {
     @InjectRepository(Localization)
     private localizationRepository: Repository<Localization>,
   ) {}
-  createLocalization(newLocalizationData) {
-    const newLocalization =
-      this.localizationRepository.create(newLocalizationData);
-    return this.localizationRepository.save(newLocalization);
-  }
 
-  async uploadJsonLocalizations() {
-    for (const city of citiesData) {
-      const newCity = this.localizationRepository.create(city);
-      await this.localizationRepository.save(newCity);
+  createLocalization(newLocalizationData: CreateLocalizationDto): string {
+    try {
+      const newLocalization =
+        this.localizationRepository.create(newLocalizationData);
+      this.localizationRepository.save(newLocalization);
+      return 'Ubicacion Guardada';
+    } catch (error) {
+      return 'Error al crear la localizacion';
     }
-    return { message: 'success' };
   }
 
-  getLocalizations() {
-    return this.localizationRepository.find();
+  uploadJsonLocalizations(): string {
+    try {
+      for (const city of citiesData) {
+        const newCity = this.localizationRepository.create(city);
+        this.localizationRepository.save(newCity);
+      }
+      return 'Lista cargada con exito';
+    } catch (error) {
+      return 'error al subir la lista';
+    }
   }
 
-  getOneLocalization(id: number) {
-    return this.localizationRepository.findOne({ where: { id } });
+  getLocalizations(): Promise<Localization[]> | string {
+    try {
+      return this.localizationRepository.find();
+    } catch (error) {
+      return 'Error al obtener las localizaciones';
+    }
   }
 
-  updateLocalization(id: number, localization: UpdateLocalizationDto) {
-    return this.localizationRepository.update({ id }, localization);
+  async getOneLocalization(id: number): Promise<Localization | string> {
+    try {
+      const localization = await this.localizationRepository.findOne({
+        where: { id },
+      });
+      if (!localization) {
+        return 'No se encontro la localizacion';
+      }
+      return localization;
+    } catch (error) {
+      return 'error al obtener una localizacion';
+    }
   }
 
-  deleteLocalization(id: number) {
-    return this.localizationRepository.delete({ id });
+  async updateLocalization(
+    id: number,
+    localization: UpdateLocalizationDto,
+  ): Promise<string> {
+    try {
+      const localizationExist = await this.localizationRepository.findOne({
+        where: { id },
+      });
+      if (!localizationExist) {
+        return 'No se encontro la localizacion';
+      }
+
+      await this.localizationRepository.update({ id }, localization);
+
+      return 'Localizacion actualizada correctamente';
+    } catch (error) {
+      return 'Error al actualizar Localizacion';
+    }
+  }
+
+  async deleteLocalization(id: number): Promise<string> {
+    try {
+      const localization = await this.localizationRepository.findOne({
+        where: { id },
+      });
+      if (!localization) {
+        return 'la localizacion ingresada no existe ';
+      }
+      await this.localizationRepository.delete({
+        id,
+      });
+      return 'Localizacion eliminada correctamente';
+    } catch (error) {
+      return 'Error al eliminar la localizacion';
+    }
   }
 }
