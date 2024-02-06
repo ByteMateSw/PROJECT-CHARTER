@@ -34,6 +34,9 @@ export class User {
   @Column({ default: false })
   dniValidate: boolean;
 
+  @Column({ default: false })
+  isDeleted: boolean;
+
   @Column()
   numberPhone: string;
 
