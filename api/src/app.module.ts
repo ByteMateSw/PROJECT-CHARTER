@@ -9,7 +9,7 @@ import { Hiring } from './hiring/Hiring.entity';
 import { Review } from './review/Review.entity';
 import { UserModule } from './user/user.module';
 import { Localization } from './location/localization.entity';
-import { LocationModule } from './location/location.module';
+import { LocalizationModule } from './location/localization.module';
 
 require('dotenv').config();
 const {
@@ -44,7 +44,7 @@ console.log(
       subscribers: [],
     }),
     UserModule,
-    LocationModule,
+    LocalizationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

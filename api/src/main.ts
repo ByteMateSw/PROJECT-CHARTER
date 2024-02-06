@@ -3,7 +3,6 @@ import { AppModule } from './app.module';
 import 'reflect-metadata';
 require('dotenv').config();
 
-//Migue Branch
 const { PORT } = process.env;
 const port: string = PORT || '3002';
 
