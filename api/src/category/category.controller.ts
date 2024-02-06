@@ -4,9 +4,11 @@ import {
   Get,
   Post,
   Param,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { Category } from './Category.entity';
+import {CreateCategoryDto} from './Dto.category';
 
 @Controller('category')
 export class CategoryController {
@@ -17,13 +19,12 @@ export class CategoryController {
   }
 
   @Get(':id')
-  getCategoryById(@Param('id') id: number): Promise<Category> {
-    const category = this.categoryService.getById(id);
-    return category;
+  getById(@Param('id',ParseIntPipe) id: number): Promise<Category> {
+    return this.categoryService.getById(id);
   }
 
   @Post()
-  createCategory(@Body() newCategory) {
+  create(@Body() newCategory: CreateCategoryDto ) {
     return this.categoryService.create(newCategory);
   }
 }
