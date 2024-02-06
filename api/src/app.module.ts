@@ -8,6 +8,7 @@ import { Category } from './category/Category.entity';
 import { Hiring } from './hiring/Hiring.entity';
 import { Review } from './review/Review.entity';
 import { UserModule } from './user/user.module';
+import { Localization } from './location/localization.entity';
 
 require('dotenv').config();
 const {
@@ -29,7 +30,7 @@ const {
       database: DATABASE_NAME,
       synchronize: true,
       logging: false,
-      entities: [User, Office, Category, Hiring, Review],
+      entities: [User, Office, Category, Hiring, Review, Localization],
       migrations: [],
       subscribers: [],
     }),
