@@ -10,6 +10,7 @@ import { Review } from './review/Review.entity';
 import { UserModule } from './user/user.module';
 import { Localization } from './location/localization.entity';
 import { LocalizationModule } from './location/localization.module';
+import { CategoryModule } from './category/category.module';
 
 require('dotenv').config();
 const {
@@ -43,8 +44,7 @@ console.log(
       migrations: [],
       subscribers: [],
     }),
-    UserModule,
-    LocalizationModule,
+    UserModule, CategoryModule, LocalizationModule
   ],
   controllers: [AppController],
   providers: [AppService],
