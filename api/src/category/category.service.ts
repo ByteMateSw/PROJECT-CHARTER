@@ -1,39 +1,37 @@
-import { HttpException, Injectable } from "@nestjs/common"
-import { InjectRepository } from "@nestjs/typeorm"
-import { Category } from "./Category.entity"
-import {Repository} from 'typeorm'
-import { HttpErrorByCode } from "@nestjs/common/utils/http-error-by-code.util";
+import { HttpException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Category } from './Category.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
-export class CategoryService{
+export class CategoryService {
+  constructor(
+    @InjectRepository(Category)
+    private categoryRepository: Repository<Category>,
+  ) {}
 
-    constructor(@InjectRepository(Category) private categoryRepository: Repository<Category>) {}
+  getAll(): Promise<Category[]> {
+    return this.categoryRepository.find();
+  }
 
-    createCategory(category): Promise<Category> {
-        
-            const existingCategory =  this.categoryRepository.findOne({
-                where: {
-                    name: category.name
-                }
-            });
+  getById(id: number): Promise<Category>{
+    return this.categoryRepository.findOneBy({ id });
+  }
 
-            if (existingCategory) {
-                throw new HttpException('La categoría ya existe',400);
-            }
+  create(category) {
+    const existingCategory = this.categoryRepository.findOne({
+      where: {
+        name: category.name,
+      },
+    });
 
-            const newCategory = this.categoryRepository.create(category);
-            return this.categoryRepository.save(newCategory);
+    if (existingCategory) {
+      throw new HttpException('La categoría ya existe', 400);
     }
 
-    getCategory(){
-       return this.categoryRepository.find()
-    }
+    const newCategory = this.categoryRepository.create(category);
+    console.log(newCategory);
+    return this.categoryRepository.save(newCategory);
+  }
 
-    getCategoryById(id:number){
-       return this.categoryRepository.findOne({
-            where:{
-                id
-            }
-        })
-    }
 }

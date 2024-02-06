@@ -9,6 +9,7 @@ import { Hiring } from './hiring/Hiring.entity';
 import { Review } from './review/Review.entity';
 import { UserModule } from './user/user.module';
 import { Localization } from './location/localization.entity';
+import { CategoryModule } from './category/category.module';
 
 require('dotenv').config();
 const {
@@ -34,7 +35,7 @@ const {
       migrations: [],
       subscribers: [],
     }),
-    UserModule,
+    UserModule, CategoryModule
   ],
   controllers: [AppController],
   providers: [AppService],
