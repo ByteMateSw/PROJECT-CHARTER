@@ -1,7 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import 'reflect-metadata';
-import { EnviarMailVerificación } from './user/user.mailer';
+import { SendVerificationMail } from './mailer/mailer.verification';
+import { Dirent } from 'fs';
 require("dotenv").config();
 
 const { PORT } = process.env;
@@ -12,5 +13,5 @@ async function bootstrap() {
   await app.listen(port);
 }
 
-EnviarMailVerificación();
+SendVerificationMail();
 bootstrap();
