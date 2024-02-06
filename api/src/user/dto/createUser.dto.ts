@@ -3,9 +3,7 @@ export class CreateUserDto {
   lastName: string;
   email: string;
   password: string;
-  isAccountValidate: boolean;
-  dniValidate: boolean;
-  numberPhone: string;
+  numberPhone?: string;
   birthday: Date;
   location: string;
 }

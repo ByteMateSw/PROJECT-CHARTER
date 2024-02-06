@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
-import { User as IUser } from "./interface/user.interface"
 
 @Injectable()
 export class UserService {
@@ -16,7 +15,7 @@ export class UserService {
         return this.userRepository.findOneBy({id})
     }
 
-    async create(user: IUser) {
+    async create(user) {
         const existEmail = await this.hasEmail(user.email)
         if(existEmail)
             throw new Error("Email has been in use")
@@ -33,10 +32,11 @@ export class UserService {
         if(!user)
             throw new Error("User doesn't exists")
 
-        await this.userRepository.delete(user)
+        user.isDeleted = true
+        await this.userRepository.save(user)
     }
 
-    async update(user: IUser) {
+    async update(user) {
         const id = user.id;
         const userFound = await this.userRepository.existsBy({id})
         if(!userFound)
