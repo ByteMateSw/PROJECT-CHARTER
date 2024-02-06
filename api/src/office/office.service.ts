@@ -15,7 +15,7 @@ export class OfficeService {
   }
 
   findOne(id: number): Promise<Office | undefined> {
-    return this.officeRepository.findOne({ where: id });
+    return this.officeRepository.findOneBy({ id });
   }
 
   create(officeData: Partial<Office>): Promise<Office> {
@@ -28,7 +28,7 @@ export class OfficeService {
     officeData: Partial<Office>,
   ): Promise<Office | undefined> {
     await this.officeRepository.update(id, officeData);
-    return this.officeRepository.findOne({ where: id });
+    return this.officeRepository.findOneBy({ id });
   }
 
   async remove(id: number): Promise<void> {
