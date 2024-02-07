@@ -9,6 +9,8 @@ import { Hiring } from './hiring/Hiring.entity';
 import { Review } from './review/Review.entity';
 import { UserModule } from './user/user.module';
 import { Localization } from './location/localization.entity';
+import { LocalizationModule } from './location/localization.module';
+import { CategoryModule } from './category/category.module';
 
 require('dotenv').config();
 const {
@@ -18,6 +20,14 @@ const {
   DATABASE_HOST,
   DATABASE_PORT,
 } = process.env;
+
+console.log(
+  DATABASE_NAME,
+  DATABASE_USER,
+  DATABASE_PASSWORD,
+  DATABASE_HOST,
+  DATABASE_PORT,
+);
 
 @Module({
   imports: [
@@ -34,7 +44,7 @@ const {
       migrations: [],
       subscribers: [],
     }),
-    UserModule,
+    UserModule, CategoryModule, LocalizationModule
   ],
   controllers: [AppController],
   providers: [AppService],
