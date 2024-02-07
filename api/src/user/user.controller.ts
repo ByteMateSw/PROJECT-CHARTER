@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/createUser.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
 
@@ -15,20 +14,12 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Get(":id")
-  getById(@Param("id") id: number) {
+  getById(@Param("id") id: number, @Body() body) {
+    console.log(body);
     return this.userService.getById(id);
   }
 
-  @HttpCode(201)
-  @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
-    try {
-      await this.userService.create(createUserDto)
-    } catch(error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
-    }
-  }
-
+  @UseGuards(JwtAuthGuard)
   @Delete(":id")
   async delete(@Param("id") id:number) {
     try {
@@ -38,6 +29,7 @@ export class UserController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(":id")
   async update(@Body() updateUserDto: UpdateUserDto) {
     try {

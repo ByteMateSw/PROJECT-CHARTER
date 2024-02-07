@@ -1,13 +1,14 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from "@nestjs/common";
 import { UserService } from "../user/user.service";
 import { JwtService } from "@nestjs/jwt";
 import { compareHash } from "src/user/middleware/encrypt.middleware";
+import { RegisterDto } from "./dto/register.dto";
 
 @Injectable()
 export class AuthService {
     constructor(private userService: UserService, private jwtService: JwtService) {}
 
-    async SignIn(email: string, password: string): Promise<any>  {
+    async signIn(email: string, password: string): Promise<any>  {
         const user = await this.userService.getByEmail(email)
         if(!user)
             throw new UnauthorizedException();
@@ -19,6 +20,14 @@ export class AuthService {
         const payload = {sub: user.id, email: user.email}
         return {
             access_token: await this.jwtService.signAsync(payload)
+        }
+    }
+
+    async register(registerDto: RegisterDto) {
+        try {
+            await this.userService.create(registerDto)
+        } catch(error) {
+            throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
         }
     }
 }
