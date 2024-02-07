@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+/*import { Module } from '@nestjs/common';
 import { LocalizationController } from './localization.controller';
 import { LocalizationService } from './localization.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -9,3 +9,4 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   providers: [LocalizationService],
 })
 export class LocalizationModule {}
+*/

@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { Office } from '../office/Office.entity';
 import { Review } from '../review/Review.entity';
-import { City } from '../location/localization.entity';
+import { City } from 'src/city/city.entity';
 
 @Entity()
 export class User {

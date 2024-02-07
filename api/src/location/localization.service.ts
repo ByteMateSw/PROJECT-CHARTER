@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+/*import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Country, Province, City } from './localization.entity';
 import { Repository } from 'typeorm';
@@ -48,7 +48,7 @@ export class LocalizationService {
       return 'Ubicacion Guardada';
     } catch (error) {
       return 'Error al crear la localizacion';
-    }*/
+    }
   }
 
   uploadJsonLocalizations(): string {
@@ -119,3 +119,4 @@ export class LocalizationService {
     }
   }
 }
+*/

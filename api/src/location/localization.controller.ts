@@ -1,4 +1,4 @@
-import {
+/*import {
   Controller,
   Get,
   Post,
@@ -52,3 +52,4 @@ export class LocalizationController {
     return this.localizationService.deleteLocalization(id);
   }
 }
+*/

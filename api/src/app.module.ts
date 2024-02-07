@@ -8,15 +8,9 @@ import { Category } from './category/Category.entity';
 import { Hiring } from './hiring/Hiring.entity';
 import { Review } from './review/Review.entity';
 import { UserModule } from './user/user.module';
-import {
-  Localization,
-  Country,
-  City,
-  Province,
-} from './location/localization.entity';
-import { LocalizationModule } from './location/localization.module';
+import { Province } from './province/province.entity';
+import { City } from './city/city.entity';
 import { CategoryModule } from './category/category.module';
-import { CountryModule } from './country/country.module';
 import { ProvinceModule } from './province/province.module';
 import { CityModule } from './city/city.module';
 
@@ -29,14 +23,6 @@ const {
   DATABASE_PORT,
 } = process.env;
 
-console.log(
-  DATABASE_NAME,
-  DATABASE_USER,
-  DATABASE_PASSWORD,
-  DATABASE_HOST,
-  DATABASE_PORT,
-);
-
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -48,23 +34,12 @@ console.log(
       database: DATABASE_NAME,
       synchronize: true,
       logging: false,
-      entities: [
-        User,
-        Office,
-        Category,
-        Hiring,
-        Review,
-        Country,
-        Province,
-        City,
-      ],
+      entities: [User, Province, Office, Category, Hiring, Review, City],
       migrations: [],
       subscribers: [],
     }),
     UserModule,
     CategoryModule,
-    LocalizationModule,
-    CountryModule,
     ProvinceModule,
     CityModule,
   ],

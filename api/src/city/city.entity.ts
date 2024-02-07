@@ -20,12 +20,6 @@ export class City {
   @ManyToOne(() => Province, (province) => province.cities)
   province: Province;
 
-  @Column()
-  lat: string;
-
-  @Column()
-  lng: string;
-
   @OneToMany(() => User, (user) => user.city)
   users: User[];
 }

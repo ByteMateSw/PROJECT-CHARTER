@@ -1,4 +1,4 @@
-import { User } from 'src/user/user.entity';
+/*import { User } from 'src/user/user.entity';
 import {
   Column,
   Entity,
@@ -54,3 +54,4 @@ export class City {
   @OneToMany(() => User, (user) => user.city)
   users: User[];
 }
+*/
