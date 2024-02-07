@@ -3,7 +3,6 @@ import { UserService } from "../user/user.service";
 import { JwtService } from "@nestjs/jwt";
 import { compareHash } from "src/user/middleware/encrypt.middleware";
 import { RegisterDto } from "./dto/register.dto";
-import { CreateUserDto } from "src/user/dto/createUser.dto";
 
 @Injectable()
 export class AuthService {
@@ -25,9 +24,8 @@ export class AuthService {
     }
 
     async register(registerDto: RegisterDto) {
-        try {
-            const newUser: CreateUserDto = registerDto 
-            await this.userService.createUser(newUser)
+        try { 
+            await this.userService.createUser(registerDto)
         } catch(error) {
             throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
         }

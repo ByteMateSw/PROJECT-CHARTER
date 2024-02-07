@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/createUser.dto';
+import { RegisterDto } from 'src/auth/dto/register.dto';
+import { UpdateUserDto } from './dto/updateUser.dto';
 
 @Injectable()
 export class UserService {
@@ -20,7 +21,7 @@ export class UserService {
         return this.userRepository.findOneBy({ email })
     }
 
-    async createUser(user: CreateUserDto): Promise<User> {
+    async createUser(user: RegisterDto): Promise<User> {
         const existEmail = await this.hasEmail(user.email)
         if (existEmail)
             throw new Error("El Email está en uso")
@@ -47,8 +48,7 @@ export class UserService {
         return user
     }
 
-    async updateUser(user): Promise<User> {
-        const id = user.id;
+    async updateUser(id: number, user): Promise<User> {
         const userFound = await this.userRepository.existsBy({ id })
         if (!userFound)
             throw new Error("El usuario no existe")
