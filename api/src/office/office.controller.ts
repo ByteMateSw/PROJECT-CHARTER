@@ -1,44 +1,57 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  Put,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
 import { OfficeService } from './office.service';
 import { Office } from './office.entity';
+import {CreateOfficeDto} from './dto/office.dto';
 
 @Controller('offices')
 export class OfficeController {
   constructor(private readonly officeService: OfficeService) {}
 
   @Get()
-  findAll(): Promise<Office[]> {
-    return this.officeService.findAll();
+  async findAll(): Promise<Office[]> {
+    try {
+      return await this.officeService.findAll();
+    } catch (error) {
+      throw new Error('Error al buscar todos los oficios');
+    }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Office> {
-    return this.officeService.findOne(+id);
+  async findOne(@Param('id') id: string): Promise<Office> {
+    try {
+      return await this.officeService.findOne(+id);
+    } catch (error) {
+      throw new Error('Error al buscar el oficio por ID');
+    }
   }
 
   @Post()
-  create(@Body() OfficeData: Partial<Office>): Promise<Office> {
-    return this.officeService.create(OfficeData);
+  async create(@Body() createOfficeDto: CreateOfficeDto): Promise<Office> {
+    try {
+      return await this.officeService.createOffice(createOfficeDto);
+    } catch (error) {
+      throw new Error('Error al crear el oficio');
+    }
   }
 
   @Put(':id')
-  update(
+  async update(
     @Param('id') id: string,
-    @Body() OfficeData: Partial<Office>,
+    @Body() updateOfficeDto: CreateOfficeDto,
   ): Promise<Office> {
-    return this.officeService.update(+id, OfficeData);
+    try {
+      return await this.officeService.updateOffice(+id, updateOfficeDto);
+    } catch (error) {
+      throw new Error('Error al actualizar el oficio');
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<void> {
-    return this.officeService.remove(+id);
+  async remove(@Param('id') id: string): Promise<void> {
+    try {
+      await this.officeService.removeOffice(+id);
+    } catch (error) {
+      throw new Error('Error al eliminar el oficio');
+    }
   }
 }
