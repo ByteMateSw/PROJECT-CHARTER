@@ -8,9 +8,17 @@ import { Category } from './category/Category.entity';
 import { Hiring } from './hiring/Hiring.entity';
 import { Review } from './review/Review.entity';
 import { UserModule } from './user/user.module';
-import { Localization } from './location/localization.entity';
+import {
+  Localization,
+  Country,
+  City,
+  Province,
+} from './location/localization.entity';
 import { LocalizationModule } from './location/localization.module';
 import { CategoryModule } from './category/category.module';
+import { CountryModule } from './country/country.module';
+import { ProvinceModule } from './province/province.module';
+import { CityModule } from './city/city.module';
 
 require('dotenv').config();
 const {
@@ -40,11 +48,25 @@ console.log(
       database: DATABASE_NAME,
       synchronize: true,
       logging: false,
-      entities: [User, Office, Category, Hiring, Review, Localization],
+      entities: [
+        User,
+        Office,
+        Category,
+        Hiring,
+        Review,
+        Country,
+        Province,
+        City,
+      ],
       migrations: [],
       subscribers: [],
     }),
-    UserModule, CategoryModule, LocalizationModule
+    UserModule,
+    CategoryModule,
+    LocalizationModule,
+    CountryModule,
+    ProvinceModule,
+    CityModule,
   ],
   controllers: [AppController],
   providers: [AppService],

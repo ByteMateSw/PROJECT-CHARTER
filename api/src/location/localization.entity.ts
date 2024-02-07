@@ -8,18 +8,42 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Localization {
+export class Country {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  city: string;
+  name: string;
+
+  @OneToMany(() => Province, (province) => province.country)
+  provinces: Province[];
+}
+
+@Entity()
+export class Province {
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
-  country: string;
+  name: string;
+
+  @ManyToOne(() => Country, (country) => country.provinces)
+  country: Country;
+
+  @OneToMany(() => City, (city) => city.province)
+  cities: City[];
+}
+
+@Entity()
+export class City {
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
-  capital: string;
+  name: string;
+
+  @ManyToOne(() => Province, (province) => province.cities)
+  province: Province;
 
   @Column()
   lat: string;
@@ -27,6 +51,6 @@ export class Localization {
   @Column()
   lng: string;
 
-  @OneToMany(() => User, (user) => user.localization)
+  @OneToMany(() => User, (user) => user.city)
   users: User[];
 }

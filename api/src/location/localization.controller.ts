@@ -9,9 +9,10 @@ import {
   Delete,
 } from '@nestjs/common';
 import { LocalizationService } from './localization.service';
-import { UpdateLocalizationDto } from './dto/update-localization.dto';
-import { Localization } from './localization.entity';
-import { CreateLocalizationDto } from './dto/create-location.dto';
+import { City, Country, Province } from './localization.entity';
+
+//import { UpdateLocalizationDto } from './dto/update-localization.dto';
+//import { CreateLocalizationDto } from './dto/create-location.dto';
 
 @Controller('localization')
 export class LocalizationController {
@@ -28,8 +29,8 @@ export class LocalizationController {
   }
 
   @Post('/save')
-  createLocation(@Body() newLocalization: CreateLocalizationDto) {
-    return this.localizationService.createLocalization(newLocalization);
+  createLocalization(@Body() newLocalization) {
+    return this.localizationService.createCity(newLocalization);
   }
 
   @Post('/listUpload')
@@ -41,7 +42,7 @@ export class LocalizationController {
   updateLocalization(
     @Param('id', ParseIntPipe) id: number,
     @Body()
-    localization: UpdateLocalizationDto,
+    localization,
   ) {
     return this.localizationService.updateLocalization(id, localization);
   }

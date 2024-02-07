@@ -1,20 +1,46 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Localization } from './localization.entity';
+import { Country, Province, City } from './localization.entity';
 import { Repository } from 'typeorm';
-import { UpdateLocalizationDto } from './dto/update-localization.dto';
-import { CreateLocalizationDto } from './dto/create-location.dto';
+//import { UpdateLocalizationDto } from './dto/update-localization.dto';
+//import { CreateLocalizationDto } from './dto/create-location.dto';
 
 const citiesData = require('../../src/cities.json');
 
 @Injectable()
 export class LocalizationService {
   constructor(
-    @InjectRepository(Localization)
-    private localizationRepository: Repository<Localization>,
+    @InjectRepository(Country)
+    private countryRepository: Repository<Country>,
+    @InjectRepository(Province)
+    private provinceRepository: Repository<Province>,
+    @InjectRepository(City)
+    private cityRepository: Repository<City>,
   ) {}
 
-  createLocalization(newLocalizationData: CreateLocalizationDto): string {
+  async createCity(newLocalizationData): Promise<string> {
+    const { city, country, province, lat, lng } = newLocalizationData;
+
+    await this.countryRepository.findOne(country);
+    await this.provinceRepository.findOne(province);
+
+    // Crear una nueva instancia de City y asignar la provincia correspondiente
+    const newCity = new City();
+    newCity.name = city;
+    newCity.province = province;
+
+    // Guardar la nueva instancia de City en la base de datos
+    const savedCity = await this.cityRepository.save(newCity);
+
+    // Crear una nueva instancia de Localization y asignar el país, la provincia y la ciudad correspondientes
+    const newLocalization = new Localization();
+    newLocalization.city = savedCity.name;
+    newLocalization.country = country.name;
+    newLocalization.capital = country.capital; // Supongamos que el país tiene una propiedad "capital"
+    // Guardar la nueva instancia de Localization en la base de datos
+    await this.localizationRepository.save(newLocalization);
+    return 'Ubicación guardada correctamente';
+    /*
     try {
       const newLocalization =
         this.localizationRepository.create(newLocalizationData);
@@ -22,7 +48,7 @@ export class LocalizationService {
       return 'Ubicacion Guardada';
     } catch (error) {
       return 'Error al crear la localizacion';
-    }
+    }*/
   }
 
   uploadJsonLocalizations(): string {
@@ -59,10 +85,7 @@ export class LocalizationService {
     }
   }
 
-  async updateLocalization(
-    id: number,
-    localization: UpdateLocalizationDto,
-  ): Promise<string> {
+  async updateLocalization(id: number, localization): Promise<string> {
     try {
       const localizationExist = await this.localizationRepository.findOne({
         where: { id },
