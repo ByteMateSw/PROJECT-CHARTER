@@ -11,6 +11,7 @@ import { UserModule } from './user/user.module';
 import { Localization } from './location/localization.entity';
 import { LocalizationModule } from './location/localization.module';
 import { CategoryModule } from './category/category.module';
+import { AuthModule } from './auth/auth.module';
 
 require('dotenv').config();
 const {
@@ -44,7 +45,7 @@ console.log(
       migrations: [],
       subscribers: [],
     }),
-    UserModule, CategoryModule, LocalizationModule
+    AuthModule, UserModule, CategoryModule, LocalizationModule
   ],
   controllers: [AppController],
   providers: [AppService],
