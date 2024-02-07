@@ -15,6 +15,10 @@ export class UserService {
         return this.userRepository.findOneBy({id})
     }
 
+    getByEmail(email: string) {
+        return this.userRepository.findOneBy({email})
+    }
+
     async create(user) {
         const existEmail = await this.hasEmail(user.email)
         if(existEmail)

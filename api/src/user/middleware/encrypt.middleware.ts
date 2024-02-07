@@ -11,3 +11,6 @@ export async function generateHash(req: Request, res: Response, next: NextFuncti
     next()
 }
 
+export async function compareHash(hash, password) {
+    return argon2.verify(hash,password)
+}

@@ -1,6 +1,8 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/createUser.dto';
+import { UpdateUserDto } from './dto/updateUser.dto';
+import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -11,6 +13,7 @@ export class UserController {
     return this.userService.getAll();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(":id")
   getById(@Param("id") id: number) {
     return this.userService.getById(id);
@@ -36,9 +39,9 @@ export class UserController {
   }
 
   @Patch(":id")
-  async update(@Body() createUserDto: CreateUserDto) {
+  async update(@Body() updateUserDto: UpdateUserDto) {
     try {
-      await this.userService.update(createUserDto)
+      await this.userService.update(updateUserDto)
     } catch(error) {
       throw new HttpException(error.message, HttpStatus.FORBIDDEN)
     }
