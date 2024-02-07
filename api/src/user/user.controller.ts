@@ -22,11 +22,12 @@ export class UserController {
 
   @HttpCode(201)
   @Post()
-  async createUser(@Body() createUserDto: CreateUserDto) {
+  async createUser(@Body() createUserDto: CreateUserDto): Promise<string> {
     try {
       await this.userService.createUser(createUserDto)
       return "Usuario creado correctamente"
     } catch(error) {
+      console.error("Error al crear el usuario", error.message)
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
     }
   }
