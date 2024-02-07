@@ -48,7 +48,6 @@ export class UserService {
     }
 
     async updateUser(user): Promise<User> {
-
         const id = user.id;
         const userFound = await this.userRepository.existsBy({ id })
         if (!userFound)
