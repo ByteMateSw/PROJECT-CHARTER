@@ -13,6 +13,9 @@ import { LocalizationModule } from './location/localization.module';
 import { CategoryModule } from './category/category.module';
 import { OfficeModule } from './office/office.module';
 import { AuthModule } from './auth/auth.module';
+import { Post } from './post.ts/post.entity';
+import { ImagePost } from './image/imagePost.entity';
+import { StateHiring } from './hiring/state/stateHiring.entity';
 
 require('dotenv').config();
 const {
@@ -22,14 +25,6 @@ const {
   DATABASE_HOST,
   DATABASE_PORT,
 } = process.env;
-
-console.log(
-  DATABASE_NAME,
-  DATABASE_USER,
-  DATABASE_PASSWORD,
-  DATABASE_HOST,
-  DATABASE_PORT,
-);
 
 @Module({
   imports: [
@@ -42,11 +37,23 @@ console.log(
       database: DATABASE_NAME,
       synchronize: true,
       logging: false,
-      entities: [User, Office, Category, Hiring, Review, Localization],
-      migrations: [],
-      subscribers: [],
+      entities: [
+        User,
+        Office,
+        Category,
+        Hiring,
+        Review,
+        Localization,
+        Post,
+        ImagePost,
+        StateHiring,
+      ],
     }),
-    AuthModule, UserModule, CategoryModule, LocalizationModule, OfficeModule,
+    AuthModule,
+    UserModule,
+    CategoryModule,
+    LocalizationModule,
+    OfficeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
