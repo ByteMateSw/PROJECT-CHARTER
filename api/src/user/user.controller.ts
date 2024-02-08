@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/createUser.dto';
+import { UpdateUserDto } from './dto/updateUser.dto';
+import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -11,35 +12,32 @@ export class UserController {
     return this.userService.getAll();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(":id")
   getById(@Param("id") id: number) {
     return this.userService.getById(id);
   }
 
-  @HttpCode(201)
-  @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
-    try {
-      await this.userService.create(createUserDto)
-    } catch(error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
-    }
-  }
-
+  @UseGuards(JwtAuthGuard)
   @Delete(":id")
-  async delete(@Param("id") id:number) {
+  async deleteUser(@Param("id") id:number):Promise<string> {
     try {
-      await this.userService.delete(id)
+      await this.userService.deleteUser(id)
+      return "El usuario ha sido borrado correctamente "
     } catch(error) {
+      console.error("El usuario no se ha podido borrar", error.message)
       throw new HttpException(error.message, HttpStatus.FORBIDDEN)
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(":id")
-  async update(@Body() createUserDto: CreateUserDto) {
+  async updateUser(@Param("id")  id: number, @Body() updateUserDto: UpdateUserDto) {
     try {
-      await this.userService.update(createUserDto)
+      await this.userService.updateUser(id, updateUserDto)
+      return "El usuario se ha actualizado correctamente"
     } catch(error) {
+      console.error("El usuario no se ha podido actualizar", error.message)
       throw new HttpException(error.message, HttpStatus.FORBIDDEN)
     }
   }
