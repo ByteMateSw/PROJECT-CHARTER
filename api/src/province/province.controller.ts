@@ -9,13 +9,15 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ProvinceService } from './province.service';
+import { CreateProvinceDto } from './dto/createProvince.dto';
+import { UpdateProvinceDto } from './dto/updateProvince.dto';
 
 @Controller('province')
 export class ProvinceController {
   constructor(private provinceService: ProvinceService) {}
 
   @Post('/save')
-  createProvinces(@Body() newProvince) {
+  createProvinces(@Body() newProvince: CreateProvinceDto) {
     return this.provinceService.createProvince(newProvince);
   }
 
@@ -32,12 +34,12 @@ export class ProvinceController {
   updateProvince(
     @Param('id', ParseIntPipe) id: number,
     @Body()
-    province,
+    province: UpdateProvinceDto,
   ) {
     return this.provinceService.updateProvince(id, province);
   }
 
-  @Put('/addCity/:id')
+  @Put('/addCityTo/:id')
   addCity(
     @Param('id', ParseIntPipe) id: number,
     @Body('cityId', ParseIntPipe) cityId: number,

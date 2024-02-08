@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { City } from './city.entity';
 import { Province } from 'src/province/province.entity';
-import { CreateCityWithRelationDto } from './dto/createCityWithRelation.dto';
 import { CreateCityDto } from './dto/createCity.dto';
 import { User } from 'src/user/user.entity';
 
@@ -40,38 +39,6 @@ export class CityService {
       return 'No se pudo crear la ciudad';
     }
   }
-
-  /* //Funcion para crear city relacionada con una id de una provincia existente
-  async createCityWithRelation(newCityData: CreateCityWithRelationDto) {
-    const { name, provinceId } = newCityData;
-    try {
-      console.log(provinceId);
-      const cityExist = await this.cityRepository.findOne({
-        where: { name },
-      });
-
-      if (!cityExist) {
-        const province = await this.provinceRepository.findOne({
-          where: { id: provinceId },
-        });
-
-        if (!province) {
-          return 'La provincia especificada no existe';
-        }
-        const newCity = this.cityRepository.create({
-          name,
-          province: province,
-        });
-
-        this.cityRepository.save(newCity);
-        return 'ciudad Guardada';
-      } else {
-        return 'La ciudad ya existe'; //Cuando no se manda nada tambien entra aca :V
-      }
-    } catch (error) {
-      return 'No se pudo crear la ciudad';
-    }
-  }*/
 
   getCity(): Promise<City[]> | string {
     try {
@@ -148,10 +115,15 @@ export class CityService {
         if (!user) {
           return 'El usuario no se encontró';
         }
-        city.users.push(user);
-        await this.cityRepository.save(city);
-
-        return 'La ciudad actualizada';
+        if (!user.city) {
+          city.users.push(user);
+          await this.cityRepository.save(city);
+          return 'La ciudad se actualizo correctamente';
+        } else {
+          user.city = city;
+          await this.cityRepository.save(city);
+          return 'La ciudad se actualizo correctamente';
+        }
       } else {
         return ' No se mando la id de la ciudad ';
       }

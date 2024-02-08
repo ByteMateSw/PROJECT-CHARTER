@@ -32,7 +32,7 @@ export class CityController {
     return this.cityService.getOneCity(id);
   }
 
-  //Actualizar la ciudad
+  //Actualizar la ciudad (nombre)
   @Put('/update/:id')
   updateCity(
     @Param('id', ParseIntPipe) id: number,
