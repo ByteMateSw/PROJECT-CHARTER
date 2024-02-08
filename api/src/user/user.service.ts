@@ -55,4 +55,12 @@ export class UserService {
         await this.userRepository.update({ id }, user)
         return user
     }
+
+    async accepteToSUser(id: number) {
+        const user = await this.getById(id);
+        if(!user)
+            throw new HttpException("Bad credentials", HttpStatus.BAD_REQUEST);
+        user.acceptedToS = true
+        this.userRepository.save(user)
+    }
 }

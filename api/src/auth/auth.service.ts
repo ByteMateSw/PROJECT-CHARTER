@@ -1,19 +1,22 @@
 import { HttpException, HttpStatus, Injectable, UnauthorizedException } from "@nestjs/common";
 import { UserService } from "../user/user.service";
 import { JwtService } from "@nestjs/jwt";
-import { compareHash } from "src/user/middleware/encrypt.middleware";
 import { RegisterDto } from "./dto/register.dto";
+import { HashService } from "./hash.service";
 
 @Injectable()
 export class AuthService {
-    constructor(private userService: UserService, private jwtService: JwtService) {}
+    constructor(
+        private userService: UserService, 
+        private hashService: HashService,
+        private jwtService: JwtService) {}
 
     async signIn(email: string, password: string): Promise<any>  {
         const user = await this.userService.getByEmail(email)
         if(!user)
             throw new UnauthorizedException();
 
-        const passMatch = await compareHash(user.password, password)
+        const passMatch = await this.hashService.compareHash(user.password, password)
         if(!passMatch)
             throw new UnauthorizedException();
         

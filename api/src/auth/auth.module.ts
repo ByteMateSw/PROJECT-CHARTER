@@ -5,6 +5,8 @@ import { AuthService } from "./auth.service";
 import { AuthController } from "./auth.controller";
 import { jwtConstants } from "./jwt/jwt.constants"
 import { JwtStrategy } from "./jwt/jwt.strategy";
+import { HashService } from "./hash.service";
+import { ToSController } from "./ToS/Tos.controller";
 
 @Module({
     imports: [
@@ -15,8 +17,8 @@ import { JwtStrategy } from "./jwt/jwt.strategy";
             signOptions: {expiresIn: "3h"}
         })
     ],
-    controllers: [AuthController],
-    providers: [AuthService, JwtStrategy],
+    controllers: [AuthController, ToSController],
+    providers: [AuthService, HashService, JwtStrategy],
     exports: [AuthService]
 })
 
