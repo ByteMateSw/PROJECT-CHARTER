@@ -12,6 +12,7 @@ import { Localization } from './location/localization.entity';
 import { LocalizationModule } from './location/localization.module';
 import { CategoryModule } from './category/category.module';
 import { OfficeModule } from './office/office.module';
+import { AuthModule } from './auth/auth.module';
 
 require('dotenv').config();
 const {
@@ -45,8 +46,7 @@ console.log(
       migrations: [],
       subscribers: [],
     }),
-    UserModule, CategoryModule, LocalizationModule
-    OfficeModule,
+    AuthModule, UserModule, CategoryModule, LocalizationModule, OfficeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
