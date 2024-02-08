@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Office } from '../office/Office.entity';
+import { Office } from '../office/office.entity';
 
 @Entity()
 export class Category {

@@ -1,13 +1,16 @@
 import { User } from 'src/user/user.entity';
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Localization {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column()
-  name: string;
 
   @Column()
   city: string;
@@ -24,6 +27,6 @@ export class Localization {
   @Column()
   lng: string;
 
-  @OneToMany(()=> User, (user)=> user.localization)
+  @OneToMany(() => User, (user) => user.localization)
   users: User[];
 }
