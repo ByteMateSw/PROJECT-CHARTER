@@ -34,8 +34,7 @@ export class UserService {
         try {
             return await this.userRepository.existsBy({ email })
         } catch (error) {
-            console.error("No se ha encontrado el Email", error.message)
-            throw new error("No se ha encontrado el Email")
+            throw new Error("No se ha encontrado el Email")
         }
     }
 
@@ -59,7 +58,7 @@ export class UserService {
     async accepteToSUser(id: number) {
         const user = await this.getById(id);
         if(!user)
-            throw new HttpException("Bad credentials", HttpStatus.BAD_REQUEST);
+            throw new Error("Bad credentials");
         user.acceptedToS = true
         this.userRepository.save(user)
     }
