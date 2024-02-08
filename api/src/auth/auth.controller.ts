@@ -3,7 +3,7 @@ import { AuthService } from "./auth.service";
 import { SignInDto } from "./dto/signIn.dto";
 import { RegisterDto } from "./dto/register.dto";
 import { ToSGuard } from "./ToS/ToS.guard";
-import { HashPipe } from "src/utils/pipes/hash.pipe";
+import { HashPipe } from "../utils/pipes/hash.pipe";
 
 @Controller("auth")
 export class AuthController {
