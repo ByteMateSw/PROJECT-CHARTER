@@ -60,6 +60,6 @@ export class UserService {
         if(!user)
             throw new Error("Bad credentials");
         user.acceptedToS = true
-        this.userRepository.save(user)
+        await this.userRepository.save(user)
     }
 }

@@ -9,9 +9,9 @@ describe("UserController", () => {
 
     const mockUser = {
         "id": 1,
-        "firstname": "Carlos",
-        "lastname": "Marquez",
-        "email": "carmar@gmail.com",
+        "firstName": "TestFirstName",
+        "lastName": "TestLastName",
+        "email": "test@gmail.com",
         "password": "1234",
         "numberPhone": "+1123456789",
         "birthday": "2000-01-01",
