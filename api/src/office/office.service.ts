@@ -17,12 +17,12 @@ export class OfficeService {
     private readonly officeRepository: Repository<Office>,
   ) {}
 
-  getAll(){
+  getAll() {
     return this.officeRepository.find();
   }
 
   getById(id: number) {
-    return this.officeRepository.findOneBy({id});
+    return this.officeRepository.findOneBy({ id });
   }
 
   async createOffice(newOfficeData: CreateOfficeDto): Promise<Office> {
@@ -39,7 +39,10 @@ export class OfficeService {
       const id = office.id;
       const officeFound = await this.officeRepository.findOne(id);
       if (!officeFound) throw new Error('El oficio no existe');
-      const updatedOffice = await this.officeRepository.merge(officeFound, office);
+      const updatedOffice = await this.officeRepository.merge(
+        officeFound,
+        office,
+      );
       return await this.officeRepository.save(updatedOffice);
     } catch (error) {
       console.error('El oficio no se ha podido actualizar', error.message);
@@ -49,8 +52,8 @@ export class OfficeService {
 
   async deleteOffice(id: number): Promise<Office> {
     try {
-      const office = await this.officeRepository.findOneBy({id});
-      if (!office) throw new Error("El oficio no existe");
+      const office = await this.officeRepository.findOneBy({ id });
+      if (!office) throw new Error('El oficio no existe');
       office.isDeleted = true;
       return await this.officeRepository.save(office);
     } catch (error) {
