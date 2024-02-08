@@ -1,7 +1,18 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  HttpException,
+  HttpStatus,
+  HttpCode,
+  Patch,
+} from '@nestjs/common';
 import { OfficeService } from './office.service';
 import { Office } from './office.entity';
-import {CreateOfficeDto} from './dto/office.dto';
+import { CreateOfficeDto } from './dto/office.dto';
 
 @Controller('offices')
 export class OfficeController {
@@ -24,34 +35,40 @@ export class OfficeController {
       throw new Error('Error al buscar el oficio por ID');
     }
   }
-
+  @HttpCode(201)
   @Post()
-  async create(@Body() createOfficeDto: CreateOfficeDto): Promise<Office> {
+  async createOffice(
+    @Body() createOfficeDto: CreateOfficeDto,
+  ): Promise<string> {
     try {
-      return await this.officeService.createOffice(createOfficeDto);
+      await this.officeService.createOffice(createOfficeDto);
+      return 'oficio creado correctamente';
     } catch (error) {
-      throw new Error('Error al crear el oficio');
+      console.error('Error al crear el oficio', error.message);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
-  @Put(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateOfficeDto: CreateOfficeDto,
-  ): Promise<Office> {
+  @Patch(':id')
+  async updateOffice(@Body() createOfficeDto: CreateOfficeDto) {
     try {
-      return await this.officeService.updateOffice(+id, updateOfficeDto);
+      await this.officeService.updateOffice(CreateOfficeDto);
+      return 'El oficio se ha actualizdo correctamente';
     } catch (error) {
-      throw new Error('Error al actualizar el oficio');
+      console.error(
+        'El oficio no se ha podido actualizar, error.message, HttpStatus.FORBIDDEN',
+      );
     }
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<void> {
+  async deleteOffice(@Param('id') id: number): Promise<string> {
     try {
-      await this.officeService.removeOffice(+id);
+      await this.officeService.deleteOffice(id);
+      return 'eEl oficio ha sido borrado correctamente';
     } catch (error) {
-      throw new Error('Error al eliminar el oficio');
+      console.error('El oficio no se ha podido borrar', error.message);
+      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
     }
   }
 }
