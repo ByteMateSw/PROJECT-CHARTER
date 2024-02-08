@@ -10,6 +10,7 @@ import {
 import { Office } from '../office/office.entity';
 import { Review } from '../review/Review.entity';
 import { Localization } from '../location/localization.entity';
+import { Post } from 'src/post.ts/post.entity';
 
 @Entity()
 export class User {
@@ -49,6 +50,9 @@ export class User {
   @Column()
   dni: string;
 
+  @Column({ type: 'bytea' })
+  photo: Buffer;
+
   @ManyToOne(() => Localization, (localization) => localization.users)
   localization: Localization;
 
@@ -58,4 +62,7 @@ export class User {
 
   @OneToMany(() => Review, (review) => review.user)
   reviews: Review[];
+
+  @OneToMany(() => Post, (post) => post.user)
+  posts: Post[];
 }
