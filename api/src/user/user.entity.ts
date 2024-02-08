@@ -43,6 +43,12 @@ export class User {
   @Column({ type: 'date' })
   birthday: Date;
 
+  @Column({ default: false })
+  acceptedToS: boolean;
+
+  @Column()
+  dni: string;
+
   @ManyToOne(() => Localization, (localization) => localization.users)
   localization: Localization;
 
