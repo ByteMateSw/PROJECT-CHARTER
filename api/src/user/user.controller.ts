@@ -1,6 +1,5 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/createUser.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
 
@@ -19,19 +18,6 @@ export class UserController {
     return this.userService.getById(id);
   }
 
-
-  @HttpCode(201)
-  @Post()
-  async createUser(@Body() createUserDto: CreateUserDto): Promise<string> {
-    try {
-      await this.userService.createUser(createUserDto)
-      return "Usuario creado correctamente"
-    } catch(error) {
-      console.error("Error al crear el usuario", error.message)
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
-    }
-  }
-
   @UseGuards(JwtAuthGuard)
   @Delete(":id")
   async deleteUser(@Param("id") id:number):Promise<string> {
@@ -46,9 +32,9 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(":id")
-  async updateUser(@Body() updateUserDto: UpdateUserDto) {
+  async updateUser(@Param("id")  id: number, @Body() updateUserDto: UpdateUserDto) {
     try {
-      await this.userService.updateUser(updateUserDto)
+      await this.userService.updateUser(id, updateUserDto)
       return "El usuario se ha actualizado correctamente"
     } catch(error) {
       console.error("El usuario no se ha podido actualizar", error.message)
