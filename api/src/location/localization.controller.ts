@@ -12,7 +12,7 @@ import { LocalizationService } from './localization.service';
 import { UpdateLocalizationDto } from './dto/update-localization.dto';
 import { Localization } from './localization.entity';
 import { CreateLocalizationDto } from './dto/create-location.dto';
-import { EmptyBodyPipe } from 'src/utils/pipes/empty-body.pipe';
+import { EmptyBodyPipe } from '../utils/pipes/empty-body.pipe';
 
 @Controller('localization')
 export class LocalizationController {
