@@ -9,16 +9,16 @@ import { UpdateUserDto } from './dto/updateUser.dto';
 export class UserService {
     constructor(@InjectRepository(User) private userRepository: Repository<User>) { }
 
-    getAll() {
-        return this.userRepository.find();
+    async getAll() {
+        return await this.userRepository.find();
     }
 
-    getById(id: number) {
-        return this.userRepository.findOneBy({ id })
+    async getById(id: number) {
+        return await this.userRepository.findOneBy({ id })
     }
 
-    getByEmail(email: string) {
-        return this.userRepository.findOneBy({ email })
+    async getByEmail(email: string) {
+        return await this.userRepository.findOneBy({ email })
     }
 
     async createUser(user: RegisterDto): Promise<User> {
