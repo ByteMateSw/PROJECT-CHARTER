@@ -51,7 +51,6 @@ export class OfficeService {
     try {
       const office = await this.officeRepository.findOneBy({id});
       if (!office) throw new Error("El oficio no existe");
-      office.isDeleted = true;
       return await this.officeRepository.save(office);
     } catch (error) {
       console.error('Error al eliminar el oficio', error.message);
