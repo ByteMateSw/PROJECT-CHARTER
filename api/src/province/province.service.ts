@@ -2,12 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Province } from './province.entity';
+import { City } from 'src/city/city.entity';
 
 @Injectable()
 export class ProvinceService {
   constructor(
     @InjectRepository(Province)
     private provinceRepository: Repository<Province>,
+    @InjectRepository(City)
+    private cityRepository: Repository<City>,
   ) {}
 
   async createProvince(newProvinceData) {
@@ -73,6 +76,35 @@ export class ProvinceService {
       }
     } catch (error) {
       return 'error al actualizar provincia';
+    }
+  }
+
+  async addCity(id: number, cityId: number): Promise<string> {
+    try {
+      if (id) {
+        const province = await this.provinceRepository.findOne({
+          where: { id },
+        });
+        if (!province) {
+          return 'No se encontro la provincia';
+        }
+
+        const city = await this.cityRepository.findOne({
+          where: { id: cityId },
+        });
+
+        if (!city) {
+          return 'La provincia no se encontró';
+        }
+        province.cities.push(city);
+        await this.provinceRepository.save(province);
+
+        return 'La ciudad actualizada';
+      } else {
+        return ' No se mando la id de la ciudad ';
+      }
+    } catch (error) {
+      return error;
     }
   }
 

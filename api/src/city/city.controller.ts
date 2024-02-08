@@ -14,27 +14,27 @@ import { CityService } from './city.service';
 export class CityController {
   constructor(private cityService: CityService) {}
 
+  //Crear provincia sin relacion ( Solo un nombre )
   @Post('/save')
-  createProvinces(@Body() newProvince) {
-    return this.cityService.createCity(newProvince);
+  createCity(@Body() newCity) {
+    return this.cityService.createCity(newCity);
   }
 
+  //Obtener lista de ciudades
   @Get('/list')
-  getProvinces() {
+  getCities() {
     return this.cityService.getCity();
   }
+
+  //Obtener una sola ciudad
   @Get('/one/:id')
-  getOneProvince(@Param('id', ParseIntPipe) id: number) {
+  getOneCity(@Param('id', ParseIntPipe) id: number) {
     return this.cityService.getOneCity(id);
   }
 
-  /*@Post('/listUpload')
-  uploadJsonLocalizations() {
-    return this.provinceService.uploadJsonLocalizations();
-  }*/
-
+  //Actualizar la ciudad
   @Put('/update/:id')
-  updateProvince(
+  updateCity(
     @Param('id', ParseIntPipe) id: number,
     @Body()
     province,
@@ -42,8 +42,34 @@ export class CityController {
     return this.cityService.updateCity(id, province);
   }
 
+  //Agregar una provincia a la ciudad
+  @Put('/addProvinceTo/:id')
+  updateCityProvince(
+    @Param('id', ParseIntPipe) id: number,
+    @Body('provinceId', ParseIntPipe) provinceId: number,
+  ) {
+    return this.cityService.updateCityProvince(id, provinceId);
+  }
+
+  //Agregar un usuario a la ciudad
+  @Put('/addUserTo/:id')
+  updateCityUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Body('userId', ParseIntPipe) userId: number,
+  ) {
+    return this.cityService.updateCityUser(id, userId);
+  }
+
+  //Eliminiar Ciudad
   @Delete('/delete/:id')
-  deleteProvince(@Param('id', ParseIntPipe) id: number) {
+  deleteCity(@Param('id', ParseIntPipe) id: number) {
     return this.cityService.deleteCity(id);
   }
+
+  /*
+  //Crear provincia con relacion (Nombre de la ciduad y Id de la provincia)
+  @Post('/saveWithRelation')
+  createCityWithRelation(@Body() newCity) {
+    return this.cityService.createCityWithRelation(newCity);
+  }*/
 }

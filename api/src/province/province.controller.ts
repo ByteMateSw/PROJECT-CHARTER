@@ -28,11 +28,6 @@ export class ProvinceController {
     return this.provinceService.getOneProvince(id);
   }
 
-  /*@Post('/listUpload')
-  uploadJsonLocalizations() {
-    return this.provinceService.uploadJsonLocalizations();
-  }*/
-
   @Put('/update/:id')
   updateProvince(
     @Param('id', ParseIntPipe) id: number,
@@ -40,6 +35,14 @@ export class ProvinceController {
     province,
   ) {
     return this.provinceService.updateProvince(id, province);
+  }
+
+  @Put('/addCity/:id')
+  addCity(
+    @Param('id', ParseIntPipe) id: number,
+    @Body('cityId', ParseIntPipe) cityId: number,
+  ) {
+    return this.provinceService.updateProvince(id, cityId);
   }
 
   @Delete('/delete/:id')
