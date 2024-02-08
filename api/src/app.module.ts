@@ -5,7 +5,7 @@ import { AppService } from './app.service';
 import { User } from './user/user.entity';
 import { Office } from './office/office.entity';
 import { Category } from './category/Category.entity';
-import { Hiring } from './hiring/Hiring.entity';
+import { Hiring } from './hiring/hiring.entity';
 import { Review } from './review/Review.entity';
 import { UserModule } from './user/user.module';
 import { Localization } from './location/localization.entity';
