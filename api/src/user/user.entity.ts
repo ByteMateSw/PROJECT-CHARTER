@@ -10,7 +10,7 @@ import {
 import { Office } from '../office/office.entity';
 import { Review } from '../review/Review.entity';
 import { Localization } from '../location/localization.entity';
-import { Post } from 'src/post.ts/post.entity';
+import { Post } from '../post/post.entity';
 
 @Entity()
 export class User {
