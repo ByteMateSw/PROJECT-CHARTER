@@ -9,14 +9,14 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
-  getAll() {
-    return this.userService.getAll();
+  async getAll() {
+    return await this.userService.getAll();
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(":id")
-  getById(@Param("id") id: number) {
-    return this.userService.getById(id);
+  async getById(@Param("id") id: number) {
+    return await this.userService.getById(id);
   }
 
   @UseGuards(JwtAuthGuard)

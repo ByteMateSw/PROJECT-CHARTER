@@ -12,7 +12,10 @@ export class AuthController {
     @HttpCode(201)
     @Post("register")
     async register(@Body(HashPipe) registerDto: RegisterDto) {
-        return this.authService.register(registerDto)
+        const newUser = await this.authService.register(registerDto)
+        return newUser
+            ? "El usuario a sido creado con éxito"
+            : "No se pudo crear el usuario"
     }
 
     @UseGuards(ToSGuard)

@@ -28,7 +28,11 @@ export class AuthService {
 
     async register(registerDto: RegisterDto) {
         try { 
-            await this.userService.createUser(registerDto)
+            const newUser = await this.userService.createUser(registerDto)
+            if(!newUser)
+                throw new Error("Error al crear al usuario")
+
+            return newUser
         } catch(error) {
             throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
         }
