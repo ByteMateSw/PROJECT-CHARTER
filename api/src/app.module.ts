@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { User } from './user/user.entity';
-import { Office } from './office/Office.entity';
+import { Office } from './office/office.entity';
 import { Category } from './category/Category.entity';
 import { Hiring } from './hiring/Hiring.entity';
 import { Review } from './review/Review.entity';
@@ -11,6 +11,7 @@ import { UserModule } from './user/user.module';
 import { Localization } from './location/localization.entity';
 import { LocalizationModule } from './location/localization.module';
 import { CategoryModule } from './category/category.module';
+import { OfficeModule } from './office/office.module';
 import { AuthModule } from './auth/auth.module';
 
 require('dotenv').config();
@@ -45,7 +46,7 @@ console.log(
       migrations: [],
       subscribers: [],
     }),
-    AuthModule, UserModule, CategoryModule, LocalizationModule
+    AuthModule, UserModule, CategoryModule, LocalizationModule, OfficeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
