@@ -11,7 +11,7 @@ import { Office } from '../office/office.entity';
 import { Review } from '../review/Review.entity';
 import { Post } from '../post/post.entity';
 import { Role } from '../role/role.entity';
-import { City } from 'src/city/city.entity';
+import { City } from '../city/city.entity';
 
 @Entity()
 export class User {
