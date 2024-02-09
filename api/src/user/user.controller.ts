@@ -7,6 +7,7 @@ import { RoleGuard } from '../role/role.guard';
 import { Roles } from '../role/role.decorator';
 import { Role } from 'src/utils/enums/role.enum';
 
+@UseGuards(JwtAuthGuard)
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
@@ -16,14 +17,13 @@ export class UserController {
     return await this.userService.getAll();
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get(":id")
   async getById(@Param("id") id: number) {
     return await this.userService.getById(id);
   }
 
   @Roles(Role.Admin)
-  @UseGuards(JwtAuthGuard, RoleGuard)
+  @UseGuards(RoleGuard)
   @Delete(":id")
   async deleteUser(@Param("id") id:number): Promise<{message: string}> {
     try {
@@ -34,7 +34,6 @@ export class UserController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch(":id")
   async updateUser(@Param("id")  id: number, @Body(EmptyBodyPipe) updateUserDto: UpdateUserDto): Promise<{message: string}> {
     try {
