@@ -1,5 +1,5 @@
-import { ImagePost } from 'src/image/imagePost.entity';
-import { User } from 'src/user/user.entity';
+import { ImagePost } from '../image/imagePost.entity';
+import { User } from '../user/user.entity';
 import {
   Column,
   Entity,

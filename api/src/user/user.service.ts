@@ -3,22 +3,23 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { RegisterDto } from '../auth/dto/register.dto';
-import { UpdateUserDto } from './dto/updateUser.dto';
+import { Role } from '../role/role.entity';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectRepository(User) private userRepository: Repository<User>) { }
+    constructor(@InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(Role) private roleRepository: Repository<Role> ) {}
 
-    getAll() {
-        return this.userRepository.find();
+    async getAll() {
+        return await this.userRepository.find();
     }
 
-    getById(id: number) {
-        return this.userRepository.findOneBy({ id })
+    async getById(id: number) {
+        return await this.userRepository.findOneBy({ id })
     }
 
-    getByEmail(email: string) {
-        return this.userRepository.findOneBy({ email })
+    async getByEmail(email: string) {
+        return await this.userRepository.findOneBy({ email })
     }
 
     async createUser(user: RegisterDto): Promise<User> {
@@ -26,6 +27,8 @@ export class UserService {
         if (existEmail)
             throw new Error("El Email está en uso")
         const newUser = this.userRepository.create(user)
+        const role = await this.roleRepository.findOneBy({ name: "user" })
+        newUser.role = role
         await this.userRepository.save(newUser)
         return newUser
     }
@@ -34,8 +37,7 @@ export class UserService {
         try {
             return await this.userRepository.existsBy({ email })
         } catch (error) {
-            console.error("No se ha encontrado el Email", error.message)
-            throw new error("No se ha encontrado el Email")
+            throw new Error("No se ha encontrado el Email")
         }
     }
 
@@ -59,8 +61,16 @@ export class UserService {
     async accepteToSUser(id: number) {
         const user = await this.getById(id);
         if(!user)
-            throw new HttpException("Bad credentials", HttpStatus.BAD_REQUEST);
+            throw new Error("Bad credentials");
         user.acceptedToS = true
-        this.userRepository.save(user)
+        await this.userRepository.save(user)
+    }
+
+    async getRole(id: number): Promise<string> {
+        const user = await this.userRepository.findOne({
+            where: { id },
+            relations: { role: true }
+        })
+        return user.role.name
     }
 }

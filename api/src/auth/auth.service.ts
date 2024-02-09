@@ -20,7 +20,10 @@ export class AuthService {
         if(!passMatch)
             throw new UnauthorizedException();
         
-        const payload = {sub: user.id, email: user.email}
+        const role = await this.userService.getRole(user.id)
+
+        const payload = {sub: user.id, email: user.email, role}
+
         return {
             access_token: await this.jwtService.signAsync(payload)
         }
@@ -28,7 +31,11 @@ export class AuthService {
 
     async register(registerDto: RegisterDto) {
         try { 
-            await this.userService.createUser(registerDto)
+            const newUser = await this.userService.createUser(registerDto)
+            if(!newUser)
+                throw new Error("Error al crear al usuario")
+
+            return newUser
         } catch(error) {
             throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
         }
