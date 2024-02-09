@@ -26,13 +26,13 @@ describe('OfficeController', () => {
   const mockUpdateMessage = 'El Oficio se ha actualizado correctamente';
 
   const mockOfficeService = {
-    findAllOffice: jest.fn().mockResolvedValueOnce([mockOffice]),
-    findOne: jest.fn().mockResolvedValueOnce([mockOffice]),
-    getOfficeById: jest.fn().mockResolvedValueOnce([mockOffice]),
-    getAll: jest.fn().mockResolvedValueOnce([mockOffice]),
-    createOffice: jest.fn().mockResolvedValueOnce(mockCreateMessage),
-    deleteOffice: jest.fn().mockResolvedValueOnce(mockDeleteMessage),
-    updateOffice: jest.fn().mockResolvedValueOnce(mockUpdateMessage),
+    findAllOffice: jest.fn().mockResolvedValue([mockOffice]),
+    findOne: jest.fn().mockResolvedValue(mockOffice),
+    getOfficeById: jest.fn().mockResolvedValue(mockOffice),
+    getAll: jest.fn().mockResolvedValue([mockOffice]),
+    createOffice: jest.fn().mockResolvedValue(mockCreateMessage),
+    deleteOffice: jest.fn().mockResolvedValue(mockDeleteMessage),
+    updateOffice: jest.fn().mockResolvedValue(mockUpdateMessage),
   } as any;
 
   beforeEach(async () => {
@@ -57,27 +57,23 @@ describe('OfficeController', () => {
     });
 
     it('should throw an error when officeService throws an error', async () => {
-      jest
-        .spyOn(mockOfficeService, 'findAllOffice')
-        .mockRejectedValue(mockError);
-      await expect(controller.findAllOffice()).rejects.toThrowError(
+      mockOfficeService.getAll.mockRejectedValueOnce()
+      await expect(async () => await controller.findAllOffice()).rejects.toThrow(new HttpException(
         'Error al buscar todos los oficios',
-      );
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      ))
     });
   });
   describe('createOffice', () => {
     it('should create a new office', async () => {
       const result = await controller.createOffice(mockCreateOfficeDto);
-      expect(result).toBe('oficio creado correctamente');
+      expect(result).toEqual('oficio creado correctamente');
     });
 
     it('should throw an HttpException with HttpStatus.BAD_REQUEST when officeService throws an error', async () => {
-      jest
-        .spyOn(mockOfficeService, 'createOffice')
-        .mockRejectedValueOnce(mockError);
-      await expect(
-        controller.createOffice(mockCreateOfficeDto),
-      ).rejects.toThrowError(
+      mockOfficeService.createOffice.mockRejectedValueOnce(mockError)
+      await expect(async () => await controller.createOffice(mockCreateOfficeDto),
+      ).rejects.toThrow(
         new HttpException(mockError.message, HttpStatus.BAD_REQUEST),
       );
     });
@@ -86,24 +82,18 @@ describe('OfficeController', () => {
   describe('findOne', () => {
     it('should return the office with the specified ID', async () => {
       const mockOffice = { id: 1, name: 'Office 1' };
-      jest
-        .spyOn(mockOfficeService, 'getOfficeById')
-        .mockResolvedValueOnce(mockOffice);
       const result = await controller.findOne('1');
       expect(result).toEqual(mockOffice);
     });
 
     it('should throw an HttpException with HttpStatus.INTERNAL_SERVER_ERROR when officeService throws an error', async () => {
-      const mockError = new Error('Test Error');
-      jest
-        .spyOn(mockOfficeService, 'getOfficeById')
-        .mockRejectedValueOnce(mockError);
-      await expect(controller.findOne('1')).rejects.toThrowError(
-        new HttpException(
-          'Error al buscar el oficio por ID',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        ),
-      );
+      mockOfficeService.getOfficeById.mockRejectedValueOnce(mockError)
+      await expect(async () => await controller.findOne('1')).rejects.toThrow(
+          new HttpException(
+            'Error al buscar el oficio por ID',
+            HttpStatus.INTERNAL_SERVER_ERROR,
+          ),
+        );
     });
   });
 
@@ -111,15 +101,13 @@ describe('OfficeController', () => {
     it('should delete the office with the specified ID', async () => {
       const id = 1;
       const result = await controller.deleteOffice(id);
-      expect(result).toBe('El oficio ha sido borrado correctamente');
+      expect(result).toEqual('El oficio ha sido borrado correctamente');
     });
 
     it('should throw an HttpException with HttpStatus.FORBIDDEN when officeService throws an error', async () => {
-      jest
-        .spyOn(mockOfficeService, 'deleteOffice')
-        .mockRejectedValue(mockError);
+      mockOfficeService.deleteOffice.mockRejectedValueOnce(mockError)
       const id = 1;
-      await expect(controller.deleteOffice(id)).rejects.toThrowError(
+      await expect(async () => await controller.deleteOffice(id)).rejects.toThrow(
         new HttpException(mockError.message, HttpStatus.FORBIDDEN),
       );
     });
@@ -133,14 +121,10 @@ describe('OfficeController', () => {
     });
 
     it('should throw an HttpException with HttpStatus.FORBIDDEN when officeService throws an error', async () => {
-      jest
-        .spyOn(mockOfficeService, 'updateOffice')
-        .mockRejectedValue(mockError);
+      mockOfficeService.updateOffice.mockRejectedValueOnce(mockError)
       const id = 1;
-      await expect(
-        controller.updateOffice(id, mockCreateOfficeDto),
-      ).rejects.toThrowError(
-        new HttpException(mockError.message, HttpStatus.FORBIDDEN),
+      await expect(async () => await controller.updateOffice(id, mockCreateOfficeDto)).rejects.toThrow(
+        new HttpException(mockError.message, HttpStatus.FORBIDDEN)
       );
     });
   });
