@@ -3,6 +3,9 @@ import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { JwtAuthGuard } from  '../auth/jwt/jwt-auth.guard';
 import { EmptyBodyPipe } from '../utils/pipes/empty-body.pipe';
+import { RoleGuard } from '../role/role.guard';
+import { Roles } from '../role/role.decorator';
+import { Role } from 'src/utils/enums/role.enum';
 
 @Controller('user')
 export class UserController {
@@ -19,12 +22,13 @@ export class UserController {
     return await this.userService.getById(id);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Delete(":id")
-  async deleteUser(@Param("id") id:number):Promise<string> {
+  async deleteUser(@Param("id") id:number): Promise<{message: string}> {
     try {
       await this.userService.deleteUser(id)
-      return "El usuario ha sido borrado correctamente "
+      return { message: "El usuario ha sido borrado correctamente " }
     } catch(error) {
       throw new HttpException(error.message, HttpStatus.FORBIDDEN)
     }
@@ -32,10 +36,10 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(":id")
-  async updateUser(@Param("id")  id: number, @Body(EmptyBodyPipe) updateUserDto: UpdateUserDto) {
+  async updateUser(@Param("id")  id: number, @Body(EmptyBodyPipe) updateUserDto: UpdateUserDto): Promise<{message: string}> {
     try {
       await this.userService.updateUser(id, updateUserDto)
-      return "El usuario se ha actualizado correctamente"
+      return { message: "El usuario se ha actualizado correctamente" }
     } catch(error) {
       throw new HttpException(error.message, HttpStatus.FORBIDDEN)
     }

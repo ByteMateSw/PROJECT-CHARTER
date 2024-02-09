@@ -20,7 +20,10 @@ export class AuthService {
         if(!passMatch)
             throw new UnauthorizedException();
         
-        const payload = {sub: user.id, email: user.email}
+        const role = await this.userService.getRole(user.id)
+
+        const payload = {sub: user.id, email: user.email, role}
+
         return {
             access_token: await this.jwtService.signAsync(payload)
         }
