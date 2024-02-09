@@ -13,16 +13,15 @@ export class ProvinceService {
     private cityRepository: Repository<City>,
   ) {}
 
-  async createProvince(newProvinceData) {
+  async createProvince(name: string): Promise<string> {
     try {
-      const { name } = newProvinceData;
       console.log(name);
       const provinceExist = await this.provinceRepository.findOne({
         where: { name },
       });
 
       if (!provinceExist) {
-        const newProvince = this.provinceRepository.create(newProvinceData);
+        const newProvince = this.provinceRepository.create({ name: name });
 
         this.provinceRepository.save(newProvince);
         return 'Provincia Guardada';
@@ -34,9 +33,9 @@ export class ProvinceService {
     }
   }
 
-  getProvinces(): Promise<Province[]> | string {
+  async getProvinces(): Promise<Province[] | string> {
     try {
-      return this.provinceRepository.find();
+      return await this.provinceRepository.find({ relations: ['cities'] });
     } catch (error) {
       return 'Error al obtener las localizaciones';
     }
@@ -47,6 +46,7 @@ export class ProvinceService {
       if (id) {
         const province = await this.provinceRepository.findOne({
           where: { id },
+          relations: ['cities'],
         });
         if (!province) {
           return 'No se encontró la provincia';
@@ -60,16 +60,17 @@ export class ProvinceService {
     }
   }
 
-  async updateProvince(id: number, provinceData): Promise<string> {
+  async updateProvince(id: number, name: string): Promise<string> {
     try {
       if (id) {
-        const provinceExist = await this.provinceRepository.findOne({
+        const province = await this.provinceRepository.findOne({
           where: { id },
         });
-        if (!provinceExist) {
+        if (!province) {
           return 'No se encontro la provincia';
         }
-        await this.provinceRepository.update(id, provinceData);
+        province.name = name;
+        await this.provinceRepository.save(province);
         return 'La provincia actualizada';
       } else {
         return ' No se mando la id de la provincia ';
@@ -84,6 +85,7 @@ export class ProvinceService {
       if (id) {
         const province = await this.provinceRepository.findOne({
           where: { id },
+          relations: ['cities'],
         });
         if (!province) {
           return 'No se encontro la provincia';
@@ -94,7 +96,7 @@ export class ProvinceService {
         });
 
         if (!city) {
-          return 'La provincia no se encontró';
+          return 'La ciudad no se encontró';
         }
         province.cities.push(city);
         await this.provinceRepository.save(province);

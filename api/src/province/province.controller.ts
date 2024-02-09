@@ -17,14 +17,15 @@ export class ProvinceController {
   constructor(private provinceService: ProvinceService) {}
 
   @Post('/save')
-  createProvinces(@Body() newProvince: CreateProvinceDto) {
-    return this.provinceService.createProvince(newProvince);
+  createProvince(@Body('cityName') cityName: string) {
+    return this.provinceService.createProvince(cityName);
   }
 
   @Get('/list')
   getProvinces() {
     return this.provinceService.getProvinces();
   }
+
   @Get('/one/:id')
   getOneProvince(@Param('id', ParseIntPipe) id: number) {
     return this.provinceService.getOneProvince(id);
@@ -33,8 +34,8 @@ export class ProvinceController {
   @Put('/update/:id')
   updateProvince(
     @Param('id', ParseIntPipe) id: number,
-    @Body()
-    province: UpdateProvinceDto,
+    @Body('province')
+    province: string,
   ) {
     return this.provinceService.updateProvince(id, province);
   }
@@ -44,7 +45,7 @@ export class ProvinceController {
     @Param('id', ParseIntPipe) id: number,
     @Body('cityId', ParseIntPipe) cityId: number,
   ) {
-    return this.provinceService.updateProvince(id, cityId);
+    return this.provinceService.addCity(id, cityId);
   }
 
   @Delete('/delete/:id')

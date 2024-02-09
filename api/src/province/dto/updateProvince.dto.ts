@@ -1,3 +1,3 @@
-export class CreateProvinceDto {
+export class UpdateProvinceDto {
   name: string;
 }
