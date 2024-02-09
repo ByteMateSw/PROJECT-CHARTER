@@ -2,6 +2,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { User } from "./user.entity";
 import { UserService } from "./user.service";
+import { Role } from "../role/role.entity";
 
 describe("UserService", () => {
 
@@ -35,11 +36,20 @@ describe("UserService", () => {
         update: jest.fn().mockResolvedValue(mockUser)
     }
 
+    const mockRole = { name: "test" }
+
+    const mockRoleRepository = {
+        findOneBy: jest.fn().mockResolvedValue(mockRole)
+    }
+
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [UserService, {
                 provide: getRepositoryToken(User),
                 useValue: mockUserRepository
+            },{
+                provide: getRepositoryToken(Role),
+                useValue: mockRoleRepository
             }]
         }).compile()
 
@@ -75,11 +85,13 @@ describe("UserService", () => {
 
     describe("createUser", () => {
         it("should create an mocked user with received data", async () => {
+            const mockSaveUser = {...mockUser, role: mockRole}
+
             jest.spyOn(service, "hasEmail").mockResolvedValueOnce(false)
 
             expect(await service.createUser(mockUser)).toEqual(mockUser)
             expect(mockUserRepository.create).toHaveBeenCalledWith(mockUser)
-            expect(mockUserRepository.save).toHaveBeenCalledWith(mockUser)
+            expect(mockUserRepository.save).toHaveBeenCalledWith(mockSaveUser)
         })
 
         it("should throw an error for repeated email", async () => {

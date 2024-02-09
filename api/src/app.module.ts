@@ -13,9 +13,10 @@ import { LocalizationModule } from './location/localization.module';
 import { CategoryModule } from './category/category.module';
 import { OfficeModule } from './office/office.module';
 import { AuthModule } from './auth/auth.module';
-import { Post } from './post.ts/post.entity';
+import { Post } from './post/post.entity';
 import { ImagePost } from './image/imagePost.entity';
 import { StateHiring } from './hiring/state/stateHiring.entity';
+import { Role } from './role/role.entity';
 
 require('dotenv').config();
 const {
@@ -47,6 +48,7 @@ const {
         Post,
         ImagePost,
         StateHiring,
+        Role
       ],
     }),
     AuthModule,

@@ -3,11 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { RegisterDto } from '../auth/dto/register.dto';
-import { UpdateUserDto } from './dto/updateUser.dto';
+import { Role } from '../role/role.entity';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectRepository(User) private userRepository: Repository<User>) { }
+    constructor(@InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(Role) private roleRepository: Repository<Role> ) {}
 
     async getAll() {
         return await this.userRepository.find();
@@ -26,6 +27,8 @@ export class UserService {
         if (existEmail)
             throw new Error("El Email está en uso")
         const newUser = this.userRepository.create(user)
+        const role = await this.roleRepository.findOneBy({ name: "user" })
+        newUser.role = role
         await this.userRepository.save(newUser)
         return newUser
     }
@@ -61,5 +64,13 @@ export class UserService {
             throw new Error("Bad credentials");
         user.acceptedToS = true
         await this.userRepository.save(user)
+    }
+
+    async getRole(id: number): Promise<string> {
+        const user = await this.userRepository.findOne({
+            where: { id },
+            relations: { role: true }
+        })
+        return user.role.name
     }
 }
