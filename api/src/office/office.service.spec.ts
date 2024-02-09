@@ -71,7 +71,6 @@ describe('OfficeService', () =>{
 
     describe('deleteOffice', () => {
         it('should delete an office record', async () => {
-            const mockOffice= {"id": 1, "name": "Update Office"};
             const id = mockOffice.id;
             expect(await service.deleteOffice(id)).toEqual(undefined);
             expect(mockOfficeRepository.findOne).toHaveBeenCalledWith(id);

@@ -47,12 +47,12 @@ export class OfficeService {
     }
   }
   
-  async deleteOffice(id: number): Promise<Office> {
+  async deleteOffice(id: number): Promise<undefined> {
     try {
       const office = await this.officeRepository.findOne({where:{id}});
       if (!office) throw new Error('El oficio no existe');
       await this.officeRepository.delete(office);
-      return office; 
+      return undefined; 
     } catch (error) {
       console.error('Error al eliminar el oficio', error.message);
       throw new Error('Error al eliminar el oficio');
