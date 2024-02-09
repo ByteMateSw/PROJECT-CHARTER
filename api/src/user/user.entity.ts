@@ -9,9 +9,9 @@ import {
 } from 'typeorm';
 import { Office } from '../office/office.entity';
 import { Review } from '../review/Review.entity';
-import { Localization } from '../location/localization.entity';
 import { Post } from '../post/post.entity';
 import { Role } from '../role/role.entity';
+import { City } from 'src/city/city.entity';
 
 @Entity()
 export class User {
@@ -54,8 +54,8 @@ export class User {
   @Column({ type: 'bytea', nullable: true })
   photo: Buffer;
 
-  @ManyToOne(() => Localization, (localization) => localization.users)
-  localization: Localization;
+  @ManyToOne(() => City, (city) => city.users)
+  city: City;
 
   @ManyToMany(() => Office)
   @JoinTable()
