@@ -26,7 +26,6 @@ export class OfficeController {
     try {
       return await this.officeService.getAll();
     } catch (error) {
-      console.error('Error al buscar todos los oficios', error.message);
       throw new HttpException(
         'Error al buscar todos los oficios',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -39,7 +38,6 @@ async findOne(@Param('id') id: string): Promise<Office> {
   try {
     return await this.officeService.getOfficeById(+id);
   } catch (error) {
-    console.error('Error al buscar el oficio por ID', error.message);
     throw new HttpException(
       'Error al buscar el oficio por ID',
       HttpStatus.INTERNAL_SERVER_ERROR,
@@ -56,7 +54,6 @@ async findOne(@Param('id') id: string): Promise<Office> {
       await this.officeService.createOffice(createOfficeDto);
       return 'oficio creado correctamente';
     } catch (error) {
-      console.error('Error al crear el oficio', error.message);
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
@@ -70,7 +67,6 @@ async findOne(@Param('id') id: string): Promise<Office> {
       await this.officeService.updateOffice(id, updateOfficeDto);
       return 'El oficio se ha actualizado correctamente';
     } catch (error) {
-      console.error('El oficio no se ha podido actualizar', error.message);
       throw new HttpException(
         'Test Error',
         HttpStatus.FORBIDDEN,
@@ -83,7 +79,7 @@ async findOne(@Param('id') id: string): Promise<Office> {
       await this.officeService.deleteOffice(id);
       return 'El oficio ha sido borrado correctamente';
     } catch (error) {
-      console.error('El oficio no se ha podido borrar', error.message);
+      //console.error('El oficio no se ha podido borrar', error.message);
       throw new HttpException(error.message, HttpStatus.FORBIDDEN);
     }
   }

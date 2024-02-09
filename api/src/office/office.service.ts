@@ -24,7 +24,6 @@ export class OfficeService {
       const newOffice = this.officeRepository.create(newOfficeData);
       return await this.officeRepository.save(newOffice);
     } catch (error) {
-      console.error('Error al crear el oficio', error.message);
       throw new Error('Error al crear el oficio');
     }
   }
@@ -42,7 +41,6 @@ export class OfficeService {
   
       return saveOffice;
     } catch (error) {
-      console.error('El oficio no se ha podido actualizar', error.message);
       throw new Error('El oficio no se ha podido actualizar');
     }
   }
@@ -54,7 +52,6 @@ export class OfficeService {
       await this.officeRepository.delete(office);
       return undefined; 
     } catch (error) {
-      console.error('Error al eliminar el oficio', error.message);
       throw new Error('Error al eliminar el oficio');
     }
   }

@@ -62,9 +62,12 @@ describe('OfficeService', () =>{
         it('should update an office record', async () => {
             const id = mockOffice.id;
             const updateOffice = { "name": 'Update Office' };
+            const mockSaveOffice = {...mockOffice, ...updateOffice}
+
             expect(await service.updateOffice(id, updateOffice)).toEqual(mockOffice);
             expect(mockOfficeRepository.findOne).toHaveBeenCalledWith(id);
-            expect(mockOfficeRepository.update).toHaveBeenCalledWith(id, updateOffice);
+            // expect(mockOfficeRepository.update).toHaveBeenCalledWith(id, updateOffice);
+            expect(mockOfficeRepository.save).toHaveBeenCalledWith(mockSaveOffice);
         });
     });
     
