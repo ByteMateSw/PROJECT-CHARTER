@@ -7,8 +7,10 @@ import {
   OneToMany,
   ManyToOne,
 } from 'typeorm';
-import { Office } from '../office/Office.entity';
+import { Office } from '../office/office.entity';
 import { Review } from '../review/Review.entity';
+import { Post } from '../post/post.entity';
+import { Role } from '../role/role.entity';
 import { City } from 'src/city/city.entity';
 
 @Entity()
@@ -43,6 +45,15 @@ export class User {
   @Column({ type: 'date' })
   birthday: Date;
 
+  @Column({ default: false })
+  acceptedToS: boolean;
+
+  @Column()
+  dni: string;
+
+  @Column({ type: 'bytea', nullable: true })
+  photo: Buffer;
+
   @ManyToOne(() => City, (city) => city.users)
   city: City;
 
@@ -52,4 +63,10 @@ export class User {
 
   @OneToMany(() => Review, (review) => review.user)
   reviews: Review[];
+
+  @OneToMany(() => Post, (post) => post.user)
+  posts: Post[];
+
+  @ManyToOne(() => Role, (role) => role.user)
+  role: Role;
 }

@@ -1,44 +1,44 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/createUser.dto';
+import { UpdateUserDto } from './dto/updateUser.dto';
+import { JwtAuthGuard } from  '../auth/jwt/jwt-auth.guard';
+import { EmptyBodyPipe } from '../utils/pipes/empty-body.pipe';
+import { RoleGuard } from '../role/role.guard';
+import { Roles } from '../role/role.decorator';
+import { Role } from '../utils/enums/role.enum';
 
+@UseGuards(JwtAuthGuard)
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
-  getAll() {
-    return this.userService.getAll();
+  async getAll() {
+    return await this.userService.getAll();
   }
 
   @Get(":id")
-  getById(@Param("id") id: number) {
-    return this.userService.getById(id);
+  async getById(@Param("id") id: number) {
+    return await this.userService.getById(id);
   }
 
-  @HttpCode(201)
-  @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
-    try {
-      await this.userService.create(createUserDto)
-    } catch(error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
-    }
-  }
-
+  @Roles(Role.Admin)
+  @UseGuards(RoleGuard)
   @Delete(":id")
-  async delete(@Param("id") id:number) {
+  async deleteUser(@Param("id") id:number): Promise<{message: string}> {
     try {
-      await this.userService.delete(id)
+      await this.userService.deleteUser(id)
+      return { message: "El usuario ha sido borrado correctamente " }
     } catch(error) {
       throw new HttpException(error.message, HttpStatus.FORBIDDEN)
     }
   }
 
   @Patch(":id")
-  async update(@Body() createUserDto: CreateUserDto) {
+  async updateUser(@Param("id")  id: number, @Body(EmptyBodyPipe) updateUserDto: UpdateUserDto): Promise<{message: string}> {
     try {
-      await this.userService.update(createUserDto)
+      await this.userService.updateUser(id, updateUserDto)
+      return { message: "El usuario se ha actualizado correctamente" }
     } catch(error) {
       throw new HttpException(error.message, HttpStatus.FORBIDDEN)
     }
