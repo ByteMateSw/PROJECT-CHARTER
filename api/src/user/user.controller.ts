@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Put, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { JwtAuthGuard } from  '../auth/jwt/jwt-auth.guard';
@@ -34,7 +34,7 @@ export class UserController {
     }
   }
 
-  @Patch(":id")
+  @Put(":id")
   async updateUser(@Param("id")  id: number, @Body(EmptyBodyPipe) updateUserDto: UpdateUserDto): Promise<{message: string}> {
     try {
       await this.userService.updateUser(id, updateUserDto)
