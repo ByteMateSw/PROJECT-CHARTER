@@ -9,7 +9,9 @@ import {
 } from 'typeorm';
 import { Office } from '../office/office.entity';
 import { Review } from '../review/Review.entity';
-import { Localization } from '../location/localization.entity';
+import { Post } from '../post/post.entity';
+import { Role } from '../role/role.entity';
+import { City } from '../city/city.entity';
 
 @Entity()
 export class User {
@@ -43,8 +45,17 @@ export class User {
   @Column({ type: 'date' })
   birthday: Date;
 
-  @ManyToOne(() => Localization, (localization) => localization.users)
-  localization: Localization;
+  @Column({ default: false })
+  acceptedToS: boolean;
+
+  @Column()
+  dni: string;
+
+  @Column({ type: 'bytea', nullable: true })
+  photo: Buffer;
+
+  @ManyToOne(() => City, (city) => city.users)
+  city: City;
 
   @ManyToMany(() => Office)
   @JoinTable()
@@ -52,4 +63,10 @@ export class User {
 
   @OneToMany(() => Review, (review) => review.user)
   reviews: Review[];
+
+  @OneToMany(() => Post, (post) => post.user)
+  posts: Post[];
+
+  @ManyToOne(() => Role, (role) => role.user)
+  role: Role;
 }

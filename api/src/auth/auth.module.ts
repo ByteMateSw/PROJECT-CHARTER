@@ -5,6 +5,9 @@ import { AuthService } from "./auth.service";
 import { AuthController } from "./auth.controller";
 import { jwtConstants } from "./jwt/jwt.constants"
 import { JwtStrategy } from "./jwt/jwt.strategy";
+import { HashService } from "./hash.service";
+import { ToSController } from "./ToS/ToS.controller";
+import "dotenv/config"
 
 @Module({
     imports: [
@@ -12,11 +15,11 @@ import { JwtStrategy } from "./jwt/jwt.strategy";
         JwtModule.register( {
             global: true,
             secret: jwtConstants.secret,
-            signOptions: {expiresIn: "3h"}
+            signOptions: { expiresIn: jwtConstants.expiration }
         })
     ],
-    controllers: [AuthController],
-    providers: [AuthService, JwtStrategy],
+    controllers: [AuthController, ToSController],
+    providers: [AuthService, HashService, JwtStrategy],
     exports: [AuthService]
 })
 
