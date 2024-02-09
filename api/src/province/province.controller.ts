@@ -9,8 +9,6 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ProvinceService } from './province.service';
-import { CreateProvinceDto } from './dto/createProvince.dto';
-import { UpdateProvinceDto } from './dto/updateProvince.dto';
 
 @Controller('province')
 export class ProvinceController {

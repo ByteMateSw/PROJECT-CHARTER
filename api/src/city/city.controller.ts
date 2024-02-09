@@ -16,14 +16,14 @@ export class CityController {
 
   //Crear provincia sin relacion ( Solo un nombre )
   @Post('/save')
-  createCity(@Body() newCity) {
-    return this.cityService.createCity(newCity);
+  createCity(@Body('name') name: string) {
+    return this.cityService.createCity(name);
   }
 
   //Obtener lista de ciudades
   @Get('/list')
   getCities() {
-    return this.cityService.getCity();
+    return this.cityService.getCities();
   }
 
   //Obtener una sola ciudad
@@ -36,10 +36,9 @@ export class CityController {
   @Put('/update/:id')
   updateCity(
     @Param('id', ParseIntPipe) id: number,
-    @Body()
-    province,
+    @Body('name') name: string,
   ) {
-    return this.cityService.updateCity(id, province);
+    return this.cityService.updateCity(id, name);
   }
 
   //Agregar una provincia a la ciudad
@@ -65,11 +64,4 @@ export class CityController {
   deleteCity(@Param('id', ParseIntPipe) id: number) {
     return this.cityService.deleteCity(id);
   }
-
-  /*
-  //Crear provincia con relacion (Nombre de la ciduad y Id de la provincia)
-  @Post('/saveWithRelation')
-  createCityWithRelation(@Body() newCity) {
-    return this.cityService.createCityWithRelation(newCity);
-  }*/
 }

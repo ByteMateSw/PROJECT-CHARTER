@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { City } from './city.entity';
 import { Province } from 'src/province/province.entity';
-import { CreateCityDto } from './dto/createCity.dto';
 import { User } from 'src/user/user.entity';
 
 @Injectable()
@@ -18,8 +17,7 @@ export class CityService {
   ) {}
 
   //Funcion para crear city solamente con el nombre
-  async createCity(newCityData: CreateCityDto) {
-    const { name } = newCityData;
+  async createCity(name: string): Promise<string> {
     try {
       const cityExist = await this.cityRepository.findOne({
         where: { name },
@@ -40,11 +38,13 @@ export class CityService {
     }
   }
 
-  getCity(): Promise<City[]> | string {
+  async getCities(): Promise<City[] | string> {
     try {
-      return this.cityRepository.find();
+      return await this.cityRepository.find({
+        relations: ['province', 'users'],
+      });
     } catch (error) {
-      return 'Error al obtener las localizaciones';
+      return error;
     }
   }
 
@@ -53,6 +53,7 @@ export class CityService {
       if (id) {
         const city = await this.cityRepository.findOne({
           where: { id },
+          relations: ['province', 'users'],
         });
         if (!city) {
           return 'No se encontró la ciudad';
@@ -133,7 +134,7 @@ export class CityService {
   }
 
   //cambiar el nombre de la ciudad
-  async updateCity(id: number, cityData): Promise<string> {
+  async updateCity(id: number, name: string): Promise<string> {
     try {
       if (id) {
         const cityExist = await this.cityRepository.findOne({
@@ -142,7 +143,7 @@ export class CityService {
         if (!cityExist) {
           return 'No se encontro la ciudad';
         }
-        await this.cityRepository.update(id, cityData);
+        await this.cityRepository.update(id, { name });
         return 'La ciudad actualizada';
       } else {
         return ' No se mando la id de la ciudad ';
