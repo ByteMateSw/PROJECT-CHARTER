@@ -22,9 +22,12 @@ describe("AuthService", () => {
 
     const mockToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwibmFtZSI6InRlc3QiLCJpYXQiOiIxIn0.8sJGfQl3huwiy0f7YYtk2FFd5-4lnxWQuQB3I2_l0sY"
 
+    const mockRole = "test"
+
     let mockUserService = {
         getByEmail: jest.fn().mockResolvedValue(mockUser),
-        createUser: jest.fn().mockResolvedValue(mockUser)
+        createUser: jest.fn().mockResolvedValue(mockUser),
+        getRole: jest.fn().mockResolvedValue(mockRole)
     }
 
     let mockHashService = {
@@ -54,7 +57,7 @@ describe("AuthService", () => {
     describe("signIn", () => {
         const mockEmail = mockUser.email
         const mockPassword = "MockedPassword"
-        const payload = {sub: mockUser.id, email: mockUser.email}
+        const payload = {sub: mockUser.id, email: mockUser.email, role: mockRole}
         const returnedToken = { access_token: mockToken }
 
         it("should login the user with the received credentrials", async () => {

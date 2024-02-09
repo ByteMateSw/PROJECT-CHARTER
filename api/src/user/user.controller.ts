@@ -5,7 +5,7 @@ import { JwtAuthGuard } from  '../auth/jwt/jwt-auth.guard';
 import { EmptyBodyPipe } from '../utils/pipes/empty-body.pipe';
 import { RoleGuard } from '../role/role.guard';
 import { Roles } from '../role/role.decorator';
-import { Role } from 'src/utils/enums/role.enum';
+import { Role } from '../utils/enums/role.enum';
 
 @UseGuards(JwtAuthGuard)
 @Controller('user')

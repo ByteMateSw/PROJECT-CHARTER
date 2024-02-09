@@ -22,9 +22,9 @@ describe("UserController", () => {
         "firstname": "Ivan",
     };
 
-    const mockDeleteMessage = 'El usuario ha sido borrado correctamente '
+    const mockDeleteMessage = { message: 'El usuario ha sido borrado correctamente '}
 
-    const mockUpdateMessage = 'El usuario se ha actualizado correctamente'
+    const mockUpdateMessage = { message: 'El usuario se ha actualizado correctamente' }
 
     const mockUserService = {
         getAll: jest.fn().mockResolvedValueOnce([mockUser]),
