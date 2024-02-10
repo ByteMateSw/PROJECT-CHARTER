@@ -1,5 +1,5 @@
-import { User } from 'src/user/user.entity';
-import { Province } from 'src/province/province.entity';
+import { User } from '../user/user.entity';
+import { Province } from '../province/province.entity';
 
 import {
   Column,

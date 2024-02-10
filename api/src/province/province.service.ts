@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Province } from './province.entity';
-import { City } from 'src/city/city.entity';
+import { City } from '../city/city.entity';
 
 @Injectable()
 export class ProvinceService {
