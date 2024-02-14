@@ -2,23 +2,28 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+
+// Entities
 import { User } from './user/user.entity';
 import { Office } from './office/office.entity';
 import { Category } from './category/Category.entity';
 import { Hiring } from './hiring/Hiring.entity';
 import { Review } from './review/Review.entity';
-import { UserModule } from './user/user.module';
 import { Province } from './province/province.entity';
 import { City } from './city/city.entity';
+import { Post } from './post/post.entity';
+import { Role } from './role/role.entity';
+import { StateHiring } from './hiring/state/stateHiring.entity';
+import { ImagePost } from './image/imagePost.entity';
+
+// Modules
+import { UserModule } from './user/user.module';
 import { CategoryModule } from './category/category.module';
 import { OfficeModule } from './office/office.module';
 import { AuthModule } from './auth/auth.module';
-import { Post } from './post/post.entity';
-import { ImagePost } from './image/imagePost.entity';
-import { StateHiring } from './hiring/state/stateHiring.entity';
-import { Role } from './role/role.entity';
 import { ProvinceModule } from './province/province.module';
 import { CityModule } from './city/city.module';
+import { PostModule } from './post/post.module';
 
 require('dotenv').config();
 const {
@@ -60,6 +65,7 @@ const {
     ProvinceModule,
     CityModule,
     OfficeModule,
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService],
