@@ -1,7 +1,6 @@
-import "dotenv/config"
+import { registerAs } from "@nestjs/config";
 
-export const jwtConstants = {
+export default registerAs('jwt', () => ({
     secret: process.env.JWT_SECRET_KEY,
     expiration: process.env.EXPIRATION_TIME_TOKEN
-};
-  
+}));
