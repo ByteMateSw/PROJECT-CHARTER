@@ -9,6 +9,9 @@ export class Category {
   @Column()
   name: string;
 
+  @Column({ default: false })
+  isDeleted: boolean;
+
   @OneToMany(() => Office, (office) => office.category)
   offices: Office[];
 }
