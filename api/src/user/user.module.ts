@@ -3,17 +3,12 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.entity';
-import { generateHash } from './middleware/encrypt.middleware';
+import { Role } from 'src/role/role.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [TypeOrmModule.forFeature([User, Role])],
   controllers: [UserController],
   providers: [UserService],
   exports: [UserService]
 })
-export class UserModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(generateHash).forRoutes({path: "user", method: RequestMethod.POST})
-  }
-  
-}
+export class UserModule {}

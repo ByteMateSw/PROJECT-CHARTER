@@ -6,55 +6,52 @@ import { CreateOfficeDto } from './dto/office.dto';
 
 @Injectable()
 export class OfficeService {
-  findOne(arg0: number): Office | PromiseLike<Office> {
-    throw new Error('Method not implemented.');
-  }
-  findAll(): Office[] | PromiseLike<Office[]> {
-    throw new Error('Method not implemented.');
-  }
   constructor(
     @InjectRepository(Office)
     private readonly officeRepository: Repository<Office>,
   ) {}
 
-  getAll(){
-    return this.officeRepository.find();
+  async getAll(): Promise<Office[]> {
+    return await this.officeRepository.find();
   }
 
-  getById(id: number) {
-    return this.officeRepository.findOneBy({id});
+  async getOfficeById(id): Promise<Office> {
+    return await this.officeRepository.findOne(id);
   }
 
   async createOffice(newOfficeData: CreateOfficeDto): Promise<Office> {
     try {
-      return await this.officeRepository.save(newOfficeData);
+      const newOffice = this.officeRepository.create(newOfficeData);
+      return await this.officeRepository.save(newOffice);
     } catch (error) {
-      console.error('Error al crear el oficio', error.message);
       throw new Error('Error al crear el oficio');
     }
   }
 
-  async updateOffice(office): Promise<Office> {
+  async updateOffice(
+    id: number,
+    updateOfficeData: Partial<CreateOfficeDto>,
+  ): Promise<Office> {
     try {
-      const id = office.id;
-      const officeFound = await this.officeRepository.findOne(id);
+      const officeFound = await this.officeRepository.findOne({where:{id}});
       if (!officeFound) throw new Error('El oficio no existe');
-      const updatedOffice = await this.officeRepository.merge(officeFound, office);
-      return await this.officeRepository.save(updatedOffice);
+  
+      const updateOffice = { ...officeFound, ...updateOfficeData };
+      const saveOffice = await this.officeRepository.save(updateOffice);
+  
+      return saveOffice;
     } catch (error) {
-      console.error('El oficio no se ha podido actualizar', error.message);
       throw new Error('El oficio no se ha podido actualizar');
     }
   }
-
-  async deleteOffice(id: number): Promise<Office> {
+  
+  async deleteOffice(id: number): Promise<undefined> {
     try {
-      const office = await this.officeRepository.findOneBy({id});
-      if (!office) throw new Error("El oficio no existe");
-      office.isDeleted = true;
-      return await this.officeRepository.save(office);
+      const office = await this.officeRepository.findOne({where:{id}});
+      if (!office) throw new Error('El oficio no existe');
+      await this.officeRepository.delete(office);
+      return undefined; 
     } catch (error) {
-      console.error('Error al eliminar el oficio', error.message);
       throw new Error('Error al eliminar el oficio');
     }
   }

@@ -6,6 +6,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { User } from '../user/user.entity';
+import { StateHiring } from './state/stateHiring.entity';
 
 @Entity()
 export class Hiring {
@@ -15,8 +16,11 @@ export class Hiring {
   @Column({ type: 'date' })
   dateApplication: Date;
 
+  @ManyToOne(() => StateHiring, (state) => state.hiring)
+  state: StateHiring;
+  
   @Column({ type: 'date' })
-  dateAcceptance: Date;
+  dateAcceptOrReject: Date;
 
   @ManyToOne(() => User, { eager: true })
   @JoinColumn({ name: 'contractorId' })
