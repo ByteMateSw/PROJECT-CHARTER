@@ -10,7 +10,7 @@ import { UserService } from "src/user/user.service";
 export class HiringService {
     constructor(@InjectRepository(Hiring) private hiringRepository: Repository<Hiring>, private userService: UserService) { }
 
-    async hire(contractorId: number, contractedId: number) {
+    async createHire(contractorId: number, contractedId: number) {
         try {
             const userContractor = await this.userService.getById(contractorId)
             const userContracted = await this.userService.getById(contractedId)
@@ -22,10 +22,17 @@ export class HiringService {
             return hire
 
         } catch (error) {
-
+            console.log(error)
+            throw new Error("Error al crear el contrato") 
         }
 
     }
+
+    getAll(): Promise<Hiring[]>{
+        return this.hiringRepository.find();
+    }
+
+
 }
 
 
