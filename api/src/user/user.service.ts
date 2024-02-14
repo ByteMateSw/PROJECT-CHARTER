@@ -4,17 +4,23 @@ import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { RegisterDto } from '../auth/dto/register.dto';
 import { Role } from '../role/role.entity';
+import { Role as RoleEmun } from '../utils/enums/role.enum';
 
 @Injectable()
 export class UserService {
     constructor(@InjectRepository(User) private userRepository: Repository<User>,
     @InjectRepository(Role) private roleRepository: Repository<Role> ) {}
 
-    async getAll() {
-        return await this.userRepository.find();
+    async getAllUsers(): Promise<User[]> {
+        return await this.userRepository.find({
+            where: { isDeleted: false },
+            relations: { city: true,  },
+            select: { 
+                city: { id: false, name: true } 
+            }});
     }
 
-    async getById(id: number) {
+    async getUserById(id: number): Promise<User> {
         return await this.userRepository.findOneBy({ id })
     }
 
@@ -27,7 +33,7 @@ export class UserService {
         if (existEmail)
             throw new Error("El Email está en uso")
         const newUser = this.userRepository.create(user)
-        const role = await this.roleRepository.findOneBy({ name: "user" })
+        const role = await this.roleRepository.findOneBy({ name: RoleEmun.User })
         newUser.role = role
         await this.userRepository.save(newUser)
         return newUser
@@ -59,7 +65,7 @@ export class UserService {
     }
 
     async accepteToSUser(id: number) {
-        const user = await this.getById(id);
+        const user = await this.getUserById(id);
         if(!user)
             throw new Error("Bad credentials");
         user.acceptedToS = true
@@ -72,5 +78,15 @@ export class UserService {
             relations: { role: true }
         })
         return user.role.name
+    }
+
+    async getPassword(id: number): Promise<string> {
+        const user = await this.userRepository.findOne({
+            where: { id },
+            select: {
+                password: true,
+            },
+        })
+        return user.password
     }
 }

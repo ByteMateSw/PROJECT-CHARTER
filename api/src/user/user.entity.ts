@@ -8,7 +8,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { Office } from '../office/office.entity';
-import { Review } from '../review/Review.entity';
+import { Review } from '../review/review.entity';
 import { Post } from '../post/post.entity';
 import { Role } from '../role/role.entity';
 import { City } from '../city/city.entity';
@@ -27,16 +27,16 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 
-  @Column({ default: false })
+  @Column({ default: false, select: false })
   isAccountValidate: boolean;
 
-  @Column({ default: false })
+  @Column({ default: false, select: false })
   dniValidate: boolean;
 
-  @Column({ default: false })
+  @Column({ default: false, select: false })
   isDeleted: boolean;
 
   @Column()

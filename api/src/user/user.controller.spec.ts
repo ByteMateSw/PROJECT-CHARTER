@@ -27,8 +27,8 @@ describe("UserController", () => {
     const mockUpdateMessage = { message: 'El usuario se ha actualizado correctamente' }
 
     const mockUserService = {
-        getAll: jest.fn().mockResolvedValueOnce([mockUser]),
-        getById: jest.fn().mockResolvedValueOnce(mockUser),
+        getAllUsers: jest.fn().mockResolvedValueOnce([mockUser]),
+        getUserById: jest.fn().mockResolvedValueOnce(mockUser),
         deleteUser: jest.fn().mockResolvedValueOnce(mockDeleteMessage),
         updateUser: jest.fn().mockResolvedValueOnce(mockUpdateMessage)
     }
@@ -52,15 +52,15 @@ describe("UserController", () => {
     describe("getAllUsers", () => {
         it("should return an mocked user list", async () => {
             const users = await controller.getAll()
-            expect(mockUserService.getAll).toHaveBeenCalled()
+            expect(mockUserService.getAllUsers).toHaveBeenCalled()
             expect(users).toEqual([mockUser])
         })
 
         it("get an empty user list", async () => {
             const emptyUserList = {}
-            mockUserService.getAll = jest.fn().mockResolvedValueOnce(emptyUserList)
+            mockUserService.getAllUsers = jest.fn().mockResolvedValueOnce(emptyUserList)
             expect(await controller.getAll()).toBe(emptyUserList)
-            expect(mockUserService.getAll).toHaveBeenCalled()
+            expect(mockUserService.getAllUsers).toHaveBeenCalled()
         })
     })
 
@@ -68,7 +68,7 @@ describe("UserController", () => {
         it("get an user", async () => {
             const id = mockUser.id
             expect(await controller.getById(id)).toBe(mockUser)
-            expect(mockUserService.getById).toHaveBeenCalledWith(id)
+            expect(mockUserService.getUserById).toHaveBeenCalledWith(id)
         })
     })
 

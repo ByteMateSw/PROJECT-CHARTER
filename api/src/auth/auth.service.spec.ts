@@ -27,7 +27,8 @@ describe("AuthService", () => {
     let mockUserService = {
         getByEmail: jest.fn().mockResolvedValue(mockUser),
         createUser: jest.fn().mockResolvedValue(mockUser),
-        getRole: jest.fn().mockResolvedValue(mockRole)
+        getRole: jest.fn().mockResolvedValue(mockRole),
+        getPassword: jest.fn().mockResolvedValue(mockUser.password)
     }
 
     let mockHashService = {
@@ -63,6 +64,7 @@ describe("AuthService", () => {
         it("should login the user with the received credentrials", async () => {
             expect(await service.signIn(mockEmail, mockPassword)).toEqual(returnedToken)
             expect(mockUserService.getByEmail).toHaveBeenCalledWith(mockEmail)
+            expect(mockUserService.getPassword).toHaveBeenCalledWith(mockUser.id)
             expect(mockHashService.compareHash).toHaveBeenCalledWith(mockUser.password, mockPassword)
             expect(mockJWTService.signAsync).toHaveBeenCalledWith(payload)
         })

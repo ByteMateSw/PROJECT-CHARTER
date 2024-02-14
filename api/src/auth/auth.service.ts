@@ -16,7 +16,8 @@ export class AuthService {
         if(!user)
             throw new UnauthorizedException();
 
-        const passMatch = await this.hashService.compareHash(user.password, password)
+        const hash = await this.userService.getPassword(user.id)
+        const passMatch = await this.hashService.compareHash(hash, password)
         if(!passMatch)
             throw new UnauthorizedException();
         
