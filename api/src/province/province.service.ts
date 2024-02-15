@@ -124,10 +124,9 @@ export class ProvinceService {
       } else {
         return 'Debe proporcionar un ID  de provincia';
       }
-
-      return 'Localizacion eliminada correctamente';
+      return 'Provincia eliminada correctamente';
     } catch (error) {
-      return 'Error al eliminar la localizacion';
+      return 'Error al eliminar la Provincia';
     }
   }
 }
