@@ -8,5 +8,6 @@ import { StateHiringService } from './stateHiring.service';
   imports: [TypeOrmModule.forFeature([StateHiring])],
   controllers: [StateHiringController],
   providers: [StateHiringService],
+  exports: [StateHiringService],
 })
 export class StateHiringModule {}

@@ -20,6 +20,7 @@ import { Role } from './role/role.entity';
 import { ProvinceModule } from './province/province.module';
 import { CityModule } from './city/city.module';
 import { StateHiringModule } from './hiring/state/stateHiring.module';
+import { HiringModule } from './hiring/hiring.module';
 
 require('dotenv').config();
 const {
@@ -62,6 +63,7 @@ const {
     CityModule,
     OfficeModule,
     StateHiringModule,
+    HiringModule,
   ],
   controllers: [AppController],
   providers: [AppService],

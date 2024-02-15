@@ -24,7 +24,7 @@ export class StateHiringController {
       throw new HttpException(error.mesage, HttpStatus.BAD_REQUEST);
     }
   }
-  
+
   @HttpCode(200)
   @Get(':name')
   async getStatusByName(@Param('name') name: string) {
