@@ -25,7 +25,6 @@ describe('ProvinceController', () => {
     deleteProvince: jest
       .fn()
       .mockResolvedValueOnce('Provincia eliminada correctamente'),
-    //updateProvince: jest.fn().mockResolvedValueOnce(mockProvince),
   };
 
   beforeEach(async () => {
