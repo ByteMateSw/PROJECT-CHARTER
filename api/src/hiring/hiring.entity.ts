@@ -16,7 +16,7 @@ export class Hiring {
   @Column({ type: 'date' })
   dateApplication: Date;
 
-  @ManyToOne(() => StateHiring, (state) => state.hiring)
+  @ManyToOne(() => StateHiring, state => state.hiring)
   state: StateHiring;
 
   @Column({ type: 'date', nullable: true })

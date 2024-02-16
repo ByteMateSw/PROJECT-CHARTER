@@ -2,7 +2,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { CategoryService } from "./category.service";
 import { getRepositoryToken } from "@nestjs/typeorm";
-import { Category } from "./Category.entity";
+import { Category } from "./category.entity";
 import { CreateCategoryDto } from "./dto/category.dto";
 
 

@@ -12,7 +12,7 @@ import {
   HttpCode,
   } from '@nestjs/common';
 import { CategoryService } from './category.service';
-import { Category } from './Category.entity';
+import { Category } from './category.entity';
 import { CreateCategoryDto } from './dto/category.dto';
 import { updateCategoryDto } from './dto/updateCategory.dto';
 

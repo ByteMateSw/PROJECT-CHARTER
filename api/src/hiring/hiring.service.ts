@@ -17,8 +17,8 @@ export class HiringService {
   async createHire(contractorId: number, contractedId: number) {
     try {
       const [userContractor, userContracted] = await Promise.all([
-        this.userService.getById(contractorId),
-        this.userService.getById(contractedId),
+        this.userService.getUserById(contractorId),
+        this.userService.getUserById(contractedId),
       ]);
       const pendingState =
         await this.stateHiringService.getStatusByName('Pending');
