@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/updateUser.dto';
-import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
+import { AccessTokenGuard } from '../auth/jwt/access.guard';
 import { EmptyBodyPipe } from '../utils/pipes/empty-body.pipe';
 import { RoleGuard } from '../role/role.guard';
 import { Roles } from '../role/role.decorator';
@@ -20,7 +20,7 @@ import { User } from './user.entity';
 import { CustomParseIntPipe } from '../utils/pipes/parse-int.pipe';
 import { ResponseMessage } from '../utils/types/message.type';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(AccessTokenGuard)
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
