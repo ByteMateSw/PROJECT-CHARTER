@@ -16,25 +16,35 @@ import { CreateOfficeDto } from './dto/office.dto';
 
 @Controller('offices')
 export class OfficeController {
+  getAll() {
+    throw new Error('Method not implemented.');
+  }
   constructor(private readonly officeService: OfficeService) {}
 
   @Get()
-  async findAll(): Promise<Office[]> {
+  async findAllOffice(): Promise<Office[]> {
     try {
-      return await this.officeService.findAll();
+      return await this.officeService.getAll();
     } catch (error) {
-      throw new Error('Error al buscar todos los oficios');
+      throw new HttpException(
+        'Error al buscar todos los oficios',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Office> {
-    try {
-      return await this.officeService.findOne(+id);
-    } catch (error) {
-      throw new Error('Error al buscar el oficio por ID');
-    }
+async findOne(@Param('id') id: string): Promise<Office> {
+  try {
+    return await this.officeService.getOfficeById(+id);
+  } catch (error) {
+    throw new HttpException(
+      'Error al buscar el oficio por ID',
+      HttpStatus.INTERNAL_SERVER_ERROR,
+    );
   }
+}
+
   @HttpCode(201)
   @Post()
   async createOffice(
@@ -44,30 +54,32 @@ export class OfficeController {
       await this.officeService.createOffice(createOfficeDto);
       return 'oficio creado correctamente';
     } catch (error) {
-      console.error('Error al crear el oficio', error.message);
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 
   @Patch(':id')
-  async updateOffice(@Body() createOfficeDto: CreateOfficeDto) {
+  async updateOffice(
+    @Param('id') id: number,
+    @Body() updateOfficeDto: CreateOfficeDto,
+  ) {
     try {
-      await this.officeService.updateOffice(CreateOfficeDto);
-      return 'El oficio se ha actualizdo correctamente';
+      await this.officeService.updateOffice(id, updateOfficeDto);
+      return 'El oficio se ha actualizado correctamente';
     } catch (error) {
-      console.error(
-        'El oficio no se ha podido actualizar, error.message, HttpStatus.FORBIDDEN',
+      throw new HttpException(
+        'Test Error',
+        HttpStatus.FORBIDDEN,
       );
     }
   }
-
   @Delete(':id')
   async deleteOffice(@Param('id') id: number): Promise<string> {
     try {
       await this.officeService.deleteOffice(id);
-      return 'eEl oficio ha sido borrado correctamente';
+      return 'El oficio ha sido borrado correctamente';
     } catch (error) {
-      console.error('El oficio no se ha podido borrar', error.message);
+      //console.error('El oficio no se ha podido borrar', error.message);
       throw new HttpException(error.message, HttpStatus.FORBIDDEN);
     }
   }

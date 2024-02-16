@@ -5,17 +5,23 @@ import {
   Post,
   Param,
   ParseIntPipe,
-} from '@nestjs/common';
+  HttpException,
+  HttpStatus,
+  Patch,
+  Delete,
+  HttpCode,
+  } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { Category } from './Category.entity';
-import {CreateCategoryDto} from './dto/category.dto';
+import { CreateCategoryDto } from './dto/category.dto';
+import { updateCategoryDto } from './dto/updateCategory.dto';
 
 @Controller('category')
 export class CategoryController {
-  constructor(private categoryService: CategoryService) {}
+  constructor(private readonly categoryService: CategoryService) {}
   @Get()
-  getAll(): Promise<Category[]> {
-    return this.categoryService.getAll();
+  async getAll() {
+    return await this.categoryService.getAll();
   }
 
   @Get(':id')
@@ -23,8 +29,38 @@ export class CategoryController {
     return this.categoryService.getById(id);
   }
 
+  @HttpCode(201)
   @Post()
-  create(@Body() newCategory: CreateCategoryDto ) {
-    return this.categoryService.createCategory(newCategory);
+  async createCategory(@Body() CreateCategoryDto: CreateCategoryDto ): Promise<string> {
+    try{
+      await this.categoryService.createCategory(CreateCategoryDto);
+      return "category creada correctamente"
+    } catch(error){
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
+    }
   }
+
+  @Delete(':id')
+  async deleteCategory(@Param('id') id: number ): Promise<string>{
+    try{
+      await this.categoryService.deleteCategory(id)
+      return "se ha eliminado correctamente"
+    }catch(error){
+      throw new HttpException(error.message, HttpStatus.FORBIDDEN)
+    }
+  }
+
+
+  @Patch(':id')
+  async updateCategory(@Param("id") id:number, @Body() updateCategoryDto: updateCategoryDto): Promise<string>{
+    try{
+      await this.categoryService.updateCategory(id, updateCategoryDto);
+      return "se ha actualizado correctamente"
+    }catch(error){
+      throw new HttpException(error.mesagge , HttpStatus.FORBIDDEN)
+    }
+  }
+
+  
+
 }

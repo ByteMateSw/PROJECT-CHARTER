@@ -13,6 +13,8 @@ import { OfficeModule } from './office/office.module';
 import { AuthModule } from './auth/auth.module';
 import { ProvinceModule } from './province/province.module';
 import { CityModule } from './city/city.module';
+import { StateHiringModule } from './hiring/state/stateHiring.module';
+import { HiringModule } from './hiring/hiring.module';
 
 @Module({
   imports: [
@@ -31,6 +33,8 @@ import { CityModule } from './city/city.module';
     ProvinceModule,
     CityModule,
     OfficeModule,
+    StateHiringModule,
+    HiringModule,
   ],
   controllers: [AppController],
   providers: [AppService],
