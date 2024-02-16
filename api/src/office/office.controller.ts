@@ -83,4 +83,17 @@ async findOne(@Param('id') id: string): Promise<Office> {
       throw new HttpException(error.message, HttpStatus.FORBIDDEN);
     }
   }
+
+  @HttpCode(200)
+  @Get('search')
+    async getOfficeBySearch(name:string):Promise<string>{
+      try {
+        const office = this.officeService.getOfficeBySearch(name)
+        return office
+      } catch (error) {
+        console.log(Error)
+        throw new HttpException(error.message, HttpStatus.NOT_FOUND);   
+      }
+  }
+
 }
