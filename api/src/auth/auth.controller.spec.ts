@@ -1,68 +1,115 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { AuthController } from "./auth.controller";
-import { AuthService } from "./auth.service";
-import { ToSGuard } from "./ToS/ToS.guard";
+import { Test, TestingModule } from '@nestjs/testing';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
+import { ToSGuard } from './ToS/ToS.guard';
+import { Response } from 'express';
+import { LocalAuthGuard } from './local/local-auth.guard';
+import { RefreshTokenGuard } from './jwt/refresh.guard';
 
-describe("AuthController", () => {
+describe('AuthController', () => {
+  let controller: AuthController;
 
-    let controller: AuthController
+  const mockUser = {
+    firstName: 'TestFirstName',
+    lastName: 'TestLastName',
+    email: 'test@gmail.com',
+    password: '1234',
+    numberPhone: '+1123456789',
+    birthday: new Date(),
+    dni: '444',
+  };
 
-    const mockUser = {
-        "firstName": "TestFirstName",
-        "lastName": "TestLastName",
-        "email": "test@gmail.com",
-        "password": "1234",
-        "numberPhone": "+1123456789",
-        "birthday": new Date(),
-        "dni": "444"
-    };
+  const mockLoginUser = { email: mockUser.email, password: mockUser.password };
 
-    const mockLoginUser = { email: mockUser.email, password: mockUser.password}
+  const successMessage = { message: 'El usuario a sido creado con éxito' };
+  const failureMessage = { message: 'No se pudo crear el usuario' };
 
-    const successMessage = "El usuario a sido creado con éxito"
-    const failureMessage = "No se pudo crear el usuario"
+  const mockToken = 'testToken';
+  const mockAccessToken = { access_token: mockToken };
+  const mockRefreshToken = { refresh_token: mockToken };
+  const mockTokens = { access_token: mockToken, refresh_token: mockToken };
 
-    const mockToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwibmFtZSI6InRlc3QiLCJpYXQiOiIxIn0.8sJGfQl3huwiy0f7YYtk2FFd5-4lnxWQuQB3I2_l0sY"
+  let mockAuthService = {
+    register: jest.fn().mockResolvedValue(mockUser),
+    login: jest.fn().mockResolvedValue(mockTokens),
+    setRefreshToken: jest.fn().mockReturnValue(mockRefreshToken),
+    refreshTokens: jest.fn().mockResolvedValue(mockTokens),
+  };
 
-    let mockAuthService = {
-        register: jest.fn().mockResolvedValue(mockUser),
-        signIn: jest.fn().mockResolvedValue(mockToken)
-    }
+  let mockToSGuard = {
+    canActivate: () => true,
+  };
 
-    let mockToSGuard = {
-        canActivate: () => true
-    }
+  let mockLocalAuthGuard = {
+    canActivate: () => true,
+  };
 
-    beforeEach(async ()=>{
-        const module: TestingModule = await Test.createTestingModule({
-            controllers: [AuthController],
-            providers: [AuthService]
-        }).overrideProvider(AuthService)
-        .useValue(mockAuthService)
-        .overrideGuard(ToSGuard)
-        .useValue(mockToSGuard)
-        .compile();
+  let mockRefreshTokenGuard = {
+    canActivate: () => true,
+  };
 
-        controller = module.get<AuthController>(AuthController);
+  let mockResponse = {
+    cookie: jest.fn(),
+  } as unknown as Response;
+
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      controllers: [AuthController],
+      providers: [
+        {
+          provide: AuthService,
+          useValue: mockAuthService,
+        },
+      ],
     })
+      .overrideGuard(ToSGuard)
+      .useValue(mockToSGuard)
+      .overrideGuard(LocalAuthGuard)
+      .useValue(mockLocalAuthGuard)
+      .overrideGuard(RefreshTokenGuard)
+      .useValue(mockRefreshTokenGuard)
+      .compile();
 
-    describe("register", () => {
-        it("should register an user", async () => {
-            expect(await controller.register(mockUser)).toEqual(successMessage)
-            expect(mockAuthService.register).toHaveBeenCalledWith(mockUser)
-        })
+    controller = module.get<AuthController>(AuthController);
+  });
 
-        it("should fail to register an user", async () => {
-            mockAuthService.register.mockResolvedValueOnce(null)
-            expect(await controller.register(mockUser)).toEqual(failureMessage)
-            expect(mockAuthService.register).toHaveBeenCalledWith(mockUser)
-        })
-    })
+  describe('register', () => {
+    it('should register an user', async () => {
+      expect(await controller.registerUser(mockUser)).toEqual(successMessage);
+      expect(mockAuthService.register).toHaveBeenCalledWith(mockUser);
+    });
 
-    describe("signIn", () => {
-        it("should login the user", async () => {
-            expect(await controller.signIn(mockLoginUser)).toEqual(mockToken)
-            expect(mockAuthService.signIn).toHaveBeenCalledWith(mockLoginUser.email, mockLoginUser.password)
-        })
-    })
-})
+    it('should fail to register an user', async () => {
+      mockAuthService.register.mockResolvedValueOnce(null);
+      expect(await controller.registerUser(mockUser)).toEqual(failureMessage);
+      expect(mockAuthService.register).toHaveBeenCalledWith(mockUser);
+    });
+  });
+
+  describe('login', () => {
+    it('should login the user', async () => {
+      expect(await controller.loginUser(mockLoginUser, mockResponse)).toEqual(
+        mockAccessToken,
+      );
+      expect(mockAuthService.login).toHaveBeenCalledWith(mockLoginUser.email);
+      expect(mockAuthService.setRefreshToken).toHaveBeenCalledWith(
+        mockToken,
+        mockResponse,
+      );
+    });
+  });
+
+  describe('refresh', () => {
+    it('should refresh the tokens of the user', async () => {
+      const id = 1;
+      expect(
+        await controller.refreshTokens(mockToken, id, mockResponse),
+      ).toEqual(mockAccessToken);
+      expect(mockAuthService.refreshTokens).toHaveBeenCalledWith(id, mockToken);
+      expect(mockAuthService.setRefreshToken).toHaveBeenCalledWith(
+        mockToken,
+        mockResponse,
+      );
+    });
+  });
+});
