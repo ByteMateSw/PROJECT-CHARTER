@@ -5,7 +5,7 @@ import { User } from '../user/user.entity';
 import { Province } from '../province/province.entity';
 import { Office } from '../office/office.entity';
 import { Category } from '../category/Category.entity';
-import { Hiring } from '../hiring/Hiring.entity';
+import { Hiring } from '../hiring/hiring.entity';
 import { Review } from '../review/review.entity';
 import { City } from '../city/city.entity';
 import { Post } from '../post/post.entity';
