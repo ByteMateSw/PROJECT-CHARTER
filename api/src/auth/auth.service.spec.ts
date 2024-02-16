@@ -1,107 +1,229 @@
-import { Test, TestingModule } from "@nestjs/testing"
-import { AuthService } from "./auth.service"
-import { UserService } from "../user/user.service"
-import { HashService } from "./hash.service"
-import { JwtService } from "@nestjs/jwt"
-import { HttpException, UnauthorizedException } from "@nestjs/common"
+import { Test, TestingModule } from '@nestjs/testing';
+import { AuthService } from './auth.service';
+import { UserService } from '../user/user.service';
+import { HashService } from './hash.service';
+import { JwtService } from '@nestjs/jwt';
+import { ForbiddenException, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import argon2 from 'argon2';
 
-describe("AuthService", () => {
-    
-    let service: AuthService
+describe('AuthService', () => {
+  let service: AuthService;
 
-    const mockUser = {
-        "id": 1,
-        "firstName": "TestFirstName",
-        "lastName": "TestLastName",
-        "email": "test@gmail.com",
-        "password": "1234",
-        "numberPhone": "+1123456789",
-        "birthday": new Date(),
-        "dni": "444"
-    };
+  const mockUser = {
+    id: 1,
+    firstName: 'TestFirstName',
+    lastName: 'TestLastName',
+    email: 'test@gmail.com',
+    password: '1234',
+    numberPhone: '+1123456789',
+    birthday: new Date(),
+    dni: '444',
+  };
 
-    const mockToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwibmFtZSI6InRlc3QiLCJpYXQiOiIxIn0.8sJGfQl3huwiy0f7YYtk2FFd5-4lnxWQuQB3I2_l0sY"
+  const mockRole = 'test';
 
-    const mockRole = "test"
+  const mockToken = 'testToken';
+  const mockTokens = { access_token: mockToken, refresh_token: mockToken };
 
-    let mockUserService = {
-        getByEmail: jest.fn().mockResolvedValue(mockUser),
-        createUser: jest.fn().mockResolvedValue(mockUser),
-        getRole: jest.fn().mockResolvedValue(mockRole),
-        getPassword: jest.fn().mockResolvedValue(mockUser.password)
-    }
+  const mockPayload = {
+    sub: mockUser.id,
+    email: mockUser.email,
+    role: mockRole,
+  };
 
-    let mockHashService = {
-        compareHash: jest.fn().mockResolvedValue(true)
-    }
+  const mockConfigValue = 'config';
 
-    let mockJWTService = {
-        signAsync: jest.fn().mockResolvedValue(mockToken)
-    }
+  let mockUserService = {
+    getUserById: jest.fn().mockResolvedValue(mockUser),
+    getByEmail: jest.fn().mockResolvedValue(mockUser),
+    createUser: jest.fn().mockResolvedValue(mockUser),
+    getRole: jest.fn().mockResolvedValue(mockRole),
+    getPassword: jest.fn().mockResolvedValue(mockUser.password),
+    getRefreshToken: jest.fn().mockResolvedValue(mockToken),
+    updateRefreshToken: jest.fn(),
+  };
 
-    beforeEach(async () => {
-        const module: TestingModule = await Test.createTestingModule({
-            providers: [AuthService, {
-                provide: UserService,
-                useValue: mockUserService
-            }, {
-                provide: HashService,
-                useValue: mockHashService
-            }, {
-                provide: JwtService,
-                useValue: mockJWTService
-            }]}).compile()
+  let mockHashService = {
+    compareHash: jest.fn().mockResolvedValue(true),
+  };
 
-        service = module.get<AuthService>(AuthService)
-    })
+  let mockJWTService = {
+    signAsync: jest.fn().mockResolvedValue(mockToken),
+  };
 
-    describe("signIn", () => {
-        const mockEmail = mockUser.email
-        const mockPassword = "MockedPassword"
-        const payload = {sub: mockUser.id, email: mockUser.email, role: mockRole}
-        const returnedToken = { access_token: mockToken }
+  let mockConfigService = {
+    get: jest.fn().mockReturnValue(mockConfigValue),
+  };
 
-        it("should login the user with the received credentrials", async () => {
-            expect(await service.signIn(mockEmail, mockPassword)).toEqual(returnedToken)
-            expect(mockUserService.getByEmail).toHaveBeenCalledWith(mockEmail)
-            expect(mockUserService.getPassword).toHaveBeenCalledWith(mockUser.id)
-            expect(mockHashService.compareHash).toHaveBeenCalledWith(mockUser.password, mockPassword)
-            expect(mockJWTService.signAsync).toHaveBeenCalledWith(payload)
-        })
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        AuthService,
+        {
+          provide: UserService,
+          useValue: mockUserService,
+        },
+        {
+          provide: HashService,
+          useValue: mockHashService,
+        },
+        {
+          provide: JwtService,
+          useValue: mockJWTService,
+        },
+        {
+          provide: ConfigService,
+          useValue: mockConfigService,
+        },
+      ],
+    }).compile();
 
-        it("should not found the user with this credentials", async () => {
-            mockUserService.getByEmail.mockResolvedValueOnce(null)
-            expect(async () => await service.signIn(mockEmail, mockPassword))
-                .rejects.toThrow(new UnauthorizedException())
-        })
+    service = module.get<AuthService>(AuthService);
+  });
 
-        it("should not coincide the user password with the received password", async () => {
-            mockHashService.compareHash.mockResolvedValueOnce(false)
-            expect(async () => await service.signIn(mockEmail, mockPassword))
-                .rejects.toThrow(new UnauthorizedException())
-            expect(mockUserService.getByEmail).toHaveBeenCalledWith(mockEmail)
-        })
-    })
+  describe('login', () => {
+    const mockEmail = mockUser.email;
 
-    describe("register", () => {
-        it("should register an user", async () => {
-            expect(await service.register(mockUser)).toEqual(mockUser)
-            expect(mockUserService.createUser).toHaveBeenCalledWith(mockUser)
-        })
+    it('should login the user with the received credentrials', async () => {
+      jest.spyOn(service, 'getTokens').mockResolvedValueOnce(mockTokens);
+      jest.spyOn(service, 'updateRefreshToken').mockResolvedValueOnce();
+      expect(await service.login(mockEmail)).toEqual(mockTokens);
+      expect(mockUserService.getByEmail).toHaveBeenCalledWith(mockEmail);
+      expect(mockUserService.getRole).toHaveBeenCalledWith(mockUser.id);
+      expect(service.getTokens).toHaveBeenCalledWith(mockPayload);
+      expect(service.updateRefreshToken).toHaveBeenCalledWith(
+        mockUser.id,
+        mockToken,
+      );
+    });
 
-        it("should thrown an error to create an user", async () => {
-            mockUserService.createUser.mockResolvedValueOnce(null)
-            expect(async () => await service.register(mockUser))
-                .rejects.toThrow(new Error("Error al crear al usuario"))
-            expect(mockUserService.createUser).toHaveBeenCalledWith(mockUser)
-        })
+    it('should not found the user with this credentials', async () => {
+      mockUserService.getByEmail.mockResolvedValueOnce(null);
+      expect(async () => await service.login(mockEmail)).rejects.toThrow(
+        new UnauthorizedException(),
+      );
+    });
+  });
 
-        it("should thrown an error to register an user", async () => {
-            mockUserService.createUser.mockRejectedValueOnce(new Error("Error"))
-            expect(async () => await service.register(mockUser))
-                .rejects.toThrow(HttpException)
-            expect(mockUserService.createUser).toHaveBeenCalledWith(mockUser)
-        })
-    })
+  describe('getTokens', () => {
+    const mockOptions = { secret: mockConfigValue, expiresIn: mockConfigValue };
 
-})
+    it('should return access and refresh tokens', async () => {
+      expect(await service.getTokens(mockPayload)).toEqual(mockTokens);
+      expect(mockJWTService.signAsync).toHaveBeenCalledWith(
+        mockPayload,
+        mockOptions,
+      );
+      expect(mockJWTService.signAsync).toHaveBeenCalledTimes(2);
+      expect(mockConfigService.get).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  describe('refreshTokens', () => {
+    const id = mockUser.id;
+
+    it('should refresh the access and refersh tokens', async () => {
+      jest.spyOn(argon2, 'verify').mockResolvedValueOnce(true);
+      jest.spyOn(service, 'getTokens').mockResolvedValueOnce(mockTokens);
+      jest.spyOn(service, 'updateRefreshToken').mockResolvedValueOnce();
+      expect(await service.refreshTokens(id, mockToken)).toEqual(mockTokens);
+      expect(mockUserService.getUserById).toHaveBeenCalledWith(id);
+      expect(mockUserService.getRole).toHaveBeenCalledWith(id);
+      expect(mockUserService.getRefreshToken).toHaveBeenCalledWith(id);
+      expect(argon2.verify).toHaveBeenCalledWith(mockToken, mockToken);
+      expect(service.getTokens).toHaveBeenCalledWith(mockPayload);
+      expect(service.updateRefreshToken).toHaveBeenCalledWith(
+        mockUser.id,
+        mockToken,
+      );
+      expect(service.updateRefreshToken).toHaveBeenCalledWith(
+        mockUser.id,
+        mockToken,
+      );
+    });
+
+    it('should thrown an error when does not find an user', async () => {
+      mockUserService.getUserById.mockResolvedValueOnce(null);
+      expect(
+        async () => await service.refreshTokens(id, mockToken),
+      ).rejects.toThrow(new ForbiddenException('Access Denied'));
+      expect(mockUserService.getUserById).toHaveBeenCalledWith(id);
+    });
+
+    it('should thrown an error when user does not have a refresh token', async () => {
+      mockUserService.getRefreshToken.mockResolvedValueOnce(null);
+      expect(
+        async () => await service.refreshTokens(id, mockToken),
+      ).rejects.toThrow(new ForbiddenException('Access Denied'));
+      expect(mockUserService.getUserById).toHaveBeenCalledWith(id);
+      expect(mockUserService.getRole).toHaveBeenCalledWith(id);
+      expect(mockUserService.getRefreshToken).toHaveBeenCalledWith(id);
+    });
+
+    it('should thrown an error when the tokens do not match', async () => {
+      jest.spyOn(argon2, 'verify').mockResolvedValueOnce(false);
+      expect(
+        async () => await service.refreshTokens(id, mockToken),
+      ).rejects.toThrow(new ForbiddenException('Access Denied'));
+      expect(mockUserService.getUserById).toHaveBeenCalledWith(id);
+      expect(mockUserService.getRole).toHaveBeenCalledWith(id);
+      expect(mockUserService.getRefreshToken).toHaveBeenCalledWith(id);
+    });
+  });
+
+  describe('updateRefreshToken', () => {
+    it('should update an refresh tokens', async () => {
+      jest.spyOn(argon2, 'hash').mockResolvedValueOnce(mockToken);
+      await service.updateRefreshToken(mockUser.id, mockToken);
+      expect(mockUserService.updateRefreshToken).toHaveBeenCalledWith(
+        mockUser.id,
+        mockToken,
+      );
+    });
+  });
+
+  describe('register', () => {
+    it('should register an user', async () => {
+      expect(await service.register(mockUser)).toEqual(mockUser);
+      expect(mockUserService.createUser).toHaveBeenCalledWith(mockUser);
+    });
+
+    it('should thrown an error to create an user', async () => {
+      mockUserService.createUser.mockResolvedValueOnce(null);
+      expect(async () => await service.register(mockUser)).rejects.toThrow(
+        new ForbiddenException('Error al crear al usuario'),
+      );
+      expect(mockUserService.createUser).toHaveBeenCalledWith(mockUser);
+    });
+  });
+
+  describe('validate', () => {
+    const mockEmail = mockUser.email;
+    const mockPassword = 'TestPassword';
+
+    it('should validate an user', async () => {
+      expect(await service.validate(mockEmail, mockPassword)).toEqual(mockUser);
+      expect(mockUserService.getByEmail).toHaveBeenCalledWith(mockEmail);
+      expect(mockUserService.getPassword).toHaveBeenCalledWith(mockUser.id);
+      expect(mockHashService.compareHash).toHaveBeenCalledWith(
+        mockUser.password,
+        mockPassword,
+      );
+    });
+
+    it('should does not found the user', async () => {
+      mockUserService.getByEmail.mockResolvedValueOnce(null);
+      expect(
+        async () => await service.validate(mockEmail, mockPassword),
+      ).rejects.toThrow(new UnauthorizedException());
+    });
+
+    it('should failed to compare the password with the hash storaged', async () => {
+      mockHashService.compareHash.mockResolvedValueOnce(false);
+      expect(
+        async () => await service.validate(mockEmail, mockPassword),
+      ).rejects.toThrow(new UnauthorizedException());
+    });
+  });
+});

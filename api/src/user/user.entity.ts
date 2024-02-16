@@ -51,22 +51,25 @@ export class User {
   @Column()
   dni: string;
 
+  @Column({ select: false, nullable: true })
+  refreshToken: string;
+
   @Column({ type: 'bytea', nullable: true })
   photo: Buffer;
 
-  @ManyToOne(() => City, (city) => city.users)
+  @ManyToOne(() => City, city => city.users)
   city: City;
 
   @ManyToMany(() => Office)
   @JoinTable()
   offices: Office[];
 
-  @OneToMany(() => Review, (review) => review.user)
+  @OneToMany(() => Review, review => review.user)
   reviews: Review[];
 
-  @OneToMany(() => Post, (post) => post.user)
+  @OneToMany(() => Post, post => post.user)
   posts: Post[];
 
-  @ManyToOne(() => Role, (role) => role.user)
+  @ManyToOne(() => Role, role => role.user)
   role: Role;
 }

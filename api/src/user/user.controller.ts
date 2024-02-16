@@ -1,12 +1,24 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, ParseIntPipe, Patch, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  ParseIntPipe,
+  Patch,
+  UseGuards,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/updateUser.dto';
-import { JwtAuthGuard } from  '../auth/jwt/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { EmptyBodyPipe } from '../utils/pipes/empty-body.pipe';
 import { RoleGuard } from '../role/role.guard';
 import { Roles } from '../role/role.decorator';
 import { Role } from '../utils/enums/role.enum';
 import { User } from './user.entity';
+import { CustomParseIntPipe } from '../utils/pipes/parse-int.pipe';
+import { ResponseMessage } from '../utils/types/message.type';
 
 @UseGuards(JwtAuthGuard)
 @Controller('user')
@@ -14,37 +26,33 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
-  async getAll(): Promise<User[]> {
+  async getAllUsers(): Promise<User[]> {
     return await this.userService.getAllUsers();
   }
 
-  @Get(":id")
-  async getById(@Param("id") id: number): Promise<User> {
+  @Get(':id')
+  async getUserById(
+    @Param('id', CustomParseIntPipe) id: number,
+  ): Promise<User> {
     const user = await this.userService.getUserById(id);
-    if(!user)
-      throw new HttpException("",HttpStatus.NO_CONTENT)
-    return user
+    if (!user) throw new NotFoundException('No se encontró el usuario');
+    return user;
   }
 
   @Roles(Role.Admin)
   @UseGuards(RoleGuard)
-  @Delete(":id")
-  async deleteUser(@Param("id") id:number): Promise<{message: string}> {
-    try {
-      await this.userService.deleteUser(id)
-      return { message: "El usuario ha sido borrado correctamente " }
-    } catch(error) {
-      throw new HttpException(error.message, HttpStatus.FORBIDDEN)
-    }
+  @Delete(':id')
+  async deleteUser(@Param('id') id: number): Promise<ResponseMessage> {
+    await this.userService.deleteUser(id);
+    return { message: 'El usuario ha sido borrado correctamente ' };
   }
 
-  @Patch(":id")
-  async updateUser(@Param("id",   )  id: number, @Body(EmptyBodyPipe) updateUserDto: UpdateUserDto): Promise<{message: string}> {
-    try {
-      await this.userService.updateUser(id, updateUserDto)
-      return { message: "El usuario se ha actualizado correctamente" }
-    } catch(error) {
-      throw new HttpException(error.message, HttpStatus.FORBIDDEN)
-    }
+  @Patch(':id')
+  async updateUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Body(EmptyBodyPipe) updateUserDto: UpdateUserDto,
+  ): Promise<ResponseMessage> {
+    await this.userService.updateUser(id, updateUserDto);
+    return { message: 'El usuario se ha actualizado correctamente' };
   }
 }

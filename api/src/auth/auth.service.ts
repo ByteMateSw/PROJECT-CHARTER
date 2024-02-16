@@ -1,44 +1,101 @@
-import { HttpException, HttpStatus, Injectable, UnauthorizedException } from "@nestjs/common";
-import { UserService } from "../user/user.service";
-import { JwtService } from "@nestjs/jwt";
-import { RegisterDto } from "./dto/register.dto";
-import { HashService } from "./hash.service";
+import {
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { UserService } from '../user/user.service';
+import { JwtService } from '@nestjs/jwt';
+import { RegisterDto } from './dto/register.dto';
+import { HashService } from './hash.service';
+import { Payload, Tokens } from './jwt/token.type';
+import { User } from '../user/user.entity';
+import { ConfigService } from '@nestjs/config';
+import { hashData, verifyData } from '../utils/tools/hash';
+import { setCookie } from '../utils/tools/cookies';
+import { Response } from 'express';
+import { refreshCookieName } from '../config/jwt.config';
 
 @Injectable()
 export class AuthService {
-    constructor(
-        private userService: UserService, 
-        private hashService: HashService,
-        private jwtService: JwtService) {}
+  constructor(
+    private userService: UserService,
+    private hashService: HashService,
+    private jwtService: JwtService,
+    private configService: ConfigService,
+  ) {}
 
-    async signIn(email: string, password: string): Promise<any>  {
-        const user = await this.userService.getByEmail(email)
-        if(!user)
-            throw new UnauthorizedException();
+  async login(email: string): Promise<Tokens> {
+    const user = await this.userService.getByEmail(email);
+    if (!user) throw new UnauthorizedException();
+    const role = await this.userService.getRole(user.id);
 
-        const hash = await this.userService.getPassword(user.id)
-        const passMatch = await this.hashService.compareHash(hash, password)
-        if(!passMatch)
-            throw new UnauthorizedException();
-        
-        const role = await this.userService.getRole(user.id)
+    const payload: Payload = { sub: user.id, email: user.email, role };
+    const tokens = await this.getTokens(payload);
+    await this.updateRefreshToken(user.id, tokens.refresh_token);
+    return tokens;
+  }
 
-        const payload = {sub: user.id, email: user.email, role}
+  async getTokens(payload: Payload): Promise<Tokens> {
+    return {
+      access_token: await this.jwtService.signAsync(payload, {
+        secret: this.configService.get('jwt.access_secret'),
+        expiresIn: this.configService.get('jwt.access_expiration'),
+      }),
+      refresh_token: await this.jwtService.signAsync(payload, {
+        secret: this.configService.get('jwt.refresh_secret'),
+        expiresIn: this.configService.get('jwt.refresh_expiration'),
+      }),
+    };
+  }
 
-        return {
-            access_token: await this.jwtService.signAsync(payload)
-        }
-    }
+  async refreshTokens(id: number, refreshToken: string): Promise<Tokens> {
+    const user = await this.userService.getUserById(id);
+    if (!user) throw new ForbiddenException('Access Denied');
 
-    async register(registerDto: RegisterDto) {
-        try { 
-            const newUser = await this.userService.createUser(registerDto)
-            if(!newUser)
-                throw new Error("Error al crear al usuario")
+    const role = await this.userService.getRole(id);
+    const savedToken = await this.userService.getRefreshToken(id);
+    if (!savedToken) throw new ForbiddenException('Access Denied');
 
-            return newUser
-        } catch(error) {
-            throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
-        }
-    }
+    const refreshTokenMatches = await verifyData(savedToken, refreshToken);
+    if (!refreshTokenMatches) throw new ForbiddenException('Access Denied');
+
+    const tokens = await this.getTokens({
+      sub: user.id,
+      email: user.email,
+      role,
+    });
+    await this.updateRefreshToken(user.id, tokens.refresh_token);
+    return tokens;
+  }
+
+  async updateRefreshToken(id: number, refreshToken: string) {
+    const hashedRefreshToken = await hashData(refreshToken);
+    await this.userService.updateRefreshToken(id, hashedRefreshToken);
+  }
+
+  setRefreshToken(refreshToken: string, res: Response) {
+    setCookie(refreshCookieName, refreshToken, res, {
+      httpOnly: true,
+      secure: this.configService.get('jwt.secure'),
+      sameSite: this.configService.get('jwt.samesite'),
+      path: '/',
+      maxAge: this.configService.get('jwt.maxAge'),
+    });
+  }
+
+  async register(registerDto: RegisterDto): Promise<User> {
+    const newUser = await this.userService.createUser(registerDto);
+    if (!newUser) throw new ForbiddenException('Error al crear al usuario');
+    return newUser;
+  }
+
+  async validate(email: string, password: string): Promise<User> {
+    const user = await this.userService.getByEmail(email);
+    if (!user) throw new UnauthorizedException();
+
+    const hash = await this.userService.getPassword(user.id);
+    const passMatch = await this.hashService.compareHash(hash, password);
+    if (!passMatch) throw new UnauthorizedException();
+    return user;
+  }
 }
