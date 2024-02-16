@@ -7,7 +7,7 @@ import { AppService } from './app.service';
 import { User } from './user/user.entity';
 import { Office } from './office/office.entity';
 import { Category } from './category/Category.entity';
-import { Hiring } from './hiring/Hiring.entity';
+import { Hiring } from './hiring/hiring.entity';
 import { Review } from './review/Review.entity';
 import { Province } from './province/province.entity';
 import { City } from './city/city.entity';
@@ -23,6 +23,8 @@ import { OfficeModule } from './office/office.module';
 import { AuthModule } from './auth/auth.module';
 import { ProvinceModule } from './province/province.module';
 import { CityModule } from './city/city.module';
+import { StateHiringModule } from './hiring/state/stateHiring.module';
+import { HiringModule } from './hiring/hiring.module';
 import { PostModule } from './post/post.module';
 
 require('dotenv').config();
@@ -65,6 +67,8 @@ const {
     ProvinceModule,
     CityModule,
     OfficeModule,
+    StateHiringModule,
+    HiringModule,
     PostModule,
   ],
   controllers: [AppController],

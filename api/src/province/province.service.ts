@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Province } from './province.entity';
-import { City } from 'src/city/city.entity';
+import { City } from '../city/city.entity';
 
 @Injectable()
 export class ProvinceService {
@@ -124,10 +124,9 @@ export class ProvinceService {
       } else {
         return 'Debe proporcionar un ID  de provincia';
       }
-
-      return 'Localizacion eliminada correctamente';
+      return 'Provincia eliminada correctamente';
     } catch (error) {
-      return 'Error al eliminar la localizacion';
+      return 'Error al eliminar la Provincia';
     }
   }
 }
