@@ -7,6 +7,9 @@ import {
   ParseIntPipe,
   Param,
   Delete,
+  HttpCode,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ProvinceService } from './province.service';
 
@@ -50,4 +53,17 @@ export class ProvinceController {
   deleteProvince(@Param('id', ParseIntPipe) id: number) {
     return this.provinceService.deleteProvince(id);
   }
+
+  @HttpCode(200)
+  @Get('search')
+    async getProvinceBySearch(name:string):Promise<string>{
+      try {
+        const province = this.provinceService.getProvinceBySearch(name)
+        return province
+      } catch (error) {
+        console.log(Error)
+        throw new HttpException(error.message, HttpStatus.NOT_FOUND);   
+      }
+  }
+
 }

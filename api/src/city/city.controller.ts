@@ -7,6 +7,9 @@ import {
   ParseIntPipe,
   Param,
   Delete,
+  HttpCode,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { CityService } from './city.service';
 
@@ -63,5 +66,17 @@ export class CityController {
   @Delete('/delete/:id')
   deleteCity(@Param('id', ParseIntPipe) id: number) {
     return this.cityService.deleteCity(id);
+  }
+
+  @HttpCode(200)
+  @Get('search')
+    async getcityBySearch(name:string):Promise<string>{
+      try {
+        const city = this.cityService.getCityBySearch(name)
+        return city
+      } catch (error) {
+        console.log(Error)
+        throw new HttpException(error.message, HttpStatus.NOT_FOUND);   
+      }
   }
 }

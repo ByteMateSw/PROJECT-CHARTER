@@ -61,6 +61,20 @@ export class CategoryController {
     }
   }
 
+  @HttpCode(200)
+  @Get('search')
+    async getCategoryBySearch(name:string):Promise<string>{
+      try {
+        const Category = this.categoryService.getCategoryBySearch(name)
+        return Category
+      } catch (error) {
+        console.log(Error)
+        throw new HttpException(error.message, HttpStatus.NOT_FOUND);   
+      }
+  }
+
+
+
   
 
 }

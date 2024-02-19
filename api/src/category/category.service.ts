@@ -50,4 +50,16 @@ export class CategoryService {
   }
 
 
+  async getCategoryBySearch(name:string):Promise<any>{
+    try {
+        const Categoryname = await this.categoryRepository.findOneBy ({name: name})
+        return Categoryname;
+    } catch (error) {
+      console.log(Error)
+      throw new Error ("No se ha encontrado la categoría")
+        
+    }
+    }
+
+
 }

@@ -173,4 +173,16 @@ export class CityService {
       return 'Error al eliminar la Ciudad';
     }
   }
+
+  async getCityBySearch(name:string):Promise<any>{
+    try {
+        const Cityname = await this.cityRepository.findOneBy ({name: name})
+        return Cityname;
+    } catch (error) {
+      console.log(Error)
+      throw new Error ("No se ha encontrado la ciudad")
+    }
+  }
 }
+
+      

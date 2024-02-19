@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Hiring } from '../hiring.entity';
 import { StateHiring } from './stateHiring.entity';
-import { error } from 'console';
 
 @Injectable()
 export class StateHiringService {

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpCode, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Office } from './office.entity';
 import { Repository } from 'typeorm';
@@ -55,4 +55,15 @@ export class OfficeService {
       throw new Error('Error al eliminar el oficio');
     }
   }
+  
+  async getOfficeBySearch(name:string):Promise<any>{
+    try {
+        const officename = await this.officeRepository.findOneBy ({name: name})
+        return officename;
+    } catch (error) {
+      console.log(Error)
+      throw new Error ("No se ha encontrado el oficio")
+    }
+  }
+
 }
