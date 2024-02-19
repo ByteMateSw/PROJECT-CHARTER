@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Hiring } from './hiring.entity';
-import { Any, Repository } from 'typeorm';
-import { strict } from 'assert';
+import { Repository } from 'typeorm';
+import { UserService } from 'src/user/user.service';
+import { StateHiringService } from './state/stateHiring.service';
 
 @Injectable()
 export class HiringService {
   constructor(
-    @InjectRepository(Hiring) private hiringRepository: Repository<Hiring>
+    @InjectRepository(Hiring) private hiringRepository: Repository<Hiring>,
+    private stateHiringService: StateHiringService,
+    private userService: UserService
   ) {}
 
   async createHire(contractorId: number, contractedId: number) {
