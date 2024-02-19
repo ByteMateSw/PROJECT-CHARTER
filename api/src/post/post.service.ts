@@ -41,7 +41,7 @@ export class PostService {
     imageDataArray: Buffer[],
   ): Promise<Post> {
     try {
-      const user = await this.userService.getById(userId);
+      const user = await this.userService.getUserById(userId);
       const date: Date = new Date();
       const newPost = this.postRepository.create(postDto);
       newPost.creationDate = date;

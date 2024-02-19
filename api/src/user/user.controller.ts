@@ -6,6 +6,7 @@ import {
   NotFoundException,
   Param,
   ParseIntPipe,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -46,7 +47,7 @@ export class UserController {
     return { message: 'El usuario ha sido borrado correctamente ' };
   }
 
-  @Patch(':id')
+  @Put(':id')
   async updateUser(
     @Param('id', ParseIntPipe) id: number,
     @Body(EmptyBodyPipe) updateUserDto: UpdateUserDto,
