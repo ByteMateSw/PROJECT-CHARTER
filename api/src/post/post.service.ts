@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Post } from './post.entity';
 import { Repository } from 'typeorm';
-import { ImagePost } from 'src/image/imagePost.entity';
+import { Post } from './post.entity';
+import { ImagePost } from '../image/imagePost.entity';
+import { CreatePostDto } from './dto/createPost.dto';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class PostService {
@@ -10,6 +12,7 @@ export class PostService {
     @InjectRepository(Post) private postRepository: Repository<Post>,
     @InjectRepository(ImagePost)
     private imagePostRepository: Repository<ImagePost>,
+    private userService: UserService,
   ) {}
 
   async getAllPosts(): Promise<Post[]> {
@@ -32,11 +35,18 @@ export class PostService {
     }
   }
 
-  async createPost(post: Post, imageDataArray: Buffer[]): Promise<Post> {
+  async createPost(
+    userId: number,
+    postDto: CreatePostDto,
+    imageDataArray: Buffer[],
+  ): Promise<Post> {
     try {
+      const user = await this.userService.getUserById(userId);
       const date: Date = new Date();
-      post.creationDate = date;
-      const newPost = await this.postRepository.save(post);
+      const newPost = this.postRepository.create(postDto);
+      newPost.creationDate = date;
+      newPost.user = user;
+      await this.postRepository.save(newPost);
       const imagePosts = imageDataArray.map((imageData) =>
         this.imagePostRepository.create({ imageData, post: newPost }),
       );
