@@ -16,10 +16,10 @@ export class Hiring {
   @Column({ type: 'date' })
   dateApplication: Date;
 
-  @ManyToOne(() => StateHiring, (state) => state.hiring)
+  @ManyToOne(() => StateHiring, state => state.hiring)
   state: StateHiring;
-  
-  @Column({ type: 'date' })
+
+  @Column({ type: 'date', nullable: true })
   dateAcceptOrReject: Date;
 
   @ManyToOne(() => User, { eager: true })

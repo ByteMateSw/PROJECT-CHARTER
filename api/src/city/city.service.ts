@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { City } from './city.entity';
-import { Province } from 'src/province/province.entity';
-import { User } from 'src/user/user.entity';
+import { Province } from '../province/province.entity';
+import { User } from '../user/user.entity';
 
 @Injectable()
 export class CityService {
@@ -29,7 +29,7 @@ export class CityService {
         });
 
         this.cityRepository.save(newCity);
-        return 'ciudad Guardada';
+        return 'Ciudad Guardada';
       } else {
         return 'La ciudad ya existe';
       }
@@ -90,7 +90,7 @@ export class CityService {
         city.province = province;
         await this.cityRepository.save(city);
 
-        return 'La ciudad actualizada';
+        return 'Ciudad actualizada';
       } else {
         return ' No se mando la id de la ciudad ';
       }
@@ -144,7 +144,7 @@ export class CityService {
           return 'No se encontro la ciudad';
         }
         await this.cityRepository.update(id, { name });
-        return 'La ciudad actualizada';
+        return 'Ciudad actualizada';
       } else {
         return ' No se mando la id de la ciudad ';
       }
@@ -168,9 +168,21 @@ export class CityService {
         return 'Debe proporcionar un ID  de ciudad';
       }
 
-      return 'Localizacion eliminada correctamente';
+      return 'Ciudad eliminada correctamente';
     } catch (error) {
-      return 'Error al eliminar la localizacion';
+      return 'Error al eliminar la Ciudad';
+    }
+  }
+
+  async getCityBySearch(name:string):Promise<any>{
+    try {
+        const Cityname = await this.cityRepository.findOneBy ({name: name})
+        return Cityname;
+    } catch (error) {
+      console.log(Error)
+      throw new Error ("No se ha encontrado la ciudad")
     }
   }
 }
+
+      
