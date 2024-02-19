@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Category } from './Category.entity';
+import { Category } from './category.entity';
 import { Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/category.dto'
 
@@ -48,6 +48,18 @@ export class CategoryService {
     const updateCategory = await this.categoryRepository.findOneBy({id});
     return updateCategory
   }
+
+
+  async getCategoryBySearch(name:string):Promise<any>{
+    try {
+        const Categoryname = await this.categoryRepository.findOneBy ({name: name})
+        return Categoryname;
+    } catch (error) {
+      console.log(Error)
+      throw new Error ("No se ha encontrado la categoría")
+        
+    }
+    }
 
 
 }

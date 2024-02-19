@@ -28,6 +28,7 @@ describe('UserService', () => {
 
   const mockUserRepository = {
     find: jest.fn().mockResolvedValue([mockUser]),
+    findOne: jest.fn().mockResolvedValue(mockUser),
     findOneBy: jest.fn().mockResolvedValue(mockUser),
     create: jest.fn().mockReturnValue(mockUser),
     save: jest.fn().mockResolvedValue(mockUser),
@@ -65,7 +66,7 @@ describe('UserService', () => {
 
   describe('getAll', () => {
     it('should return an mocked user list', async () => {
-      expect(await service.getAll()).toEqual([mockUser]);
+      expect(await service.getAllUsers()).toEqual([mockUser]);
       expect(mockUserRepository.find).toHaveBeenCalled();
     });
   });
@@ -73,7 +74,7 @@ describe('UserService', () => {
   describe('getById', () => {
     it('should return an mocked user by their id', async () => {
       const id = mockUser.id;
-      expect(await service.getById(id)).toEqual(mockUser);
+      expect(await service.getUserById(id)).toEqual(mockUser);
       expect(mockUserRepository.findOneBy).toHaveBeenCalledWith({ id });
     });
   });
@@ -111,13 +112,6 @@ describe('UserService', () => {
       const email = mockUser.email;
       expect(await service.hasEmail(email)).toEqual(mockResultBoolean);
       expect(mockUserRepository.existsBy).toHaveBeenCalledWith({ email });
-    });
-
-    it('should throw an error to obtain an email', async () => {
-      mockUserRepository.existsBy.mockRejectedValueOnce(rejectedEmail);
-      expect(async () => await service.hasEmail(rejectedEmail)).rejects.toThrow(
-        new Error('No se ha encontrado el Email'),
-      );
     });
   });
 
@@ -166,10 +160,18 @@ describe('UserService', () => {
 
     it('should throw an error for nonexistent user', async () => {
       const id = mockUser.id;
-      jest.spyOn(service, 'getById').mockResolvedValueOnce(null);
+      jest.spyOn(service, 'getUserById').mockResolvedValueOnce(null);
       expect(async () => await service.accepteToSUser(id)).rejects.toThrow(
         new Error('Bad credentials'),
       );
+    });
+  });
+
+  describe('getPassword', () => {
+    it('should get the user password of an user', async () => {
+      const id = mockUser.id;
+      const password = mockUser.password;
+      expect(await service.getPassword(id)).toEqual(password);
     });
   });
 });

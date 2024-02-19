@@ -12,7 +12,7 @@ import {
   HttpCode,
   } from '@nestjs/common';
 import { CategoryService } from './category.service';
-import { Category } from './Category.entity';
+import { Category } from './category.entity';
 import { CreateCategoryDto } from './dto/category.dto';
 import { updateCategoryDto } from './dto/updateCategory.dto';
 
@@ -60,6 +60,20 @@ export class CategoryController {
       throw new HttpException(error.mesagge , HttpStatus.FORBIDDEN)
     }
   }
+
+  @HttpCode(200)
+  @Get('search')
+    async getCategoryBySearch(name:string):Promise<string>{
+      try {
+        const Category = this.categoryService.getCategoryBySearch(name)
+        return Category
+      } catch (error) {
+        console.log(Error)
+        throw new HttpException(error.message, HttpStatus.NOT_FOUND);   
+      }
+  }
+
+
 
   
 

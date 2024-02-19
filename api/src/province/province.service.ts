@@ -129,4 +129,19 @@ export class ProvinceService {
       return 'Error al eliminar la Provincia';
     }
   }
+
+  async getProvinceBySearch(name:string):Promise<any>{
+    try {
+        const provincename = await this.provinceRepository.findOneBy ({name: name})
+        return provincename;
+    } catch (error) {
+      console.log(Error)
+      throw new Error ("No se ha encontrado la provincia")
+    }
+  }
 }
+
+
+
+
+
