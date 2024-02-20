@@ -11,22 +11,24 @@ export class HiringService {
   constructor(
     @InjectRepository(Hiring) private hiringRepository: Repository<Hiring>,
     private stateHiringService: StateHiringService,
-    private userService: UserService
+    private userService: UserService,
   ) {}
 
   async createHire(contractorId: number, contractedId: number) {
-     try {
+    try {
       const [userContractor, userContracted] = await Promise.all([
         this.userService.getUserById(contractorId),
         this.userService.getUserById(contractedId),
       ]);
+      const newDate = new Date();
       const pendingState =
         await this.stateHiringService.getStatusByName('Pending');
       const hire = this.hiringRepository.create({
         contractor: userContractor,
         contracted: userContracted,
-        dateApplication: new Date(),
+        dateApplication: newDate,
         state: pendingState,
+        historyDate: [{ dateofChange: newDate }],
       });
       return await this.hiringRepository.save(hire);
     } catch (error) {
