@@ -5,6 +5,8 @@ import { Post } from './post.entity';
 import { ImagePost } from '../image/imagePost.entity';
 import { CreatePostDto } from './dto/createPost.dto';
 import { UserService } from '../user/user.service';
+import { UptadePostDto } from './dto/uptadePost.dto';
+import { title } from 'process';
 
 @Injectable()
 export class PostService {
@@ -13,7 +15,7 @@ export class PostService {
     @InjectRepository(ImagePost)
     private imagePostRepository: Repository<ImagePost>,
     private userService: UserService,
-  ) {}
+  ) { }
 
   async getAllPosts(): Promise<Post[]> {
     try {
@@ -53,8 +55,8 @@ export class PostService {
       await this.imagePostRepository.save(imagePosts);
       return newPost;
     } catch (error) {
-      console.error('Error al crear el post', error.message);
-      throw new Error('Error al crear el post');
+      console.error('Error al crear la publicación', error.message);
+      throw new Error('Error al crear la publicación');
     }
   }
 
@@ -91,6 +93,46 @@ export class PostService {
     } catch (error) {
       console.error('Error al remover una imágen', error.message);
       throw new Error('Error al remover una imágen');
+    }
+  }
+
+  async uptadePost(
+    postId: number,
+    uptadePostData: UptadePostDto
+  ): Promise<Post> {
+    try {
+      const postFound = await this.postRepository.findOneBy({ id: postId })
+      if (!postFound) throw new Error("La publicación no existe")
+
+      const uptadePost = { ...postFound, ...this.uptadePost }
+      const savePost = await this.postRepository.save(uptadePost)
+      return savePost
+    } catch (error) {
+
+    }
+  }
+
+  async deletePost(postId: number): Promise<undefined> {
+    try {
+      const postDelFound = await this.postRepository.findOneBy({ id: postId })
+      if (!postDelFound) throw new Error('La publicacion no existe')
+
+      await this.postRepository.delete(postId)
+      return undefined
+    } catch (error) {
+      console.error ('La publicacion no se ha podido borrar')
+      throw new Error ('La publicacion no se ha podido borrar')
+
+    }
+  }
+
+  async getPostByName(name:string): Promise<Post>{
+    try {
+      const PostName = await this.postRepository.findOneBy ({title})
+      return PostName
+    } catch (error) {
+      console.error ("La publicación no se ha podido encontrar")
+      throw new Error ("La publicación no se ha podido encontrar")
     }
   }
 

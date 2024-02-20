@@ -8,14 +8,18 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { Post as PostEntity } from './post.entity';
 import { CreatePostDto } from './dto/createPost.dto';
+import { UptadePostDto } from './dto/uptadePost.dto';
+import { updateCategoryDto } from 'src/category/dto/updateCategory.dto';
+import { title } from 'process';
 
 @Controller()
 export class PostController {
-  constructor(private postService: PostService) {}
+  constructor(private postService: PostService) { }
 
   @Get()
   async getAllPosts(): Promise<PostEntity[]> {
@@ -52,11 +56,10 @@ export class PostController {
     }
   }
 
-  @Post('addImg') 
+  @Post('addImg')
   async addImageToPost(@Body()
-  postId:number,
-  imageDataArray:Buffer[])
-  {
+  postId: number,
+    imageDataArray: Buffer[]) {
     try {
       return await this.postService.addImagesToPost(
         postId,
@@ -70,7 +73,7 @@ export class PostController {
   @Delete('delImg')
   async removeImageFromPost(@Body()
   postId: number,
-  imagePostId: number){
+    imagePostId: number) {
     try {
       return await this.postService.removeImageFromPost(
         postId,
@@ -78,6 +81,37 @@ export class PostController {
       )
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  @Put(':id')
+  async uptadePost(@Param('id') id: number, @Body() UptadePostDto: UptadePostDto) {
+    try {
+      await this.postService.uptadePost(id, UptadePostDto)
+      return "La publicación se actualizó correctamente"
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
+    }
+
+  }
+
+  @Delete(':id')
+  async deletePost(@Body('id') postId: number) {
+    try {
+      await this.postService.deletePost(postId)
+      return "La publicación se ha borrado correctamente"
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  @Get(':search')
+  async getPostByName(title: string):Promise<string> {
+    try {
+      await this.postService.getPostByName(title)
+      return "Se han encontrado las siguientes publicaciones"
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.NOT_FOUND)
     }
   }
 }
