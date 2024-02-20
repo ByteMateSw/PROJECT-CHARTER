@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
@@ -48,6 +49,35 @@ export class PostController {
       );
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Post('addImg') 
+  async addImageToPost(@Body()
+  postId:number,
+  imageDataArray:Buffer[])
+  {
+    try {
+      return await this.postService.addImagesToPost(
+        postId,
+        imageDataArray
+      )
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  @Delete('delImg')
+  async removeImageFromPost(@Body()
+  postId: number,
+  imagePostId: number){
+    try {
+      return await this.postService.removeImageFromPost(
+        postId,
+        imagePostId
+      )
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
     }
   }
 }
