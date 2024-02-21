@@ -1,14 +1,18 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpException,
   HttpStatus,
   Param,
   Post,
+  Put,
 } from '@nestjs/common';
 import { StateHiringService } from './stateHiring.service';
+import { ResponseMessage } from 'src/utils/types/message.type';
+import { UpdateStateHireDTO } from './uptadeStateHiring.Dto';
 
 @Controller('state')
 export class StateHiringController {
@@ -34,4 +38,35 @@ export class StateHiringController {
       throw new HttpException(error.message, HttpStatus.NOT_FOUND);
     }
   }
+  @HttpCode(200)
+  @Delete(':id')
+  async deleteStatusHire(@Body('id') id:number){
+    try {
+      return await this.stateHiringService.deleteStatusHire(id)      
+    } catch (error) {
+       console.error ('El estado del contrato no se ha podido borrar')
+    }
+  }
+
+  @Put(':id')
+  async uptadeStateHire(@Body ('id') id:number):Promise<ResponseMessage>{
+    try {
+      await this.stateHiringService.updateStatusHire(id, UpdateStateHireDTO)
+      return { message: 'El contrato se ha actualizado correctamente' };
+  } catch (error) {
+      console.error ("Error al actualizar el contrato") 
+    }
+  }
+
+  @Get(':name')
+  async getAllStateHire() {
+    try {
+      return await this.stateHiringService.getAllStateHire();
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+    }
+  }
+  
+
+
 }

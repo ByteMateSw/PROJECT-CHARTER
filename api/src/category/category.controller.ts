@@ -25,8 +25,12 @@ export class CategoryController {
   }
 
   @Get(':id')
-  getById(@Param('id',ParseIntPipe) id: number): Promise<Category> {
-    return this.categoryService.getById(id);
+   async getById(@Param('id',ParseIntPipe) id: number): Promise<Category> {
+    try {
+      return this.categoryService.getById(id); 
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.NOT_FOUND)
+    }
   }
 
   @HttpCode(201)
@@ -60,6 +64,20 @@ export class CategoryController {
       throw new HttpException(error.mesagge , HttpStatus.FORBIDDEN)
     }
   }
+
+  @HttpCode(200)
+  @Get('search')
+    async getCategoryBySearch(name:string):Promise<string>{
+      try {
+        const Category = this.categoryService.getCategoryBySearch(name)
+        return Category
+      } catch (error) {
+        console.log(Error)
+        throw new HttpException(error.message, HttpStatus.NOT_FOUND);   
+      }
+  }
+
+
 
   
 

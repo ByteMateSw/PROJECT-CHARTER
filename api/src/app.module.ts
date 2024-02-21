@@ -15,6 +15,7 @@ import { ProvinceModule } from './province/province.module';
 import { CityModule } from './city/city.module';
 import { StateHiringModule } from './hiring/state/stateHiring.module';
 import { HiringModule } from './hiring/hiring.module';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { HiringModule } from './hiring/hiring.module';
     OfficeModule,
     StateHiringModule,
     HiringModule,
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService],
