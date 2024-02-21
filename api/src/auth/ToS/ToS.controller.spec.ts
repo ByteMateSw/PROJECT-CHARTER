@@ -8,7 +8,7 @@ describe('ToSController', () => {
   const successMessage = { message: 'Se aceptó los Términos y Servicios' };
 
   let mockUserService = {
-    accepteToSUser: jest.fn(),
+    acceptToSUser: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -30,7 +30,7 @@ describe('ToSController', () => {
 
     it('should accept terms and services', async () => {
       expect(await controller.acceptToS(id)).toEqual(successMessage);
-      expect(mockUserService.accepteToSUser).toHaveBeenCalledWith(id);
+      expect(mockUserService.acceptToSUser).toHaveBeenCalledWith(id);
     });
   });
 });

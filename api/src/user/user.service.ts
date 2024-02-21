@@ -63,7 +63,9 @@ export class UserService {
     const userFound = await this.userRepository.existsBy({ id });
     if (!userFound) throw new NotFoundException('El usuario no existe');
     if (user.email !== undefined) {
-      const existsEmail = this.userRepository.existsBy({ email: user.email });
+      const existsEmail = await this.userRepository.existsBy({
+        email: user.email,
+      });
       if (existsEmail) throw new BadRequestException('El email ya existe');
     }
     await this.userRepository.update({ id }, user);
