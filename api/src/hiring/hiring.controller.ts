@@ -12,7 +12,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { HiringService } from './hiring.service';
-import { UpdateHireDTO } from './uptadeHiring.dto';
+import { UpdateHireDTO } from './Hiring.dto/uptadeHiring.dto';
 import { ResponseMessage } from 'src/utils/types/message.type';
 
 @Controller('hiring')

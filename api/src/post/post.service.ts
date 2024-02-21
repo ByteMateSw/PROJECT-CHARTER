@@ -126,7 +126,7 @@ export class PostService {
     }
   }
 
-  async getPostByName(name:string): Promise<Post>{
+  async getPostByName(title:string): Promise<Post>{
     try {
       const PostName = await this.postRepository.findOneBy ({title})
       return PostName
