@@ -11,10 +11,17 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
+      transform: true,
     }),
   );
   app.use(cookieParser());
   const configService = app.get(ConfigService);
+  app.enableCors({
+    origin: configService.get('app.origin'),
+    methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  });
   const port = configService.get('app.port');
   await app.listen(port);
 }
