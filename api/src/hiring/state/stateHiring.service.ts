@@ -2,8 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { StateHiring } from './stateHiring.entity';
-import { NotFoundError } from 'rxjs';
-import { ResponseMessage } from 'src/utils/types/message.type';
+import { ResponseMessage } from '../../utils/types/functions.type';
 
 @Injectable()
 export class StateHiringService {
