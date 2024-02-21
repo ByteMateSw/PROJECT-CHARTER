@@ -46,7 +46,7 @@ export class HiringService {
     }
   }
 
-  async getAll(): Promise<Hiring[]> {
+  async getAllHire(): Promise<Hiring[]> {
     try {
       return this.hiringRepository.find();
     } catch (error) {

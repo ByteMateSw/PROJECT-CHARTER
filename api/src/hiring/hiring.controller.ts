@@ -7,6 +7,7 @@ import {
   HttpException,
   HttpStatus,
   Param,
+  ParseIntPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -30,10 +31,21 @@ export class HiringController {
   }
 
   @HttpCode(200)
-  @Get(':name')
-  async getall() {
+  @Get('GetById')
+  async getHireById(@Param(':id',ParseIntPipe) id:number){
     try {
-      return await this.hiringService.getAll();
+      return await this.hiringService.getHireById(id)
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.NOT_FOUND)
+    }
+  }
+  
+
+  @HttpCode(200)
+  @Get(':name')
+  async getAllHire() {
+    try {
+      return await this.hiringService.getAllHire();
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.NOT_FOUND);
     }
