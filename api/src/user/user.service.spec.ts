@@ -71,19 +71,13 @@ describe('UserService', () => {
     });
   });
 
-  describe('getById', () => {
+  describe('getUser', () => {
     it('should return an mocked user by their id', async () => {
       const id = mockUser.id;
-      expect(await service.getUserById(id)).toEqual(mockUser);
-      expect(mockUserRepository.findOneBy).toHaveBeenCalledWith({ id });
-    });
-  });
-
-  describe('getByEmail', () => {
-    it('should return an mocked user by their email', async () => {
-      const email = mockUser.email;
-      expect(await service.getByEmail(email)).toEqual(mockUser);
-      expect(mockUserRepository.findOneBy).toHaveBeenCalledWith({ email });
+      expect(await service.getUser({ id })).toEqual(mockUser);
+      expect(mockUserRepository.findOne).toHaveBeenCalledWith({
+        where: { id },
+      });
     });
   });
 
@@ -91,7 +85,7 @@ describe('UserService', () => {
     it('should create an mocked user with received data', async () => {
       const mockSaveUser = { ...mockUser, role: mockRole };
 
-      jest.spyOn(service, 'hasEmail').mockResolvedValueOnce(false);
+      jest.spyOn(service, 'existsEmail').mockResolvedValueOnce(false);
 
       expect(await service.createUser(mockUser)).toEqual(mockUser);
       expect(mockUserRepository.create).toHaveBeenCalledWith(mockUser);
@@ -99,7 +93,7 @@ describe('UserService', () => {
     });
 
     it('should throw an error for repeated email', async () => {
-      jest.spyOn(service, 'hasEmail').mockResolvedValueOnce(true);
+      jest.spyOn(service, 'existsEmail').mockResolvedValueOnce(true);
 
       expect(async () => await service.createUser(mockUser)).rejects.toThrow(
         new Error('El Email está en uso'),
@@ -110,7 +104,7 @@ describe('UserService', () => {
   describe('hasEmail', () => {
     it('should return a boolean value', async () => {
       const email = mockUser.email;
-      expect(await service.hasEmail(email)).toEqual(mockResultBoolean);
+      expect(await service.existsEmail(email)).toEqual(mockResultBoolean);
       expect(mockUserRepository.existsBy).toHaveBeenCalledWith({ email });
     });
   });
@@ -153,16 +147,16 @@ describe('UserService', () => {
   describe('accepteToSUser', () => {
     it('should update an user', async () => {
       const id = mockUser.id;
-      service.accepteToSUser(id);
+      service.acceptToSUser(id);
       expect(mockUserRepository.findOneBy).toHaveBeenCalledWith({ id });
       expect(mockUserRepository.save).toHaveBeenCalledWith(mockUser);
     });
 
     it('should throw an error for nonexistent user', async () => {
       const id = mockUser.id;
-      jest.spyOn(service, 'getUserById').mockResolvedValueOnce(null);
-      expect(async () => await service.accepteToSUser(id)).rejects.toThrow(
-        new Error('Bad credentials'),
+      jest.spyOn(service, 'getUser').mockResolvedValueOnce(null);
+      expect(async () => await service.acceptToSUser(id)).rejects.toThrow(
+        new Error('Credenciales incorrectas'),
       );
     });
   });
@@ -171,7 +165,7 @@ describe('UserService', () => {
     it('should get the user password of an user', async () => {
       const id = mockUser.id;
       const password = mockUser.password;
-      expect(await service.getPassword(id)).toEqual(password);
+      expect(await service.getUserPassword(id)).toEqual(password);
     });
   });
 });

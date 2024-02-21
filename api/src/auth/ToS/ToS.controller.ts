@@ -1,7 +1,7 @@
 import { Controller, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
 import { UserService } from '../../user/user.service';
 import { CustomParseIntPipe } from '../../utils/pipes/parse-int.pipe';
-import { ResponseMessage } from '../../utils/types/message.type';
+import { ResponseMessage } from '../../utils/types/functions.type';
 
 @Controller('ToS')
 export class ToSController {
@@ -12,7 +12,7 @@ export class ToSController {
   async acceptToS(
     @Param('id', CustomParseIntPipe) id: number,
   ): Promise<ResponseMessage> {
-    await this.userService.accepteToSUser(id);
+    await this.userService.acceptToSUser(id);
     return { message: 'Se aceptó los Términos y Servicios' };
   }
 }

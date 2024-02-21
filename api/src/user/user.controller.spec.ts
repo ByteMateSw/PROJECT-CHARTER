@@ -31,7 +31,7 @@ describe('UserController', () => {
 
   const mockUserService = {
     getAllUsers: jest.fn().mockResolvedValueOnce([mockUser]),
-    getUserById: jest.fn().mockResolvedValueOnce(mockUser),
+    getUser: jest.fn().mockResolvedValueOnce(mockUser),
     deleteUser: jest.fn().mockResolvedValueOnce(mockDeleteMessage),
     updateUser: jest.fn().mockResolvedValueOnce(mockUpdateMessage),
   };
@@ -73,16 +73,16 @@ describe('UserController', () => {
     it('should get an user', async () => {
       const id = mockUser.id;
       expect(await controller.getUserById(id)).toBe(mockUser);
-      expect(mockUserService.getUserById).toHaveBeenCalledWith(id);
+      expect(mockUserService.getUser).toHaveBeenCalledWith({ id });
     });
 
     it('should thrown an error to obtain the user', async () => {
       const id = mockUser.id;
-      mockUserService.getUserById.mockResolvedValueOnce(null);
+      mockUserService.getUser.mockResolvedValueOnce(null);
       expect(async () => await controller.getUserById(id)).rejects.toThrow(
         new NotFoundException('No se encontró el usuario'),
       );
-      expect(mockUserService.getUserById).toHaveBeenCalledWith(id);
+      expect(mockUserService.getUser).toHaveBeenCalledWith({ id });
     });
   });
 
