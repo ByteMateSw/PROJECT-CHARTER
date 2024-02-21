@@ -56,7 +56,7 @@ export class HiringController {
     try {
      await this.hiringService.deleteHire(id)
     } catch (error) {
-      console.error ("Error al eliminar el contrato")
+      throw new HttpException(error.mesage, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -66,7 +66,7 @@ export class HiringController {
       await this.hiringService.updateHire(id, UpdateHireDTO)
       return { message: 'El contrato se ha actualizado correctamente' };
   } catch (error) {
-      console.error ("Error al actualizar el contrato") 
+    throw new HttpException(error.mesage, HttpStatus.BAD_REQUEST);
     }
   }
   
