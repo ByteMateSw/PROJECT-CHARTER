@@ -7,7 +7,6 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
   constructor(private configService: ConfigService) {}
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
-    console.log(__dirname + '/../**/*entity{.js,.ts}');
     return {
       type: 'postgres',
       port: +this.configService.get('database.port'),
