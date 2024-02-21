@@ -1,4 +1,5 @@
 import { registerAs } from '@nestjs/config';
+import 'dotenv/config';
 
 export default registerAs('jwt', () => ({
   access_secret: process.env.JWT_ACCESS_SECRET_KEY,
@@ -10,4 +11,9 @@ export default registerAs('jwt', () => ({
   samesite: process.env.SAMESITE || 'lax',
 }));
 
-export const refreshCookieName: string = 'auth_cookie';
+const cookiePrefix = '__Secure-';
+const cookieName = 'auth_cookie';
+export const refreshCookieName: string =
+  process.env.NODE_ENV === 'development'
+    ? cookieName
+    : cookiePrefix + cookieName;
