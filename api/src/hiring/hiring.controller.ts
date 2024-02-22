@@ -12,8 +12,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { HiringService } from './hiring.service';
-import { UpdateHireDTO } from './uptadeHiring.dto';
-import { ResponseMessage } from '../utils/types/functions.type';
+import { UpdateHireDTO } from './Hiring.dto/uptadeHiring.dto';
+import { ResponseMessage } from '../utils/types/message.type';
 
 @Controller('hiring')
 export class HiringController {
@@ -56,7 +56,7 @@ export class HiringController {
     try {
      await this.hiringService.deleteHire(id)
     } catch (error) {
-      console.error ("Error al eliminar el contrato")
+      throw new HttpException(error.mesage, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -66,7 +66,7 @@ export class HiringController {
       await this.hiringService.updateHire(id, UpdateHireDTO)
       return { message: 'El contrato se ha actualizado correctamente' };
   } catch (error) {
-      console.error ("Error al actualizar el contrato") 
+    throw new HttpException(error.mesage, HttpStatus.BAD_REQUEST);
     }
   }
   
