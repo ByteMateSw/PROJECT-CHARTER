@@ -1,9 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Review } from "./review.entity";
-import { UserService } from "src/user/user.service";
+import { UserService } from "../user/user.service";
 import { Repository } from "typeorm";
-import { ResponseMessage } from "src/utils/types/message.type";
+import { ResponseMessage } from "../utils/types/functions.type";
 
 @Injectable()
 export class ReviewService {
