@@ -3,7 +3,7 @@ import argon2 from 'argon2';
 
 @Injectable()
 export class HashService {
-  async compareHash(hash: string, password: string): Promise<Boolean> {
+  async compareHash(hash: string, password: string): Promise<boolean> {
     return await argon2.verify(hash, password);
   }
 }

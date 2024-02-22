@@ -2,9 +2,9 @@ import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Hiring } from './hiring.entity';
 import { Repository } from 'typeorm';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 import { StateHiringService } from './state/stateHiring.service';
-import { ResponseMessage } from 'src/utils/types/message.type';
+import { ResponseMessage } from '../utils/types/functions.type';
 
 @Injectable()
 export class HiringService {
@@ -17,8 +17,8 @@ export class HiringService {
   async createHire(contractorId: number, contractedId: number) {
     try {
       const [userContractor, userContracted] = await Promise.all([
-        this.userService.getUserById(contractorId),
-        this.userService.getUserById(contractedId),
+        this.userService.getUser({ id: contractorId }),
+        this.userService.getUser({ id: contractedId }),
       ]);
       const newDate = new Date();
       const pendingState =
