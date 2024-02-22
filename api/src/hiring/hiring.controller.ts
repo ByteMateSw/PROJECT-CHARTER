@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { HiringService } from './hiring.service';
 import { UpdateHireDTO } from './uptadeHiring.dto';
-import { ResponseMessage } from 'src/utils/types/message.type';
+import { ResponseMessage } from '../utils/types/functions.type';
 
 @Controller('hiring')
 export class HiringController {

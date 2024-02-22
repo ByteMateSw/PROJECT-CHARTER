@@ -3,7 +3,11 @@ import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
 import { HashService } from './hash.service';
 import { JwtService } from '@nestjs/jwt';
-import { ForbiddenException, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import argon2 from 'argon2';
 
@@ -35,11 +39,10 @@ describe('AuthService', () => {
   const mockConfigValue = 'config';
 
   let mockUserService = {
-    getUserById: jest.fn().mockResolvedValue(mockUser),
-    getByEmail: jest.fn().mockResolvedValue(mockUser),
+    getUser: jest.fn().mockResolvedValue(mockUser),
     createUser: jest.fn().mockResolvedValue(mockUser),
     getRole: jest.fn().mockResolvedValue(mockRole),
-    getPassword: jest.fn().mockResolvedValue(mockUser.password),
+    getUserPassword: jest.fn().mockResolvedValue(mockUser.password),
     getRefreshToken: jest.fn().mockResolvedValue(mockToken),
     updateRefreshToken: jest.fn(),
   };
@@ -89,7 +92,9 @@ describe('AuthService', () => {
       jest.spyOn(service, 'getTokens').mockResolvedValueOnce(mockTokens);
       jest.spyOn(service, 'updateRefreshToken').mockResolvedValueOnce();
       expect(await service.login(mockEmail)).toEqual(mockTokens);
-      expect(mockUserService.getByEmail).toHaveBeenCalledWith(mockEmail);
+      expect(mockUserService.getUser).toHaveBeenCalledWith({
+        email: mockEmail,
+      });
       expect(mockUserService.getRole).toHaveBeenCalledWith(mockUser.id);
       expect(service.getTokens).toHaveBeenCalledWith(mockPayload);
       expect(service.updateRefreshToken).toHaveBeenCalledWith(
@@ -99,7 +104,7 @@ describe('AuthService', () => {
     });
 
     it('should not found the user with this credentials', async () => {
-      mockUserService.getByEmail.mockResolvedValueOnce(null);
+      mockUserService.getUser.mockResolvedValueOnce(null);
       expect(async () => await service.login(mockEmail)).rejects.toThrow(
         new UnauthorizedException(),
       );
@@ -128,7 +133,7 @@ describe('AuthService', () => {
       jest.spyOn(service, 'getTokens').mockResolvedValueOnce(mockTokens);
       jest.spyOn(service, 'updateRefreshToken').mockResolvedValueOnce();
       expect(await service.refreshTokens(id, mockToken)).toEqual(mockTokens);
-      expect(mockUserService.getUserById).toHaveBeenCalledWith(id);
+      expect(mockUserService.getUser).toHaveBeenCalledWith({ id });
       expect(mockUserService.getRole).toHaveBeenCalledWith(id);
       expect(mockUserService.getRefreshToken).toHaveBeenCalledWith(id);
       expect(argon2.verify).toHaveBeenCalledWith(mockToken, mockToken);
@@ -144,11 +149,11 @@ describe('AuthService', () => {
     });
 
     it('should thrown an error when does not find an user', async () => {
-      mockUserService.getUserById.mockResolvedValueOnce(null);
+      mockUserService.getUser.mockResolvedValueOnce(null);
       expect(
         async () => await service.refreshTokens(id, mockToken),
       ).rejects.toThrow(new ForbiddenException('Access Denied'));
-      expect(mockUserService.getUserById).toHaveBeenCalledWith(id);
+      expect(mockUserService.getUser).toHaveBeenCalledWith({ id });
     });
 
     it('should thrown an error when user does not have a refresh token', async () => {
@@ -156,7 +161,7 @@ describe('AuthService', () => {
       expect(
         async () => await service.refreshTokens(id, mockToken),
       ).rejects.toThrow(new ForbiddenException('Access Denied'));
-      expect(mockUserService.getUserById).toHaveBeenCalledWith(id);
+      expect(mockUserService.getUser).toHaveBeenCalledWith({ id });
       expect(mockUserService.getRole).toHaveBeenCalledWith(id);
       expect(mockUserService.getRefreshToken).toHaveBeenCalledWith(id);
     });
@@ -166,7 +171,7 @@ describe('AuthService', () => {
       expect(
         async () => await service.refreshTokens(id, mockToken),
       ).rejects.toThrow(new ForbiddenException('Access Denied'));
-      expect(mockUserService.getUserById).toHaveBeenCalledWith(id);
+      expect(mockUserService.getUser).toHaveBeenCalledWith({ id });
       expect(mockUserService.getRole).toHaveBeenCalledWith(id);
       expect(mockUserService.getRefreshToken).toHaveBeenCalledWith(id);
     });
@@ -204,8 +209,10 @@ describe('AuthService', () => {
 
     it('should validate an user', async () => {
       expect(await service.validate(mockEmail, mockPassword)).toEqual(mockUser);
-      expect(mockUserService.getByEmail).toHaveBeenCalledWith(mockEmail);
-      expect(mockUserService.getPassword).toHaveBeenCalledWith(mockUser.id);
+      expect(mockUserService.getUser).toHaveBeenCalledWith({
+        email: mockEmail,
+      });
+      expect(mockUserService.getUserPassword).toHaveBeenCalledWith(mockUser.id);
       expect(mockHashService.compareHash).toHaveBeenCalledWith(
         mockUser.password,
         mockPassword,
@@ -213,17 +220,17 @@ describe('AuthService', () => {
     });
 
     it('should does not found the user', async () => {
-      mockUserService.getByEmail.mockResolvedValueOnce(null);
+      mockUserService.getUser.mockResolvedValueOnce(null);
       expect(
         async () => await service.validate(mockEmail, mockPassword),
-      ).rejects.toThrow(new UnauthorizedException());
+      ).rejects.toThrow(new BadRequestException('Credenciales incorrectas'));
     });
 
     it('should failed to compare the password with the hash storaged', async () => {
       mockHashService.compareHash.mockResolvedValueOnce(false);
       expect(
         async () => await service.validate(mockEmail, mockPassword),
-      ).rejects.toThrow(new UnauthorizedException());
+      ).rejects.toThrow(new BadRequestException('Credenciales incorrectas'));
     });
   });
 });

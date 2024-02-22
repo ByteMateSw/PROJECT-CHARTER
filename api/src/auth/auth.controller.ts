@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpCode,
+  HttpStatus,
   Post,
   Res,
   UseGuards,
@@ -15,7 +16,7 @@ import { HashPipe } from '../utils/pipes/hash.pipe';
 import { Response } from 'express';
 import { LocalAuthGuard } from './local/local-auth.guard';
 import { AccessToken, Tokens } from './jwt/token.type';
-import { ResponseMessage } from '../utils/types/message.type';
+import { ResponseMessage } from '../utils/types/functions.type';
 import { RefreshTokenCookie } from './jwt/refresh.param';
 import { RefreshTokenGuard } from './jwt/refresh.guard';
 import { UserParamID } from './jwt/user.param';
@@ -35,6 +36,7 @@ export class AuthController {
       : { message: 'No se pudo crear el usuario' };
   }
 
+  @HttpCode(HttpStatus.ACCEPTED)
   @UseGuards(LocalAuthGuard, ToSGuard)
   @Post('login')
   async loginUser(

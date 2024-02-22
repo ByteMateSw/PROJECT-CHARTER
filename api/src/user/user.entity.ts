@@ -15,7 +15,7 @@ import { City } from '../city/city.entity';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column()
@@ -45,7 +45,7 @@ export class User {
   @Column({ type: 'date' })
   birthday: Date;
 
-  @Column({ default: false })
+  @Column({ default: false, select: false })
   acceptedToS: boolean;
 
   @Column()
