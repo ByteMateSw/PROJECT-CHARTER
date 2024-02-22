@@ -11,7 +11,7 @@ import { ISamesite } from '../interfaces/jwt.interface';
 import {
   createEnumErrorMessageFormatter,
   createErrorMessageFormatter,
-} from 'src/utils/validation/validate-util';
+} from '../../utils/validation/validate-util';
 
 export class JWTEnvironmentVariables {
   @IsDefined({
