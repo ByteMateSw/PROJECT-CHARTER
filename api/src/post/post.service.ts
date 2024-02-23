@@ -108,6 +108,8 @@ export class PostService {
       const savePost = await this.postRepository.save(uptadePost)
       return savePost
     } catch (error) {
+      console.error ('La publicacion no se ha podido actualizar')
+      throw new Error ('La publicacion no se ha podido actualizar')
 
     }
   }
