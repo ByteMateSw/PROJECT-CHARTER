@@ -1,4 +1,10 @@
-import { IsDefined, IsEnum, IsNumber, IsPositive } from 'class-validator';
+import {
+  IsDefined,
+  IsEnum,
+  IsNumber,
+  IsPositive,
+  IsUrl,
+} from 'class-validator';
 import { IEnvironment } from '../interfaces/app.interface';
 import {
   createEnumErrorMessageFormatter,
@@ -29,4 +35,21 @@ export class AppEnvironmentVariables {
     message: createErrorMessageFormatter('Debe ser un número positivo.'),
   })
   PORT: number;
+
+  @IsDefined({
+    message: createErrorMessageFormatter(
+      'Se requiere el origen de las llamadas a la API para la configuración de CORS.',
+    ),
+  })
+  @IsUrl(
+    {
+      require_port: false,
+      require_tld: false,
+      require_valid_protocol: false,
+    },
+    {
+      message: createErrorMessageFormatter('Debe ser una URL'),
+    },
+  )
+  ORIGIN: string;
 }

@@ -16,6 +16,12 @@ async function bootstrap() {
   );
   app.use(cookieParser());
   const configService = app.get(ConfigService);
+  app.enableCors({
+    origin: configService.get('app.origin'),
+    methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  });
   const port = configService.get('app.port');
   await app.listen(port);
 }
