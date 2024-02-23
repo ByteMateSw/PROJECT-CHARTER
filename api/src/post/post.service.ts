@@ -43,7 +43,7 @@ export class PostService {
     imageDataArray: Buffer[],
   ): Promise<Post> {
     try {
-      const user = await this.userService.getUserById(userId);
+      const user = await this.userService.getUser({ id:userId });
       const date: Date = new Date();
       const newPost = this.postRepository.create(postDto);
       newPost.creationDate = date;
@@ -126,7 +126,7 @@ export class PostService {
     }
   }
 
-  async getPostByName(name:string): Promise<Post>{
+  async getPostByName(title:string): Promise<Post>{
     try {
       const PostName = await this.postRepository.findOneBy ({title})
       return PostName

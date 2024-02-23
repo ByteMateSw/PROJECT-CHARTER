@@ -14,7 +14,6 @@ export class RefreshTokenStrategy extends PassportStrategy(
   private static cookieName: string = refreshCookieName;
 
   constructor(private configService: ConfigService) {
-    console.log(configService.get('jwt.refresh_secret'));
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         RefreshTokenStrategy.extractJWT,

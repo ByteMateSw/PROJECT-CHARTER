@@ -1,7 +1,8 @@
 import React from 'react'
 export default function home() {
   return (
-    <div className="flex w-full h-[3401px] relative bg-gradient-to-b from-slate-50 to-indigo-300">
+    <div className="relative w-[1903] h-[3401px] relative bg-gradient-to-b from-[#FBFCFF] to-[#A1AEF7]">
+    <div className='flex justify-start items-center'>
     <div className="w-[198px] h-[198px] left-[150px] top-[169px] absolute">
         <img src='./Figure5.svg'/>
         </div>/
@@ -17,7 +18,6 @@ export default function home() {
         <div className="w-[272px] h-[272px] left-[951px] top-[580.33px] absolute origin-top-left -rotate-45 justify-center items-center inline-flex">
             <img src="./Figure2.svg" alt='./vector2.svg'/>
         </div>
-
     <div className="w-[272px] h-[117.21px] left-[1168.23px] top-[-95px] absolute origin-top-left rotate-[40.57deg] justify-center items-center inline-flex">
         <img src= "./fig7.svg"/>
         </div> /
@@ -31,29 +31,13 @@ export default function home() {
     <div className="w-[159px] h-[159px] left-[1637px] top-[826px] absolute">
         <img src = "./Figure6.svg"/>
         </div>/
-    <div className="w-[1903px] h-[52px] left-0 top-0 absolute bg-slate-50 border-b border-neutral-900">
-        <div className="left-[16px] top-[11px] absolute justify-center items-center gap-2.5 inline-flex">
-            <div className="text-center text-neutral-900 text-2xl font-bold font-['Quicksand']">PROJECT CHARTER</div>
-        </div>
+    
          <div className="left-[16px] top-[194px] absolute flex-col justify-start items-start gap-12 inline-flex">
             <div className="text-black text-[64px] font-bold font-['Quicksand']">Haz realidad tus proyectos</div>
             <div className="text-black text-[64px] font-medium font-['Quicksand']">Conéctate con los mejores <br/>Encuentra talentos <br/>Contrata habilidades</div>
-    </div>
-        <div className="left-[1420px] top-[8px] absolute justify-start items-start gap-6 inline-flex">
-            <div className="p-2 bg-slate-50 rounded-lg border border-neutral-900 justify-center items-center gap-2.5 flex">
-                <div className="text-center text-neutral-900 text-base font-semibold font-['Quicksand']">Trabajos</div>
             </div>
-            <div className="p-2 bg-slate-50 rounded-lg border border-neutral-900 justify-center items-center gap-2.5 flex">
-                <div className="text-center text-neutral-900 text-base font-semibold font-['Quicksand']">Contratar</div>
-            </div>
-            <div className="p-2 bg-slate-50 rounded-lg border border-neutral-900 justify-center items-center gap-2.5 flex">
-                <div className="text-center text-neutral-900 text-base font-semibold font-['Quicksand']">Iniciar Sesión</div>
-            </div>
-            <div className="p-2 bg-slate-50 rounded-lg border border-neutral-900 justify-center items-center gap-2.5 flex">
-                <div className="text-center text-neutral-900 text-base font-semibold font-['Quicksand']">Registrarse</div>
-            </div>
-        </div>
-    </div>
+       
+   <div className='justify-end items-center'>
     <div className="w-[868.96px] h-[651px] left-[1172px] top-[194px] absolute">
         <div className="w-[868.96px] h-[657px] left-0 top-0 absolute">
             <img src="./group.svg"/>
@@ -74,9 +58,9 @@ export default function home() {
             <img src="./group11.svg"/>
         </div>
     </div>
-    
-    
-
+    </div>
+  
+    </div>
     </div>
   )
 }

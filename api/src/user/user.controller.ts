@@ -5,8 +5,7 @@ import {
   Get,
   NotFoundException,
   Param,
-  ParseIntPipe,
-  Put,
+  Patch,
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -18,7 +17,7 @@ import { Roles } from '../role/role.decorator';
 import { Role } from '../utils/enums/role.enum';
 import { User } from './user.entity';
 import { CustomParseIntPipe } from '../utils/pipes/parse-int.pipe';
-import { ResponseMessage } from '../utils/types/message.type';
+import { ResponseMessage } from '../utils/types/functions.type';
 
 @UseGuards(AccessTokenGuard)
 @Controller('user')
@@ -34,7 +33,7 @@ export class UserController {
   async getUserById(
     @Param('id', CustomParseIntPipe) id: number,
   ): Promise<User> {
-    const user = await this.userService.getUserById(id);
+    const user = await this.userService.getUser({ id });
     if (!user) throw new NotFoundException('No se encontró el usuario');
     return user;
   }
@@ -42,14 +41,16 @@ export class UserController {
   @Roles(Role.Admin)
   @UseGuards(RoleGuard)
   @Delete(':id')
-  async deleteUser(@Param('id') id: number): Promise<ResponseMessage> {
+  async deleteUser(
+    @Param('id', CustomParseIntPipe) id: number,
+  ): Promise<ResponseMessage> {
     await this.userService.deleteUser(id);
     return { message: 'El usuario ha sido borrado correctamente ' };
   }
 
-  @Put(':id')
+  @Patch(':id')
   async updateUser(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', CustomParseIntPipe) id: number,
     @Body(EmptyBodyPipe) updateUserDto: UpdateUserDto,
   ): Promise<ResponseMessage> {
     await this.userService.updateUser(id, updateUserDto);

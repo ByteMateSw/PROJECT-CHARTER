@@ -14,21 +14,18 @@ export class ToSGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
 
-    if (request.user?.acceptedToS != undefined) {
-      if (!request.user.acceptedToS)
-        throw new UnauthorizedException(
-          'No se aceptó los Términos y Condiciones del servicio.',
-        );
-      return true;
-    }
-
     if (request.body?.email) {
       const email: string = request.body.email;
 
-      const user = await this.userService.getByEmail(email);
-      if (!user) throw new BadRequestException('Bad credentials');
+      const existsEmail = await this.userService.existsEmail(email);
+      if (!existsEmail)
+        throw new BadRequestException('Credenciales incorrectas');
 
-      if (!user.acceptedToS)
+      const acceptedToS = await this.userService.isToSAcceptedByUser({
+        email,
+      });
+
+      if (!acceptedToS)
         throw new UnauthorizedException(
           'No se aceptó los Términos y Condiciones del servicio.',
         );
@@ -36,6 +33,6 @@ export class ToSGuard implements CanActivate {
       return true;
     }
 
-    throw new BadRequestException('Bad credentials');
+    throw new BadRequestException('Credenciales incorrectas');
   }
 }

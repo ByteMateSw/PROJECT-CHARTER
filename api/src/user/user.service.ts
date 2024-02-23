@@ -9,8 +9,8 @@ import { Repository } from 'typeorm';
 import { RegisterDto } from '../auth/dto/register.dto';
 import { Role } from '../role/role.entity';
 import { Role as RoleEmun } from '../utils/enums/role.enum';
-import { UserSelection } from './user-select';
 import { UpdateUserDto } from './dto/updateUser.dto';
+import { EmailAndOrId } from 'src/utils/types/functions.type';
 
 @Injectable()
 export class UserService {
@@ -29,16 +29,18 @@ export class UserService {
     });
   }
 
-  async getUserById(id: number): Promise<User> {
-    return await this.userRepository.findOneBy({ id });
-  }
-
-  async getByEmail(email: string): Promise<User> {
-    return await this.userRepository.findOneBy({ email });
+  async getUser({ id, email }: EmailAndOrId): Promise<User> {
+    return await this.userRepository.findOne({
+      where: { id, email },
+      relations: { city: true },
+      select: {
+        city: { id: false, name: true },
+      },
+    });
   }
 
   async createUser(user: RegisterDto): Promise<User> {
-    const existEmail = await this.hasEmail(user.email);
+    const existEmail = await this.existsEmail(user.email);
     if (existEmail) throw new BadRequestException('El Email está en uso');
     const newUser = this.userRepository.create(user);
     const role = await this.roleRepository.findOneBy({ name: RoleEmun.User });
@@ -47,30 +49,41 @@ export class UserService {
     return newUser;
   }
 
-  async hasEmail(email: string): Promise<boolean> {
+  async existsEmail(email: string): Promise<boolean> {
     return await this.userRepository.existsBy({ email });
   }
 
-  async deleteUser(id: number): Promise<User> {
-    const user = await this.userRepository.findOneBy({ id });
-    if (!user) throw new NotFoundException('El usuario no existe');
-    user.isDeleted = true;
-    await this.userRepository.save(user);
-    return user;
+  async deleteUser(id: number): Promise<void> {
+    const existsUser = await this.userRepository.existsBy({ id });
+    if (!existsUser) throw new NotFoundException('El usuario no existe');
+    await this.userRepository.update({ id }, { isDeleted: true });
   }
 
   async updateUser(id: number, user: UpdateUserDto): Promise<UpdateUserDto> {
     const userFound = await this.userRepository.existsBy({ id });
     if (!userFound) throw new NotFoundException('El usuario no existe');
+    if (user.email !== undefined) {
+      const existsEmail = await this.userRepository.existsBy({
+        email: user.email,
+      });
+      if (existsEmail) throw new BadRequestException('El email ya existe');
+    }
     await this.userRepository.update({ id }, user);
     return user;
   }
 
-  async accepteToSUser(id: number): Promise<void> {
-    const user = await this.getUserById(id);
-    if (!user) throw new BadRequestException('Bad credentials');
-    user.acceptedToS = true;
-    await this.userRepository.save(user);
+  async isToSAcceptedByUser({ id, email }: EmailAndOrId): Promise<boolean> {
+    const user = await this.userRepository.findOne({
+      where: { id, email },
+      select: { acceptedToS: true },
+    });
+    return user.acceptedToS;
+  }
+
+  async acceptToSUser(id: number): Promise<void> {
+    const existsUser = await this.userRepository.existsBy({ id });
+    if (!existsUser) throw new BadRequestException('Credenciales incorrectas');
+    await this.userRepository.update({ id }, { acceptedToS: true });
   }
 
   async getRole(id: number): Promise<string> {
@@ -78,18 +91,17 @@ export class UserService {
       where: { id },
       relations: { role: true },
       select: {
-        ...UserSelection,
+        id: true,
         role: { id: false, name: true },
       },
     });
     return user.role.name;
   }
 
-  async getPassword(id: number): Promise<string> {
+  async getUserPassword(id: number): Promise<string> {
     const user = await this.userRepository.findOne({
       where: { id },
       select: {
-        ...UserSelection,
         password: true,
       },
     });
@@ -99,7 +111,7 @@ export class UserService {
   async getRefreshToken(id: number): Promise<string> {
     const user = await this.userRepository.findOne({
       where: { id },
-      select: { ...UserSelection, refreshToken: true },
+      select: { refreshToken: true },
     });
     if (!user) throw new NotFoundException('El usuario no existe');
     return user.refreshToken;

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   UnauthorizedException,
@@ -25,7 +26,7 @@ export class AuthService {
   ) {}
 
   async login(email: string): Promise<Tokens> {
-    const user = await this.userService.getByEmail(email);
+    const user = await this.userService.getUser({ email });
     if (!user) throw new UnauthorizedException();
     const role = await this.userService.getRole(user.id);
 
@@ -49,7 +50,7 @@ export class AuthService {
   }
 
   async refreshTokens(id: number, refreshToken: string): Promise<Tokens> {
-    const user = await this.userService.getUserById(id);
+    const user = await this.userService.getUser({ id });
     if (!user) throw new ForbiddenException('Access Denied');
 
     const role = await this.userService.getRole(id);
@@ -78,7 +79,7 @@ export class AuthService {
       httpOnly: true,
       secure: this.configService.get('jwt.secure'),
       sameSite: this.configService.get('jwt.samesite'),
-      path: '/',
+      path: '/auth/refresh',
       maxAge: this.configService.get('jwt.maxAge'),
     });
   }
@@ -90,12 +91,12 @@ export class AuthService {
   }
 
   async validate(email: string, password: string): Promise<User> {
-    const user = await this.userService.getByEmail(email);
-    if (!user) throw new UnauthorizedException();
+    const user = await this.userService.getUser({ email });
+    if (!user) throw new BadRequestException('Credenciales incorrectas');
 
-    const hash = await this.userService.getPassword(user.id);
+    const hash = await this.userService.getUserPassword(user.id);
     const passMatch = await this.hashService.compareHash(hash, password);
-    if (!passMatch) throw new UnauthorizedException();
+    if (!passMatch) throw new BadRequestException('Credenciales incorrectas');
     return user;
   }
 }
