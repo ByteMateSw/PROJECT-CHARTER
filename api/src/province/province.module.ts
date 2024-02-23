@@ -3,7 +3,7 @@ import { ProvinceController } from './province.controller';
 import { ProvinceService } from './province.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Province } from './province.entity';
-import { City } from 'src/city/city.entity';
+import { City } from '../city/city.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Province, City])],

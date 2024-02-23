@@ -8,37 +8,52 @@ import {
   IsAlpha,
   MaxLength,
   IsOptional,
-  IsNumberString,
 } from 'class-validator';
 
 export class RegisterDto {
-  @IsString()
-  @IsNotEmpty()
-  @IsAlpha()
+  @IsString({ message: 'El nombre debe ser una cadena de caracteres.' })
+  @IsNotEmpty({ message: 'El nombre no puede estar vacío.' })
+  @IsAlpha('es-AR', { message: 'El nombre debe contener solo letras.' })
   firstName: string;
 
-  @IsString()
-  @IsNotEmpty()
-  @IsAlpha()
+  @IsString({ message: 'El apellido debe ser una cadena de caracteres.' })
+  @IsNotEmpty({ message: 'El apellido no puede estar vacío.' })
+  @IsAlpha('es-AR', { message: 'El apellido debe contener solo letras.' })
   lastName: string;
 
-  @IsEmail()
+  @IsEmail({}, { message: 'Debe ser un email válido' })
   email: string;
 
-  @IsString()
-  @IsNotEmpty()
-  @IsStrongPassword()
+  @IsString({ message: 'La contraseña debe ser una cadena de caracteres.' })
+  @IsNotEmpty({ message: 'La contraseña no puede estar vacía.' })
+  @IsStrongPassword(
+    {
+      minLength: 8,
+      minLowercase: 1,
+      minSymbols: 1,
+      minUppercase: 1,
+      minNumbers: 1,
+    },
+    {
+      message:
+        'La contraseña debe contener al menos 8 carácteres, de los cuales 1 debe ser un símbolo, un número, una letra mayúscula y minúscula',
+    },
+  )
   password: string;
 
   @IsOptional()
-  @IsPhoneNumber()
-  @MaxLength(15)
+  @IsPhoneNumber(undefined, {
+    message: 'El número de teléfono debe de tener un formato válido',
+  })
   numberPhone?: string;
 
-  @IsNumberString()
-  @MaxLength(15)
+  @IsString({ message: 'El DNI debe ser una cadena de caracteres.' })
+  @MaxLength(20, { message: 'El DNI debe de tener hasta 20 caracteres.' })
   dni: string;
 
-  @IsDateString()
+  @IsDateString(
+    { strictSeparator: false },
+    { message: 'La fecha de cumpleaños debe de ser una fecha válida.' },
+  )
   birthday: Date;
 }

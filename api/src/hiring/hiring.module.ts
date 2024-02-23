@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Hiring } from './hiring.entity';
 import { HiringService } from './hiring.service';
 import { HiringController } from './hiring.controller';
-import { UserModule } from 'src/user/user.module';
+import { UserModule } from '../user/user.module';
 import { StateHiringModule } from './state/stateHiring.module';
 
 @Module({

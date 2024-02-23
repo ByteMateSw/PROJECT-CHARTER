@@ -11,32 +11,49 @@ import {
 
 export class UpdateUserDto {
   @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  @IsAlpha()
+  @IsString({ message: 'El nombre debe ser una cadena de caracteres.' })
+  @IsNotEmpty({ message: 'El nombre no puede estar vacío.' })
+  @IsAlpha('es-AR', { message: 'El nombre debe contener solo letras.' })
   firstName?: string;
 
   @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  @IsAlpha()
+  @IsString({ message: 'El apellido debe ser una cadena de caracteres.' })
+  @IsNotEmpty({ message: 'El apellido no puede estar vacío.' })
+  @IsAlpha('es-AR', { message: 'El apellido debe contener solo letras.' })
   lastName?: string;
 
   @IsOptional()
-  @IsEmail()
+  @IsEmail({}, { message: 'Debe ser un email válido' })
   email?: string;
 
   @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  @IsStrongPassword()
+  @IsString({ message: 'La contraseña debe ser una cadena de caracteres.' })
+  @IsNotEmpty({ message: 'La contraseña no puede estar vacía.' })
+  @IsStrongPassword(
+    {
+      minLength: 8,
+      minLowercase: 1,
+      minSymbols: 1,
+      minUppercase: 1,
+      minNumbers: 1,
+    },
+    {
+      message:
+        'La contraseña debe contener al menos 8 carácteres, de los cuales 1 debe ser un símbolo, un número, una letra mayúscula y minúscula',
+    },
+  )
   password?: string;
 
   @IsOptional()
-  @IsPhoneNumber()
+  @IsPhoneNumber(undefined, {
+    message: 'El número de teléfono debe de tener un formato válido',
+  })
   numberPhone?: string;
 
   @IsOptional()
-  @IsDateString()
+  @IsDateString(
+    { strictSeparator: false },
+    { message: 'La fecha de cumpleaños debe de ser una fecha válida.' },
+  )
   birthday?: Date;
 }
