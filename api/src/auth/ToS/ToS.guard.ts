@@ -14,7 +14,7 @@ export class ToSGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
 
-    if (request.body?.email) {
+    if (request.body && request.body.email) {
       const email: string = request.body.email;
 
       const existsEmail = await this.userService.existsEmail(email);

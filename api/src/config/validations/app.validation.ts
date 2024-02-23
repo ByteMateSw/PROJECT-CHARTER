@@ -1,15 +1,9 @@
-import {
-  IsDefined,
-  IsEnum,
-  IsNumber,
-  IsPositive,
-  IsUrl,
-} from 'class-validator';
+import { IsDefined, IsEnum, IsNumber, IsPositive } from 'class-validator';
 import { IEnvironment } from '../interfaces/app.interface';
 import {
   createEnumErrorMessageFormatter,
   createErrorMessageFormatter,
-} from 'src/utils/validation/validate-util';
+} from '../../utils/validation/validate-util';
 
 export class AppEnvironmentVariables {
   @IsDefined({

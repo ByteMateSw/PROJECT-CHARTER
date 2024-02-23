@@ -45,7 +45,7 @@ export class UserController {
     @Param('id', CustomParseIntPipe) id: number,
   ): Promise<ResponseMessage> {
     await this.userService.deleteUser(id);
-    return { message: 'El usuario ha sido borrado correctamente ' };
+    return { message: 'El usuario ha sido borrado correctamente' };
   }
 
   @Patch(':id')
