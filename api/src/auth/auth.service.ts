@@ -51,14 +51,15 @@ export class AuthService {
 
   async refreshTokens(id: number, refreshToken: string): Promise<Tokens> {
     const user = await this.userService.getUser({ id });
-    if (!user) throw new ForbiddenException('Access Denied');
+    if (!user) throw new UnauthorizedException('Accesso denegado');
 
     const role = await this.userService.getRole(id);
     const savedToken = await this.userService.getRefreshToken(id);
-    if (!savedToken) throw new ForbiddenException('Access Denied');
+    if (!savedToken) throw new UnauthorizedException('Accesso denegado');
 
     const refreshTokenMatches = await verifyData(savedToken, refreshToken);
-    if (!refreshTokenMatches) throw new ForbiddenException('Access Denied');
+    if (!refreshTokenMatches)
+      throw new UnauthorizedException('Accesso denegado');
 
     const tokens = await this.getTokens({
       sub: user.id,
