@@ -12,7 +12,7 @@ import { Review } from '../review/review.entity';
 import { Post } from '../post/post.entity';
 import { Role } from '../role/role.entity';
 import { City } from '../city/city.entity';
-import { Notifications } from 'src/notifications/notifications.entity';
+import { Notifications } from '../notifications/notifications.entity';
 
 @Entity()
 export class User {

@@ -1,6 +1,6 @@
 
 export class CreateNotificationsDTO{
     title: string
-    creationDate:Date
+    creationTime:Date
     description: string
 }
