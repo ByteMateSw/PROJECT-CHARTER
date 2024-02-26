@@ -10,7 +10,7 @@ import { RegisterDto } from '../auth/dto/register.dto';
 import { Role } from '../role/role.entity';
 import { Role as RoleEmun } from '../utils/enums/role.enum';
 import { UpdateUserDto } from './dto/updateUser.dto';
-import { EmailAndOrId } from 'src/utils/types/functions.type';
+import { EmailAndOrId } from '../utils/types/functions.type';
 
 @Injectable()
 export class UserService {

@@ -7,4 +7,5 @@ export enum IEnvironment {
 export interface IAppConfig {
   nodeEnv: IEnvironment;
   port: number;
+  origin: string;
 }
