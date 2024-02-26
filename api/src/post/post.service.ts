@@ -45,6 +45,9 @@ export class PostService {
     try {
       const user = await this.userService.getUser({ id:userId });
       const date: Date = new Date();
+      if (postDto.price !== undefined && (postDto.price < 1 || postDto.price > 1000000)) {
+        throw new Error(`El precio debe estar entre ${1} y ${1000000}.`);
+      }
       const newPost = this.postRepository.create(postDto);
       newPost.creationDate = date;
       newPost.user = user;
