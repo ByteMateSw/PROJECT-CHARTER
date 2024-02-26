@@ -10,5 +10,6 @@ export default registerAs('app', (): IAppConfig => {
   return {
     nodeEnv: process.env.NODE_ENV as IEnvironment,
     port: parseInt(process.env.PORT),
+    origin: process.env.ORIGIN,
   };
 });

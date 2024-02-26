@@ -22,7 +22,7 @@ describe('UserController', () => {
   };
 
   const mockDeleteMessage = {
-    message: 'El usuario ha sido borrado correctamente ',
+    message: 'El usuario ha sido borrado correctamente',
   };
 
   const mockUpdateMessage = {

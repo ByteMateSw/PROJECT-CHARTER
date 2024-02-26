@@ -5,3 +5,8 @@ export interface IDatabaseConfig {
   pass: string;
   port: number;
 }
+
+export enum DatabaseNamespaces {
+  Test = 'testdb',
+  Production = 'database',
+}

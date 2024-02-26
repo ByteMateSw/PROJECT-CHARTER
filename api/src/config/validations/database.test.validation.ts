@@ -9,7 +9,7 @@ import {
 } from 'class-validator';
 import { createErrorMessageFormatter } from '../../utils/validation/validate-util';
 
-export class DatabaseEnvironmentVariables {
+export class DatabaseTestEnvironmentVariables {
   @IsDefined({
     message: createErrorMessageFormatter(
       'Se requiere la dirección URL de la base de datos.',
@@ -25,7 +25,7 @@ export class DatabaseEnvironmentVariables {
       message: createErrorMessageFormatter('Debe ser una URL'),
     },
   )
-  DATABASE_HOST: string;
+  TEST_DATABASE_HOST: string;
 
   @IsDefined({
     message: createErrorMessageFormatter(
@@ -35,7 +35,7 @@ export class DatabaseEnvironmentVariables {
   @IsString({
     message: createErrorMessageFormatter('Debe ser un string.'),
   })
-  DATABASE_NAME: string;
+  TEST_DATABASE_NAME: string;
 
   @IsDefined({
     message: createErrorMessageFormatter(
@@ -45,7 +45,7 @@ export class DatabaseEnvironmentVariables {
   @IsString({
     message: createErrorMessageFormatter('Debe ser un string.'),
   })
-  DATABASE_USER: string;
+  TEST_DATABASE_USER: string;
 
   @IsDefined({
     message: createErrorMessageFormatter(
@@ -55,7 +55,7 @@ export class DatabaseEnvironmentVariables {
   @IsString({
     message: createErrorMessageFormatter('Debe ser un string'),
   })
-  DATABASE_PASSWORD: string;
+  TEST_DATABASE_PASSWORD: string;
 
   @IsNumber(
     { allowInfinity: false, allowNaN: false, maxDecimalPlaces: 0 },
