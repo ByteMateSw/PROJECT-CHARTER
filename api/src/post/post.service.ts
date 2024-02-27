@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Post } from './post.entity';
 import { ImagePost } from '../image/imagePost.entity';
 import { CreatePostDto } from './dto/createPost.dto';
@@ -18,12 +18,14 @@ export class PostService {
   ) {}
 
   async getAllPosts(): Promise<Post[]> {
-    return await this.postRepository.find();
+    return await this.postRepository.find({
+      where: { user: { isDeleted: false } },
+    });
   }
 
   async getPostBy({ id, title }: TitleAndOrId): Promise<Post> {
     const findedPost = await this.postRepository.findOne({
-      where: { id, title },
+      where: { id, title, user: { isDeleted: false } },
       relations: { images: true },
     });
     if (!findedPost)
@@ -92,10 +94,11 @@ export class PostService {
   async searchPost(query: string): Promise<Post[]> {
     return this.postRepository
       .createQueryBuilder('post')
-      .select()
+      .innerJoin('post.user', 'user')
       .where('"searchVector" @@ websearch_to_tsquery(:query)', {
         query,
       })
+      .andWhere('user.isDeleted = :isDeleted', { isDeleted: false })
       .orderBy('ts_rank("searchVector", websearch_to_tsquery(:query))', 'DESC')
       .getMany();
   }
