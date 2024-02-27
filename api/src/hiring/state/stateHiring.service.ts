@@ -13,7 +13,7 @@ export class StateHiringService {
 
   async createStatusHire(name: string) {
     try {
-      const existingHireStatus = this.getStatusByName(name);
+      const existingHireStatus = await this.getStatusByName(name);
       if (existingHireStatus) {
         throw new Error('Error ya existe un estado con ese nombre');
       }
@@ -36,8 +36,10 @@ export class StateHiringService {
 
   async deleteStatusHire(id: number):Promise<ResponseMessage>{
     try {
-      const deleteStatusHire = this.stateHiringRepository.findOneBy ({ id })
-      if (!deleteStatusHire)throw new NotFoundException ('El estado del contrato no existe')
+      const deleteStatusHire = await this.stateHiringRepository.findOneBy ({ id })
+      if (!deleteStatusHire) {
+        throw new NotFoundException ('El estado del contrato no existe')
+      }
       await this.stateHiringRepository.delete(id)
       return { message: 'El estado del contrato se ha borrado correctamente' };
     } catch (error) {
@@ -48,7 +50,7 @@ export class StateHiringService {
 
   async updateStatusHire(id: number, UpdateStateHireDTO): Promise<StateHiring> {
     try {
-      const hireFound = this.stateHiringRepository.findOneBy({ id })
+      const hireFound = await this.stateHiringRepository.findOneBy({ id })
       if (!hireFound) throw new NotFoundException('El estado del contrato no existe')
       await this.stateHiringRepository.update(id, UpdateStateHireDTO);
       return await this.stateHiringRepository.findOneByOrFail({ id });
