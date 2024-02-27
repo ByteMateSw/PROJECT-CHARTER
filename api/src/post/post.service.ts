@@ -88,4 +88,15 @@ export class PostService {
   async existsPost(id: number): Promise<boolean> {
     return await this.postRepository.existsBy({ id });
   }
+
+  async searchPost(query: string): Promise<Post[]> {
+    return this.postRepository
+      .createQueryBuilder('post')
+      .select()
+      .where('"searchVector" @@ websearch_to_tsquery(:query)', {
+        query,
+      })
+      .orderBy('ts_rank("searchVector", websearch_to_tsquery(:query))', 'DESC')
+      .getMany();
+  }
 }

@@ -10,6 +10,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -34,6 +35,11 @@ export class PostController {
   @Get()
   async getAllPosts(): Promise<PostEntity[]> {
     return await this.postService.getAllPosts();
+  }
+
+  @Get('search')
+  async getPostByName(@Query('v') query: string): Promise<PostEntity[]> {
+    return await this.postService.searchPost(query);
   }
 
   @UseGuards(AccessTokenGuard)
@@ -88,15 +94,5 @@ export class PostController {
   async deletePost(@Param('id', CustomParseIntPipe) postId: number) {
     await this.postService.deletePost(postId);
     return 'La publicación se ha borrado correctamente';
-  }
-
-  @Get(':search')
-  async getPostByName(title: string): Promise<string> {
-    try {
-      await this.postService.getPostBy({ title });
-      return 'Se han encontrado las siguientes publicaciones';
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
-    }
   }
 }
