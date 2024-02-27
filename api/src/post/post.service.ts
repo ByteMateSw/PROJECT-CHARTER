@@ -29,11 +29,11 @@ export class PostService {
 
   async getPostById(id: number): Promise<Post> {
     try {
-      const findedPost = await this.postRepository.findOneByOrFail({ id });
+      const findedPost = await this.postRepository.findOneOrFail({ where: { id } });
       return findedPost;
     } catch (error) {
       console.error('Error al obtener el post solicitado', error.message);
-      throw new error('Error al obtener el post solicitado');
+      throw error;
     }
   }
 
@@ -55,8 +55,8 @@ export class PostService {
       await this.imagePostRepository.save(imagePosts);
       return newPost;
     } catch (error) {
-      console.error('Error al crear la publicación', error.message);
-      throw new Error('Error al crear la publicación');
+      console.error('Error al crear la publicación', error);
+      throw error;
     }
   }
 
@@ -74,7 +74,7 @@ export class PostService {
       return await this.postRepository.save(post);
     } catch (error) {
       console.error('Error al añadir imágenes', error.message);
-      throw new Error('Error al añadr imágenes');
+      throw new Error('Error al añadir imágenes');
     }
   }
 
