@@ -152,7 +152,7 @@ describe('AuthService', () => {
       mockUserService.getUser.mockResolvedValueOnce(null);
       expect(
         async () => await service.refreshTokens(id, mockToken),
-      ).rejects.toThrow(new ForbiddenException('Access Denied'));
+      ).rejects.toThrow(new ForbiddenException('Accesso denegado'));
       expect(mockUserService.getUser).toHaveBeenCalledWith({ id });
     });
 
@@ -160,7 +160,7 @@ describe('AuthService', () => {
       mockUserService.getRefreshToken.mockResolvedValueOnce(null);
       expect(
         async () => await service.refreshTokens(id, mockToken),
-      ).rejects.toThrow(new ForbiddenException('Access Denied'));
+      ).rejects.toThrow(new ForbiddenException('Accesso denegado'));
       expect(mockUserService.getUser).toHaveBeenCalledWith({ id });
       expect(mockUserService.getRole).toHaveBeenCalledWith(id);
       expect(mockUserService.getRefreshToken).toHaveBeenCalledWith(id);
@@ -170,7 +170,7 @@ describe('AuthService', () => {
       jest.spyOn(argon2, 'verify').mockResolvedValueOnce(false);
       expect(
         async () => await service.refreshTokens(id, mockToken),
-      ).rejects.toThrow(new ForbiddenException('Access Denied'));
+      ).rejects.toThrow(new ForbiddenException('Accesso denegado'));
       expect(mockUserService.getUser).toHaveBeenCalledWith({ id });
       expect(mockUserService.getRole).toHaveBeenCalledWith(id);
       expect(mockUserService.getRefreshToken).toHaveBeenCalledWith(id);
