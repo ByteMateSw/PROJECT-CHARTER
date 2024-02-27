@@ -1,5 +1,6 @@
-import { Post } from 'src/post/post.entity';
-import { User } from 'src/user/user.entity';
+import { Post } from '../../post/post.entity';
+import { User } from '../../user/user.entity';
+import { Role } from '../enums/role.enum';
 
 export type ResponseMessage = { message: string };
 
@@ -19,3 +20,5 @@ export type EmailAndOrId = RequireAtLeastOne<EmailAndId>;
 export type TitleAndOrId = RequireAtLeastOne<TitleAndId>;
 
 export type File = Express.Multer.File;
+
+export type UserParam = { id: number; email: string; role: Role };
