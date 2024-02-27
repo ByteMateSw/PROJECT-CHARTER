@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
-import { Repository } from 'typeorm';
+import { Repository, Timestamp } from 'typeorm';
 import { Notifications } from './notifications.entity';
 import { CreateNotificationsDTO } from './dto/notification.dto';
 import { Cron, CronExpression } from '@nestjs/schedule';
@@ -18,29 +18,46 @@ export class NotificationsService {
     notificationDto: CreateNotificationsDTO,
   ): Promise<Notifications> {
     const user = await this.userService.getUser({ id });
+    if (!user) throw new Error('No se ha encontrado el usuario');
     const timeStamp = new Date();
+    if (!Timestamp) throw new Error('No se ha podido crear la fecha');
     const expireAt = new Date();
+    if (!expireAt)
+      throw new Error('No se ha podido crear la fecha de expiración');
     const notifications =
       await this.NotificationsRepository.create(notificationDto);
     notifications.creationTime = timeStamp;
     expireAt.setDate(notifications.expireAt.getDate() + 15);
     notifications.expireAt = expireAt;
     notifications.user = user;
-    await this.NotificationsRepository.save(notifications);
+    if (!notifications)
+      throw new Error('No se ha podido crear la notificación');
+    const saveNotifications =
+      await this.NotificationsRepository.save(notifications);
+    if (!saveNotifications)
+      throw new Error('No se ha podido guardar la notificación');
     return notifications;
   }
 
   @Cron(CronExpression.EVERY_DAY_AT_10PM)
   async CleanExpiredNotifications(): Promise<string> {
     const now = new Date();
+    if (!now) throw new Error('No se ha podido crear la fecha');
     const expirationDate = new Date();
     expirationDate.setDate(expirationDate.getDate() - 15);
+    if (!expirationDate)
+      throw new Error(
+        'No se ha podido crear la fecha de eliminación de expiracion',
+      );
 
-    await this.NotificationsRepository.createQueryBuilder()
-      .delete()
-      .from(Notifications)
-      .where('expireAt <= :expirationDate', { expirationDate })
-      .execute();
+    const deleteNotifications =
+      await this.NotificationsRepository.createQueryBuilder()
+        .delete()
+        .from(Notifications)
+        .where('expireAt <= :expirationDate', { expirationDate })
+        .execute();
+    if (!deleteNotifications)
+      throw new Error('No se ha podido borrar las notificaciones expiradas');
     return 'Se han borrado todas las notificaciones expiradas';
   }
 
@@ -48,11 +65,17 @@ export class NotificationsService {
     const ActiveNotif = this.NotificationsRepository.find({
       where: { isDeleted: false },
     });
+    if (!ActiveNotif)
+      throw new Error(
+        'No se han podido encontrar todas las notificaciones activas',
+      );
     return ActiveNotif;
   }
 
   async getNotificationsById(id: number): Promise<Notifications> {
     const foundNotif = await this.NotificationsRepository.findOneBy({ id });
+    if (!foundNotif)
+      throw new Error('No se han podido encontrar la notificación por ID');
     return foundNotif;
   }
 
@@ -62,17 +85,20 @@ export class NotificationsService {
   ): Promise<Notifications> {
     const notifFound = await this.NotificationsRepository.findOneBy({ id });
     if (!notifFound) throw new Error('La notificación no existe');
-
-    const uptadeNotif = { ...notifFound, ...this.uptadeNotifications };
-    await this.NotificationsRepository.save(uptadeNotif);
-    return uptadeNotif;
+    const updateNotif = { ...notifFound, ...this.uptadeNotifications };
+    if (!updateNotif) throw new Error('No se pudo actualizar la calificación');
+    const saveNotif = this.NotificationsRepository.save(updateNotif);
+    if (!saveNotif)
+      throw new Error('No se pudo guardar la actualización de la calificación');
+    return updateNotif;
   }
 
   async deleteNotifications(id: number): Promise<undefined> {
     const notifDelFound = await this.NotificationsRepository.findOneBy({ id });
     if (!notifDelFound) throw new Error('La notificación no existe');
-
     const deleteNotif = await this.NotificationsRepository.delete(id);
+    if (deleteNotif.affected === 0)
+      throw new Error('No se pudo borrar la calificación');
     return undefined;
   }
 }

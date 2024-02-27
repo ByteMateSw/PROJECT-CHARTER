@@ -27,18 +27,20 @@ export class ReviewService {
     return reviews
   }
 
-  async getUptadeById(id: number): Promise<Review> {
+  async getReviewById(id: number): Promise<Review> {
     const review = await this.reviewRepository.findOneBy({ id });
     if (!review) throw new Error('No se encontró la calificación por ID');
     return review
   }
 
-  async uptadeReview(id: number, UptadeReviewDTO): Promise<Review> {
+  async updateReview(id: number, UpdateReviewDTO): Promise<Review> {
     const reviewFound = await this.reviewRepository.findOneBy({ id });
     if (!reviewFound) throw new Error('La calificación no existe');
-    const updateReview = await this.reviewRepository.update(id, UptadeReviewDTO);
-    if (updateReview.affected === 0) throw new Error('No se pudo actualizar la calificación');
-    return await this.reviewRepository.save({ id });
+    const reviewUpdate = await this.reviewRepository.update(id, UpdateReviewDTO);
+    if (reviewUpdate.affected === 0) throw new Error('No se pudo actualizar la calificación');
+    const reviewSave = await this.reviewRepository.save({ id });
+    if (!reviewSave) throw new Error('No se pudo guardar la actualizació la calificación');
+    return reviewSave
   }
 
   async deleteReview(id: number): Promise<ResponseMessage> {
