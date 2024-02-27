@@ -2,6 +2,7 @@ import { ImagePost } from '../image/imagePost.entity';
 import { User } from '../user/user.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
@@ -21,19 +22,25 @@ export class Post {
   @Column()
   description: string;
 
-  @Column({ type: 'date' })
+  @CreateDateColumn()
   creationDate: Date;
 
   @Column({ default: false })
   itClosed: boolean;
-  
-  @OneToMany(() => ImagePost, (imagePost) => imagePost.post)
+
+  @Column({ type: 'tsvector', select: false })
+  searchVector: string;
+
+  @Column({ type: 'money', default: 0 })
+  price?: number;
+
+  @OneToMany(() => ImagePost, imagePost => imagePost.post)
   images: ImagePost[];
 
-  @ManyToOne(() => User, (user) => user.posts)
+  @ManyToOne(() => User, user => user.posts)
   user: User;
 
-  @ManyToMany(()=> User)
+  @ManyToMany(() => User)
   @JoinTable()
   suscribers: User[];
 }

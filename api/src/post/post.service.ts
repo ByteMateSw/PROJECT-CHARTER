@@ -1,12 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { Post } from './post.entity';
 import { ImagePost } from '../image/imagePost.entity';
 import { CreatePostDto } from './dto/createPost.dto';
 import { UserService } from '../user/user.service';
 import { UptadePostDto } from './dto/uptadePost.dto';
-import { title } from 'process';
+import { File, TitleAndOrId } from '../utils/types/functions.type';
 
 @Injectable()
 export class PostService {
@@ -15,125 +15,77 @@ export class PostService {
     @InjectRepository(ImagePost)
     private imagePostRepository: Repository<ImagePost>,
     private userService: UserService,
-  ) { }
+  ) {}
 
   async getAllPosts(): Promise<Post[]> {
-    try {
-      const allPosts = await this.postRepository.find();
-      return allPosts;
-    } catch (error) {
-      console.error('Error al obtener los posts', error.message);
-      throw new error('Error al obtener los posts');
-    }
+    return await this.postRepository.find();
   }
 
-  async getPostById(id: number): Promise<Post> {
-    try {
-      const findedPost = await this.postRepository.findOneByOrFail({ id });
-      return findedPost;
-    } catch (error) {
-      console.error('Error al obtener el post solicitado', error.message);
-      throw new error('Error al obtener el post solicitado');
-    }
+  async getPostBy({ id, title }: TitleAndOrId): Promise<Post> {
+    const findedPost = await this.postRepository.findOne({
+      where: { id, title },
+      relations: { images: true },
+    });
+    if (!findedPost)
+      throw new BadRequestException('El post solicitado no existe');
+    return findedPost;
   }
 
-  async createPost(
-    userId: number,
-    postDto: CreatePostDto,
-    imageDataArray: Buffer[],
-  ): Promise<Post> {
-    try {
-      const user = await this.userService.getUser({ id:userId });
-      const date: Date = new Date();
-      const newPost = this.postRepository.create(postDto);
-      newPost.creationDate = date;
-      newPost.user = user;
-      await this.postRepository.save(newPost);
-      const imagePosts = imageDataArray.map((imageData) =>
-        this.imagePostRepository.create({ imageData, post: newPost }),
+  async createPost(userId: number, postDto: CreatePostDto): Promise<Post> {
+    const user = await this.userService.getUser({ id: userId });
+    const newPost = this.postRepository.create(postDto);
+    newPost.user = user;
+    return await this.postRepository.save(newPost);
+  }
+
+  async addImagesToPost(postId: number, images: File[]): Promise<ImagePost[]> {
+    const post = await this.getPostBy({ id: postId });
+    if (!post) throw new BadRequestException('No existe el post');
+    return Promise.all(
+      images.map(async image => {
+        const newImage = this.imagePostRepository.create({
+          imageData: image.buffer,
+          contentType: image.mimetype,
+          post,
+        });
+        await this.imagePostRepository.save(newImage);
+        return newImage;
+      }),
+    );
+  }
+
+  async removeImageFromPost(imagePostId: number): Promise<ImagePost> {
+    const imagePost = await this.imagePostRepository.findOne({
+      where: { id: imagePostId },
+    });
+    if (!imagePost) throw new BadRequestException('Imágen no encontrada');
+    return await this.imagePostRepository.remove(imagePost);
+  }
+
+  async uptadePost(postId: number, uptadePostData: UptadePostDto) {
+    const postFound = await this.postRepository.findOneBy({ id: postId });
+    if (!postFound) throw new Error('La publicación no existe');
+    const uptadePost = { ...postFound, ...uptadePostData };
+    await this.postRepository.save(uptadePost);
+  }
+
+  async deletePost(postId: number) {
+    const postDelFound = await this.postRepository.findOne({
+      where: { id: postId },
+      relations: { images: true },
+    });
+    if (!postDelFound)
+      throw new BadRequestException('La publicacion no existe');
+    if (postDelFound.images.length > 0)
+      Promise.all(
+        postDelFound.images.map(async image => {
+          await this.imagePostRepository.remove(image);
+        }),
       );
-      await this.imagePostRepository.save(imagePosts);
-      return newPost;
-    } catch (error) {
-      console.error('Error al crear la publicación', error.message);
-      throw new Error('Error al crear la publicación');
-    }
+    await this.postRepository.remove(postDelFound);
   }
 
-  async addImagesToPost(
-    postId: number,
-    imageDataArray: Buffer[],
-  ): Promise<Post> {
-    try {
-      const post = await this.getPostById(postId);
-      const imagePosts = imageDataArray.map((imageData) =>
-        this.imagePostRepository.create({ imageData, post }),
-      );
-      await this.imagePostRepository.save(imagePosts);
-      post.images = [...post.images, ...imagePosts];
-      return await this.postRepository.save(post);
-    } catch (error) {
-      console.error('Error al añadir imágenes', error.message);
-      throw new Error('Error al añadr imágenes');
-    }
+  async existsPost(id: number): Promise<boolean> {
+    return await this.postRepository.existsBy({ id });
   }
-
-  async removeImageFromPost(
-    postId: number,
-    imagePostId: number,
-  ): Promise<Post> {
-    try {
-      const post = await this.getPostById(postId);
-      const imagePost = await this.imagePostRepository.findOneOrFail({
-        where: { id: imagePostId },
-      });
-      post.images = post.images.filter((image) => image.id !== imagePost.id);
-      await this.imagePostRepository.remove(imagePost);
-      return await this.postRepository.save(post);
-    } catch (error) {
-      console.error('Error al remover una imágen', error.message);
-      throw new Error('Error al remover una imágen');
-    }
-  }
-
-  async uptadePost(
-    postId: number,
-    uptadePostData: UptadePostDto
-  ): Promise<Post> {
-    try {
-      const postFound = await this.postRepository.findOneBy({ id: postId })
-      if (!postFound) throw new Error("La publicación no existe")
-
-      const uptadePost = { ...postFound, ...this.uptadePost }
-      const savePost = await this.postRepository.save(uptadePost)
-      return savePost
-    } catch (error) {
-
-    }
-  }
-
-  async deletePost(postId: number): Promise<undefined> {
-    try {
-      const postDelFound = await this.postRepository.findOneBy({ id: postId })
-      if (!postDelFound) throw new Error('La publicacion no existe')
-
-      await this.postRepository.delete(postId)
-      return undefined
-    } catch (error) {
-      console.error ('La publicacion no se ha podido borrar')
-      throw new Error ('La publicacion no se ha podido borrar')
-
-    }
-  }
-
-  async getPostByName(title:string): Promise<Post>{
-    try {
-      const PostName = await this.postRepository.findOneBy ({title})
-      return PostName
-    } catch (error) {
-      console.error ("La publicación no se ha podido encontrar")
-      throw new Error ("La publicación no se ha podido encontrar")
-    }
-  }
-
 }

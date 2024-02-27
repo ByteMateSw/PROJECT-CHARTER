@@ -9,6 +9,9 @@ export class ImagePost {
   @Column({ type: 'bytea' })
   imageData: Buffer;
 
-  @ManyToOne(()=> Post, (post) => post.images)
+  @Column()
+  contentType: string;
+
+  @ManyToOne(() => Post, post => post.images)
   post: Post;
 }

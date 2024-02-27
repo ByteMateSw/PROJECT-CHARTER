@@ -19,16 +19,17 @@ import { User } from './user.entity';
 import { CustomParseIntPipe } from '../utils/pipes/parse-int.pipe';
 import { ResponseMessage } from '../utils/types/functions.type';
 
-@UseGuards(AccessTokenGuard)
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @UseGuards(AccessTokenGuard)
   @Get()
   async getAllUsers(): Promise<User[]> {
     return await this.userService.getAllUsers();
   }
 
+  @UseGuards(AccessTokenGuard)
   @Get(':id')
   async getUserById(
     @Param('id', CustomParseIntPipe) id: number,
@@ -39,7 +40,7 @@ export class UserController {
   }
 
   @Roles(Role.Admin)
-  @UseGuards(RoleGuard)
+  @UseGuards(AccessTokenGuard, RoleGuard)
   @Delete(':id')
   async deleteUser(
     @Param('id', CustomParseIntPipe) id: number,
@@ -48,6 +49,7 @@ export class UserController {
     return { message: 'El usuario ha sido borrado correctamente' };
   }
 
+  @UseGuards(AccessTokenGuard)
   @Patch(':id')
   async updateUser(
     @Param('id', CustomParseIntPipe) id: number,

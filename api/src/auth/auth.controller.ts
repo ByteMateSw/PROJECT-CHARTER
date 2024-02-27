@@ -19,7 +19,7 @@ import { AccessToken, Tokens } from './jwt/token.type';
 import { ResponseMessage } from '../utils/types/functions.type';
 import { RefreshTokenCookie } from './jwt/refresh.param';
 import { RefreshTokenGuard } from './jwt/refresh.guard';
-import { UserParamID } from './jwt/user.param';
+import { UserParamID } from '../utils/params/user.param';
 
 @Controller('auth')
 export class AuthController {
