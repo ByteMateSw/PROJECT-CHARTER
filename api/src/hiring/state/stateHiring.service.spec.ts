@@ -3,8 +3,6 @@ import { StateHiringService } from "./stateHiring.service"
 import { getRepositoryToken } from "@nestjs/typeorm"
 import { StateHiring } from "./stateHiring.entity"
 import { UpdateStateHireDTO } from "./updateStateHiring.dto"
-import { mock } from "node:test"
-
 
 
 describe('stateHiringService', () =>{
@@ -52,38 +50,26 @@ describe('stateHiringService', () =>{
             expect(mockStateHiringRepository.save).toHaveBeenCalledWith(mocksaveStatus);
         });
 
-        it('should throw an error for repeated name Status', async () => {
+
+        it('should throw an error for a repeted name of status hire', async () =>{
+            const existingName= 'test';
             jest.spyOn(service, 'getStatusByName').mockResolvedValueOnce(mockStateHiring);
-            await expect(service.createStatusHire(mockStateHiring.name)).rejects.toThrow(
+            await expect(async () => await service.createStatusHire(existingName),
+            ).rejects.toThrow(new Error('Error ya existe un estado con ese nombre'));
+            expect(service.getStatusByName).toHaveBeenCalledWith(existingName);
+        })
+
+        it('should return an error for not creating a status', async() =>{
+            const mockname = 'test'
+            jest.spyOn(service, 'getStatusByName').mockResolvedValueOnce(null);
+            jest.spyOn(mockStateHiringRepository, 'save').mockRejectedValueOnce(new Error('Error al crear el estado'));
+            await expect(service.createStatusHire(mockname)).rejects.toThrow(
               new Error('Error al crear el estado'),
             );
-            expect(service.getStatusByName).toHaveBeenCalledWith(mockStateHiring.name);
-          });
+            expect(service.getStatusByName).toHaveBeenCalledWith(mockname)
+            expect(mockStateHiringRepository.save).toHaveBeenCalledWith({name:mockname})
 
-        /*it('should return an error for a repeted name of state', async() =>{
-            const existingName= 'test'
-            jest.spyOn(service, 'getStatusByName').mockResolvedValueOnce({id:1, name:existingName, hiring:[]});
-            expect(service.getStatusByName).toHaveBeenCalledWith(existingName)
-            expect(async () => await service.createStatusHire(existingName)).rejects.toThrow(
-              new Error('Error ya existe un estado con ese nombre'),
-            );
             
-        })*/
-
-        /*it('should return an error for non created status', async() => {
-            const newName = 'newtest'
-            jest.spyOn(service, 'getStatusByName').mockResolvedValueOnce(null)
-            await expect(service.createStatusHire(newName)).rejects.toThrow(
-                new Error('Error al crear el estado'));
-            expect(service.getStatusByName).toHaveBeenCalledWith(newName)
-        });*/
-
-        it('should throw an error for non created status', async () =>{
-            const mockname = mockStateHiring.name;
-            jest.spyOn(service, 'getStatusByName').mockResolvedValueOnce(null);
-            await expect(service.createStatusHire(mockname)
-            ).rejects.toThrow(new Error('Error al crear el estado'));
-            expect(mockStateHiringRepository.getStatusByName).toHaveBeenCalledWith({name: mockname});
         })
     })
 
