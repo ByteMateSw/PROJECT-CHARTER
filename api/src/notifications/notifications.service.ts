@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { Repository, Timestamp } from 'typeorm';
 import { Notifications } from './notifications.entity';
@@ -18,12 +18,12 @@ export class NotificationsService {
     notificationDto: CreateNotificationsDTO,
   ): Promise<Notifications> {
     const user = await this.userService.getUser({ id });
-    if (!user) throw new Error('No se ha encontrado el usuario');
+    if (!user) throw new NotFoundException('No se ha encontrado el usuario');
     const timeStamp = new Date();
-    if (!Timestamp) throw new Error('No se ha podido crear la fecha');
+    if (!Timestamp) throw new BadRequestException('No se ha podido crear la fecha');
     const expireAt = new Date();
     if (!expireAt)
-      throw new Error('No se ha podido crear la fecha de expiración');
+      throw new BadRequestException('No se ha podido crear la fecha de expiración');
     const notifications =
       await this.NotificationsRepository.create(notificationDto);
     notifications.creationTime = timeStamp;
@@ -31,22 +31,22 @@ export class NotificationsService {
     notifications.expireAt = expireAt;
     notifications.user = user;
     if (!notifications)
-      throw new Error('No se ha podido crear la notificación');
+      throw new BadRequestException('No se ha podido crear la notificación');
     const saveNotifications =
       await this.NotificationsRepository.save(notifications);
     if (!saveNotifications)
-      throw new Error('No se ha podido guardar la notificación');
+      throw new BadRequestException('No se ha podido guardar la notificación');
     return notifications;
   }
 
   @Cron(CronExpression.EVERY_DAY_AT_10PM)
   async CleanExpiredNotifications(): Promise<string> {
     const now = new Date();
-    if (!now) throw new Error('No se ha podido crear la fecha');
+    if (!now) throw new BadRequestException('No se ha podido crear la fecha');
     const expirationDate = new Date();
     expirationDate.setDate(expirationDate.getDate() - 15);
     if (!expirationDate)
-      throw new Error(
+      throw new BadRequestException(
         'No se ha podido crear la fecha de eliminación de expiracion',
       );
 
@@ -57,7 +57,7 @@ export class NotificationsService {
         .where('expireAt <= :expirationDate', { expirationDate })
         .execute();
     if (!deleteNotifications)
-      throw new Error('No se ha podido borrar las notificaciones expiradas');
+      throw new BadRequestException('No se ha podido borrar las notificaciones expiradas');
     return 'Se han borrado todas las notificaciones expiradas';
   }
 
@@ -66,16 +66,14 @@ export class NotificationsService {
       where: { isDeleted: false },
     });
     if (!ActiveNotif)
-      throw new Error(
-        'No se han podido encontrar todas las notificaciones activas',
-      );
+      throw new NotFoundException('No se han podido encontrar todas las notificaciones activas',);
     return ActiveNotif;
   }
 
   async getNotificationsById(id: number): Promise<Notifications> {
     const foundNotif = await this.NotificationsRepository.findOneBy({ id });
     if (!foundNotif)
-      throw new Error('No se han podido encontrar la notificación por ID');
+      throw new NotFoundException('No se han podido encontrar la notificación por ID');
     return foundNotif;
   }
 
@@ -84,21 +82,21 @@ export class NotificationsService {
     uptadeNotifications: UptadeNotificationsDTO,
   ): Promise<Notifications> {
     const notifFound = await this.NotificationsRepository.findOneBy({ id });
-    if (!notifFound) throw new Error('La notificación no existe');
+    if (!notifFound) throw new NotFoundException('La notificación no existe');
     const updateNotif = { ...notifFound, ...this.uptadeNotifications };
-    if (!updateNotif) throw new Error('No se pudo actualizar la calificación');
+    if (!updateNotif) throw new BadRequestException('No se pudo actualizar la calificación');
     const saveNotif = this.NotificationsRepository.save(updateNotif);
     if (!saveNotif)
-      throw new Error('No se pudo guardar la actualización de la calificación');
+      throw new BadRequestException('No se pudo guardar la actualización de la calificación');
     return updateNotif;
   }
 
   async deleteNotifications(id: number): Promise<undefined> {
     const notifDelFound = await this.NotificationsRepository.findOneBy({ id });
-    if (!notifDelFound) throw new Error('La notificación no existe');
+    if (!notifDelFound) throw new NotFoundException('La notificación no existe');
     const deleteNotif = await this.NotificationsRepository.delete(id);
     if (deleteNotif.affected === 0)
-      throw new Error('No se pudo borrar la calificación');
+      throw new BadRequestException('No se pudo borrar la calificación');
     return undefined;
   }
 }

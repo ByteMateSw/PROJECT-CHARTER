@@ -57,7 +57,8 @@ export class ProvinceService {
         return 'No se encontro la provincia';
       }
       province.name = name;
-      await this.provinceRepository.save(province);
+      const saveProvince = await this.provinceRepository.save(province);
+      if (!saveProvince) throw new Error ('No se ha podido guardar la provincia')
       return 'La provincia actualizada';
     } else {
       return ' No se mando la id de la provincia ';
