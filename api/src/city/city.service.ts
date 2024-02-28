@@ -1,9 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { City } from './city.entity';
 import { Province } from '../province/province.entity';
 import { User } from '../user/user.entity';
+import { ConflictException } from '@nestjs/common';
 
 @Injectable()
 export class CityService {
@@ -18,171 +23,139 @@ export class CityService {
 
   //Funcion para crear city solamente con el nombre
   async createCity(name: string): Promise<string> {
-    try {
-      const cityExist = await this.cityRepository.findOne({
-        where: { name },
-      });
+    const cityExist = await this.cityRepository.findOne({ where: { name } });
 
-      if (!cityExist) {
-        const newCity = this.cityRepository.create({
-          name,
-        });
-
-        this.cityRepository.save(newCity);
-        return 'Ciudad Guardada';
-      } else {
-        return 'La ciudad ya existe';
-      }
-    } catch (error) {
-      return 'No se pudo crear la ciudad';
+    if (cityExist) {
+      throw new ConflictException('Ya existe una ciudad con ese nombre');
     }
+
+    const newCity = this.cityRepository.create({ name });
+    const savedCity = await this.cityRepository.save(newCity);
+
+    if (!savedCity) {
+      throw new InternalServerErrorException('No se pudo crear la ciudad');
+    }
+
+    return 'Ciudad Guardada';
   }
 
   async getCities(): Promise<City[] | string> {
-    try {
-      return await this.cityRepository.find({
-        relations: ['province', 'users'],
-      });
-    } catch (error) {
-      return error;
+    const cities = await this.cityRepository.find({
+      relations: ['province', 'users'],
+    });
+    if (cities) {
+      return cities;
+    } else {
+      throw new InternalServerErrorException(
+        'No se pudieron obtener las ciudades',
+      );
     }
   }
 
   async getOneCity(id: number): Promise<City | string> {
-    try {
-      if (id) {
-        const city = await this.cityRepository.findOne({
-          where: { id },
-          relations: ['province', 'users'],
-        });
-        if (!city) {
-          return 'No se encontró la ciudad';
-        }
-        return city;
-      } else {
-        return 'Debe proporcionar un ID o un nombre de ciudad';
-      }
-    } catch (error) {
-      return 'Error al obtener la ciudad';
+    if (!id) {
+      return 'Debe proporcionar un ID o un nombre de ciudad';
     }
+
+    const city = await this.cityRepository.findOne({
+      where: { id },
+      relations: ['province', 'users'],
+    });
+
+    if (!city) {
+      throw new NotFoundException('No se encontró la ciudad');
+    }
+
+    return city;
   }
 
   async updateCityProvince(id: number, provinceId: number): Promise<string> {
-    try {
-      if (id) {
-        const city = await this.cityRepository.findOne({
-          where: { id },
-        });
-        if (!city) {
-          return 'No se encontro la ciudad';
-        }
-        console.log(provinceId);
-        console.log(city.name);
-
-        const province = await this.provinceRepository.findOne({
-          where: { id: provinceId },
-        });
-        province.name;
-
-        if (!province) {
-          return 'La provincia no se encontró';
-        }
-        city.province = province;
-        await this.cityRepository.save(city);
-
-        return 'Ciudad actualizada';
-      } else {
-        return ' No se mando la id de la ciudad ';
-      }
-    } catch (error) {
-      return error;
+    if (!id) {
+      return 'No se mandó la ID de la ciudad';
     }
+
+    const city = await this.cityRepository.findOne({ where: { id } });
+    if (!city) {
+      throw new NotFoundException('No se encontró la ciudad');
+    }
+
+    const province = await this.provinceRepository.findOne({
+      where: { id: provinceId },
+    });
+    if (!province) {
+      throw new NotFoundException('No se encontró la provincia');
+    }
+
+    city.province = province;
+    await this.cityRepository.save(city);
+
+    return 'Ciudad actualizada';
   }
 
   async updateCityUser(id: number, userId: number): Promise<string> {
-    try {
-      if (id) {
-        const city = await this.cityRepository.findOne({
-          where: { id },
-        });
-        if (!city) {
-          return 'No se encontro la ciudad';
-        }
-
-        const user = await this.userRepository.findOne({
-          where: { id: userId },
-        });
-
-        if (!user) {
-          return 'El usuario no se encontró';
-        }
-        if (!user.city) {
-          city.users.push(user);
-          await this.cityRepository.save(city);
-          return 'La ciudad se actualizo correctamente';
-        } else {
-          user.city = city;
-          await this.cityRepository.save(city);
-          return 'La ciudad se actualizo correctamente';
-        }
-      } else {
-        return ' No se mando la id de la ciudad ';
-      }
-    } catch (error) {
-      return error;
+    if (!id) {
+      return 'No se mandó la ID de la ciudad';
     }
+
+    const city = await this.cityRepository.findOne({ where: { id } });
+    if (!city) {
+      throw new NotFoundException('No se encontró la ciudad');
+    }
+
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (!user) {
+      throw new NotFoundException('No se encontró el usuario');
+    }
+
+    if (!user.city) {
+      city.users.push(user);
+    } else {
+      user.city = city;
+    }
+
+    await this.cityRepository.save(city);
+
+    return 'La ciudad se actualizó correctamente';
   }
 
   //cambiar el nombre de la ciudad
   async updateCity(id: number, name: string): Promise<string> {
-    try {
-      if (id) {
-        const cityExist = await this.cityRepository.findOne({
-          where: { id },
-        });
-        if (!cityExist) {
-          return 'No se encontro la ciudad';
-        }
-        await this.cityRepository.update(id, { name });
-        return 'Ciudad actualizada';
-      } else {
-        return ' No se mando la id de la ciudad ';
-      }
-    } catch (error) {
-      return 'error al actualizar ciudad';
+    if (!id) {
+      return 'No se mandó la ID de la ciudad';
     }
+
+    const cityExist = await this.cityRepository.findOne({ where: { id } });
+    if (!cityExist) {
+      throw new NotFoundException('No se encontró la ciudad');
+    }
+
+    await this.cityRepository.update(id, { name });
+
+    return 'Ciudad actualizada';
   }
 
   async deleteCity(id: number): Promise<string> {
-    try {
-      if (id) {
-        const cityExist = await this.cityRepository.findOne({
-          where: { id },
-        });
-
-        if (!cityExist) {
-          return 'No se encontro la ciudad';
-        }
-        await this.cityRepository.delete({ id });
-      } else {
-        return 'Debe proporcionar un ID  de ciudad';
-      }
-
-      return 'Ciudad eliminada correctamente';
-    } catch (error) {
-      return 'Error al eliminar la Ciudad';
+    if (!id) {
+      return 'Debe proporcionar un ID de ciudad';
     }
+
+    const cityExist = await this.cityRepository.findOne({ where: { id } });
+    if (!cityExist) {
+      throw new NotFoundException('No se encontró la ciudad');
+    }
+
+    await this.cityRepository.delete({ id });
+
+    return 'Ciudad eliminada correctamente';
   }
 
-  async getCityBySearch(name:string):Promise<any>{
-    try {
-        const Cityname = await this.cityRepository.findOneBy ({name: name})
-        return Cityname;
-    } catch (error) {
-      console.log(Error)
-      throw new Error ("No se ha encontrado la ciudad")
+  async getCityBySearch(name: string): Promise<any> {
+    const city = await this.cityRepository.findOne({ where: { name } });
+
+    if (!city) {
+      throw new NotFoundException('No se ha encontrado la ciudad');
     }
+
+    return city;
   }
 }
-
-      

@@ -13,7 +13,7 @@ import {
 import { PostService } from './post.service';
 import { Post as PostEntity } from './post.entity';
 import { CreatePostDto } from './dto/createPost.dto';
-import { UptadePostDto } from './dto/uptadePost.dto';
+import { UpdatePostDto } from './dto/updatePost.dto';
 import { updateCategoryDto } from 'src/category/dto/updateCategory.dto';
 import { title } from 'process';
 
@@ -85,9 +85,9 @@ export class PostController {
   }
 
   @Put(':id')
-  async uptadePost(@Param('id') id: number, @Body() UptadePostDto: UptadePostDto) {
+  async updatePost(@Param('id') id: number, @Body() UpdatePostDto: UpdatePostDto) {
     try {
-      await this.postService.uptadePost(id, UptadePostDto)
+      await this.postService.updatePost(id, UpdatePostDto)
       return "La publicación se actualizó correctamente"
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
