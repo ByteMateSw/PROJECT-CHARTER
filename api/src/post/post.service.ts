@@ -91,7 +91,11 @@ export class PostService {
     return await this.postRepository.existsBy({ id });
   }
 
-  async searchPost(query: string): Promise<Post[]> {
+  async searchPost(
+    query: string,
+    page: number,
+    limit: number,
+  ): Promise<Post[]> {
     return this.postRepository
       .createQueryBuilder('post')
       .innerJoin('post.user', 'user')
@@ -100,6 +104,8 @@ export class PostService {
       })
       .andWhere('user.isDeleted = :isDeleted', { isDeleted: false })
       .orderBy('ts_rank("searchVector", websearch_to_tsquery(:query))', 'DESC')
+      .offset(page)
+      .limit(limit)
       .getMany();
   }
 }

@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   HttpCode,
-  HttpException,
   HttpStatus,
   Param,
   ParseIntPipe,
@@ -27,6 +26,7 @@ import { FilePipeValidator } from '../utils/pipes/file-validator.pipe';
 import { File } from '../utils/types/functions.type';
 import { InfoParam } from '../utils/params/info.param';
 import { EmptyBodyPipe } from 'src/utils/pipes/empty-body.pipe';
+import { QueryNumberPipe } from 'src/utils/pipes/query-number.pipe';
 
 @Controller('posts')
 export class PostController {
@@ -38,8 +38,12 @@ export class PostController {
   }
 
   @Get('search')
-  async getPostByName(@Query('v') query: string): Promise<PostEntity[]> {
-    return await this.postService.searchPost(query);
+  async getPostByName(
+    @Query('v') query: string,
+    @Query('page', QueryNumberPipe) page: number,
+    @Query('limit', QueryNumberPipe) limit: number,
+  ): Promise<PostEntity[]> {
+    return await this.postService.searchPost(query, page, limit);
   }
 
   @UseGuards(AccessTokenGuard)
