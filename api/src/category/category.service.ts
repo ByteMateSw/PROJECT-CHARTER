@@ -22,7 +22,7 @@ export class CategoryService {
 
   async createCategory(category: CreateCategoryDto): Promise<Category> {
       const existCategory = await this.existName(category.name);
-      if(existCategory) throw new Error('la categoria ya existe')
+      if(existCategory) throw new BadRequestException('la categoria ya existe')
       const newCategory = await this.categoryRepository.create(category)
     if(!newCategory) throw new BadRequestException('Error al crear categoria')
       const saveCategory = await this.categoryRepository.save(newCategory);
