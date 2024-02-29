@@ -5,7 +5,7 @@ import { Post } from './post.entity';
 import { ImagePost } from '../image/imagePost.entity';
 import { CreatePostDto } from './dto/createPost.dto';
 import { UserService } from '../user/user.service';
-import { UptadePostDto } from './dto/uptadePost.dto';
+import { UpdatePostDto } from './dto/updatePost.dto';
 import { title } from 'process';
 import { error } from 'console';
 
@@ -45,6 +45,7 @@ export class PostService {
     ) {
       throw new BadRequestException(`El precio debe estar entre ${1} y ${1000000}.`);
     }
+      
     const newPost = this.postRepository.create(postDto);
     newPost.creationDate = date;
     newPost.user = user;
@@ -98,7 +99,7 @@ export class PostService {
     return ImgPostRemove
   }
 
-  async uptadePost(
+  async updatePost(
     postId: number,
     uptadePostData: UptadePostDto,
   ): Promise<Post> {
