@@ -20,7 +20,7 @@ export class NotificationsService {
     const user = await this.userService.getUser({ id });
     if (!user) throw new NotFoundException('No se ha encontrado el usuario');
     const timeStamp = new Date();
-    if (!timestamp) throw new BadRequestException('No se ha podido crear la fecha');
+    if (!timeStamp) throw new BadRequestException('No se ha podido crear la fecha');
     const expireAt = new Date();
     if (!expireAt)
       throw new BadRequestException('No se ha podido crear la fecha de expiración');
