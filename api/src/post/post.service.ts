@@ -16,7 +16,6 @@ export class PostService {
     private imagePostRepository: Repository<ImagePost>,
     private userService: UserService,
   ) {}
-  ) {}
 
   async getAllPosts(): Promise<Post[]> {
     const allPosts = await this.postRepository.find({

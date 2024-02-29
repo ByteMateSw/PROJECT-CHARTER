@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { NotFoundException } from '@nestjs/common';
+import { Role } from '../utils/enums/role.enum';
 
 describe('UserController', () => {
   let controller: UserController;
@@ -19,6 +20,12 @@ describe('UserController', () => {
 
   const mockUpdateUser = {
     firstName: 'Ivan',
+  };
+
+  const mockUserParam = {
+    id: mockUser.id,
+    email: mockUser.email,
+    role: Role.User,
   };
 
   const mockDeleteMessage = {
@@ -89,7 +96,9 @@ describe('UserController', () => {
   describe('deleteUser', () => {
     it('delete an user', async () => {
       const id = mockUser.id;
-      expect(await controller.deleteUser(id)).toEqual(mockDeleteMessage);
+      expect(await controller.deleteUser(mockUserParam)).toEqual(
+        mockDeleteMessage,
+      );
       expect(mockUserService.deleteUser).toHaveBeenCalledWith(id);
     });
   });
