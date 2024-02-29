@@ -12,6 +12,7 @@ import { Review } from '../review/review.entity';
 import { Post } from '../post/post.entity';
 import { Role } from '../role/role.entity';
 import { City } from '../city/city.entity';
+import { Notifications } from '../notifications/notifications.entity';
 
 @Entity()
 export class User {
@@ -72,4 +73,7 @@ export class User {
 
   @ManyToOne(() => Role, role => role.user)
   role: Role;
+
+  @OneToMany(()=>Notifications, notifications=> notifications.user)
+  notifications:Notification[];
 }

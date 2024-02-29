@@ -67,7 +67,4 @@ export class StateHiringController {
       throw new HttpException(error.message, HttpStatus.NOT_FOUND);
     }
   }
-  
-
-
 }
