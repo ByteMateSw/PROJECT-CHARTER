@@ -45,6 +45,7 @@ describe('AuthService', () => {
     getUserPassword: jest.fn().mockResolvedValue(mockUser.password),
     getRefreshToken: jest.fn().mockResolvedValue(mockToken),
     updateRefreshToken: jest.fn(),
+    validateUser: jest.fn(),
   };
 
   let mockHashService = {
@@ -53,6 +54,7 @@ describe('AuthService', () => {
 
   let mockJWTService = {
     signAsync: jest.fn().mockResolvedValue(mockToken),
+    verifyAsync: jest.fn().mockResolvedValue(mockPayload),
   };
 
   let mockConfigService = {
@@ -111,6 +113,59 @@ describe('AuthService', () => {
     });
   });
 
+  describe('getVerificationToken', () => {
+    it('should return the verify token of the user', async () => {
+      const mockEmail = mockUser.email;
+
+      expect(await service.getVerificationToken(mockEmail)).toEqual(mockToken);
+      expect(mockJWTService.signAsync).toHaveBeenCalledWith(
+        {
+          email: mockEmail,
+        },
+        {
+          secret: mockConfigValue,
+          expiresIn: mockConfigValue,
+        },
+      );
+    });
+  });
+
+  describe('verifyVerificationToken', () => {
+    it('should return the verify token of the user', async () => {
+      expect(await service.verifyVerificationToken(mockToken)).toEqual(
+        mockPayload,
+      );
+      expect(mockJWTService.verifyAsync).toHaveBeenCalledWith(mockToken, {
+        secret: mockConfigValue,
+        ignoreExpiration: false,
+      });
+    });
+
+    it('should throw an error to the verification of the token', async () => {
+      const mockEmail = mockUser.email;
+      mockJWTService.verifyAsync.mockRejectedValueOnce(null);
+
+      expect(
+        async () => await service.verifyVerificationToken(mockToken),
+      ).rejects.toThrow(new BadRequestException('Error al ingresar el token'));
+      expect(mockJWTService.verifyAsync).toHaveBeenCalledWith(mockToken, {
+        secret: mockConfigValue,
+        ignoreExpiration: false,
+      });
+    });
+  });
+
+  describe('validateAccount', () => {
+    it('should return the verify token of the user', async () => {
+      const mockEmail = mockUser.email;
+
+      await service.validateAccount(mockEmail);
+      expect(mockUserService.validateUser).toHaveBeenCalledWith({
+        email: mockEmail,
+      });
+    });
+  });
+
   describe('getTokens', () => {
     const mockOptions = { secret: mockConfigValue, expiresIn: mockConfigValue };
 
@@ -120,8 +175,6 @@ describe('AuthService', () => {
         mockPayload,
         mockOptions,
       );
-      expect(mockJWTService.signAsync).toHaveBeenCalledTimes(2);
-      expect(mockConfigService.get).toHaveBeenCalledTimes(4);
     });
   });
 

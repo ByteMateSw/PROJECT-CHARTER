@@ -16,6 +16,8 @@ export default registerAs('jwt', (): IJWTConfig => {
     access_expiration: process.env.EXPIRATION_TIME_ACCESS_TOKEN,
     refresh_secret: process.env.JWT_REFRESH_SECRET_KEY,
     refresh_expiration: process.env.EXPIRATION_TIME_REFRESH_TOKEN,
+    verify_secret: process.env.JWT_VERIFY_SECRET_KEY,
+    verify_expiration: process.env.EXPIRATION_TIME_VERIFY_TOKEN,
     secure: process.env.NODE_ENV !== 'development',
     maxAge: parseInt(process.env.MAX_AGE) || 0,
     samesite: (process.env.SAMESITE as ISamesite) || ISamesite.Lax,

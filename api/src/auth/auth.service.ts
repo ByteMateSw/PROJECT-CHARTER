@@ -8,7 +8,7 @@ import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from './dto/register.dto';
 import { HashService } from './hash.service';
-import { Payload, Tokens } from './jwt/token.type';
+import { Payload, Tokens, VerifyToken } from './jwt/token.type';
 import { User } from '../user/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { hashData, verifyData } from '../utils/tools/hash';
@@ -34,6 +34,31 @@ export class AuthService {
     const tokens = await this.getTokens(payload);
     await this.updateRefreshToken(user.id, tokens.refresh_token);
     return tokens;
+  }
+
+  async getVerificationToken(email: string): Promise<string> {
+    return await this.jwtService.signAsync(
+      { email },
+      {
+        secret: this.configService.get('jwt.verify_secret'),
+        expiresIn: this.configService.get('jwt.verify_expiration'),
+      },
+    );
+  }
+
+  async verifyVerificationToken(token: string): Promise<VerifyToken> {
+    try {
+      return await this.jwtService.verifyAsync(token, {
+        secret: this.configService.get('jwt.verify_secret'),
+        ignoreExpiration: false,
+      });
+    } catch (error) {
+      throw new BadRequestException('Error al ingresar el token');
+    }
+  }
+
+  async validateAccount(email: string) {
+    this.userService.validateUser({ email });
   }
 
   async getTokens(payload: Payload): Promise<Tokens> {

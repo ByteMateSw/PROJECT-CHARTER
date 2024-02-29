@@ -54,6 +54,26 @@ export class JWTEnvironmentVariables {
   })
   EXPIRATION_TIME_REFRESH_TOKEN: string;
 
+  @IsDefined({
+    message: createErrorMessageFormatter(
+      'Se requiere la clave secreta para codificar el token de verificación de la cuenta.',
+    ),
+  })
+  @IsString({
+    message: createErrorMessageFormatter('Debe ser un string.'),
+  })
+  JWT_VERIFY_SECRET_KEY: string;
+
+  @IsDefined({
+    message: createErrorMessageFormatter(
+      'Se requiere el tiempo de expiración del token de verificación de la cuenta.',
+    ),
+  })
+  @IsString({
+    message: createErrorMessageFormatter('Debe ser un string.'),
+  })
+  EXPIRATION_TIME_VERIFY_TOKEN: string;
+
   @IsBoolean({
     message: createErrorMessageFormatter('Debe ser un valor booleano.'),
   })
