@@ -6,7 +6,6 @@ import {
   JoinTable,
   OneToMany,
   ManyToOne,
-  OneToOne,
 } from 'typeorm';
 import { Office } from '../office/office.entity';
 import { Review } from '../review/review.entity';
@@ -14,7 +13,6 @@ import { Post } from '../post/post.entity';
 import { Role } from '../role/role.entity';
 import { City } from '../city/city.entity';
 import { Notifications } from '../notifications/notifications.entity';
-import { UserMembership } from '../membership/user-membership.entity';
 
 @Entity()
 export class User {
