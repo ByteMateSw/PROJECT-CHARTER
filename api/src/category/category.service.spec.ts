@@ -43,8 +43,7 @@ it('should be defined', ()=>{
 
 describe('createCategory', ()=>{
     it('should create an category', async () => {
-        const newCategory= {"name":"test category"}
-        
+        jest.spyOn(service, 'existName').mockResolvedValueOnce(false)
         const categoria= await service.createCategory(mockCategory)
         expect(categoria).toMatchObject(mockCategory)
         expect(mockCategoryRepository.create).toHaveBeenCalledWith(mockCategory);

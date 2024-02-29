@@ -37,6 +37,17 @@ export class CityService {
     }
 
     return 'Ciudad Guardada';
+    if (!cityExist) {
+      const newCity = this.cityRepository.create({
+        name,
+      });
+      
+      this.cityRepository.save(newCity);
+      return 'Ciudad Guardada';
+    } else {
+      return 'La ciudad ya existe';
+    }
+    
   }
 
   async getCities(): Promise<City[] | string> {
