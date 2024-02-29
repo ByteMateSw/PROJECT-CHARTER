@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from './category.entity';
 import { Repository } from 'typeorm';
@@ -21,44 +21,49 @@ export class CategoryService {
   }
 
   async createCategory(category: CreateCategoryDto): Promise<Category> {
-    try {
-      const newCategory = this.categoryRepository.create(category);
-      return await this.categoryRepository.save(newCategory);
+      const existCategory = await this.existName(category.name);
+      if(existCategory) throw new BadRequestException('la categoria ya existe')
+      const newCategory = await this.categoryRepository.create(category)
+    if(!newCategory) throw new BadRequestException('Error al crear categoria')
+      const saveCategory = await this.categoryRepository.save(newCategory);
+    if(!saveCategory) throw new BadRequestException('Error al guardar la categoria creada')
+      return(newCategory)
       
-    }catch (error) {
-      throw new Error("Error al crear la categoría");
-    }
+  }
+
+  async existName(name:string): Promise<boolean>{
+    return await this.categoryRepository.existsBy({name})
   }
 
   async deleteCategory(id:number): Promise<Category>{
     const category = await this.categoryRepository.findOneBy({ id })
     if(!category)
-      throw new Error("La categoria no existe")
+      throw new BadRequestException("La categoria no existe")
     category.isDeleted = true;
-    await this.categoryRepository.save(category);
-    return category
+    const savecategory= await this.categoryRepository.save(category);
+    if(!savecategory)throw new BadRequestException('Error al guardar la categoria')
+    return savecategory
   }
 
 
   async updateCategory(id:number, category): Promise<Category>{
     const categoryFound = await this.categoryRepository.existsBy({ id })
     if (!categoryFound)
-      throw new Error("la categoria no existe")
-    await this.categoryRepository.update({ id }, category )
-    const updateCategory = await this.categoryRepository.findOneBy({id});
-    return updateCategory
+      throw new NotFoundException("la categoria no existe")
+    const updateCategory = await this.categoryRepository.update({ id }, category )
+    if(!updateCategory) 
+      throw new BadRequestException('Error al actualizar categoria')
+    const findCategory = await this.categoryRepository.findOneBy({id});
+      if(!findCategory) throw new NotFoundException('Error al encontrar categoria')
+    return findCategory
   }
 
 
   async getCategoryBySearch(name:string):Promise<any>{
-    try {
-        const Categoryname = await this.categoryRepository.findOneBy ({name: name})
-        return Categoryname;
-    } catch (error) {
-      console.log(Error)
-      throw new Error ("No se ha encontrado la categoría")
+    const Categoryname = await this.categoryRepository.findOneBy ({name: name})
+    if(!Categoryname) throw new NotFoundException("No se ha encontrado la categoría")
+    return Categoryname;
         
-    }
     }
 
 
