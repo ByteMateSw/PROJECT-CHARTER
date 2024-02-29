@@ -5,7 +5,7 @@ import { Post } from './post.entity';
 import { ImagePost } from '../image/imagePost.entity';
 import { CreatePostDto } from './dto/createPost.dto';
 import { UserService } from '../user/user.service';
-import { UptadePostDto } from './dto/uptadePost.dto';
+import { UpdatePostDto } from './dto/updatePost.dto';
 import { File, TitleAndOrId } from '../utils/types/functions.type';
 
 @Injectable()
@@ -64,11 +64,14 @@ export class PostService {
     return await this.imagePostRepository.remove(imagePost);
   }
 
-  async uptadePost(postId: number, uptadePostData: UptadePostDto) {
+  async updatePost(
+    postId: number,
+    updatePostData: UpdatePostDto,
+  ): Promise<Post> {
     const postFound = await this.postRepository.findOneBy({ id: postId });
     if (!postFound) throw new Error('La publicación no existe');
-    const uptadePost = { ...postFound, ...uptadePostData };
-    await this.postRepository.save(uptadePost);
+    const uptadePost = { ...postFound, ...updatePostData };
+    return await this.postRepository.save(uptadePost);
   }
 
   async deletePost(postId: number) {

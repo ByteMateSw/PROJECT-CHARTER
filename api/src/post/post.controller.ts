@@ -17,7 +17,7 @@ import {
 import { PostService } from './post.service';
 import { Post as PostEntity } from './post.entity';
 import { CreatePostDto } from './dto/createPost.dto';
-import { UptadePostDto } from './dto/uptadePost.dto';
+import { UpdatePostDto } from './dto/updatePost.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { AccessTokenGuard } from '../auth/jwt/access.guard';
 import { UserParamID } from '../utils/params/user.param';
@@ -91,11 +91,11 @@ export class PostController {
   @UseGuards(AccessTokenGuard)
   @UseInterceptors(FilesInterceptor('images'))
   @Put(':id')
-  async uptadePost(
+  async updatePost(
     @Param('id') id: number,
-    @Body(EmptyBodyPipe) UptadePostDto: UptadePostDto,
+    @Body(EmptyBodyPipe) updatePostDto: UpdatePostDto,
   ): Promise<ResponseMessage> {
-    await this.postService.uptadePost(id, UptadePostDto);
+    await this.postService.updatePost(id, updatePostDto);
     return { message: 'La publicación se actualizó correctamente' };
   }
 
