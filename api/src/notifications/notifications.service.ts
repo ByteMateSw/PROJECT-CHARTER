@@ -5,11 +5,12 @@ import { Notifications } from './notifications.entity';
 import { CreateNotificationsDTO } from './dto/notification.dto';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { UptadeNotificationsDTO } from './dto/uptadeNotifications.dto';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class NotificationsService {
   constructor(
-    private NotificationsRepository: Repository<Notifications>,
+    @InjectRepository(Notifications) private NotificationsRepository: Repository<Notifications>,
     private userService: UserService,
   ) {}
 
