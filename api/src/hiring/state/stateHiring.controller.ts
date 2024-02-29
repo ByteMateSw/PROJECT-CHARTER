@@ -11,8 +11,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { StateHiringService } from './stateHiring.service';
-import { ResponseMessage } from '../../utils/types/functions.type';
-import { UpdateStateHireDTO } from './uptadeStateHiring.dto';
+import { UpdateStateHireDTO } from './updateStateHiring.dto';
+import { ResponseMessage } from 'src/utils/types/functions.type';
 
 @Controller('state')
 export class StateHiringController {
@@ -66,7 +66,4 @@ export class StateHiringController {
       throw new HttpException(error.message, HttpStatus.NOT_FOUND);
     }
   }
-  
-
-
 }
