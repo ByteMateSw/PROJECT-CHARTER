@@ -14,8 +14,6 @@ import { StateHiringModule } from './hiring/state/stateHiring.module';
 import { HiringModule } from './hiring/hiring.module';
 import { PostModule } from './post/post.module';
 import { ConfigurationModule } from './config/config.module';
-import { MembershipModule } from './membership/membership.module';
-import { MailerService } from './mailer/mailer.service';
 import { MailerModule } from './mailer/mailer.module';
 
 @Module({
@@ -35,7 +33,6 @@ import { MailerModule } from './mailer/mailer.module';
     StateHiringModule,
     HiringModule,
     PostModule,
-    MembershipModule,
     MailerModule,
   ],
   controllers: [AppController],
