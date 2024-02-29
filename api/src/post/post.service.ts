@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Post } from './post.entity';
@@ -21,7 +21,8 @@ export class PostService {
     const allPosts = await this.postRepository.find({
       where: { user: { isDeleted: false } },
     });
-    if (!allPosts) throw new NotFoundException('No se ha podido traer todos los post');
+    if (!allPosts)
+      throw new NotFoundException('No se ha podido traer todos los post');
     return allPosts;
   }
 
@@ -30,7 +31,8 @@ export class PostService {
       where: { id, title, user: { isDeleted: false } },
       relations: { images: true },
     });
-    if (!findedPost) throw new NotFoundException('No se ha podido traer todos los post');
+    if (!findedPost)
+      throw new NotFoundException('No se ha podido traer todos los post');
     return findedPost;
   }
 
@@ -44,7 +46,7 @@ export class PostService {
 
   async addImagesToPost(postId: number, images: File[]): Promise<ImagePost[]> {
     const post = await this.getPostBy({ id: postId });
-    if (!post) if (!post) throw new NotFoundException('No se ha encontrado el post');
+    if (!post) throw new NotFoundException('No se ha encontrado el post');
     return Promise.all(
       images.map(async image => {
         const newImage = this.imagePostRepository.create({
@@ -72,8 +74,8 @@ export class PostService {
   ): Promise<Post> {
     const postFound = await this.postRepository.findOneBy({ id: postId });
     if (!postFound) throw new NotFoundException('La publicación no existe');
-    const uptadePost = { ...postFound, ...updatePostData };
-    return await this.postRepository.save(uptadePost);
+    const updatePost = { ...postFound, ...updatePostData };
+    return await this.postRepository.save(updatePost);
   }
 
   async deletePost(postId: number) {
@@ -81,13 +83,12 @@ export class PostService {
       where: { id: postId },
       relations: { images: true },
     });
-    if (!postDelFound)
-      throw new NotFoundException('La publicacion no existe');
+    if (!postDelFound) throw new NotFoundException('La publicacion no existe');
     if (postDelFound.images.length > 0)
       Promise.all(
-        postDelFound.images.map(async image => {
-          await this.imagePostRepository.remove(image);
-        }),
+        postDelFound.images.map(
+          async image => await this.imagePostRepository.remove(image),
+        ),
       );
     await this.postRepository.remove(postDelFound);
   }

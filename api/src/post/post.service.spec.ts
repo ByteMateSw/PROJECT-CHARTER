@@ -4,19 +4,16 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Post } from './post.entity';
 import { ImagePost } from '../image/imagePost.entity';
-import { CreatePostDto } from './dto/createPost.dto';
-import { UpdatePostDto } from './dto/updatePost.dto';
 import { UserService } from '../user/user.service';
-import { identity } from 'rxjs';
-import { User } from '../user/user.entity';
-import { title } from 'process';
 import { Readable } from 'stream';
+import { NotFoundException } from '@nestjs/common';
 
 describe('PostService', () => {
   let service: PostService;
-  let postRepository: Repository<Post>;
-  let imagePostRepository: Repository<ImagePost>;
-  let userService: UserService;
+
+  const mockUser = {
+    id: 1,
+  };
 
   const mockPost: Post = {
     id: 1,
@@ -30,7 +27,7 @@ describe('PostService', () => {
     searchVector: '',
   };
 
-  let mockFile: Express.Multer.File = {
+  const mockImage: Express.Multer.File = {
     filename: 'test.png',
     fieldname: 'file',
     originalname: 'test.png',
@@ -43,38 +40,41 @@ describe('PostService', () => {
     stream: new Readable(),
   };
 
-  let mockImagePost = {
+  const mockImagePost = {
     id: 1,
-    imageData: mockFile.buffer,
-    contentType: mockFile.mimetype,
+    imageData: mockImage.buffer,
+    contentType: mockImage.mimetype,
+  };
+
+  const mockPostDto = {
+    title: 'Test Post',
+    description: 'This is a test post.',
   };
 
   const mockPostRepository = {
-    find: jest.fn(),
-    findOne: jest.fn(),
-    findOneBy: jest.fn(),
-    findOneByOrFail: jest.fn(),
-    findOneOrFail: jest.fn(),
-    create: jest.fn(),
-    save: jest.fn(),
-    delete: jest.fn(),
+    find: jest.fn().mockResolvedValue([mockPost]),
+    findOne: jest.fn().mockResolvedValue(mockPost),
+    findOneBy: jest.fn().mockResolvedValue(mockPost),
+    create: jest.fn().mockReturnValue(mockPost),
+    save: jest.fn().mockResolvedValue(mockPost),
+    remove: jest.fn(),
+    existsBy: jest.fn().mockResolvedValue(true),
   };
 
   const mockUserService = {
-    getUser: jest.fn(),
-    finOne: jest.fn(),
+    getUser: jest.fn().mockResolvedValue(mockUser),
+    finOne: jest.fn().mockResolvedValue(mockUser),
   };
 
   const mockImagePostRepository = {
-    find: jest.fn(),
-    findOne: jest.fn(),
-    findOneOrFail: jest.fn(),
+    find: jest.fn().mockResolvedValue([mockImagePost]),
+    findOne: jest.fn().mockResolvedValue(mockImagePost),
     create: jest.fn().mockReturnValue(mockImagePost),
-    save: jest.fn(),
-    remove: jest.fn(),
+    save: jest.fn().mockResolvedValue(mockImagePost),
+    remove: jest.fn().mockResolvedValue(mockImagePost),
   };
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PostService,
@@ -92,16 +92,8 @@ describe('PostService', () => {
         },
       ],
     }).compile();
-    service = module.get<PostService>(PostService);
-    postRepository = module.get<Repository<Post>>(getRepositoryToken(Post));
-    imagePostRepository = module.get<Repository<ImagePost>>(
-      getRepositoryToken(ImagePost),
-    );
-    userService = module.get<UserService>(UserService);
-  });
 
-  afterEach(() => {
-    jest.clearAllMocks();
+    service = module.get<PostService>(PostService);
   });
 
   it('should be defined', () => {
@@ -109,278 +101,184 @@ describe('PostService', () => {
   });
 
   describe('getAllPosts', () => {
-    it('should return all post records', async () => {
-      jest.spyOn(mockPostRepository, 'find').mockResolvedValue(mockPost);
-      expect(await service.getAllPosts()).toEqual(mockPost);
-      expect(postRepository.find).toHaveBeenCalled();
+    it('should return all post', async () => {
+      expect(await service.getAllPosts()).toEqual([mockPost]);
+      expect(mockPostRepository.find).toHaveBeenCalledWith({
+        where: { user: { isDeleted: false } },
+      });
+    });
+
+    it('should throw an exception for not obtaining any post', async () => {
+      mockPostRepository.find.mockResolvedValueOnce(null);
+      expect(async () => await service.getAllPosts()).rejects.toThrow(
+        new NotFoundException('No se ha podido traer todos los post'),
+      );
     });
   });
 
-  describe('getPostById', () => {
-    it('should return a post record by ID', async () => {
-      mockPostRepository.findOne.mockResolvedValue(mockPost);
-
-      const result = await service.getPostBy({ id: 1 });
-
-      expect(result).toEqual(mockPost);
+  describe('getPostBy', () => {
+    it('should return a post by its ID', async () => {
+      const postId = mockPost.id;
+      expect(await service.getPostBy({ id: postId })).toEqual(mockPost);
       expect(mockPostRepository.findOne).toHaveBeenCalledWith({
-        where: { id: 1, user: { isDeleted: false } },
+        where: { id: postId, user: { isDeleted: false } },
         relations: { images: true },
       });
     });
+
+    it('should return a post by its title', async () => {
+      const title = mockPost.title;
+      expect(await service.getPostBy({ title })).toEqual(mockPost);
+      expect(mockPostRepository.findOne).toHaveBeenCalledWith({
+        where: { title, user: { isDeleted: false } },
+        relations: { images: true },
+      });
+    });
+
     it('should throw an error if post with given ID is not found', async () => {
-      mockPostRepository.findOne.mockRejectedValue(
-        new Error('Error al obtener el post solicitado'),
-      );
-      await expect(service.getPostBy({ id: 1 })).rejects.toThrow(
-        'Error al obtener el post solicitado',
+      mockPostRepository.findOne.mockResolvedValueOnce(null);
+      expect(
+        async () => await service.getPostBy({ id: mockPost.id }),
+      ).rejects.toThrow(
+        new NotFoundException('No se ha podido traer todos los post'),
       );
     });
   });
 
   describe('createPost', () => {
     it('should create a new post', async () => {
-      const userId = 1;
-      const postDto: CreatePostDto = {
-        title: 'Test Post',
-        description: 'This is a test post.',
-      };
-      const imageDataArray: Buffer[] = [Buffer.from('image1')];
+      const id = mockUser.id;
+      expect(await service.createPost(id, mockPostDto)).toEqual(mockPost);
+      expect(mockUserService.getUser).toHaveBeenCalledWith({ id });
+      expect(mockPostRepository.create).toHaveBeenCalledWith(mockPostDto);
+      expect(mockPostRepository.save).toHaveBeenCalledWith({
+        ...mockPost,
+        user: mockUser,
+      });
+    });
 
-      mockUserService.getUser.mockResolvedValue(1);
-
-      const mockNewPost: Post = {
-        id: 1,
-        title: postDto.title,
-        description: postDto.description,
-        creationDate: new Date(),
-        user: null,
-        images: [],
-        itClosed: false,
-        suscribers: [],
-        searchVector: '',
-      };
-      mockPostRepository.create.mockReturnValueOnce(mockNewPost);
-      mockPostRepository.save.mockResolvedValueOnce(mockNewPost);
-
-      const result = await service.createPost(userId, postDto);
-      expect(result.title).toEqual(mockNewPost.title);
-      expect(result.description).toEqual(mockNewPost.description);
-
-      expect(mockPostRepository.create).toHaveBeenCalledWith(postDto);
-      expect(mockPostRepository.save).toHaveBeenCalledWith(mockNewPost);
+    it('should throw an error if user with given ID is not found', async () => {
+      mockUserService.getUser.mockResolvedValueOnce(null);
+      expect(
+        async () => await service.createPost(mockUser.id, mockPostDto),
+      ).rejects.toThrow(
+        new NotFoundException('No se ha encontrado el usuario'),
+      );
     });
   });
 
   describe('addImagesToPost', () => {
     it('should add images to a post', async () => {
-      const postId = 1;
+      const postId = mockPost.id;
       jest.spyOn(service, 'getPostBy').mockResolvedValueOnce(mockPost);
-      expect(await service.addImagesToPost(postId, [mockFile])).toEqual([
+      expect(await service.addImagesToPost(postId, [mockImage])).toEqual([
         mockImagePost,
       ]);
+      expect(service.getPostBy).toHaveBeenCalledWith({ id: postId });
       expect(mockImagePostRepository.create).toHaveBeenCalledWith({
-        imageData: mockFile.buffer,
-        contentType: mockFile.mimetype,
+        imageData: mockImage.buffer,
+        contentType: mockImage.mimetype,
         post: mockPost,
       });
       expect(mockImagePostRepository.save).toHaveBeenCalledWith(mockImagePost);
     });
 
     it('should throw an error if the post does not exist', async () => {
-      const postId = 1;
-      const imageDataArray: Buffer[] = [Buffer.from('image1')];
-      mockPostRepository.findOne.mockRejectedValue(new Error('Post not found'));
+      const postId = mockPost.id;
+      jest.spyOn(service, 'getPostBy').mockResolvedValueOnce(null);
 
-      await expect(
-        service.addImagesToPost(postId, [mockFile]),
-      ).rejects.toThrowError('Post not found');
-      expect(mockPostRepository.findOne).toHaveBeenCalledWith({
-        where: { id: postId, user: { isDeleted: false } },
-        relations: { images: true },
-      });
-      expect(mockImagePostRepository.create).not.toHaveBeenCalled();
-      expect(mockImagePostRepository.save).not.toHaveBeenCalled();
+      expect(
+        async () => await service.addImagesToPost(postId, [mockImage]),
+      ).rejects.toThrow(new NotFoundException('No se ha encontrado el post'));
+      expect(service.getPostBy).toHaveBeenCalledWith({ id: postId });
     });
   });
 
   describe('removeImageFromPost', () => {
     it('should remove an image from a post', async () => {
-      const postId = 1;
-      const imagePostId = 1;
-      const mockPosts: Post[] = [];
-      const imagePost: ImagePost = {
-        id: imagePostId,
-        imageData: Buffer.from('image1'),
-        contentType: 'image/png',
-        post: new Post(),
-      };
-      expect(await service.removeImageFromPost(imagePostId)).toEqual(imagePost);
+      const imageId = mockImagePost.id;
 
-      expect(mockPostRepository.findOneByOrFail).toHaveBeenCalledWith({
-        id: postId,
+      expect(await service.removeImageFromPost(imageId)).toEqual(mockImagePost);
+      expect(mockImagePostRepository.findOne).toHaveBeenCalledWith({
+        where: { id: imageId },
       });
-      expect(mockImagePostRepository.findOneOrFail).toHaveBeenCalledWith(
-        imagePost,
+      expect(mockImagePostRepository.remove).toHaveBeenCalledWith(
+        mockImagePost,
       );
-      expect(mockImagePostRepository.remove).toHaveBeenCalledWith(imagePost);
-      expect(mockPostRepository.save).toHaveBeenCalledWith(mockPosts);
-    });
-
-    it('should throw an error if the post does not exist', async () => {
-      const postId = 1;
-      const imagePostId = 1;
-
-      expect(mockPostRepository.findOneByOrFail).toHaveBeenCalledWith(
-        new Error('Post not found'),
-      );
-
-      expect(
-        await service.removeImageFromPost(imagePostId),
-      ).toHaveBeenCalledWith(new Error('Error al remover una imágen'));
-      expect(mockPostRepository.findOneByOrFail).toHaveBeenCalledWith(postId);
-      expect(mockImagePostRepository.findOneOrFail).not.toHaveBeenCalled();
-      expect(mockImagePostRepository.remove).not.toHaveBeenCalled();
-      expect(mockPostRepository.save).not.toHaveBeenCalled();
     });
 
     it('should throw an error if the image post does not exist', async () => {
-      const postId = 1;
-      const imagePostId = 1;
-      const mockPosts: Post[] = [];
-      expect(mockPostRepository.findOneByOrFail).toHaveBeenCalledWith(
-        mockPosts,
-      );
-      expect(mockImagePostRepository.findOneOrFail).toHaveBeenCalledWith(
-        new Error('Image post not found'),
-      );
+      const imagePostId = mockImagePost.id;
+      mockImagePostRepository.findOne.mockResolvedValueOnce(null);
 
       expect(
-        await service.removeImageFromPost(imagePostId),
-      ).rejects.toThrowError('Error al remover una imágen');
-      expect(mockPostRepository.findOneByOrFail).toHaveBeenCalledWith(postId);
-      expect(mockImagePostRepository.findOneOrFail).toHaveBeenCalledWith({
-        id: imagePostId,
+        async () => await service.removeImageFromPost(mockImagePost.id),
+      ).rejects.toThrow(new NotFoundException('Imágen no encontrada'));
+      expect(mockImagePostRepository.findOne).toHaveBeenCalledWith({
+        where: { id: imagePostId },
       });
-      expect(mockImagePostRepository.remove).not.toHaveBeenCalled();
-      expect(mockPostRepository.save).not.toHaveBeenCalled();
     });
   });
 
   describe('updatePost', () => {
     it('should update a post', async () => {
-      const postId = 1;
-      const updatePostData: UpdatePostDto = {
-        title: 'Updated Title',
-        description: 'Updated Description',
-      };
-      const mockPosts: Post[] = [];
+      const postId = mockPost.id;
 
-      expect(mockPostRepository.findOneByOrFail).toHaveBeenCalledWith(
-        mockPosts,
-      );
+      expect(await service.updatePost(postId, mockPostDto)).toEqual(mockPost);
+      expect(mockPostRepository.findOneBy).toHaveBeenCalledWith({ id: postId });
       expect(mockPostRepository.save).toHaveBeenCalledWith({
-        ...Post,
-        ...updatePostData,
-      });
-
-      expect(await service.updatePost(postId, updatePostData)).toEqual({
-        ...mockPosts,
-        ...updatePostData,
-      });
-
-      expect(mockPostRepository.findOneByOrFail).toHaveBeenCalledWith({
-        id: postId,
-      });
-      expect(mockPostRepository.save).toHaveBeenCalledWith({
-        ...mockPosts,
-        ...updatePostData,
-      });
-      expect(await service.updatePost(postId, updatePostData)).toEqual({
-        ...mockPosts,
-        ...updatePostData,
+        ...mockPost,
+        ...mockPostDto,
       });
     });
 
     it('should throw an error if the post does not exist', async () => {
-      const postId = 1;
-      const updatePostData: UpdatePostDto = {
-        title: 'Updated Title',
-        description: 'Updated Description',
-      };
-      expect(mockPostRepository.findOneByOrFail).toHaveBeenCalledWith(
-        new Error('Post not found'),
-      );
-
+      const postId = mockPost.id;
+      mockPostRepository.findOneBy.mockResolvedValueOnce(null);
       expect(
-        await service.updatePost(postId, updatePostData),
-      ).rejects.toThrowError('La publicación no se ha podido borrar');
-      expect(mockPostRepository.findOneByOrFail).toHaveBeenCalledWith({
-        id: postId,
-      });
-      expect(mockPostRepository.save).not.toHaveBeenCalled();
+        async () => await service.updatePost(postId, mockPostDto),
+      ).rejects.toThrow(new NotFoundException('La publicación no existe'));
+      expect(mockPostRepository.findOneBy).toHaveBeenCalledWith({ id: postId });
     });
   });
 
   describe('deletePost', () => {
     it('should delete a post', async () => {
-      const postId = 1;
-      const mockPosts: Post[] = [];
-      expect(mockPostRepository.findOneByOrFail).toHaveBeenCalledWith(
-        mockPosts,
-      );
+      const postId = mockPost.id;
 
-      const result = await service.deletePost(postId);
+      await service.deletePost(postId);
 
-      expect(mockPostRepository.findOneByOrFail).toHaveBeenCalledWith({
-        id: postId,
+      expect(mockPostRepository.findOne).toHaveBeenCalledWith({
+        where: { id: postId },
+        relations: { images: true },
       });
-      expect(mockPostRepository.delete).toHaveBeenCalledWith(postId);
-      expect(result).toBeUndefined();
+      expect(mockImagePostRepository.remove).toHaveBeenCalledWith(
+        mockImagePost,
+      );
+      expect(mockPostRepository.remove).toHaveBeenCalledWith(mockPost);
     });
 
     it('should throw an error if the post does not exist', async () => {
-      const postId = 1;
-      expect(mockPostRepository.findOneByOrFail).toHaveBeenCalledWith(
-        new Error('Post not found'),
-      );
+      const postId = mockPost.id;
+      mockPostRepository.findOne.mockResolvedValueOnce(null);
 
-      await expect(service.deletePost(postId)).rejects.toThrowError(
-        'La publicación no se ha podido borrar',
+      expect(async () => await service.deletePost(postId)).rejects.toThrow(
+        new NotFoundException('La publicacion no existe'),
       );
-      expect(mockPostRepository.findOneByOrFail).toHaveBeenCalledWith({
-        id: postId,
+      expect(mockPostRepository.findOne).toHaveBeenCalledWith({
+        where: { id: postId },
+        relations: { images: true },
       });
-      expect(mockPostRepository.delete).not.toHaveBeenCalled();
     });
   });
 
-  describe('getPostByName', () => {
-    it('should get a post by name', async () => {
-      const postName = 'Test Post';
-      const mockPosts: Post[] = [];
-      expect(mockPostRepository.findOneBy).toHaveBeenCalledWith({
-        title: postName,
-      });
+  describe('existsPost', () => {
+    it('should return if exist an post by its id', async () => {
+      const postId = mockPost.id;
 
-      const result = await service.getPostBy({ title: postName });
+      expect(await service.existsPost(postId)).toEqual(true);
 
-      expect(mockPostRepository.findOneBy).toHaveBeenCalledWith({
-        title: postName,
-      });
-      expect(result).toEqual(mockPosts);
-    });
-
-    it('should throw an error if the post with the given name does not exist', async () => {
-      const postName = 'Nonexistent Post';
-      mockPostRepository.findOneBy.mockResolvedValue(null);
-
-      expect(await service.getPostBy({ title: postName })).rejects.toThrowError(
-        'La publicación no se ha podido encontrar',
-      );
-      expect(mockPostRepository.findOneBy).toHaveBeenCalledWith({
-        title: postName,
-      });
+      expect(mockPostRepository.existsBy).toHaveBeenCalledWith({ id: postId });
     });
   });
 });

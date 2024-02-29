@@ -85,7 +85,7 @@ export class PostController {
     @Param('id', CustomParseIntPipe) imageId: number,
   ): Promise<ResponseMessage> {
     await this.postService.removeImageFromPost(imageId);
-    return { message: 'La imágen se ha borrado correctamente' };
+    return { message: 'La imagen se ha borrado correctamente' };
   }
 
   @UseGuards(AccessTokenGuard)
