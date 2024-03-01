@@ -13,7 +13,7 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { ToSGuard } from './ToS/ToS.guard';
-import { HashPipe } from '../utils/pipes/hash.pipe';
+import { HashPasswordPipe } from '../utils/pipes/hash.pipe';
 import { Response } from 'express';
 import { LocalAuthGuard } from './local/local-auth.guard';
 import { AccessToken, Tokens } from './jwt/token.type';
@@ -33,7 +33,7 @@ export class AuthController {
   @HttpCode(201)
   @Post('register')
   async registerUser(
-    @Body(HashPipe) registerDto: RegisterDto,
+    @Body(HashPasswordPipe) registerDto: RegisterDto,
   ): Promise<ResponseMessage> {
     const newUser = await this.authService.register(registerDto);
     const verificationToken = await this.authService.getVerificationToken(
