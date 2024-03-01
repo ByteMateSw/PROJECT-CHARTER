@@ -1,9 +1,15 @@
+/**
+ * Enum representing the SameSite attribute values for cookies.
+ */
 export enum ISamesite {
   None = 'none',
   Lax = 'lax',
   Strict = 'strict',
 }
 
+/**
+ * Interface representing the JWT configuration.
+ */
 export interface IJWTConfig {
   access_secret: string;
   access_expiration: string;

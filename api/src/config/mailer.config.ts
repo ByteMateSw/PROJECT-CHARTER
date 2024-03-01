@@ -4,6 +4,10 @@ import { MailerEnvironmentVariables } from './validations/mailer.validation';
 import { validateUtil } from '../utils/validation/validate-util';
 import 'dotenv/config';
 
+/**
+ * Registers the mailer configuration as a NestJS configuration provider.
+ * @returns {IMailerConfig} The mailer configuration object.
+ */
 export default registerAs('mailer', (): IMailerConfig => {
   validateUtil(process.env, MailerEnvironmentVariables);
 

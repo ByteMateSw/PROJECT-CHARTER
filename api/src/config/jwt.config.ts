@@ -8,6 +8,10 @@ import {
 import { validateUtil } from '../utils/validation/validate-util';
 import { JWTEnvironmentVariables } from './validations/jwt.validation';
 
+/**
+ * Registers the jwt configuration as a NestJS configuration provider.
+ * @returns {IJWTConfig} The jwt configuration object.
+ */
 export default registerAs('jwt', (): IJWTConfig => {
   validateUtil(process.env, JWTEnvironmentVariables);
 
@@ -25,6 +29,11 @@ export default registerAs('jwt', (): IJWTConfig => {
 });
 
 const cookieName = 'auth_cookie';
+/**
+ * The name of the refresh cookie.
+ * If the environment is 'development', the cookie name is the same as `cookieName`.
+ * Otherwise, the cookie name is prefixed with `CookiePrefix.Secure` enumeration.
+ */
 export const refreshCookieName: string =
   process.env.NODE_ENV === 'development'
     ? cookieName

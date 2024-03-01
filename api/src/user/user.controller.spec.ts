@@ -83,7 +83,7 @@ describe('UserController', () => {
       expect(mockUserService.getUser).toHaveBeenCalledWith({ id });
     });
 
-    it('should thrown an error to obtain the user', async () => {
+    it('should throw an error to obtain the user', async () => {
       const id = mockUser.id;
       mockUserService.getUser.mockResolvedValueOnce(null);
       expect(async () => await controller.getUserById(id)).rejects.toThrow(

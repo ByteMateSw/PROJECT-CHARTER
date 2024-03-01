@@ -1,5 +1,10 @@
 import { HttpStatus, ParseFilePipeBuilder } from '@nestjs/common';
 
+/**
+ * FilePipeValidator is a pipe validator for images uploads.
+ * It validates the image type and size.
+ * @throws UnprocessableEntityException if the file is not valid.
+ */
 export const FilePipeValidator = new ParseFilePipeBuilder()
   .addFileTypeValidator({
     fileType: '.(png|jpeg|jpg)',

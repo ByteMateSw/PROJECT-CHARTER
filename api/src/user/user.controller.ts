@@ -22,16 +22,29 @@ import {
 } from '../utils/types/functions.type';
 import { UserParam } from '../utils/params/user.param';
 
+/**
+ * Controller for handling user-related operations.
+ */
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
+  /**
+   * Retrieves all users.
+   * @returns A promise that resolves to an array of User objects.
+   */
   @UseGuards(AccessTokenGuard)
   @Get()
   async getAllUsers(): Promise<User[]> {
     return await this.userService.getAllUsers();
   }
 
+  /**
+   * Retrieves a user by their ID.
+   * @param id - The ID of the user.
+   * @returns A promise that resolves to the User object.
+   * @throws NotFoundException if the user is not found.
+   */
   @UseGuards(AccessTokenGuard)
   @Get(':id')
   async getUserById(
@@ -42,6 +55,11 @@ export class UserController {
     return user;
   }
 
+  /**
+   * Deletes a user.
+   * @param user - The user to be deleted.
+   * @returns  - A json object with a message.
+   */
   @UseGuards(AccessTokenGuard)
   @Delete('')
   async deleteUser(@UserParam() user: UserParamType): Promise<ResponseMessage> {
@@ -49,6 +67,11 @@ export class UserController {
     return { message: 'El usuario ha sido borrado correctamente' };
   }
 
+  /**
+   * Deletes a user by their ID.
+   * @param id - The ID of the user to be deleted.
+   * @returns - A json object with a message.
+   */
   @Roles(Role.Admin)
   @Delete(':id')
   async deleteUserById(
@@ -58,6 +81,12 @@ export class UserController {
     return { message: 'El usuario ha sido borrado correctamente' };
   }
 
+  /**
+   * Updates a user.
+   * @param id - The ID of the user to be updated.
+   * @param updateUserDto - The data to update the user with.
+   * @returns - A json object with a message.
+   */
   @UseGuards(AccessTokenGuard)
   @Patch(':id')
   async updateUser(

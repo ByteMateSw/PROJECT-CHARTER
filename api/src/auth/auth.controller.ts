@@ -13,7 +13,7 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { ToSGuard } from './ToS/ToS.guard';
-import { HashPipe } from '../utils/pipes/hash.pipe';
+import { HashPasswordPipe } from '../utils/pipes/hash.pipe';
 import { Response } from 'express';
 import { LocalAuthGuard } from './local/local-auth.guard';
 import { AccessToken, Tokens } from './jwt/token.type';
@@ -23,6 +23,9 @@ import { RefreshTokenGuard } from './jwt/refresh.guard';
 import { UserParamID } from '../utils/params/user.param';
 import { MailerService } from '../mailer/mailer.service';
 
+/**
+ * Controller responsible for handling authentication-related requests.
+ */
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -30,10 +33,15 @@ export class AuthController {
     private mailerService: MailerService,
   ) {}
 
+  /**
+   * Registers a new user.
+   * @param registerDto - The registration data.
+   * @returns A response message indicating the success of the registration.
+   */
   @HttpCode(201)
   @Post('register')
   async registerUser(
-    @Body(HashPipe) registerDto: RegisterDto,
+    @Body(HashPasswordPipe) registerDto: RegisterDto,
   ): Promise<ResponseMessage> {
     const newUser = await this.authService.register(registerDto);
     const verificationToken = await this.authService.getVerificationToken(
@@ -46,6 +54,12 @@ export class AuthController {
     return { message: 'El usuario a sido creado con éxito' };
   }
 
+  /**
+   * Logs in a user.
+   * @param signInDto - The login data.
+   * @param res - The HTTP response object.
+   * @returns An access token for the logged-in user.
+   */
   @HttpCode(HttpStatus.ACCEPTED)
   @UseGuards(LocalAuthGuard, ToSGuard)
   @Post('login')
@@ -58,6 +72,13 @@ export class AuthController {
     return { access_token: tokens.access_token };
   }
 
+  /**
+   * Refreshes the access token for a user.
+   * @param refreshToken - The refresh token.
+   * @param id - The user ID.
+   * @param res - The HTTP response object.
+   * @returns A new access token.
+   */
   @UseGuards(RefreshTokenGuard)
   @Get('refresh')
   async refreshTokens(
@@ -70,6 +91,11 @@ export class AuthController {
     return { access_token: tokens.access_token };
   }
 
+  /**
+   * Verifies a user's account.
+   * @param token - The verification token.
+   * @returns A response message indicating the success of the account verification.
+   */
   @Get('verify')
   async verifyUser(@Query('token') token: string): Promise<ResponseMessage> {
     const verifyToken = await this.authService.verifyVerificationToken(token);

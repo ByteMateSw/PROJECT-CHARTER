@@ -7,7 +7,7 @@ import nodemailer from 'nodemailer';
 export class MailerService {
   private transporter: Transporter;
   private url: string;
-  private from;
+  private from: string;
 
   constructor(private configService: ConfigService) {
     this.url = this.configService.get('mailer.url');
@@ -16,6 +16,14 @@ export class MailerService {
     this.transporter = nodemailer.createTransport(config);
   }
 
+  /**
+   * Sends a verification email to the specified email address.
+   *
+   * @param direction - The email address to send the verification email to.
+   * @param token - The verification token to include in the email.
+   * @returns A promise that resolves to a string indicating the success of the email sending.
+   * @throws {InternalServerErrorException} If an error occurs while sending the email.
+   */
   async SendVerificationMail(
     direction: string,
     token: string,
@@ -37,6 +45,12 @@ export class MailerService {
     }
   }
 
+  /**
+   * Creates a verification email with a token.
+   *
+   * @param token - The verification token.
+   * @returns The verification email HTML content.
+   */
   CreateVerificationMail(token: string): string {
     return `<p>Si te llego este mail es para verificar tu cuenta, entrá acá <a href="${this.url}/verificar/${token}" blehh </p>`;
   }
