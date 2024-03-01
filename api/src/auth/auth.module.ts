@@ -12,6 +12,9 @@ import { PassportModule } from '@nestjs/passport';
 import { RefreshTokenStrategy } from './jwt/refresh.strategy';
 import { MailerModule } from '../mailer/mailer.module';
 
+/**
+ * Module responsible for authentication-related functionality.
+ */
 @Module({
   imports: [
     ConfigModule,

@@ -15,6 +15,11 @@ import {
 export class UpdateUserDto {
   /**
    * The first name of the user.
+   * @remarks
+   * - Must be a string.
+   * - Cannot be empty.
+   * - Must contain only letters.
+   * @example John
    */
   @IsOptional()
   @IsString({ message: 'El nombre debe ser una cadena de caracteres.' })
@@ -24,6 +29,11 @@ export class UpdateUserDto {
 
   /**
    * The last name of the user.
+   * @remarks
+   * - Must be a string.
+   * - Cannot be empty.
+   * - Must contain only letters.
+   * @example Doe
    */
   @IsOptional()
   @IsString({ message: 'El apellido debe ser una cadena de caracteres.' })
@@ -33,6 +43,9 @@ export class UpdateUserDto {
 
   /**
    * The email address of the user.
+   * @remarks
+   * - Must be a valid email address.
+   * @example example@domain.com
    */
   @IsOptional()
   @IsEmail({}, { message: 'Debe ser un email válido' })
@@ -40,6 +53,17 @@ export class UpdateUserDto {
 
   /**
    * The password of the user.
+   * @remarks
+   * - Must be a string.
+   * - Cannot be empty.
+   * - Must be a strong password.
+   * - Must meet the following criteria:
+   *   - Minimum length of 8 characters.
+   *   - At least 1 lowercase letter.
+   *   - At least 1 uppercase letter.
+   *   - At least 1 number.
+   *   - At least 1 symbol.
+   * @example password123
    */
   @IsOptional()
   @IsString({ message: 'La contraseña debe ser una cadena de caracteres.' })
@@ -61,6 +85,10 @@ export class UpdateUserDto {
 
   /**
    * The phone number of the user.
+   * @remarks
+   * - Must be a string.
+   * - Must be a valid phone number.
+   * @example +1234567890
    */
   @IsOptional()
   @IsPhoneNumber(undefined, {
@@ -70,6 +98,9 @@ export class UpdateUserDto {
 
   /**
    * The birthday of the user.
+   * @remarks
+   * - Must be a date.
+   * @example 2021-01-01
    */
   @IsOptional()
   @IsDateString(
