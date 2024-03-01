@@ -122,4 +122,11 @@ export class UserService {
     if (!userFound) throw new NotFoundException('El usuario no existe');
     await this.userRepository.update({ id }, { refreshToken });
   }
+
+  async validateUser({ id, email }: EmailAndOrId) {
+    const user = await this.userRepository.findOne({ where: { id, email } });
+    if (!user) throw new NotFoundException('No se encontró el usuario');
+    user.isAccountValidate = true;
+    await this.userRepository.save(user);
+  }
 }

@@ -13,13 +13,13 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString({ message: 'El nombre debe ser una cadena de caracteres.' })
   @IsNotEmpty({ message: 'El nombre no puede estar vacío.' })
-  @IsAlpha('es-AR', { message: 'El nombre debe contener solo letras.' })
+  @IsAlpha('es-ES', { message: 'El nombre debe contener solo letras.' })
   firstName?: string;
 
   @IsOptional()
   @IsString({ message: 'El apellido debe ser una cadena de caracteres.' })
   @IsNotEmpty({ message: 'El apellido no puede estar vacío.' })
-  @IsAlpha('es-AR', { message: 'El apellido debe contener solo letras.' })
+  @IsAlpha('es-ES', { message: 'El apellido debe contener solo letras.' })
   lastName?: string;
 
   @IsOptional()

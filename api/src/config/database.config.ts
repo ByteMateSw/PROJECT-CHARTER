@@ -6,6 +6,7 @@ import {
 } from './interfaces/database.interface';
 import { validateUtil } from '../utils/validation/validate-util';
 import { DatabaseEnvironmentVariables } from './validations/database.validation';
+import { IEnvironment } from './interfaces/app.interface';
 
 export default registerAs(
   DatabaseNamespaces.Production,
@@ -13,11 +14,17 @@ export default registerAs(
     validateUtil(process.env, DatabaseEnvironmentVariables);
 
     return {
+      type: 'postgres',
       host: process.env.DATABASE_HOST,
-      name: process.env.DATABASE_NAME,
-      user: process.env.DATABASE_USER,
-      pass: process.env.DATABASE_PASSWORD,
       port: parseInt(process.env.DATABASE_PORT, 10) || 5432,
+      database: process.env.DATABASE_NAME,
+      username: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD,
+      synchronize: process.env.NODE_ENV !== IEnvironment.Production,
+      entities: [__dirname + '/../**/*entity{.js,.ts}'],
+      logging: process.env.NODE_ENV !== IEnvironment.Development,
+      migrations: [__dirname + '/../**/migrations/*{.js,.ts}'],
+      migrationsTableName: 'migrations',
     };
   },
 );

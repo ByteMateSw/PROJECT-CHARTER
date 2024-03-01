@@ -9,7 +9,6 @@ import { Repository } from 'typeorm';
 
 describe('NotificationsService', () => {
   let service: NotificationsService;
-  let userService:UserService;
 
   const mockNotifications = {
     id: 1,
@@ -47,7 +46,6 @@ describe('NotificationsService', () => {
     },],
     }).compile();
     service = module.get<NotificationsService>(NotificationsService);
-    userService = module.get<UserService>(UserService);
   });
   it ('shoul be defined',()=>{
     expect(service). toBeDefined()

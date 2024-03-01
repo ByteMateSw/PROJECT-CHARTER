@@ -15,15 +15,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         : DatabaseNamespaces.Production;
 
     return {
-      type: 'postgres',
-      port: +this.configService.get<number>(`${CurrentNamespace}.port`),
-      username: this.configService.get<string>(`${CurrentNamespace}.user`),
-      password: this.configService.get<string>(`${CurrentNamespace}.pass`),
-      database: this.configService.get<string>(`${CurrentNamespace}.name`),
-      synchronize:
-        this.configService.get<string>('app.nodeEnv') !==
-        IEnvironment.Production,
-      entities: [__dirname + '/../**/*entity{.js,.ts}'],
+      ...this.configService.get(`${CurrentNamespace}`),
     };
   }
 }

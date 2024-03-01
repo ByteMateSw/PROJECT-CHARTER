@@ -2,8 +2,7 @@ import { CreatePostDto } from './dto/createPost.dto';
 import { PostController } from './post.controller';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PostService } from './post.service';
-import { HttpException } from '@nestjs/common';
-import { HttpStatus } from '@nestjs/common';
+import { Readable } from 'typeorm/platform/PlatformTools';
 
 describe('PostController', () => {
   let controller: PostController;
@@ -13,31 +12,56 @@ describe('PostController', () => {
     title: 'Post 1',
     description: 'Descripcion 1',
     creationDate: 'Date 1',
-    itClosed: true,
+    itClosed: false,
+  };
+
+  const mockUserId = 1;
+
+  let mockImage: Express.Multer.File = {
+    filename: 'test.png',
+    fieldname: 'file',
+    originalname: 'test.png',
+    encoding: '7bit',
+    mimetype: 'image/png',
+    size: 10,
+    destination: '/tmp',
+    path: '/tmp/test.png',
+    buffer: Buffer.from('image1'),
+    stream: new Readable(),
   };
 
   const mockCreatePostDto: CreatePostDto = {
     title: 'New Post',
-    description: 'New Description'
+    description: 'New Description',
   };
 
-  const mockError = new Error('Error al buscar el post por ID');
+  const mockUpdatePostDto: CreatePostDto = {
+    title: 'New Post',
+    description: 'New Description',
+  };
 
-  const mockCreateMessage = 'El Post ha sido creado correctamente';
+  const mockRemoveImage = { message: 'La imagen se ha borrado correctamente' };
 
-  const mockDeleteMessage = 'El Post ha sido borrado correctamente';
+  const mockDeleteMessage = {
+    message: 'La publicación se ha borrado correctamente',
+  };
 
-  const mockUpdateMessage = 'El Post se ha actualizado correctamente';
+  const mockUpdateMessage = {
+    message: 'La publicación se actualizó correctamente',
+  };
 
   const mockPostService = {
-    getAllPost: jest.fn().mockResolvedValue([mockPost]),
-    getPostById: jest.fn().mockResolvedValue(mockPost),
-    createPost: jest.fn().mockResolvedValue(mockCreateMessage),
+    getAllPosts: jest.fn().mockResolvedValue([mockPost]),
+    getPostBy: jest.fn().mockResolvedValue(mockPost),
+    createPost: jest.fn().mockResolvedValue(mockPost),
     deletePost: jest.fn().mockResolvedValue(mockDeleteMessage),
     updatePost: jest.fn().mockResolvedValue(mockUpdateMessage),
+    addImagesToPost: jest.fn().mockResolvedValue([mockImage]),
+    removeImageFromPost: jest.fn().mockResolvedValue([mockImage]),
+    searchPost: jest.fn().mockResolvedValue([mockPost]),
   };
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PostController],
       providers: [PostService],
@@ -56,85 +80,85 @@ describe('PostController', () => {
 
   describe('createPost', () => {
     it('should create a new post', async () => {
-        const userId = 1;
-        const imageDataArray = [];
-        const newPostData = {title: 'New Post', description: 'New Description'}
-        const newPostDto = new CreatePostDto();
-        Object.assign(newPostDto, newPostData);
-      const result = await controller.createPost(userId, newPostDto, imageDataArray);
-      expect(result).toEqual(mockCreateMessage);
-    });
-
-    it('should throw an HttpException with HttpStatus.BAD_REQUEST when postService throws an error', async () => {
-      mockPostService.createPost.mockRejectedValueOnce(mockError);
-      await expect(
-        async () => {
-        const userId = 1;
-        const imageDataArray = [];
-        const newPostData = {title: 'New Post', description: 'New Description'}
-        const newPostDto = new CreatePostDto();
-        Object.assign(newPostDto, newPostData);
-        await controller.createPost(userId, newPostDto, imageDataArray);}
-      ).rejects.toThrow(
-        new HttpException(mockError.message, HttpStatus.BAD_REQUEST),
+      expect(
+        await controller.createPost(mockCreatePostDto, mockUserId, [mockImage]),
+      ).toEqual(mockPost);
+      expect(mockPostService.createPost).toHaveBeenCalledWith(
+        mockUserId,
+        mockCreatePostDto,
+      );
+      expect(mockPostService.addImagesToPost).toHaveBeenCalledWith(
+        mockPost.id,
+        [mockImage],
       );
     });
   });
 
-  describe('findOne', () => {
+  describe('getPostById', () => {
     it('should return the post with the specified ID', async () => {
-      const mockPost = {
-        id: 1,
-        title: 'Post 1',
-        description: 'Descripcion 1',
-        creationDate: 'Date 1',
-        itClosed: true,
-      };
-      const result = await controller.getPostById(1);
-      expect(result).toEqual(mockPost);
+      expect(await controller.getPostById(1)).toEqual(mockPost);
+      expect(mockPostService.getPostBy).toHaveBeenCalledWith({
+        id: mockUserId,
+      });
     });
+  });
 
-    it('should throw an HttpException with HttpStatus.INTERNAL_SERVER_ERROR when postService throws an error', async () => {
-      mockPostService.getPostById.mockRejectedValueOnce(mockError);
-      await expect(async () => await controller.getPostById(1)).rejects.toThrow(
-        new HttpException(
-          'Error al buscar el post por ID',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        ),
-      );
+  describe('getAllPosts', () => {
+    it('should return all the posts', async () => {
+      expect(await controller.getAllPosts()).toEqual([mockPost]);
+      expect(mockPostService.getAllPosts).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('getPostByName', () => {
+    it('should return all the posts', async () => {
+      const mockSearch = 'test';
+      const mockPage = 1;
+      const mockLimit = 1;
+      expect(
+        await controller.getPostByName(mockSearch, mockPage, mockLimit),
+      ).toEqual([mockPost]);
+      expect(mockPostService.searchPost).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('addImageToPost', () => {
+    it('should add images to the post', async () => {
+      const id = mockPost.id;
+      expect(await controller.addImageToPost(id, [mockImage])).toEqual([
+        mockImage,
+      ]);
+      expect(mockPostService.addImagesToPost).toHaveBeenCalledWith(id, [
+        mockImage,
+      ]);
+    });
+  });
+
+  describe('removeImageFromPost', () => {
+    it('should remove the images to the post', async () => {
+      const id = 1;
+      expect(await controller.removeImageFromPost(id)).toEqual(mockRemoveImage);
+      expect(mockPostService.removeImageFromPost).toHaveBeenCalledWith(id);
     });
   });
 
   describe('deletePost', () => {
     it('should delete the post with the specified ID', async () => {
-      const id = 1;
-      const result = await controller.deletePost(id);
-      expect(result).toEqual('La publicación se ha borrado correctamente');
-    });
-
-    it('should throw an HttpException with HttpStatus.FORBIDDEN when postService throws an error', async () => {
-      mockPostService.deletePost.mockRejectedValueOnce(mockError);
-      const id = 1;
-      await expect(async () => await controller.deletePost(id)).rejects.toThrow(
-        new HttpException(mockError.message, HttpStatus.FORBIDDEN),
-      );
+      const id = mockPost.id;
+      expect(await controller.deletePost(id)).toEqual(mockDeleteMessage);
+      expect(mockPostService.deletePost).toHaveBeenCalledWith(id);
     });
   });
 
   describe('updatePost', () => {
     it('should update the post with the specified ID', async () => {
-      const id = 1;
-      const result = await controller.updatePost(id, mockCreatePostDto);
-      expect(result).toEqual('La publicación se actualizó correctamente');
-    });
-
-    it('should throw an HttpException with HttpStatus.FORBIDDEN when officeService throws an error', async () => {
-      mockPostService.updatePost.mockRejectedValueOnce(mockError);
-      const id = 1;
-      await expect(
-        async () => await controller.updatePost(id, mockCreatePostDto),
-      ).rejects.toThrow(
-        new HttpException(mockError.message, HttpStatus.FORBIDDEN),
+      const id = mockPost.id;
+      expect(await controller.updatePost(id, mockUpdatePostDto)).toEqual(
+        mockUpdateMessage,
+      );
+      expect(mockPostService.updatePost).toHaveBeenCalledWith(
+        id,
+        mockUpdatePostDto,
       );
     });
   });

@@ -12,23 +12,27 @@ import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { AccessTokenGuard } from '../auth/jwt/access.guard';
 import { EmptyBodyPipe } from '../utils/pipes/empty-body.pipe';
-import { RoleGuard } from '../role/role.guard';
 import { Roles } from '../role/role.decorator';
 import { Role } from '../utils/enums/role.enum';
 import { User } from './user.entity';
 import { CustomParseIntPipe } from '../utils/pipes/parse-int.pipe';
-import { ResponseMessage } from '../utils/types/functions.type';
+import {
+  ResponseMessage,
+  UserParam as UserParamType,
+} from '../utils/types/functions.type';
+import { UserParam } from '../utils/params/user.param';
 
-@UseGuards(AccessTokenGuard)
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @UseGuards(AccessTokenGuard)
   @Get()
   async getAllUsers(): Promise<User[]> {
     return await this.userService.getAllUsers();
   }
 
+  @UseGuards(AccessTokenGuard)
   @Get(':id')
   async getUserById(
     @Param('id', CustomParseIntPipe) id: number,
@@ -38,16 +42,23 @@ export class UserController {
     return user;
   }
 
+  @UseGuards(AccessTokenGuard)
+  @Delete('')
+  async deleteUser(@UserParam() user: UserParamType): Promise<ResponseMessage> {
+    await this.userService.deleteUser(user.id);
+    return { message: 'El usuario ha sido borrado correctamente' };
+  }
+
   @Roles(Role.Admin)
-  @UseGuards(RoleGuard)
   @Delete(':id')
-  async deleteUser(
+  async deleteUserById(
     @Param('id', CustomParseIntPipe) id: number,
   ): Promise<ResponseMessage> {
     await this.userService.deleteUser(id);
     return { message: 'El usuario ha sido borrado correctamente' };
   }
 
+  @UseGuards(AccessTokenGuard)
   @Patch(':id')
   async updateUser(
     @Param('id', CustomParseIntPipe) id: number,

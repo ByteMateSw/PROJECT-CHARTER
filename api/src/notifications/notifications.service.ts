@@ -5,11 +5,12 @@ import { Notifications } from './notifications.entity';
 import { CreateNotificationsDTO } from './dto/notification.dto';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { UptadeNotificationsDTO } from './dto/uptadeNotifications.dto';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class NotificationsService {
   constructor(
-    private NotificationsRepository: Repository<Notifications>,
+    @InjectRepository(Notifications) private NotificationsRepository: Repository<Notifications>,
     private userService: UserService,
   ) {}
 
@@ -20,7 +21,7 @@ export class NotificationsService {
     const user = await this.userService.getUser({ id });
     if (!user) throw new NotFoundException('No se ha encontrado el usuario');
     const timeStamp = new Date();
-    if (!timestamp) throw new BadRequestException('No se ha podido crear la fecha');
+    if (!timeStamp) throw new BadRequestException('No se ha podido crear la fecha');
     const expireAt = new Date();
     if (!expireAt)
       throw new BadRequestException('No se ha podido crear la fecha de expiración');

@@ -1,4 +1,5 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { CustomParseIntPipe } from '../pipes/parse-int.pipe';
 
 export const UserParam = createParamDecorator(
   (data: string, ctx: ExecutionContext) => {

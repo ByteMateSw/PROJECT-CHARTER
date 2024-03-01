@@ -5,6 +5,7 @@ import appConfig from './app.config';
 import { IEnvironment } from './interfaces/app.interface';
 import 'dotenv/config';
 import databaseTestConfig from './database.test.config';
+import mailerConfig from './mailer.config';
 
 const dbConfig =
   process.env.NODE_ENV === IEnvironment.Test
@@ -12,7 +13,7 @@ const dbConfig =
     : databaseConfig;
 
 export const ConfigurationModule = ConfigModule.forRoot({
-  load: [appConfig, jwtConfig, dbConfig],
+  load: [appConfig, jwtConfig, dbConfig, mailerConfig],
   cache: process.env.NODE_ENV === IEnvironment.Production,
   isGlobal: true,
 });

@@ -74,6 +74,6 @@ export class User {
   @ManyToOne(() => Role, role => role.user)
   role: Role;
 
-  @OneToMany(()=>Notifications, notifications=> notifications.user)
-  notifications:Notification[];
+  @OneToMany(() => Notifications, notifications => notifications.user)
+  notifications: Notification[];
 }
