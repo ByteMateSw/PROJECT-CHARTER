@@ -13,7 +13,7 @@ export class NotificationsController {
     notificationDto: CreateNotificationsDTO,
   ) {
     try {
-      return await this.notificationsService.createNotificacion(
+      return await this.notificationsService.createNotification(
         id,
         notificationDto,
       );
@@ -55,7 +55,7 @@ export class NotificationsController {
   @Put('id')
   async uptadeNotifications(@Param('id') id:number, @Body() UptadeNotificationsDTO){
     try {
-      await this.notificationsService.uptadeNotifications(
+      await this.notificationsService.updateNotifications(
         id,
         UptadeNotificationsDTO
       )
