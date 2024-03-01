@@ -1,5 +1,8 @@
 import { DatabaseType, EntitySchema, LoggerOptions, MixedList } from 'typeorm';
 
+/**
+ * Represents the configuration for a database connection.
+ */
 export interface IDatabaseConfig {
   type: DatabaseType;
   host: string;
@@ -14,6 +17,9 @@ export interface IDatabaseConfig {
   migrationsTableName: string;
 }
 
+/**
+ * Enum representing the namespaces for different databases.
+ */
 export enum DatabaseNamespaces {
   Test = 'testdb',
   Production = 'database',

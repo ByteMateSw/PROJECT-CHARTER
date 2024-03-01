@@ -8,6 +8,10 @@ import { validateUtil } from '../utils/validation/validate-util';
 import { DatabaseEnvironmentVariables } from './validations/database.validation';
 import { IEnvironment } from './interfaces/app.interface';
 
+/**
+ * Registers the database configuration as a NestJS configuration provider.
+ * @returns {IDatabaseConfig} The database configuration object.
+ */
 export default registerAs(
   DatabaseNamespaces.Production,
   (): IDatabaseConfig => {
