@@ -61,7 +61,6 @@ export class NotificationsService {
     return notifications;
   }
 
-  @Cron(CronExpression.EVERY_DAY_AT_10PM)
   /**
    * Deletes all expired notifications from the database.
    * Expired notifications are those whose expiration date is earlier than or equal to 15 days ago.
@@ -69,6 +68,7 @@ export class NotificationsService {
    * @throws {BadRequestException} If there is an error creating the current date or expiration date,
    * or if there is an error deleting the expired notifications.
    */
+  @Cron(CronExpression.EVERY_DAY_AT_10PM)
   async CleanExpiredNotifications(): Promise<string> {
     const now = new Date();
     if (!now) throw new BadRequestException('No se ha podido crear la fecha');

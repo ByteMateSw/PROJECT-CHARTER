@@ -24,12 +24,12 @@ export class OfficeController {
   }
   constructor(private readonly officeService: OfficeService) {}
 
-  @Get()
   /**
    * Retrieves all offices.
    * @returns A promise that resolves to an array of Office objects.
    * @throws {HttpException} If an error occurs while retrieving the offices.
    */
+  @Get()
   async findAllOffice(): Promise<Office[]> {
     try {
       return await this.officeService.getAllOffices();
@@ -41,27 +41,25 @@ export class OfficeController {
     }
   }
 
+  /**
+   * Retrieves an office by its ID.
+   * @param id - The ID of the office to retrieve.
+   *
+   * @returns A Promise that resolves to the retrieved office.
+   * @throws HttpException if there is an error while retrieving the office.
+   */
   @Get(':id')
-/**
- * Retrieves an office by its ID.
- * @param id - The ID of the office to retrieve.
- * 
- * @returns A Promise that resolves to the retrieved office.
- * @throws HttpException if there is an error while retrieving the office.
- */
-async findOne(@Param('id') id: string): Promise<Office> {
-  try {
-    return await this.officeService.getOfficeById(+id);
-  } catch (error) {
-    throw new HttpException(
-      'Error al buscar el oficio por ID',
-      HttpStatus.INTERNAL_SERVER_ERROR,
-    );
+  async findOne(@Param('id') id: string): Promise<Office> {
+    try {
+      return await this.officeService.getOfficeById(+id);
+    } catch (error) {
+      throw new HttpException(
+        'Error al buscar el oficio por ID',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
-}
 
-  @HttpCode(201)
-  @Post()
   /**
    * Creates a new office.
    *
@@ -69,6 +67,8 @@ async findOne(@Param('id') id: string): Promise<Office> {
    * @returns A string indicating the success of the operation.
    * @throws HttpException if an error occurs during the creation process.
    */
+  @HttpCode(201)
+  @Post()
   async createOffice(
     @Body() createOfficeDto: CreateOfficeDto,
   ): Promise<string> {
@@ -80,7 +80,6 @@ async findOne(@Param('id') id: string): Promise<Office> {
     }
   }
 
-  @Patch(':id')
   /**
    * Updates an office with the specified ID.
    *
@@ -89,6 +88,7 @@ async findOne(@Param('id') id: string): Promise<Office> {
    * @returns A success message if the office is updated successfully.
    * @throws HttpException if an error occurs during the update process.
    */
+  @Patch(':id')
   async updateOffice(
     @Param('id') id: number,
     @Body() updateOfficeDto: CreateOfficeDto,
@@ -97,21 +97,18 @@ async findOne(@Param('id') id: string): Promise<Office> {
       await this.officeService.updateOffice(id, updateOfficeDto);
       return 'El oficio se ha actualizado correctamente';
     } catch (error) {
-      throw new HttpException(
-        'Test Error',
-        HttpStatus.FORBIDDEN,
-      );
+      throw new HttpException('Test Error', HttpStatus.FORBIDDEN);
     }
   }
 
-  @Delete(':id')
   /**
    * Deletes an office by its ID.
-   * 
+   *
    * @param id - The ID of the office to delete.
    * @returns A promise that resolves to a string indicating the success of the deletion.
    * @throws {HttpException} If an error occurs during the deletion process.
    */
+  @Delete(':id')
   async deleteOffice(@Param('id') id: number): Promise<string> {
     try {
       await this.officeService.deleteOffice(id);
@@ -122,22 +119,21 @@ async findOne(@Param('id') id: string): Promise<Office> {
     }
   }
 
+  /**
+   * Retrieves an office by searching for its name.
+   * @param name - The name of the office to search for.
+   * @returns A Promise that resolves to the found office.
+   * @throws HttpException with a NOT_FOUND status if the office is not found.
+   */
   @HttpCode(200)
   @Get('search')
-    /**
-     * Retrieves an office by searching for its name.
-     * @param name - The name of the office to search for.
-     * @returns A Promise that resolves to the found office.
-     * @throws HttpException with a NOT_FOUND status if the office is not found.
-     */
-    async getOfficeBySearch(name:string):Promise<Office>{
-      try {
-        const office = this.officeService.getOfficeBySearch(name)
-        return office
-      } catch (error) {
-        console.log(error.message)
-        throw new HttpException(error.message, HttpStatus.NOT_FOUND);   
-      }
+  async getOfficeBySearch(name: string): Promise<Office> {
+    try {
+      const office = this.officeService.getOfficeBySearch(name);
+      return office;
+    } catch (error) {
+      console.log(error.message);
+      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+    }
   }
-
 }
