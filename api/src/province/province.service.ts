@@ -167,20 +167,24 @@ export class ProvinceService {
    * @throws BadRequestException if the deletion fails for any other reason.
    */
   async deleteProvince(id: number): Promise<string> {
-    if (id) {
-      const provinceExist = await this.provinceRepository.findOne({
-        where: { id },
-      });
-
-      if (!provinceExist) {
-        throw new NotFoundException('No se encontró la provincia');
-      }
-      const deleteProvince = await this.provinceRepository.delete({ id });
-      if (!deleteProvince)
-        throw new BadRequestException('No se pudo borrar la provincia');
-    } else {
-      return 'Debe proporcionar un ID  de provincia';
+    if (!id) {
+      return 'Debe proporcionar un ID de provincia';
     }
+
+    const province = await this.provinceRepository.findOne({
+      where: { id },
+    });
+
+    if (!province) {
+      throw new NotFoundException('No se encontró la provincia');
+    }
+
+    const deleteResult = await this.provinceRepository.delete({ id });
+
+    if (!deleteResult.affected) {
+      throw new BadRequestException('No se pudo borrar la provincia');
+    }
+
     return 'Provincia eliminada correctamente';
   }
 
