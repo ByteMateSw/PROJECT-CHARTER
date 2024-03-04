@@ -6,10 +6,12 @@ import {
   JoinColumn,
   ManyToMany,
   JoinTable,
+  OneToOne,
 } from 'typeorm';
 import { User } from '../user/user.entity';
 import { StateHiring } from './state/stateHiring.entity';
 import { HistoryDate } from './history/historyDate.entity';
+import { Review } from '../review/review.entity';
 
 @Entity()
 export class Hiring {
@@ -19,7 +21,7 @@ export class Hiring {
   @Column({ type: 'date' })
   dateApplication: Date;
 
-  @ManyToOne(() => StateHiring, (state) => state.hiring)
+  @ManyToOne(() => StateHiring, state => state.hiring)
   state: StateHiring;
 
   @ManyToMany(() => HistoryDate)
@@ -33,4 +35,7 @@ export class Hiring {
   @ManyToOne(() => User, { eager: true })
   @JoinColumn({ name: 'contractedId' })
   contracted: User;
+
+  @OneToOne(() => Review, review => review.id, { nullable: true })
+  review: Review;
 }
