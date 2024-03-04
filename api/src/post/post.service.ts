@@ -5,7 +5,7 @@ import { Post } from './post.entity';
 import { ImagePost } from '../image/imagePost.entity';
 import { CreatePostDto } from './dto/createPost.dto';
 import { UserService } from '../user/user.service';
-import { UptadePostDto } from './dto/uptadePost.dto';
+import { UpdatePostDto } from './dto/updatePost.dto';
 import { title } from 'process';
 import { error } from 'console';
 
@@ -98,13 +98,13 @@ export class PostService {
     return ImgPostRemove
   }
 
-  async uptadePost(
+  async updatePost(
     postId: number,
-    uptadePostData: UptadePostDto,
+    updatePostData: UpdatePostDto,
   ): Promise<Post> {
     const postFound = await this.postRepository.findOneBy({ id: postId });
     if (!postFound) throw new NotFoundException('La publicación no existe');
-    const uptadePost = { ...postFound, ...this.uptadePost };
+    const uptadePost = { ...postFound, ...this.updatePost };
     if(!uptadePost) throw new BadRequestException('No se ha podido actualizar la publicación')
     const savePost = await this.postRepository.save(uptadePost);
     if(!savePost) throw new BadRequestException('No se ha podido guardar la actualizacion de la publicación')
