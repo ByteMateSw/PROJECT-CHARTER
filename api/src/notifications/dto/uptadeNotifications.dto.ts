@@ -1,5 +1,4 @@
-
-export class UptadeNotificationsDTO{
-    title:string
-    description:string
+export class UptadeNotificationsDTO {
+  title: string;
+  description: string;
 }

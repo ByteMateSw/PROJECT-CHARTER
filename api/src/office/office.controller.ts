@@ -14,6 +14,9 @@ import { OfficeService } from './office.service';
 import { Office } from './office.entity';
 import { CreateOfficeDto } from './dto/office.dto';
 
+/**
+ * Controller for managing offices.
+ */
 @Controller('offices')
 export class OfficeController {
   getAll() {
@@ -22,9 +25,14 @@ export class OfficeController {
   constructor(private readonly officeService: OfficeService) {}
 
   @Get()
+  /**
+   * Retrieves all offices.
+   * @returns A promise that resolves to an array of Office objects.
+   * @throws {HttpException} If an error occurs while retrieving the offices.
+   */
   async findAllOffice(): Promise<Office[]> {
     try {
-      return await this.officeService.getAll();
+      return await this.officeService.getAllOffices();
     } catch (error) {
       throw new HttpException(
         'Error al buscar todos los oficios',
@@ -34,6 +42,13 @@ export class OfficeController {
   }
 
   @Get(':id')
+/**
+ * Retrieves an office by its ID.
+ * @param id - The ID of the office to retrieve.
+ * 
+ * @returns A Promise that resolves to the retrieved office.
+ * @throws HttpException if there is an error while retrieving the office.
+ */
 async findOne(@Param('id') id: string): Promise<Office> {
   try {
     return await this.officeService.getOfficeById(+id);
@@ -47,6 +62,13 @@ async findOne(@Param('id') id: string): Promise<Office> {
 
   @HttpCode(201)
   @Post()
+  /**
+   * Creates a new office.
+   *
+   * @param createOfficeDto - The data for creating the office.
+   * @returns A string indicating the success of the operation.
+   * @throws HttpException if an error occurs during the creation process.
+   */
   async createOffice(
     @Body() createOfficeDto: CreateOfficeDto,
   ): Promise<string> {
@@ -59,6 +81,14 @@ async findOne(@Param('id') id: string): Promise<Office> {
   }
 
   @Patch(':id')
+  /**
+   * Updates an office with the specified ID.
+   *
+   * @param id - The ID of the office to update.
+   * @param updateOfficeDto - The data to update the office with.
+   * @returns A success message if the office is updated successfully.
+   * @throws HttpException if an error occurs during the update process.
+   */
   async updateOffice(
     @Param('id') id: number,
     @Body() updateOfficeDto: CreateOfficeDto,
@@ -73,25 +103,39 @@ async findOne(@Param('id') id: string): Promise<Office> {
       );
     }
   }
+
   @Delete(':id')
+  /**
+   * Deletes an office by its ID.
+   * 
+   * @param id - The ID of the office to delete.
+   * @returns A promise that resolves to a string indicating the success of the deletion.
+   * @throws {HttpException} If an error occurs during the deletion process.
+   */
   async deleteOffice(@Param('id') id: number): Promise<string> {
     try {
       await this.officeService.deleteOffice(id);
       return 'El oficio ha sido borrado correctamente';
     } catch (error) {
-      //console.error('El oficio no se ha podido borrar', error.message);
+      console.error(error.message);
       throw new HttpException(error.message, HttpStatus.FORBIDDEN);
     }
   }
 
   @HttpCode(200)
   @Get('search')
-    async getOfficeBySearch(name:string):Promise<string>{
+    /**
+     * Retrieves an office by searching for its name.
+     * @param name - The name of the office to search for.
+     * @returns A Promise that resolves to the found office.
+     * @throws HttpException with a NOT_FOUND status if the office is not found.
+     */
+    async getOfficeBySearch(name:string):Promise<Office>{
       try {
         const office = this.officeService.getOfficeBySearch(name)
         return office
       } catch (error) {
-        console.log(Error)
+        console.log(error.message)
         throw new HttpException(error.message, HttpStatus.NOT_FOUND);   
       }
   }

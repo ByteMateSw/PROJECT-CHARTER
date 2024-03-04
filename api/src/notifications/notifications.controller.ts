@@ -8,12 +8,20 @@ export class NotificationsController {
   constructor(private notificationsService: NotificationsService) {}
 
   @Post('create')
+  /**
+   * Creates notifications.
+   *
+   * @param id - The ID of the notification.
+   * @body notificationDto - The data for creating the notification.
+   * @returns A promise that resolves to the created notification.
+   * @throws HttpException if there is an error creating the notification.
+   */
   async createNotifications(
     @Body() id: number,
     notificationDto: CreateNotificationsDTO,
   ) {
     try {
-      return await this.notificationsService.createNotificacion(
+      return await this.notificationsService.createNotification(
         id,
         notificationDto,
       );
@@ -55,7 +63,7 @@ export class NotificationsController {
   @Put('id')
   async uptadeNotifications(@Param('id') id:number, @Body() UptadeNotificationsDTO){
     try {
-      await this.notificationsService.uptadeNotifications(
+      await this.notificationsService.updateNotifications(
         id,
         UptadeNotificationsDTO
       )

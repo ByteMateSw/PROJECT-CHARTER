@@ -11,5 +11,4 @@ export class Office {
 
   @ManyToOne(() => Category, (category) => category.offices)
   category: Category;
-  isDeleted: boolean;
 }

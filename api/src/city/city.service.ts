@@ -21,7 +21,14 @@ export class CityService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  //Funcion para crear city solamente con el nombre
+  /**
+   * Creates a new city with the given name.
+   * 
+   * @param name - The name of the city to create.
+   * @returns A Promise that resolves to a string indicating the status of the operation.
+   * @throws ConflictException if a city with the same name already exists.
+   * @throws InternalServerErrorException if the city could not be created.
+   */
   async createCity(name: string): Promise<string> {
     const cityExist = await this.cityRepository.findOne({ where: { name } });
 
@@ -35,39 +42,33 @@ export class CityService {
     if (!savedCity) {
       throw new InternalServerErrorException('No se pudo crear la ciudad');
     }
-
     return 'Ciudad Guardada';
-    if (!cityExist) {
-      const newCity = this.cityRepository.create({
-        name,
-      });
-      
-      this.cityRepository.save(newCity);
-      return 'Ciudad Guardada';
-    } else {
-      return 'La ciudad ya existe';
-    }
-    
   }
 
+  /**
+   * Retrieves all cities along with their associated province and users.
+   * 
+   * @returns A promise that resolves to an array of City objects or a string if an error occurs.
+   * @throws InternalServerErrorException if the cities cannot be retrieved.
+   */
   async getCities(): Promise<City[] | string> {
     const cities = await this.cityRepository.find({
       relations: ['province', 'users'],
     });
-    if (cities) {
-      return cities;
-    } else {
-      throw new InternalServerErrorException(
-        'No se pudieron obtener las ciudades',
-      );
+    if (!cities) {
+      throw new InternalServerErrorException('No se pudieron obtener las ciudades');
     }
+    return cities;
   }
 
-  async getOneCity(id: number): Promise<City | string> {
-    if (!id) {
-      return 'Debe proporcionar un ID o un nombre de ciudad';
-    }
-
+  /**
+   * Retrieves a single city by its ID.
+   * 
+   * @param id - The ID of the city to retrieve.
+   * @returns A promise that resolves to a City object or a string if an error occurs.
+   * @throws NotFoundException if the city cannot be found.
+   */
+  async getOneCity(id: number): Promise<City> {
     const city = await this.cityRepository.findOne({
       where: { id },
       relations: ['province', 'users'],
@@ -76,15 +77,17 @@ export class CityService {
     if (!city) {
       throw new NotFoundException('No se encontró la ciudad');
     }
-
     return city;
   }
 
+  /**
+   * Updates the province of a city.
+   * @param id - The ID of the city to update.
+   * @param provinceId - The ID of the new province for the city.
+   * @returns A promise that resolves to a string indicating the success of the update.
+   * @throws NotFoundException if the city or province is not found.
+   */
   async updateCityProvince(id: number, provinceId: number): Promise<string> {
-    if (!id) {
-      return 'No se mandó la ID de la ciudad';
-    }
-
     const city = await this.cityRepository.findOne({ where: { id } });
     if (!city) {
       throw new NotFoundException('No se encontró la ciudad');
@@ -103,11 +106,15 @@ export class CityService {
     return 'Ciudad actualizada';
   }
 
+  /**
+   * Updates the user associated with a city.
+   * 
+   * @param id - The ID of the city to update.
+   * @param userId - The ID of the new user for the city.
+   * @returns A promise that resolves to a string indicating the success of the update.
+   * @throws NotFoundException if the city or user is not found.
+   */
   async updateCityUser(id: number, userId: number): Promise<string> {
-    if (!id) {
-      return 'No se mandó la ID de la ciudad';
-    }
-
     const city = await this.cityRepository.findOne({ where: { id } });
     if (!city) {
       throw new NotFoundException('No se encontró la ciudad');
@@ -118,55 +125,57 @@ export class CityService {
       throw new NotFoundException('No se encontró el usuario');
     }
 
-    if (!user.city) {
-      city.users.push(user);
-    } else {
-      user.city = city;
-    }
-
+    city.users.push(user);
     await this.cityRepository.save(city);
 
     return 'La ciudad se actualizó correctamente';
   }
-
-  //cambiar el nombre de la ciudad
+  
+  /**
+   * Updates the name of a city with the specified ID.
+   * @param id - The ID of the city to update.
+   * @param name - The new name for the city.
+   * @returns A Promise that resolves to a string indicating the success of the update operation.
+   * @throws NotFoundException if the city with the specified ID does not exist.
+   */
   async updateCity(id: number, name: string): Promise<string> {
-    if (!id) {
-      return 'No se mandó la ID de la ciudad';
-    }
-
     const cityExist = await this.cityRepository.findOne({ where: { id } });
     if (!cityExist) {
       throw new NotFoundException('No se encontró la ciudad');
     }
 
     await this.cityRepository.update(id, { name });
-
     return 'Ciudad actualizada';
   }
 
+  /**
+   * Deletes a city with the specified ID.
+   * @param id - The ID of the city to delete.
+   * @returns A Promise that resolves to a string indicating the success of the operation.
+   * @throws NotFoundException if the city with the specified ID does not exist.
+   */
   async deleteCity(id: number): Promise<string> {
-    if (!id) {
-      return 'Debe proporcionar un ID de ciudad';
-    }
-
     const cityExist = await this.cityRepository.findOne({ where: { id } });
     if (!cityExist) {
       throw new NotFoundException('No se encontró la ciudad');
     }
 
     await this.cityRepository.delete({ id });
-
     return 'Ciudad eliminada correctamente';
   }
 
+  /**
+   * Retrieves a city by its name.
+   *
+   * @param name - The name of the city to search for.
+   * @returns A Promise that resolves to the found city.
+   * @throws NotFoundException if the city is not found.
+   */
   async getCityBySearch(name: string): Promise<any> {
     const city = await this.cityRepository.findOne({ where: { name } });
-
     if (!city) {
       throw new NotFoundException('No se ha encontrado la ciudad');
     }
-
     return city;
   }
 }
