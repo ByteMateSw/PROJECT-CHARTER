@@ -2,7 +2,6 @@ import {
   Controller,
   Get,
   Post,
-  Put,
   Body,
   ParseIntPipe,
   Param,
@@ -10,38 +9,45 @@ import {
   HttpCode,
   HttpException,
   HttpStatus,
+  Patch,
+  Query,
 } from '@nestjs/common';
 import { ProvinceService } from './province.service';
+import { CustomParseIntPipe } from '../utils/pipes/parse-int.pipe';
+import { Province } from './province.entity';
 
-@Controller('province')
+@Controller('provinces')
 export class ProvinceController {
   constructor(private provinceService: ProvinceService) {}
 
-  @Post('/save')
-  createProvince(@Body('cityName') cityName: string) {
-    return this.provinceService.createProvince(cityName);
+  @Post()
+  async createProvince(@Body('name') name: string): Promise<Province> {
+    return await this.provinceService.createProvince(name);
   }
 
-  @Get('/list')
-  getProvinces() {
-    return this.provinceService.getProvinces();
+  @Get()
+  async getProvinces(@Query('name') name: string): Promise<Province[]> {
+    console.log(name);
+    return await this.provinceService.getProvinces();
   }
 
-  @Get('/one/:id')
-  getOneProvince(@Param('id', ParseIntPipe) id: number) {
-    return this.provinceService.getOneProvince(id);
+  @Get(':id')
+  async getProvinceById(
+    @Param('id', CustomParseIntPipe) id: number,
+  ): Promise<Province> {
+    return await this.provinceService.getProvinceById(id);
   }
 
-  @Put('/update/:id')
-  updateProvince(
-    @Param('id', ParseIntPipe) id: number,
-    @Body('province')
-    province: string,
-  ) {
-    return this.provinceService.updateProvince(id, province);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Patch(':id')
+  async updateProvince(
+    @Param('id', CustomParseIntPipe) id: number,
+    @Body('name') name: string,
+  ): Promise<void> {
+    await this.provinceService.updateProvince(id, name);
   }
 
-  @Put('/addCityTo/:id')
+  @Patch('/addCityTo/:id')
   addCity(
     @Param('id', ParseIntPipe) id: number,
     @Body('cityId', ParseIntPipe) cityId: number,
@@ -49,21 +55,23 @@ export class ProvinceController {
     return this.provinceService.addCity(id, cityId);
   }
 
-  @Delete('/delete/:id')
-  deleteProvince(@Param('id', ParseIntPipe) id: number) {
-    return this.provinceService.deleteProvince(id);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Delete(':id')
+  async deleteProvince(
+    @Param('id', CustomParseIntPipe) id: number,
+  ): Promise<void> {
+    await this.provinceService.deleteProvince(id);
   }
 
   @HttpCode(200)
   @Get('search')
-    async getProvinceBySearch(name:string):Promise<string>{
-      try {
-        const province = this.provinceService.getProvinceBySearch(name)
-        return province
-      } catch (error) {
-        console.log(Error)
-        throw new HttpException(error.message, HttpStatus.NOT_FOUND);   
-      }
+  async getProvinceBySearch(name: string): Promise<string> {
+    try {
+      const province = this.provinceService.getProvinceBySearch(name);
+      return province;
+    } catch (error) {
+      console.log(Error);
+      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+    }
   }
-
 }

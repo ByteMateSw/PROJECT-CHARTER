@@ -9,6 +9,6 @@ export class Office {
   @Column()
   name: string;
 
-  @ManyToOne(() => Category, (category) => category.offices)
+  @ManyToOne(() => Category, category => category.offices)
   category: Category;
 }

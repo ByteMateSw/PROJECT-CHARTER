@@ -1,6 +1,7 @@
-import { IsString } from "class-validator";
+import { IsNumber, IsPositive } from 'class-validator';
 
-export class CreateCategoryDto {
-    @IsString()
-    name: string;
+export class CategoryDto {
+  @IsNumber()
+  @IsPositive()
+  id: number;
 }
