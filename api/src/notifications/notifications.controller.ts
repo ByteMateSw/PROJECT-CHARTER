@@ -8,6 +8,14 @@ export class NotificationsController {
   constructor(private notificationsService: NotificationsService) {}
 
   @Post('create')
+  /**
+   * Creates notifications.
+   *
+   * @param id - The ID of the notification.
+   * @body notificationDto - The data for creating the notification.
+   * @returns A promise that resolves to the created notification.
+   * @throws HttpException if there is an error creating the notification.
+   */
   async createNotifications(
     @Body() id: number,
     notificationDto: CreateNotificationsDTO,

@@ -34,11 +34,23 @@ export class PostController {
   constructor(private postService: PostService) {}
 
   @Get()
+  /**
+   * Retrieves all posts.
+   * @returns A promise that resolves to an array of PostEntity objects.
+   */
   async getAllPosts(): Promise<PostEntity[]> {
     return await this.postService.getAllPosts();
   }
 
   @Get('search')
+  /**
+   * Retrieves posts by name based on the provided query, page, and limit.
+   *
+   * @param query - The search query for post names.
+   * @param page - The page number for pagination.
+   * @param limit - The maximum number of posts to retrieve per page.
+   * @returns A promise that resolves to an array of PostEntity objects.
+   */
   async getPostByName(
     @Query('v') query: string,
     @Query('page', QueryNumberPipe) page: number,
@@ -59,6 +71,14 @@ export class PostController {
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(FilesInterceptor('images'))
   @Post()
+  /**
+   * Creates a new post.
+   *
+   * @param createPostDto - The data transfer object containing the details of the post to be created.
+   * @param userId - The ID of the user creating the post.
+   * @param images - An array of files representing the images to be associated with the post.
+   * @returns A Promise that resolves to the newly created post entity.
+   */
   async createPost(
     @InfoParam() createPostDto: CreatePostDto,
     @UserParamID(CustomParseIntPipe) userId: number,
@@ -72,6 +92,13 @@ export class PostController {
   @UseGuards(AccessTokenGuard)
   @Post('images/:id')
   @UseInterceptors(FilesInterceptor('images', 1))
+  /**
+   * Adds images to a post.
+   *
+   * @param postId - The ID of the post.
+   * @param images - An array of files representing the images to be added.
+   * @returns A promise that resolves to an array of ImagePost objects.
+   */
   async addImageToPost(
     @Param('id', CustomParseIntPipe) postId: number,
     @UploadedFiles(FilePipeValidator) images: File[],
@@ -81,6 +108,12 @@ export class PostController {
 
   @UseGuards(AccessTokenGuard)
   @Delete('images/:id')
+  /**
+   * Removes an image from a post.
+   *
+   * @param imageId - The ID of the image to be removed.
+   * @returns A Promise that resolves to a ResponseMessage indicating the success of the operation.
+   */
   async removeImageFromPost(
     @Param('id', CustomParseIntPipe) imageId: number,
   ): Promise<ResponseMessage> {
@@ -91,6 +124,13 @@ export class PostController {
   @UseGuards(AccessTokenGuard)
   @UseInterceptors(FilesInterceptor('images'))
   @Put(':id')
+  /**
+   * Updates a post with the specified ID.
+   *
+   * @param id - The ID of the post to update.
+   * @param updatePostDto - The data to update the post with.
+   * @returns A Promise that resolves to a ResponseMessage indicating the success of the update operation.
+   */
   async updatePost(
     @Param('id') id: number,
     @Body(EmptyBodyPipe) updatePostDto: UpdatePostDto,
@@ -101,6 +141,12 @@ export class PostController {
 
   @UseGuards(AccessTokenGuard)
   @Delete(':id')
+  /**
+   * Deletes a post with the specified ID.
+   *
+   * @param id - The ID of the post to delete.
+   * @returns A Promise that resolves to a ResponseMessage indicating the success of the deletion.
+   */
   async deletePost(
     @Param('id', CustomParseIntPipe) postId: number,
   ): Promise<ResponseMessage> {
