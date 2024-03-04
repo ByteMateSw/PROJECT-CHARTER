@@ -28,11 +28,11 @@ export class ReviewService {
    * @returns The created review.
    */
   async createReview(
-    createReviewDto: CreateReviewDTO,
+    createReview: CreateReviewDTO,
     userId: number,
   ): Promise<Review> {
     const newReview = this.reviewRepository.create({
-      ...createReviewDto,
+      ...createReview,
       user: { id: userId },
     });
     return await this.reviewRepository.save(newReview);
@@ -67,13 +67,10 @@ export class ReviewService {
    * @param id - The ID of the review to update.
    * @param UpdateReviewDTO - The updated review data.
    */
-  async updateReview(
-    id: number,
-    updateReviewDTO: UptadeReviewDTO,
-  ): Promise<void> {
-    const reviewFound = await this.reviewRepository.findOneBy({ id });
-    if (!reviewFound) throw new NotFoundException('La calificación no existe');
-    await this.reviewRepository.save({ ...reviewFound, ...updateReviewDTO });
+  async updateReview(id: number, updateReview: UptadeReviewDTO): Promise<void> {
+    const review = await this.reviewRepository.findOneBy({ id });
+    if (!review) throw new NotFoundException('La calificación no existe');
+    await this.reviewRepository.save({ ...review, ...updateReview });
   }
 
   /**
@@ -83,20 +80,20 @@ export class ReviewService {
    * @throws UnauthorizedException if the user does not have permission to delete the review.
    */
   async deleteReview(reviewId: number, userId: number): Promise<void> {
-    const reviewFound = await this.reviewRepository.findOne({
+    const review = await this.reviewRepository.findOne({
       where: {
         id: reviewId,
       },
       relations: { user: true },
     });
-    if (!reviewFound) throw new NotFoundException('La calificación no existe');
+    if (!review) throw new NotFoundException('La calificación no existe');
 
     const userRole = await this.userService.getRole(userId);
-    if (userRole !== Role.Admin && reviewFound.user.id !== userId)
+    if (userRole !== Role.Admin && review.user.id !== userId)
       throw new UnauthorizedException(
         'No tienes permisos para borrar la calificación',
       );
 
-    await this.reviewRepository.remove(reviewFound);
+    await this.reviewRepository.remove(review);
   }
 }
