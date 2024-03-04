@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Query,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -12,30 +13,53 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { ToSGuard } from './ToS/ToS.guard';
-import { HashPipe } from '../utils/pipes/hash.pipe';
+import { HashPasswordPipe } from '../utils/pipes/hash.pipe';
 import { Response } from 'express';
 import { LocalAuthGuard } from './local/local-auth.guard';
 import { AccessToken, Tokens } from './jwt/token.type';
 import { ResponseMessage } from '../utils/types/functions.type';
 import { RefreshTokenCookie } from './jwt/refresh.param';
 import { RefreshTokenGuard } from './jwt/refresh.guard';
-import { UserParamID } from './jwt/user.param';
+import { UserParamID } from '../utils/params/user.param';
+import { MailerService } from '../mailer/mailer.service';
 
+/**
+ * Controller responsible for handling authentication-related requests.
+ */
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private mailerService: MailerService,
+  ) {}
 
+  /**
+   * Registers a new user.
+   * @param registerDto - The registration data.
+   * @returns A response message indicating the success of the registration.
+   */
   @HttpCode(201)
   @Post('register')
   async registerUser(
-    @Body(HashPipe) registerDto: RegisterDto,
+    @Body(HashPasswordPipe) registerDto: RegisterDto,
   ): Promise<ResponseMessage> {
     const newUser = await this.authService.register(registerDto);
-    return newUser
-      ? { message: 'El usuario a sido creado con éxito' }
-      : { message: 'No se pudo crear el usuario' };
+    const verificationToken = await this.authService.getVerificationToken(
+      newUser.email,
+    );
+    await this.mailerService.SendVerificationMail(
+      newUser.email,
+      verificationToken,
+    );
+    return { message: 'El usuario a sido creado con éxito' };
   }
 
+  /**
+   * Logs in a user.
+   * @param signInDto - The login data.
+   * @param res - The HTTP response object.
+   * @returns An access token for the logged-in user.
+   */
   @HttpCode(HttpStatus.ACCEPTED)
   @UseGuards(LocalAuthGuard, ToSGuard)
   @Post('login')
@@ -48,6 +72,13 @@ export class AuthController {
     return { access_token: tokens.access_token };
   }
 
+  /**
+   * Refreshes the access token for a user.
+   * @param refreshToken - The refresh token.
+   * @param id - The user ID.
+   * @param res - The HTTP response object.
+   * @returns A new access token.
+   */
   @UseGuards(RefreshTokenGuard)
   @Get('refresh')
   async refreshTokens(
@@ -58,5 +89,17 @@ export class AuthController {
     const tokens = await this.authService.refreshTokens(id, refreshToken);
     this.authService.setRefreshToken(tokens.refresh_token, res);
     return { access_token: tokens.access_token };
+  }
+
+  /**
+   * Verifies a user's account.
+   * @param token - The verification token.
+   * @returns A response message indicating the success of the account verification.
+   */
+  @Get('verify')
+  async verifyUser(@Query('token') token: string): Promise<ResponseMessage> {
+    const verifyToken = await this.authService.verifyVerificationToken(token);
+    this.authService.validateAccount(verifyToken.email);
+    return { message: 'La cuenta del usuario ha sido validada.' };
   }
 }

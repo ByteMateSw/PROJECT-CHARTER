@@ -21,13 +21,13 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
   @Get()
   async getAll() {
-    return await this.categoryService.getAll();
+    return await this.categoryService.getAllCategories();
   }
 
   @Get(':id')
    async getById(@Param('id',ParseIntPipe) id: number): Promise<Category> {
     try {
-      return this.categoryService.getById(id); 
+      return this.categoryService.getCategoryById(id); 
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.NOT_FOUND)
     }

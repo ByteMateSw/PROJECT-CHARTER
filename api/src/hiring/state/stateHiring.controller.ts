@@ -8,7 +8,7 @@ import {
   HttpStatus,
   Param,
   Post,
-  Put, 
+  Put,
 } from '@nestjs/common';
 import { StateHiringService } from './stateHiring.service';
 import { ResponseMessage } from '../../utils/types/functions.type';
@@ -20,10 +20,10 @@ export class StateHiringController {
 
   @HttpCode(201)
   @Post('save')
-  async createStatusHire(@Body() body) {
+  async createStatusHire(@Body('name') name: string): Promise<ResponseMessage> {
     try {
-      await this.stateHiringService.createStatusHire(body.name);
-      return 'El estado del contrato ha sido creado correctamente';
+      await this.stateHiringService.createStatusHire(name);
+      return { message: 'El estado del contrato ha sido creado correctamente' };
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
@@ -40,24 +40,27 @@ export class StateHiringController {
   }
   @HttpCode(200)
   @Delete(':id')
-  async deleteStatusHire(@Body('id') id:number){
+  async deleteStatusHire(@Body('id') id: number) {
     try {
-      await this.stateHiringService.deleteStatusHire(id)      
-      return "se ha eliminado correctamente"
+      await this.stateHiringService.deleteStatusHire(id);
+      return 'se ha eliminado correctamente';
     } catch (error) {
-       throw new HttpException(error.message, HttpStatus.FORBIDDEN)
+      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
     }
   }
 
   @Put(':id')
-  async uptadeStatusHire(@Body ('id') id:number, UpdateStateHireDTO: UpdateStateHireDTO):Promise<string>{
+  async uptadeStatusHire(
+    @Body('id') id: number,
+    UpdateStateHireDTO: UpdateStateHireDTO,
+  ): Promise<string> {
     try {
-      await this.stateHiringService.updateStatusHire(id, UpdateStateHireDTO)
-      return 'El contrato se ha actualizado correctamente' ;
-  } catch (error) {
-    throw new HttpException(error.message, HttpStatus.FORBIDDEN)
+      await this.stateHiringService.updateStatusHire(id, UpdateStateHireDTO);
+      return 'El contrato se ha actualizado correctamente';
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
+    }
   }
-}
 
   @Get(':name')
   async getAllStateHire() {
@@ -67,7 +70,4 @@ export class StateHiringController {
       throw new HttpException(error.message, HttpStatus.NOT_FOUND);
     }
   }
-  
-
-
 }

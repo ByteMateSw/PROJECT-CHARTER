@@ -15,6 +15,7 @@ describe('OfficeService', () =>{
         save: jest.fn().mockResolvedValue({ ...mockOffice }),
         find: jest.fn().mockResolvedValue([mockOffice]),
         findOne: jest.fn().mockResolvedValue(mockOffice),
+        findOneBy: jest.fn().mockResolvedValue(mockOffice),
         update: jest.fn().mockResolvedValue(mockOffice),
         delete: jest.fn().mockResolvedValue(mockOffice),
     };
@@ -54,7 +55,7 @@ describe('OfficeService', () =>{
         it('should return an office record by ID', async () => {
             const id = mockOffice.id;
             expect(await service.getOfficeById(id)).toEqual(mockOffice);
-            expect(mockOfficeRepository.findOne).toHaveBeenCalledWith(id);
+            expect(mockOfficeRepository.findOneBy).toHaveBeenCalledWith(id);
         });
     });
 
@@ -65,7 +66,7 @@ describe('OfficeService', () =>{
             const mockSaveOffice = {...mockOffice, ...updateOffice}
 
             expect(await service.updateOffice(id, updateOffice)).toEqual(mockOffice);
-            expect(mockOfficeRepository.findOne).toHaveBeenCalledWith(id);
+            expect(mockOfficeRepository.findOne).toHaveBeenCalledWith({where: { id }});
             // expect(mockOfficeRepository.update).toHaveBeenCalledWith(id, updateOffice);
             expect(mockOfficeRepository.save).toHaveBeenCalledWith(mockSaveOffice);
         });
@@ -76,7 +77,7 @@ describe('OfficeService', () =>{
         it('should delete an office record', async () => {
             const id = mockOffice.id;
             expect(await service.deleteOffice(id)).toEqual(undefined);
-            expect(mockOfficeRepository.findOne).toHaveBeenCalledWith(id);
+            expect(mockOfficeRepository.findOne).toHaveBeenCalledWith({where: {id}});
             expect(mockOfficeRepository.delete).toHaveBeenCalledWith(mockOffice);
         });
     });
