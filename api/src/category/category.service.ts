@@ -6,7 +6,9 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from './category.entity';
 import { Repository } from 'typeorm';
-import { CreateCategoryDto } from './dto/category.dto';
+import { CategoryDto} from './dto/category.dto';
+
+
 
 @Injectable()
 export class CategoryService {
@@ -39,12 +41,12 @@ export class CategoryService {
    * @returns A Promise that resolves to the newly created category.
    * @throws BadRequestException if the category name already exists or if there are errors during creation or saving.
    */
-  async createCategory(category: CreateCategoryDto): Promise<Category> {
-    const existCategory = await this.existCategoryName(category.name);
+  async createCategory(categoria: CategoryDto): Promise<Category> {
+    const existCategory = await this.existCategoryName(categoria.name);
     if (existCategory) {
       throw new BadRequestException('La Categoria ya Existe');
     }
-    const newCategory = this.categoryRepository.create(category);
+    const newCategory = this.categoryRepository.create(categoria);
     if (!newCategory) {
       throw new BadRequestException('Error al crear categoria');
     }
@@ -52,7 +54,7 @@ export class CategoryService {
     if (!saveCategory) {
       throw new BadRequestException('Error al guardar la categoria creada');
     }
-    return newCategory;
+    return saveCategory;
   }
 
   /**
@@ -60,7 +62,7 @@ export class CategoryService {
    * @param name - The name of the category to check.
    * @returns A promise that resolves to a boolean indicating whether the category exists.
    */
-  async existCategoryName(name: string): Promise<boolean> {
+  async existCategoryName(name: string) {
     return await this.categoryRepository.existsBy({ name });
   }
 
@@ -86,12 +88,12 @@ export class CategoryService {
    * @throws NotFoundException if the category with the specified ID does not exist.
    * @throws BadRequestException if there is an error updating the category.
    */
-  async updateCategory(id: number, category): Promise<Category> {
+  async updateCategory(id: number, CategoryDto:CategoryDto): Promise<Category> {
     const categoryFound = await this.categoryRepository.existsBy({ id });
     if (!categoryFound) throw new NotFoundException('la categoria no existe');
     const updateCategory = await this.categoryRepository.update(
       { id },
-      category,
+      CategoryDto,
     );
     if (!updateCategory)
       throw new BadRequestException('Error al actualizar categoria');

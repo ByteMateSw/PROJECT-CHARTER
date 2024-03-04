@@ -13,8 +13,9 @@ import {
   } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { Category } from './category.entity';
-import { CreateCategoryDto } from './dto/category.dto';
-import { updateCategoryDto } from './dto/updateCategory.dto';
+import { ResponseMessage } from 'src/utils/types/functions.type';
+import { CategoryDto } from './dto/category.dto';
+
 
 @Controller('category')
 export class CategoryController {
@@ -35,20 +36,20 @@ export class CategoryController {
 
   @HttpCode(201)
   @Post()
-  async createCategory(@Body() CreateCategoryDto: CreateCategoryDto ): Promise<string> {
+  async createCategory(@Body() CategoryDto:CategoryDto ): Promise<ResponseMessage> {
     try{
-      await this.categoryService.createCategory(CreateCategoryDto);
-      return "category creada correctamente"
+      await this.categoryService.createCategory(CategoryDto);
+      return {message:"category creada correctamente"};
     } catch(error){
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
     }
   }
 
   @Delete(':id')
-  async deleteCategory(@Param('id') id: number ): Promise<string>{
+  async deleteCategory(@Param('id') id: number ): Promise<ResponseMessage>{
     try{
       await this.categoryService.deleteCategory(id)
-      return "se ha eliminado correctamente"
+      return {message:"se ha eliminado correctamente"}
     }catch(error){
       throw new HttpException(error.message, HttpStatus.FORBIDDEN)
     }
@@ -56,10 +57,10 @@ export class CategoryController {
 
 
   @Patch(':id')
-  async updateCategory(@Param("id") id:number, @Body() updateCategoryDto: updateCategoryDto): Promise<string>{
+  async updateCategory(@Param("id") id:number, @Body() CategoryDto:CategoryDto): Promise<ResponseMessage>{
     try{
-      await this.categoryService.updateCategory(id, updateCategoryDto);
-      return "se ha actualizado correctamente"
+      await this.categoryService.updateCategory(id, CategoryDto);
+      return {message:"se ha actualizado correctamente"};
     }catch(error){
       throw new HttpException(error.mesagge , HttpStatus.FORBIDDEN)
     }

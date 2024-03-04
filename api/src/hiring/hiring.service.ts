@@ -9,6 +9,8 @@ import { Repository } from 'typeorm';
 import { UserService } from '../user/user.service';
 import { StateHiringService } from './state/stateHiring.service';
 import { ResponseMessage } from '../utils/types/functions.type';
+import { UpdateHireDTO } from './dto/uptadeHiring.dto';
+import { CreateHiringDTO } from './dto/createHiring.dto';
 
 @Injectable()
 export class HiringService {
@@ -16,7 +18,7 @@ export class HiringService {
     @InjectRepository(Hiring) private hiringRepository: Repository<Hiring>,
     private stateHiringService: StateHiringService,
     private userService: UserService,
-  ) {}
+  ) { }
 
   /**
    * Creates a new hiring record.
@@ -27,13 +29,10 @@ export class HiringService {
    * @throws BadRequestException if there is an error obtaining user IDs, creating a new instance,
    *                             getting the 'Pending' status, creating the hiring contract, or saving it.
    */
-  async createHire(
-    contractorId: number,
-    contractedId: number,
-  ): Promise<Hiring> {
+  async createHire(createHiringDTO: CreateHiringDTO): Promise<Hiring> {
     const [userContractor, userContracted] = await Promise.all([
-      this.userService.getUser({ id: contractorId }),
-      this.userService.getUser({ id: contractedId }),
+      this.userService.getUser({ id: createHiringDTO.contractorId }),
+      this.userService.getUser({ id: createHiringDTO.contractedId }),
     ]);
 
     if (!userContractor || !userContracted) {
@@ -111,7 +110,7 @@ export class HiringService {
    * @throws NotFoundException if no hiring record is found with the specified ID.
    * @throws BadRequestException if there is an error updating the hiring record.
    */
-  async updateHire(id: number, updateHireDTO): Promise<Hiring> {
+  async updateHire(id: number, updateHireDTO: UpdateHireDTO): Promise<Hiring> {
     const hireFound = await this.hiringRepository.findOneBy({ id });
     if (!hireFound) {
       throw new NotFoundException('El contrato no existe');

@@ -12,8 +12,9 @@ import {
   Put,
 } from '@nestjs/common';
 import { HiringService } from './hiring.service';
-import { UpdateHireDTO } from './Hiring.dto/uptadeHiring.dto';
+import { UpdateHireDTO } from './dto/uptadeHiring.dto';
 import { ResponseMessage } from '../utils/types/functions.type';
+import { CreateHiringDTO } from './dto/createHiring.dto';
 
 @Controller('hiring')
 export class HiringController {
@@ -21,10 +22,10 @@ export class HiringController {
 
   @HttpCode(201)
   @Post('save')
-  async createHire(@Body() body) {
+  async createHire(@Body() createHiringDTO:CreateHiringDTO):Promise<ResponseMessage> {
     try {
-      await this.hiringService.createHire(body.contractorId, body.contractedId);
-      return 'El contrato ha sido creado correctamente';
+      await this.hiringService.createHire(createHiringDTO);
+      return {message:'El contrato ha sido creado correctamente'};
     } catch (error) {
       throw new HttpException(error.mesage, HttpStatus.BAD_REQUEST);
     }
@@ -61,7 +62,7 @@ export class HiringController {
   }
 
   @Put(':id')
-  async uptadeHire(@Body ('id') id:number):Promise<ResponseMessage>{
+  async uptadeHire(@Body ('id') id:number, UpdateHireDTO:UpdateHireDTO):Promise<ResponseMessage>{
     try {
       await this.hiringService.updateHire(id, UpdateHireDTO)
       return { message: 'El contrato se ha actualizado correctamente' };

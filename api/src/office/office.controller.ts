@@ -12,16 +12,15 @@ import {
 } from '@nestjs/common';
 import { OfficeService } from './office.service';
 import { Office } from './office.entity';
-import { CreateOfficeDto } from './dto/office.dto';
+import { ResponseMessage } from 'src/utils/types/functions.type';
+import { OfficeDto } from './dto/office.dto';
+
 
 /**
  * Controller for managing offices.
  */
 @Controller('offices')
 export class OfficeController {
-  getAll() {
-    throw new Error('Method not implemented.');
-  }
   constructor(private readonly officeService: OfficeService) {}
 
   @Get()
@@ -65,16 +64,14 @@ async findOne(@Param('id') id: string): Promise<Office> {
   /**
    * Creates a new office.
    *
-   * @param createOfficeDto - The data for creating the office.
+   * @param OfficeDto - The data for creating the office.
    * @returns A string indicating the success of the operation.
    * @throws HttpException if an error occurs during the creation process.
    */
-  async createOffice(
-    @Body() createOfficeDto: CreateOfficeDto,
-  ): Promise<string> {
+  async createOffice(@Body() OfficeDto:OfficeDto): Promise<ResponseMessage> {
     try {
-      await this.officeService.createOffice(createOfficeDto);
-      return 'oficio creado correctamente';
+      await this.officeService.createOffice(OfficeDto);
+      return {message:'oficio creado correctamente'};
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
@@ -90,12 +87,10 @@ async findOne(@Param('id') id: string): Promise<Office> {
    * @throws HttpException if an error occurs during the update process.
    */
   async updateOffice(
-    @Param('id') id: number,
-    @Body() updateOfficeDto: CreateOfficeDto,
-  ) {
+    @Param('id') id: number, @Body() updateOfficeDto: OfficeDto): Promise<ResponseMessage> {
     try {
       await this.officeService.updateOffice(id, updateOfficeDto);
-      return 'El oficio se ha actualizado correctamente';
+      return {message:'El oficio se ha actualizado correctamente'};
     } catch (error) {
       throw new HttpException(
         'Test Error',
@@ -112,10 +107,10 @@ async findOne(@Param('id') id: string): Promise<Office> {
    * @returns A promise that resolves to a string indicating the success of the deletion.
    * @throws {HttpException} If an error occurs during the deletion process.
    */
-  async deleteOffice(@Param('id') id: number): Promise<string> {
+  async deleteOffice(@Param('id') id: number): Promise<ResponseMessage> {
     try {
       await this.officeService.deleteOffice(id);
-      return 'El oficio ha sido borrado correctamente';
+      return {message:'El oficio ha sido borrado correctamente'};
     } catch (error) {
       console.error(error.message);
       throw new HttpException(error.message, HttpStatus.FORBIDDEN);

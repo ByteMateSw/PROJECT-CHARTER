@@ -2,7 +2,7 @@ import { HttpException, HttpStatus } from "@nestjs/common";
 import { CategoryController } from "./category.controller"
 import { CategoryService } from "./category.service";
 import { Test, TestingModule } from "@nestjs/testing";
-import { CreateCategoryDto } from "./dto/category.dto";
+import { CategoryDto } from "./dto/category.dto";
 
 
 describe('CategoryController', () => {
