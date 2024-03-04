@@ -44,7 +44,7 @@ export class PostService {
       relations: { images: true },
     });
     if (!findedPost)
-      throw new NotFoundException('No se ha podido traer todos los post');
+      throw new NotFoundException('No se ha podido traer el post');
     return findedPost;
   }
 
@@ -76,7 +76,7 @@ export class PostService {
     const post = await this.getPostBy({ id: postId });
     if (!post) throw new NotFoundException('No se ha encontrado el post');
     return Promise.all(
-      images.map(async (image) => {
+      images.map(async image => {
         const newImage = this.imagePostRepository.create({
           imageData: image.buffer,
           contentType: image.mimetype,
@@ -135,7 +135,7 @@ export class PostService {
     if (postDelFound.images.length > 0)
       Promise.all(
         postDelFound.images.map(
-          async (image) => await this.imagePostRepository.remove(image),
+          async image => await this.imagePostRepository.remove(image),
         ),
       );
     await this.postRepository.remove(postDelFound);

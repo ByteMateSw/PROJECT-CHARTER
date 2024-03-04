@@ -58,6 +58,12 @@ export class PostController {
     return await this.postService.searchPost(query, page, limit);
   }
 
+  /**
+   * Retrieves a post by its ID.
+   *
+   * @param id - The ID of the post to retrieve.
+   * @returns A promise that resolves to a PostEntity object.
+   */
   @UseGuards(AccessTokenGuard)
   @Get(':id')
   async getPostById(

@@ -6,7 +6,9 @@ import { OfficeController } from './office.controller';
 import { CategoryModule } from 'src/category/category.module';
 
 /**
- * Module responsible for office-related functionality.
+ * Represents the Office module of the application.
+ * This module is responsible for importing the necessary dependencies,
+ * defining the controllers, providers, and exports for the Office feature.
  */
 @Module({
   imports: [TypeOrmModule.forFeature([Office]), CategoryModule],
