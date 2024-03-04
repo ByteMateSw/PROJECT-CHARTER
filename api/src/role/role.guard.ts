@@ -8,10 +8,20 @@ import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from './role.decorator';
 import { Role } from './role.entity';
 
+/**
+ * RoleGuard class that implements the CanActivate interface.
+ * This guard is responsible for checking if the user has the required roles to access a specific route.
+ */
 @Injectable()
 export class RoleGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
+  /**
+   * Method that determines if the user has the required roles to access the route.
+   * @param context - The execution context of the route.
+   * @returns A boolean indicating if the user has the required roles.
+   * @throws UnauthorizedException if the user does not have the required roles.
+   */
   canActivate(context: ExecutionContext): boolean {
     const requiredRoles = this.reflector.getAllAndOverride<Role[]>(ROLES_KEY, [
       context.getHandler(),

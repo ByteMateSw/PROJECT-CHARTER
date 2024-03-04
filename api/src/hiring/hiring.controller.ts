@@ -15,6 +15,7 @@ import { HiringService } from './hiring.service';
 import { UpdateHireDTO } from './Hiring.dto/uptadeHiring.dto';
 import { ResponseMessage } from '../utils/types/functions.type';
 
+
 @Controller('hiring')
 export class HiringController {
   constructor(private hiringService: HiringService) {}

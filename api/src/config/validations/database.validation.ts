@@ -9,7 +9,17 @@ import {
 } from 'class-validator';
 import { createErrorMessageFormatter } from '../../utils/validation/validate-util';
 
+/**
+ * Represents the environment variables required for the database connection.
+ */
 export class DatabaseEnvironmentVariables {
+  /**
+   * The URL of the database.
+   * @remarks
+   * The URL must be a valid URL.
+   * It must not require a port, a top-level domain, or a valid protocol.
+   * @example postgres://domain.com:5432
+   */
   @IsDefined({
     message: createErrorMessageFormatter(
       'Se requiere la dirección URL de la base de datos.',
@@ -27,6 +37,13 @@ export class DatabaseEnvironmentVariables {
   )
   DATABASE_HOST: string;
 
+  /**
+   * The name of the database.
+   * @remarks
+   * The name must be a string.
+   * It must not be empty.
+   * @example my_database
+   */
   @IsDefined({
     message: createErrorMessageFormatter(
       'Se requiere el nombre de la base de datos.',
@@ -37,6 +54,13 @@ export class DatabaseEnvironmentVariables {
   })
   DATABASE_NAME: string;
 
+  /**
+   * The user to connect to the database.
+   * @remarks
+   * The user must be a string.
+   * It must not be empty.
+   * @example my_user
+   */
   @IsDefined({
     message: createErrorMessageFormatter(
       'Se requiere un usuario para conectarse a la base de datos.',
@@ -47,6 +71,13 @@ export class DatabaseEnvironmentVariables {
   })
   DATABASE_USER: string;
 
+  /**
+   * The password of the user to connect to the database.
+   * @remarks
+   * The password must be a string.
+   * It must not be empty.
+   * @example my_password
+   */
   @IsDefined({
     message: createErrorMessageFormatter(
       'Se requiere la contraseña del usuario para conectarse a la base de datos.',
@@ -57,6 +88,15 @@ export class DatabaseEnvironmentVariables {
   })
   DATABASE_PASSWORD: string;
 
+  /**
+   * The port on which the database is running.
+   * @remarks
+   * The port must be a positive number.
+   * It not allowed to be infinity or NaN.
+   * It must be less than 65535, the maximum number of ports allowed.
+   * @example 5432
+   * @default 5432
+   */
   @IsNumber(
     { allowInfinity: false, allowNaN: false, maxDecimalPlaces: 0 },
     { message: createErrorMessageFormatter('Debe ser un número.') },
