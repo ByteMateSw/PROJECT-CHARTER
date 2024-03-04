@@ -3,6 +3,7 @@ import { StateHiringService } from "./stateHiring.service"
 import { getRepositoryToken } from "@nestjs/typeorm"
 import { StateHiring } from "./stateHiring.entity"
 import { UpdateStateHireDTO } from "./updateStateHiring.dto"
+import { BadRequestException, NotFoundException } from "@nestjs/common"
 
 
 describe('stateHiringService', () =>{
@@ -42,10 +43,9 @@ describe('stateHiringService', () =>{
     describe('createStatusHire', () => {
         it('should create an status hire', async () =>{
             const mocksaveStatus= {"name": "test"}
-
             jest.spyOn(service, 'getStatusByName').mockResolvedValueOnce(null);
             jest.spyOn(mockStateHiringRepository, 'save').mockResolvedValueOnce(mockStateHiring);
-            expect(await service.createStatusHire(mockStateHiring.name)).toEqual(undefined);
+            expect(await service.createStatusHire(mockStateHiring.name)).toEqual(mockStateHiring);
             expect(service.getStatusByName).toHaveBeenCalledWith(mockStateHiring.name);
             expect(mockStateHiringRepository.save).toHaveBeenCalledWith(mocksaveStatus);
         });
@@ -55,21 +55,20 @@ describe('stateHiringService', () =>{
             const existingName= 'test';
             jest.spyOn(service, 'getStatusByName').mockResolvedValueOnce(mockStateHiring);
             await expect(async () => await service.createStatusHire(existingName),
-            ).rejects.toThrow(new Error('Error ya existe un estado con ese nombre'));
+            ).rejects.toThrow(new BadRequestException('Error ya existe un estado con ese nombre'));
             expect(service.getStatusByName).toHaveBeenCalledWith(existingName);
         })
 
-        it('should return an error for not creating a status', async() =>{
+        it('should return an error for not saved status hire', async() =>{
             const mockname = 'test'
             jest.spyOn(service, 'getStatusByName').mockResolvedValueOnce(null);
-            jest.spyOn(mockStateHiringRepository, 'save').mockRejectedValueOnce(new Error('Error al crear el estado'));
+            jest.spyOn(mockStateHiringRepository, 'save').mockRejectedValueOnce(new BadRequestException('Error al guardar estado de contrato'));
             await expect(service.createStatusHire(mockname)).rejects.toThrow(
-              new Error('Error al crear el estado'),
+              new BadRequestException('Error al guardar estado de contrato'),
             );
             expect(service.getStatusByName).toHaveBeenCalledWith(mockname)
             expect(mockStateHiringRepository.save).toHaveBeenCalledWith({name:mockname})
 
-            
         })
     })
 
@@ -83,8 +82,8 @@ describe('stateHiringService', () =>{
         })
 
         it('should throw an error for not finding status', async() =>{
-            jest.spyOn(mockStateHiringRepository, 'findOneBy').mockRejectedValueOnce(new Error('error'));
-            await expect(service.getStatusByName(mockStateHiring.name)).rejects.toThrow(new Error('Error al encontrar el status'));
+            mockStateHiringRepository.findOneBy.mockResolvedValueOnce(null);
+            await expect(service.getStatusByName(mockStateHiring.name)).rejects.toThrow(new NotFoundException('nombre incorrecto'));
             expect(mockStateHiringRepository.findOneBy).toHaveBeenCalledWith({name:mockStateHiring.name});
         })
     })
@@ -93,7 +92,7 @@ describe('stateHiringService', () =>{
         it('should delete an status Hire', async () =>{
             const mockId = mockStateHiring.id;
             jest.spyOn(mockStateHiringRepository, 'findOneBy').mockResolvedValueOnce(mockStateHiring);
-            jest.spyOn(mockStateHiringRepository, 'delete').mockResolvedValueOnce(undefined);
+            jest.spyOn(mockStateHiringRepository, 'delete').mockResolvedValueOnce(mockStateHiring);
 
             const result = await service.deleteStatusHire(mockId)
 
@@ -102,12 +101,22 @@ describe('stateHiringService', () =>{
             expect(result).toEqual({message:'El estado del contrato se ha borrado correctamente'});
         })
 
-        it('should throw an error for not deleting status hire', async () =>{
+        it('should throw an error for not existing status hire', async () =>{
             const mockid = mockStateHiring.id;
             jest.spyOn(mockStateHiringRepository, 'findOneBy').mockResolvedValueOnce(false);
             await expect(service.deleteStatusHire(mockid),
-            ).rejects.toThrow(new Error('Error al borrar el contrato'));
+            ).rejects.toThrow(new NotFoundException('El estado del contrato no existe'));
             expect(mockStateHiringRepository.findOneBy).toHaveBeenCalledWith({id: mockid});
+        })
+
+        it('should throw an error for not deleting status hire', async () =>{
+            const mockid = mockStateHiring.id;
+            jest.spyOn(mockStateHiringRepository, 'findOneBy').mockResolvedValueOnce(true);
+            jest.spyOn(mockStateHiringRepository, 'delete').mockResolvedValueOnce(false);
+            await expect(service.deleteStatusHire(mockid),
+            ).rejects.toThrow(new BadRequestException('Error al eliminar el estado'));
+            expect(mockStateHiringRepository.findOneBy).toHaveBeenCalledWith({id: mockid});
+            expect(mockStateHiringRepository.delete).toHaveBeenCalledWith(mockid);
         })
 
     })
@@ -123,7 +132,7 @@ describe('stateHiringService', () =>{
                 "hiring":[]
             };
             jest.spyOn(mockStateHiringRepository, 'findOneBy').mockResolvedValueOnce(mockStateHiring);
-            jest.spyOn(mockStateHiringRepository, 'update').mockResolvedValueOnce(undefined);
+            jest.spyOn(mockStateHiringRepository, 'update').mockResolvedValueOnce(mockStateHiring);
             jest.spyOn(mockStateHiringRepository, 'findOneByOrFail').mockResolvedValueOnce(mockUpdatedState);
 
             const result = await service.updateStatusHire(mockId, mockUpdateStateDto);
@@ -133,16 +142,41 @@ describe('stateHiringService', () =>{
             expect(result).toEqual(mockUpdatedState)
         });
 
-        it('should throw an error for not updating the status Hire', async () =>{
+        it('should throw an error for not existing status Hire', async () =>{
             const mockId = mockStateHiring.id;
             const mockUpdateStateDto= UpdateStateHireDTO;
             jest.spyOn(mockStateHiringRepository,'findOneBy').mockResolvedValueOnce(false);
 
             await expect(service.updateStatusHire(mockId, mockUpdateStateDto),
-            ).rejects.toThrow(new Error('Error al actualizar el contrato'));
+            ).rejects.toThrow(new NotFoundException('El estado del contrato no existe'));
             expect(mockStateHiringRepository.findOneBy).toHaveBeenCalledWith({id:mockId});
 
         })
+
+        it('should throw an error for not updating the status Hire', async () =>{
+            const mockId = mockStateHiring.id;
+            const mockUpdateStateDto= UpdateStateHireDTO;
+            jest.spyOn(mockStateHiringRepository,'findOneBy').mockResolvedValueOnce(true);
+            jest.spyOn(mockStateHiringRepository,'update').mockResolvedValueOnce(false)
+            await expect(service.updateStatusHire(mockId, mockUpdateStateDto),
+            ).rejects.toThrow(new BadRequestException('Error al actualizar el estado de contrato'));
+            expect(mockStateHiringRepository.findOneBy).toHaveBeenCalledWith({id:mockId});
+            expect(mockStateHiringRepository.delete).toHaveBeenCalledWith(mockId)
+        })
+
+        it('should throw an error for not finding the status', async () =>{
+            const mockId = mockStateHiring.id;
+            const mockUpdateStateDto= UpdateStateHireDTO;
+            jest.spyOn(mockStateHiringRepository,'findOneBy').mockResolvedValueOnce(true);
+            jest.spyOn(mockStateHiringRepository,'update').mockResolvedValueOnce(true)
+            jest.spyOn(mockStateHiringRepository,'findOneByOrFail').mockResolvedValueOnce(false)
+            await expect(service.updateStatusHire(mockId, mockUpdateStateDto),
+            ).rejects.toThrow(new NotFoundException('Error al encontrar estado'));
+            expect(mockStateHiringRepository.findOneBy).toHaveBeenCalledWith({id:mockId});
+            expect(mockStateHiringRepository.delete).toHaveBeenCalledWith(mockId)
+            expect(mockStateHiringRepository.findOneByOrFail).toHaveBeenCalledWith({id:mockId})
+        })
+
     })
 
 
@@ -152,7 +186,7 @@ describe('stateHiringService', () =>{
             expect(mockStateHiringRepository.find).toHaveBeenCalled();
         })
 
-        it('should throw an error if bringing all the status hire', async () =>{
+        it('should throw an error fot not bringing all the states', async () =>{
             jest.spyOn(mockStateHiringRepository, 'find').mockRejectedValueOnce(
                 new Error('Error al traer todos los estados del contrato'));
             await expect(service.getAllStateHire()).rejects.toThrow(new Error('Error al traer todos los estados del contrato'));

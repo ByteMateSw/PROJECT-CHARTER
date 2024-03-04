@@ -3,7 +3,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { CategoryService } from "./category.service";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { Category } from "./category.entity";
-import { CreateCategoryDto } from "./dto/category.dto";
+import { BadRequestException, NotFoundException } from "@nestjs/common";
 
 
 describe('categoryService',() =>{
@@ -41,66 +41,135 @@ it('should be defined', ()=>{
     expect(service).toBeDefined();
 })
 
-describe('createCategory', ()=>{
-    it('should create an category', async () => {
-        jest.spyOn(service, 'existName').mockResolvedValueOnce(false)
-        const categoria= await service.createCategory(mockCategory)
-        expect(categoria).toMatchObject(mockCategory)
-        expect(mockCategoryRepository.create).toHaveBeenCalledWith(mockCategory);
-        expect(mockCategoryRepository.save).toHaveBeenCalledWith(mockCategory);
-  
-    })
-
-})
-
 describe('getAll',() => {
     it("should return and mocked category list", async ()=>{
-        expect(await service.getAll()).toEqual([mockCategory])
+        expect(await service.getAll()).toEqual([mockCategory]);
         expect(mockCategoryRepository.find).toHaveBeenCalled()
-    })
+    });
 })
 
 describe('getById',() => {
     it("should return an mocked category by id", async () =>{
-        const id = mockCategory.id
-        expect(await service.getById(id)).toEqual(mockCategory)
+        const id = mockCategory.id;
+        expect(await service.getById(id)).toEqual(mockCategory);
         expect(mockCategoryRepository.findOneBy).toHaveBeenCalledWith({id});
     })
+})
+
+describe('createCategory', ()=>{
+    it('should create an category', async () => {
+        jest.spyOn(service, 'existName').mockResolvedValueOnce(false);
+        const categoria= await service.createCategory(mockCategory);
+        expect(categoria).toMatchObject(mockCategory);
+        expect(mockCategoryRepository.create).toHaveBeenCalledWith(mockCategory);
+        expect(mockCategoryRepository.save).toHaveBeenCalledWith(mockCategory);
+    })
+    it('should throw an BadRequestException for repeted name', async () => {
+        jest.spyOn(service, 'existName').mockResolvedValueOnce(true);
+        await expect( service.createCategory(mockCategory)
+        ).rejects.toThrow(new BadRequestException('la categoria ya existe'));
+        expect(service.existName).toHaveBeenCalledWith(mockCategory.name);
+    })
+
+    it('should throw an BadRequestException for not creating category', async () => {
+        jest.spyOn(service, 'existName').mockResolvedValueOnce(false);
+        jest.spyOn(mockCategoryRepository, 'create').mockResolvedValueOnce(false);
+        await expect( service.createCategory(mockCategory)
+        ).rejects.toThrow(new BadRequestException('Error al crear categoria'));
+        expect(service.existName).toHaveBeenCalledWith(mockCategory.name);
+        expect(mockCategoryRepository.create).toHaveBeenCalledWith(mockCategory)
+    });
+
+    it('should throw an BadRequestException for not saving category', async () => {
+        jest.spyOn(service, 'existName').mockResolvedValueOnce(false);
+        jest.spyOn(mockCategoryRepository, 'create').mockResolvedValueOnce(true);
+        jest.spyOn(mockCategoryRepository, 'save').mockResolvedValueOnce(false)
+        await expect( service.createCategory(mockCategory)
+        ).rejects.toThrow(new BadRequestException('Error al guardar la categoria creada'));
+        expect(service.existName).toHaveBeenCalledWith(mockCategory.name);
+        expect(mockCategoryRepository.create).toHaveBeenCalledWith(mockCategory);
+        expect(mockCategoryRepository.save).toHaveBeenCalledWith(mockCategory)
+    });
+
+
 })
 
 
 describe('deleteCategory', ()=>{
     it('should delete an category', async () =>{
-        const id= mockCategory.id
-        const mockUpdateCategory = {...mockCategory, isDeleted: true}
+        const id= mockCategory.id;
+        const mockUpdateCategory = {...mockCategory, isDeleted: true};
 
-        expect(await service.deleteCategory(id)).toEqual(mockUpdateCategory)
-        expect(mockCategoryRepository.findOneBy).toHaveBeenCalledWith({id})
-        expect(mockCategoryRepository.save).toHaveBeenCalledWith(mockUpdateCategory)
+        expect(await service.deleteCategory(id)).toEqual(mockUpdateCategory);
+        expect(mockCategoryRepository.findOneBy).toHaveBeenCalledWith({id});
+        expect(mockCategoryRepository.save).toHaveBeenCalledWith(mockUpdateCategory);
        
+    })
+
+    it('should thrown an error for non-existingcategory', async () =>{
+        const id= mockCategory.id;
+        mockCategoryRepository.findOneBy.mockResolvedValueOnce(null);
+        await expect(service.deleteCategory(id)).rejects.toThrow(new NotFoundException('La categoria no existe'));
+    })
+
+    it('should thrown an BadRequestException for not saving category', async () =>{
+        const id= mockCategory.id;
+        jest.spyOn(mockCategoryRepository, 'findOneBy').mockResolvedValueOnce(mockCategory);
+        jest.spyOn(mockCategoryRepository,'save').mockResolvedValueOnce(false);
+        await expect(service.deleteCategory(id)
+        ).rejects.toThrow(new BadRequestException('Error al guardar la categoria'));
     })
 })
 
-    it('should thrown an error for non-existingcategory', async () =>{
-        const id= mockCategory.id
-        mockCategoryRepository.findOneBy.mockResolvedValueOnce(null)
-        expect( async () => await service.deleteCategory(id)).rejects.toThrow(new Error('La categoria no existe'));
-    })
-
+    
 describe('updeteCategory', ()=>{
     it('should update an category', async () =>{
         const id= mockCategory.id
-        expect(await service.updateCategory(id,mockCategory)).toEqual(mockCategory)
-        expect(mockCategoryRepository.existsBy).toHaveBeenCalledWith({id})
-        expect(mockCategoryRepository.update).toHaveBeenCalledWith({id},mockCategory)
+        expect(await service.updateCategory(id,mockCategory)).toEqual(mockCategory);
+        expect(mockCategoryRepository.existsBy).toHaveBeenCalledWith({id});
+        expect(mockCategoryRepository.update).toHaveBeenCalledWith({id},mockCategory);
     })
 
     it('should throw an error for non-existing categorys',async () =>{
-        const id= mockCategory.id
-        mockCategoryRepository.existsBy.mockReturnValueOnce(false)
+        const id= mockCategory.id;
+        mockCategoryRepository.existsBy.mockReturnValueOnce(false);
         expect(async () => await service.updateCategory(id, mockCategory))
-            .rejects.toThrow(new Error('la categoria no existe'))
+            .rejects.toThrow(new NotFoundException('la categoria no existe'));
+        expect(mockCategoryRepository.existsBy).toHaveBeenCalledWith({id:id});
+    })
 
+    it('should throw an BadRequestException for not updating category',async () =>{
+        const id= mockCategory.id;
+        mockCategoryRepository.existsBy.mockReturnValueOnce(true);
+        jest.spyOn(mockCategoryRepository, 'update').mockResolvedValueOnce(false);
+        expect(async () => await service.updateCategory(id, mockCategory))
+            .rejects.toThrow(new BadRequestException('Error al actualizar categoria'));
+    })
+
+    it('should throw an BadRequestException for not saving category',async () =>{
+        const id= mockCategory.id
+        mockCategoryRepository.existsBy.mockReturnValueOnce(true);
+        mockCategoryRepository.update.mockResolvedValueOnce(true);
+        mockCategoryRepository.save.mockResolvedValueOnce(false);
+        expect(async () => await service.updateCategory(id, mockCategory))
+            .rejects.toThrow(new BadRequestException('Error al guardar categoria'));
+    })
+
+})
+
+describe('getCategoryBySearch', ()=> {
+
+    it('should get a category by search', async () => {
+        const name = mockCategory.name;
+        expect(await service.getCategoryBySearch(name)).toEqual(mockCategory);
+        expect(await mockCategoryRepository.findOneBy).toHaveBeenCalledWith({name});
+    })
+
+    it('should throw an NotFoundException for not getting a category by search', async () => {
+        const name = mockCategory.name;
+        jest.spyOn(mockCategoryRepository, 'findOneBy').mockResolvedValueOnce(false);
+        await expect(service.getCategoryBySearch(name)).rejects.toThrow(new NotFoundException('No se ha encontrado la categoría'));
+        expect(mockCategoryRepository.findOneBy).toHaveBeenCalledWith({name});
     })
 })
 

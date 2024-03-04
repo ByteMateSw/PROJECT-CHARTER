@@ -19,7 +19,7 @@ export class StateHiringService {
     }
     const saveStatus = await this.stateHiringRepository.save({ name });
     if(!saveStatus){
-      throw new BadRequestException('Error al guardar estadod de contrato');
+      throw new BadRequestException('Error al guardar estado de contrato');
     }
     return saveStatus;
 
@@ -28,7 +28,7 @@ export class StateHiringService {
   async getStatusByName(name: string) {
     const existStatus = await this.stateHiringRepository.findOneBy({ name });
     if(!existStatus){
-      throw new BadRequestException('nombre incorrecto')
+      throw new NotFoundException('nombre incorrecto')
     }
     return existStatus;
   
