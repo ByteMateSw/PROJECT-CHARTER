@@ -7,8 +7,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Review } from './review.entity';
 import { UserService } from '../user/user.service';
 import { Repository } from 'typeorm';
-import { CreateReviewDTO } from './dto/createReview.dto';
-import { UptadeReviewDTO } from './dto/uptadeReview.dto';
+import { CreateReviewDTO } from './dto/create-review.dto';
+import { UptadeReviewDTO } from './dto/uptade-review.dto';
 import { Role } from '../utils/enums/role.enum';
 
 /**
@@ -31,11 +31,11 @@ export class ReviewService {
     createReviewDto: CreateReviewDTO,
     userId: number,
   ): Promise<Review> {
-    const createReview = this.reviewRepository.create({
+    const newReview = this.reviewRepository.create({
       ...createReviewDto,
       user: { id: userId },
     });
-    return await this.reviewRepository.save(createReview);
+    return await this.reviewRepository.save(newReview);
   }
 
   /**
@@ -91,12 +91,12 @@ export class ReviewService {
     });
     if (!reviewFound) throw new NotFoundException('La calificación no existe');
 
-    const role = await this.userService.getRole(userId);
-    if (role !== Role.Admin && reviewFound.user.id !== userId)
+    const userRole = await this.userService.getRole(userId);
+    if (userRole !== Role.Admin && reviewFound.user.id !== userId)
       throw new UnauthorizedException(
         'No tienes permisos para borrar la calificación',
       );
 
-    await this.reviewRepository.delete(reviewId);
+    await this.reviewRepository.remove(reviewFound);
   }
 }

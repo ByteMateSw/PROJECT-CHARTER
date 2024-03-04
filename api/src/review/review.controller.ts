@@ -13,13 +13,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ReviewService } from './review.service';
-import { CreateReviewDTO } from './dto/createReview.dto';
+import { CreateReviewDTO } from './dto/create-review.dto';
 import { AccessTokenGuard } from '../auth/jwt/access.guard';
 import { UserParamID } from '../utils/params/user.param';
 import { Review } from './review.entity';
-import { UptadeReviewDTO } from './dto/uptadeReview.dto';
+import { UptadeReviewDTO } from './dto/uptade-review.dto';
 import { CustomParseIntPipe } from '../utils/pipes/parse-int.pipe';
-import { ResponseMessage } from '../utils/types/functions.type';
 import { QueryNumberPipe } from '../utils/pipes/query-number.pipe';
 import { EmptyBodyPipe } from 'src/utils/pipes/empty-body.pipe';
 
@@ -91,7 +90,6 @@ export class ReviewController {
    * @param id - The ID of the review to delete.
    * @param userId - The ID of the user deleting the review, obtained from the access token.
    */
-
   @UseGuards(AccessTokenGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
