@@ -18,18 +18,18 @@ describe('CategoryController', () => {
         "name": "comercio",
     }
 
-    const mockCreateCategoryDto: CreateCategoryDto ={
+    const mockCreateCategoryDto: CategoryDto ={
         name: 'new category',
     }
 
     const mockError =  new Error('Category error');
-    const mockDeletedMessage = 'se ha eliminado correctamente'
-    const mockUpdateMessage = 'se ha actualizado correctamente'
-    const mockCreateMessage = 'se ha creado correctamente'
+    const mockDeletedMessage = {message:'se ha eliminado correctamente'}
+    const mockUpdateMessage = {message:'se ha actualizado correctamente'}
+    const mockCreateMessage = {message:'Categoria creada correctamente'}
 
     const mockCategoryService = {
-        getAll: jest.fn().mockResolvedValue([mockCategory]),
-        getById: jest.fn().mockResolvedValueOnce(mockCategory),
+        getAllCategories: jest.fn().mockResolvedValue([mockCategory]),
+        getCategoryById: jest.fn().mockResolvedValueOnce(mockCategory),
         createCategory: jest.fn().mockResolvedValueOnce(mockCreateMessage),
         deleteCategory: jest.fn().mockResolvedValueOnce(mockDeletedMessage),
         updateCategory: jest.fn().mockResolvedValueOnce(mockUpdateMessage)
@@ -51,33 +51,39 @@ it('should be defined', () => {
     expect(controller).toBeDefined()
 })
 
-describe('getAll',()=>{
+describe('getAllCategories',()=>{
     it('should return an mocked category list', async() =>{
-        const categorys= await controller.getAll()
-        expect(mockCategoryService.getAll).toHaveBeenCalled()
+        const categorys= await controller.getAllCategories()
+        expect(mockCategoryService.getAllCategories).toHaveBeenCalled()
         expect(categorys).toEqual([mockCategory])
     });
 
     it("should get an empty category list", async () => {
         const emptyCategoryList = {};
-        mockCategoryService.getAll = jest.fn().mockResolvedValueOnce(emptyCategoryList);
-        expect(await controller.getAll()).toBe(emptyCategoryList);
-        expect(mockCategoryService.getAll).toHaveBeenCalled();
+        mockCategoryService.getAllCategories = jest.fn().mockResolvedValueOnce(emptyCategoryList);
+        expect(await controller.getAllCategories()).toBe(emptyCategoryList);
+        expect(mockCategoryService.getAllCategories).toHaveBeenCalled();
       });
 })
 
-describe('getById',()=>{
-    it('get an category', async() =>{
+describe('getCategoryById',()=>{
+    it('get a category by Id', async() =>{
         const id = mockCategory.id
-        expect(await controller.getById(id)).toBe(mockCategory)
-        expect(mockCategoryService.getById).toHaveBeenCalledWith(id)
+        expect(await controller.getCategoryById(id)).toBe(mockCategory)
+        expect(mockCategoryService.getCategoryById).toHaveBeenCalledWith(id)
     });
+    
+    it('should throw an error for not get category by Id', async() =>{
+        mockCategoryService.getCategoryById.mockRejectedValue(mockError)
+        await expect(async () => await controller.getCategoryById(mockCategory.id)
+        ).rejects.toThrow(new HttpException(mockError, HttpStatus.BAD_REQUEST))
+    })
 })
 
 describe('create',()=>{
     it('should create an category', async() =>{
     const result= await controller.createCategory(mockCreateCategoryDto)
-    expect(result).toEqual('category creada correctamente')
+    expect(result).toEqual(mockCreateMessage)
 });
 
 it('should throw an error', async ()=>{
@@ -108,14 +114,14 @@ describe('deleteCategory',()=>{
 describe('updateCategory', ()=> {
     it('update an category', async() =>{
     const id = mockCategory.id
-    expect(await controller.updateCategory(id, {})).toEqual(mockUpdateMessage)
-    expect(mockCategoryService.updateCategory).toHaveBeenCalledWith(id,{})
+    expect(await controller.updateCategory(id, mockUpdate)).toEqual(mockUpdateMessage)
+    expect(mockCategoryService.updateCategory).toHaveBeenCalledWith(id,mockUpdate)
 }),
     it("should thrown an error", () =>{
         const id = mockCategory.id
         mockCategoryService.updateCategory.mockRejectedValueOnce(id)
         expect(async () => {
-            await controller.updateCategory(id,{})
+            await controller.updateCategory(id, mockUpdate)
         }).rejects.toThrow( HttpException)
     })
 })

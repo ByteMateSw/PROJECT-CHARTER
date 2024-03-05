@@ -69,10 +69,10 @@ export class OfficeController {
   @HttpCode(201)
   @Post()
   async createOffice(
-    @Body() createOfficeDto: CreateOfficeDto,
-  ): Promise<string> {
+    @Body() createOfficeDto: OfficeDto,
+  ): Promise<ResponseMessage> {
     try {
-      await this.officeService.createOffice(OfficeDto);
+      await this.officeService.createOffice(createOfficeDto);
       return {message:'oficio creado correctamente'};
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
@@ -106,7 +106,7 @@ export class OfficeController {
    * @throws {HttpException} If an error occurs during the deletion process.
    */
   @Delete(':id')
-  async deleteOffice(@Param('id') id: number): Promise<string> {
+  async deleteOffice(@Param('id') id: number): Promise<ResponseMessage> {
     try {
       await this.officeService.deleteOffice(id);
       return {message:'El oficio ha sido borrado correctamente'};
