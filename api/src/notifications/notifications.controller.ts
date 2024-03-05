@@ -3,11 +3,13 @@ import { NotificationsService } from './notifications.service';
 import { CreateNotificationsDTO } from './dto/notification.dto';
 import { UptadeNotificationsDTO } from './dto/uptadeNotifications.dto';
 
+/**
+ * Controller for handling notifications-related operations.
+ */
 @Controller('Notifications')
 export class NotificationsController {
   constructor(private notificationsService: NotificationsService) {}
 
-  @Post('create')
   /**
    * Creates notifications.
    *
@@ -16,6 +18,7 @@ export class NotificationsController {
    * @returns A promise that resolves to the created notification.
    * @throws HttpException if there is an error creating the notification.
    */
+  @Post('create')
   async createNotifications(
     @Body() id: number,
     notificationDto: CreateNotificationsDTO,
@@ -30,6 +33,11 @@ export class NotificationsController {
     }
   }
 
+  /**
+   * Deletes expired notifications.
+   * @returns A promise that resolves to a string.
+   * @throws HttpException if there is an error deleting the notifications.
+   */
   @Delete('deleteNotif')
   async CleanExpiredNotifications():Promise<string>{
     try {
@@ -40,6 +48,11 @@ export class NotificationsController {
     }
   }
 
+  /**
+   * Retrieves all active notifications.
+   * @returns A promise that resolves to a string.
+   * @throws HttpException if there is an error retrieving the notifications.
+   */
   @Get('all')
   async GetAllActiveNotifications():Promise<string>{
     try {
@@ -50,6 +63,12 @@ export class NotificationsController {
     }
   }
 
+  /**
+   * Retrieves a notification by its ID.
+   * @param id - The ID of the notification.
+   * @returns A promise that resolves to a string.
+   * @throws HttpException if there is an error retrieving the notification.
+   */
   @Get('byId')
   async GetNotificationsById(@Body('id') id:number):Promise<string>{
     try {
@@ -60,6 +79,13 @@ export class NotificationsController {
     }
   }
 
+  /**
+   * Updates a notification.
+   * @param id - The ID of the notification.
+   * @param UptadeNotificationsDTO - The data to update the notification with.
+   * @returns A promise that resolves to a string.
+   * @throws HttpException if there is an error updating the notification.
+   */
   @Put('id')
   async uptadeNotifications(@Param('id') id:number, @Body() UptadeNotificationsDTO){
     try {
@@ -73,6 +99,12 @@ export class NotificationsController {
     }
   }
 
+  /**
+   * Deletes a notification by its ID.
+   * @param id - The ID of the notification.
+   * @returns A promise that resolves to a string.
+   * @throws HttpException if there is an error deleting the notification.
+   */
   @Delete(':id')
   async deleteNotifications(id: number):Promise<string>{
     try {
