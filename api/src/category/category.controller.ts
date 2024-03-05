@@ -13,22 +13,25 @@ import {
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { Category } from './category.entity';
-import { CreateCategoryDto } from './dto/category.dto';
+import { CreateCategoryDto } from './dto/create-category.dto';
 import { updateCategoryDto } from './dto/updateCategory.dto';
+import { CustomParseIntPipe } from '../utils/pipes/parse-int.pipe';
+import { Roles } from '../role/role.decorator';
+import { Role } from '../utils/enums/role.enum';
 
 /**
  * Controller for handling category-related operations.
  */
-@Controller('category')
+@Controller('categories')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   /**
    * Retrieves all categories.
-   * @returns {Promise<Category[]>} A promise that resolves to an array of categories.
+   * @returns A promise that resolves to an array of categories.
    */
   @Get()
-  async getAll() {
+  async getAllCategories(): Promise<Category[]> {
     return await this.categoryService.getAllCategories();
   }
 
@@ -37,73 +40,57 @@ export class CategoryController {
    *
    * @param id - The ID of the category to retrieve.
    * @returns A Promise that resolves to the retrieved Category object.
-   * @throws HttpException with a NOT_FOUND status if the category is not found.
    */
   @Get(':id')
-  async getById(@Param('id', ParseIntPipe) id: number): Promise<Category> {
-    try {
-      return this.categoryService.getCategoryById(id);
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
-    }
+  async getCategoryById(
+    @Param('id', CustomParseIntPipe) id: number,
+  ): Promise<Category> {
+    return this.categoryService.getCategoryById(id);
   }
 
   /**
-   * Creates a new category.
+   * Creates a new category. Only users with the admin role can create categories.
    *
-   * @param {CreateCategoryDto} CreateCategoryDto - The data transfer object containing the category information.
-   * @returns {Promise<string>} A promise that resolves to a success message if the category is created successfully.
-   * @throws {HttpException} If an error occurs while creating the category, an HTTP exception with a bad request status is thrown.
+   * @param CreateCategoryDto - The data transfer object containing the category information.
+   * @returns A promise that resolves to the created category.
+   * @throws If an error occurs while creating the category, an HTTP exception with a bad request status is thrown.
    */
-  @HttpCode(201)
+  @Roles(Role.Admin)
   @Post()
   async createCategory(
     @Body() CreateCategoryDto: CreateCategoryDto,
-  ): Promise<string> {
-    try {
-      await this.categoryService.createCategory(CreateCategoryDto);
-      return 'category creada correctamente';
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-    }
+  ): Promise<Category> {
+    return await this.categoryService.createCategory(CreateCategoryDto);
   }
 
   /**
-   * Deletes a category by its ID.
+   * Deletes a category by its ID. Only users with the admin role can delete categories.
    *
    * @param id - The ID of the category to delete.
-   * @returns A promise that resolves to a string indicating the success of the deletion.
-   * @throws {HttpException} If an error occurs during the deletion process.
    */
+  @Roles(Role.Admin)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  async deleteCategory(@Param('id') id: number): Promise<string> {
-    try {
-      await this.categoryService.deleteCategory(id);
-      return 'se ha eliminado correctamente';
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
-    }
+  async deleteCategory(
+    @Param('id', CustomParseIntPipe) id: number,
+  ): Promise<void> {
+    await this.categoryService.deleteCategory(id);
   }
 
   /**
-   * Updates a category with the specified ID.
+   * Updates a category with the specified ID. Only users with the admin role can update categories.
    *
    * @param id - The ID of the category to update.
    * @param updateCategoryDto - The DTO (Data Transfer Object) containing the updated category data.
-   * @returns A Promise that resolves to a string indicating the successful update.
-   * @throws HttpException if an error occurs during the update process.
+   * @returns A Promise that resolves to the updated category.
    */
+  @Roles(Role.Admin)
   @Patch(':id')
   async updateCategory(
     @Param('id') id: number,
     @Body() updateCategoryDto: updateCategoryDto,
-  ): Promise<string> {
-    try {
-      await this.categoryService.updateCategory(id, updateCategoryDto);
-      return 'se ha actualizado correctamente';
-    } catch (error) {
-      throw new HttpException(error.mesagge, HttpStatus.FORBIDDEN);
-    }
+  ): Promise<Category> {
+    return await this.categoryService.updateCategory(id, updateCategoryDto);
   }
 
   /**

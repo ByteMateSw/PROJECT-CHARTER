@@ -1,3 +1,6 @@
+import { IsString } from 'class-validator';
+
 export class updateCategoryDto {
-    name?: string;
+  @IsString()
+  name?: string;
 }
