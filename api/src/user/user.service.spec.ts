@@ -83,7 +83,7 @@ describe('UserService', () => {
 
     it('should return an mocked user by their id', async () => {
       const id = mockUser.id;
-      expect(await service.getUser({ id })).toEqual(mockUser);
+      expect(await service.getUserBy({ id })).toEqual(mockUser);
       expect(mockUserRepository.findOne).toHaveBeenCalledWith({
         where: { id, email: undefined },
         ...mockFindOptions,
@@ -92,7 +92,7 @@ describe('UserService', () => {
 
     it('should return an mocked user by their email', async () => {
       const email = mockUser.email;
-      expect(await service.getUser({ email })).toEqual(mockUser);
+      expect(await service.getUserBy({ email })).toEqual(mockUser);
       expect(mockUserRepository.findOne).toHaveBeenCalledWith({
         where: { id: undefined, email },
         ...mockFindOptions,

@@ -23,13 +23,21 @@ export class UserService {
    * Retrieves all users from the database.
    * @returns A promise that resolves to an array of User objects.
    */
-  async getAllUsers(): Promise<User[]> {
+  async getAllUsers({
+    page,
+    limit,
+  }: {
+    page?: number;
+    limit?: number;
+  }): Promise<User[]> {
     return await this.userRepository.find({
       where: { isDeleted: false },
       relations: { city: true },
       select: {
         city: { id: false, name: true },
       },
+      skip: page,
+      take: limit,
     });
   }
 
@@ -39,7 +47,7 @@ export class UserService {
    * @param email - The email of the user.
    * @returns A promise that resolves to a User object.
    */
-  async getUser({ id, email }: EmailAndOrId): Promise<User> {
+  async getUserBy({ id, email }: EmailAndOrId): Promise<User> {
     return await this.userRepository.findOne({
       where: { id, email },
       relations: { city: true },
@@ -77,12 +85,11 @@ export class UserService {
   /**
    * Deletes a user by their ID.
    * @param id - The ID of the user to delete.
-   * @returns A promise that resolves when the user is deleted.
-   * @throws NotFoundException if the user does not exist.
+   * @throws BadRequestException if the user does not exist.
    */
   async deleteUser(id: number): Promise<void> {
     const existsUser = await this.userRepository.existsBy({ id });
-    if (!existsUser) throw new NotFoundException('El usuario no existe');
+    if (!existsUser) throw new BadRequestException('El usuario no existe');
     await this.userRepository.update({ id }, { isDeleted: true });
   }
 
@@ -94,17 +101,16 @@ export class UserService {
    * @throws NotFoundException if the user does not exist.
    * @throws BadRequestException if the email already exists.
    */
-  async updateUser(id: number, user: UpdateUserDto): Promise<UpdateUserDto> {
-    const userFound = await this.userRepository.existsBy({ id });
-    if (!userFound) throw new NotFoundException('El usuario no existe');
-    if (user.email !== undefined) {
+  async updateUser(id: number, updateUser: UpdateUserDto): Promise<User> {
+    const user = await this.userRepository.findOneBy({ id });
+    if (!user) throw new BadRequestException('El usuario no existe');
+    if (updateUser.email !== undefined) {
       const existsEmail = await this.userRepository.existsBy({
-        email: user.email,
+        email: updateUser.email,
       });
       if (existsEmail) throw new BadRequestException('El email ya existe');
     }
-    await this.userRepository.update({ id }, user);
-    return user;
+    return await this.userRepository.save({ ...user, ...updateUser });
   }
 
   /**
@@ -198,11 +204,11 @@ export class UserService {
    * @param id - The ID of the user.
    * @param email - The email of the user.
    * @returns A promise that resolves when the user's account is validated.
-   * @throws NotFoundException if the user does not exist.
+   * @throws BadRequestException if the user does not exist.
    */
   async validateUser({ id, email }: EmailAndOrId) {
     const user = await this.userRepository.findOne({ where: { id, email } });
-    if (!user) throw new NotFoundException('No se encontró el usuario');
+    if (!user) throw new BadRequestException('No se encontró el usuario');
     user.isAccountValidate = true;
     await this.userRepository.save(user);
   }
