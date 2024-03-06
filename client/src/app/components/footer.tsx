@@ -1,35 +1,40 @@
-import React from "react";
+import Image from "next/image";
 
-function Footer() {
+const Links = ({ description }: { description: string }): JSX.Element => {
+  return (
+    <div className="text-center text-slate-50 text-xs font-medium">
+      {description}
+    </div>
+  );
+}
+
+const SocialMedia = ({src, alt = "", measure}: {src: string, alt?: string, measure: number}): JSX.Element => {
+  return (
+    <Image src={src} alt={`Síguenos en ${alt}`} width={measure} height={measure} />
+  )}
+
+function Footer(): JSX.Element {
+  // Cambiar divs, mejorar semántica HTML, añadir <a> a redes sociales y links
+  const measure = 32; // analizar usar useState
   return (
     <footer>
-      <div className="w-full h-[150px] px-4 py-2 bg-neutral-900 flex-col justify-end items-center gap-4 flex mx-auto">
+      <section className="flex flex-col justify-end items-center w-full h-36 px-4 py-2 bg-neutral-900">
         <div className="flex justify-between items-center w-full">
-          <div className="text-slate-50 text-[32px] font-bold">
-            PROJECT CHARTER
-          </div>
+          <div className="text-slate-50 text-[32px] font-bold">Conectando</div>
           <div className="flex items-center gap-8">
-            <img src="/TwitterX-Icon.svg" alt="" className="w-8 h-[29px]" />
-            <img src="/Instagram-Icon.svg" alt="" className="w-[33px] h-8" />
-            <img src="/LinkedIn-Icon.svg" alt="" className="w-8 h-8" />
-            <img src="/Facebook-Icon.svg" alt="" className="w-8 h-8" />
+          <SocialMedia src="/svg/twitter-x-icon.svg" alt="X" measure={measure}/>
+          <SocialMedia src="/svg/instagram-icon.svg" alt="Instagram" measure={measure}/>
+          <SocialMedia src="/svg/linkedin-icon.svg" alt="LinkedIn" measure={measure}/>
+          <SocialMedia src="/svg/facebook-icon.svg" alt="Facebook" measure={measure}/>
           </div>
         </div>
         <div className="w-full justify-start items-start gap-8 inline-flex">
-          <div className="text-center text-slate-50 text-xs font-medium">
-            Desarrollado por ByteMate
-          </div>
-          <div className="text-center text-slate-50 text-xs font-medium">
-            © 2024 All rights reserved.
-          </div>
-          <div className="text-center text-slate-50 text-xs font-medium">
-            Términos y condiciones
-          </div>
-          <div className="text-center text-slate-50 text-xs font-medium">
-            Privacidad
-          </div>
+          <Links description="Desarrollado por ByteMate" />
+          <Links description="© 2024 All rights reserved." />
+          <Links description="Términos y condiciones" />
+          <Links description="Privacidad" />
         </div>
-      </div>
+      </section>
     </footer>
   );
 }
