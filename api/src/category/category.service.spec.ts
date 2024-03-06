@@ -43,7 +43,7 @@ it('should be defined', ()=>{
 })
 
 describe('getAllCategories',() => {
-    it("should return and mocked category list", async ()=>{
+    it("should return an mocked category list", async ()=>{
         expect(await service.getAllCategories()).toEqual([mockCategory]);
         expect(mockCategoryRepository.find).toHaveBeenCalled()
     });
@@ -61,9 +61,9 @@ describe('createCategory', ()=>{
     it('should create an category', async () => {
         jest.spyOn(service, 'existCategoryName').mockResolvedValueOnce(false);
         const categoria= await service.createCategory(mockCategory);
-        expect(categoria).toMatchObject(mockCategory);
         expect(mockCategoryRepository.create).toHaveBeenCalledWith(mockCategory);
         expect(mockCategoryRepository.save).toHaveBeenCalledWith(mockCategory);
+        expect(categoria).toEqual(mockCategory);
     })
     it('should throw an BadRequestException for repeted name', async () => {
         jest.spyOn(service, 'existCategoryName').mockResolvedValueOnce(true);

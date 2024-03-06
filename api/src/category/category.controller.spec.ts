@@ -48,14 +48,14 @@ beforeEach(async () => {
 });
 
 it('should be defined', () => {
-    expect(controller).toBeDefined()
+    expect(controller).toBeDefined();
 })
 
 describe('getAllCategories',()=>{
     it('should return an mocked category list', async() =>{
-        const categorys= await controller.getAllCategories()
-        expect(mockCategoryService.getAllCategories).toHaveBeenCalled()
-        expect(categorys).toEqual([mockCategory])
+        const categorys= await controller.getAllCategories();
+        expect(mockCategoryService.getAllCategories).toHaveBeenCalled();
+        expect(categorys).toEqual([mockCategory]);
     });
 
     it("should get an empty category list", async () => {
@@ -97,32 +97,33 @@ it('should throw an error', async ()=>{
 
 describe('deleteCategory',()=>{
     it('delete an category', async() =>{
-        const id = mockCategory.id
-        expect(await controller.deleteCategory(id)).toEqual(mockDeletedMessage)
+        const id = mockCategory.id;
+        expect(await controller.deleteCategory(id)).toEqual(mockDeletedMessage);
+        expect(mockCategoryService.deleteCategory).toHaveBeenCalledWith(id);
     });
 
     it("should thrown an error", async () =>{
-        mockCategoryService.deleteCategory.mockRejectedValueOnce(mockError)
-        const id = mockCategory.id
-        jest.spyOn(mockCategoryService,'deleteCategory').mockRejectedValueOnce(id)
+        mockCategoryService.deleteCategory.mockRejectedValueOnce(mockError);
+        const id = mockCategory.id;
+        jest.spyOn(mockCategoryService,'deleteCategory').mockRejectedValueOnce(id);
         await expect ( async() => controller.deleteCategory(id)).rejects.toThrow(
-            new HttpException(mockError, HttpStatus.FORBIDDEN))
+            new HttpException(mockError, HttpStatus.FORBIDDEN));
     })
 })
 
 
 describe('updateCategory', ()=> {
     it('update an category', async() =>{
-    const id = mockCategory.id
-    expect(await controller.updateCategory(id, mockUpdate)).toEqual(mockUpdateMessage)
-    expect(mockCategoryService.updateCategory).toHaveBeenCalledWith(id,mockUpdate)
+    const id = mockCategory.id;
+    expect(await controller.updateCategory(id, mockUpdate)).toEqual(mockUpdateMessage);
+    expect(mockCategoryService.updateCategory).toHaveBeenCalledWith(id,mockUpdate);
 }),
     it("should thrown an error", () =>{
-        const id = mockCategory.id
-        mockCategoryService.updateCategory.mockRejectedValueOnce(id)
+        const id = mockCategory.id;
+        mockCategoryService.updateCategory.mockRejectedValueOnce(id);
         expect(async () => {
             await controller.updateCategory(id, mockUpdate)
-        }).rejects.toThrow( HttpException)
+        }).rejects.toThrow( HttpException);
     })
 })
 

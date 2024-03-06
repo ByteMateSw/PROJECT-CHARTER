@@ -23,7 +23,7 @@ export class StateHiringController {
   async createStatusHire(@Body() stateHiringDTO:stateHiringDTO): Promise<ResponseMessage> {
     try {
       await this.stateHiringService.createStatusHire(stateHiringDTO);
-      return { message: 'El estado del contrato ha sido creado correctamente' };
+      return {message:'El estado del contrato ha sido creado correctamente'};
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
@@ -43,7 +43,7 @@ export class StateHiringController {
   async deleteStatusHire(@Body('id') id: number): Promise<ResponseMessage>{
     try {
       await this.stateHiringService.deleteStatusHire(id);
-      return {message:'se ha eliminado correctamente'};
+      return {message:'El estado del contrato se ha eliminado correctamente'};
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.FORBIDDEN);
     }

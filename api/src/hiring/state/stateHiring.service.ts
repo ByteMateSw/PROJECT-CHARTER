@@ -21,15 +21,12 @@ export class StateHiringService {
    * @throws NotFoundException if a hiring status with the same name already exists.
    * @throws BadRequestException if there was an error while saving the hiring status.
    */
-  async createStatusHire(stateHire: stateHiringDTO) {
+  async createStatusHire(stateHire: stateHiringDTO):Promise<StateHiring> {
     const existingHireStatus = await this.getStatusByName(stateHire.name);
     if (existingHireStatus) {
       throw new NotFoundException('Error ya existe un estado con ese nombre');
     }
-    const NewStatus= await this.stateHiringRepository.create(stateHire)
-    if(!NewStatus){
-      throw new BadRequestException('Error al crear estado de contrato')
-    }
+    const NewStatus= this.stateHiringRepository.create(stateHire)
     const saveStatus = await this.stateHiringRepository.save(NewStatus);
     if(!saveStatus){
       throw new BadRequestException('Error al guardar estado de contrato');

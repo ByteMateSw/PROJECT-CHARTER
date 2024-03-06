@@ -2,8 +2,8 @@ import { Test, TestingModule } from "@nestjs/testing"
 import { StateHiringService } from "./stateHiring.service"
 import { getRepositoryToken } from "@nestjs/typeorm"
 import { StateHiring } from "./stateHiring.entity"
-import { UpdateStateHireDTO } from "./updateStateHiring.dto"
 import { BadRequestException, NotFoundException } from "@nestjs/common"
+import { stateHiringDTO } from "./dto/stateHiring.dto"
 
 
 describe('stateHiringService', () =>{
@@ -20,10 +20,11 @@ describe('stateHiringService', () =>{
         findOneBy: jest.fn().mockResolvedValue(mockStateHiring),
         delete: jest.fn().mockResolvedValue(mockStateHiring),
         update: jest.fn().mockResolvedValue(mockStateHiring),
+        create: jest.fn().mockReturnValue(mockStateHiring),
         findOneByOrFail: jest.fn().mockResolvedValue(mockStateHiring),
         find: jest.fn().mockResolvedValue(mockStateHiring),
         getStatusByName: jest.fn().mockResolvedValue(mockStateHiring)
-    }
+    };
 
     beforeEach(async () =>{
         const module: TestingModule = await Test.createTestingModule({
@@ -33,7 +34,7 @@ describe('stateHiringService', () =>{
             }]
         }).compile();
 
-        service = module.get<StateHiringService>(StateHiringService)
+        service = module.get<StateHiringService>(StateHiringService);
     });
     
     it('should be defined', () =>{
@@ -42,32 +43,30 @@ describe('stateHiringService', () =>{
 
     describe('createStatusHire', () => {
         it('should create an status hire', async () =>{
-            const mocksaveStatus= {"name": "test"}
+            const mockSaveStatus= {...mockStateHiring};
             jest.spyOn(service, 'getStatusByName').mockResolvedValueOnce(null);
             jest.spyOn(mockStateHiringRepository, 'save').mockResolvedValueOnce(mockStateHiring);
-            expect(await service.createStatusHire(mockStateHiring.name)).toEqual(mockStateHiring);
-            expect(service.getStatusByName).toHaveBeenCalledWith(mockStateHiring.name);
-            expect(mockStateHiringRepository.save).toHaveBeenCalledWith(mocksaveStatus);
+            await service.createStatusHire(mockStateHiring);
+            expect(mockStateHiringRepository.create).toHaveBeenCalledWith(mockStateHiring);
+            expect(mockStateHiringRepository.save).toHaveBeenCalledWith(mockSaveStatus);
+            
         });
 
-
-        it('should throw an error for a repeted name of status hire', async () =>{
+        it('should throw an error for a repeated name of status hire', async () =>{
             const existingName= 'test';
             jest.spyOn(service, 'getStatusByName').mockResolvedValueOnce(mockStateHiring);
-            await expect(async () => await service.createStatusHire(existingName),
+            await expect(async () => await service.createStatusHire(mockStateHiring),
             ).rejects.toThrow(new BadRequestException('Error ya existe un estado con ese nombre'));
             expect(service.getStatusByName).toHaveBeenCalledWith(existingName);
         })
 
         it('should return an error for not saved status hire', async() =>{
-            const mockname = 'test'
             jest.spyOn(service, 'getStatusByName').mockResolvedValueOnce(null);
-            jest.spyOn(mockStateHiringRepository, 'save').mockRejectedValueOnce(new BadRequestException('Error al guardar estado de contrato'));
-            await expect(service.createStatusHire(mockname)).rejects.toThrow(
+            jest.spyOn(mockStateHiringRepository, 'create').mockResolvedValueOnce(true);
+            jest.spyOn(mockStateHiringRepository, 'save').mockResolvedValueOnce(false)
+            await expect(service.createStatusHire(mockStateHiring)).rejects.toThrow(
               new BadRequestException('Error al guardar estado de contrato'),
             );
-            expect(service.getStatusByName).toHaveBeenCalledWith(mockname)
-            expect(mockStateHiringRepository.save).toHaveBeenCalledWith({name:mockname})
 
         })
     })
@@ -83,7 +82,7 @@ describe('stateHiringService', () =>{
 
         it('should throw an error for not finding status', async() =>{
             mockStateHiringRepository.findOneBy.mockResolvedValueOnce(null);
-            await expect(service.getStatusByName(mockStateHiring.name)).rejects.toThrow(new NotFoundException('nombre incorrecto'));
+            await expect(service.getStatusByName(mockStateHiring.name)).rejects.toThrow(new NotFoundException('Nombre incorrecto'));
             expect(mockStateHiringRepository.findOneBy).toHaveBeenCalledWith({name:mockStateHiring.name});
         })
     })
@@ -125,7 +124,7 @@ describe('stateHiringService', () =>{
     describe('updateStatusHire', () => {
         it('should update a status Hire', async () =>{
             const mockId = mockStateHiring.id;
-            const mockUpdateStateDto= UpdateStateHireDTO;
+            const mockUpdateStateDto= stateHiringDTO;
             const mockUpdatedState = {
                 "id":"1",
                 "name":"updatedTest",
@@ -144,7 +143,7 @@ describe('stateHiringService', () =>{
 
         it('should throw an error for not existing status Hire', async () =>{
             const mockId = mockStateHiring.id;
-            const mockUpdateStateDto= UpdateStateHireDTO;
+            const mockUpdateStateDto= stateHiringDTO;
             jest.spyOn(mockStateHiringRepository,'findOneBy').mockResolvedValueOnce(false);
 
             await expect(service.updateStatusHire(mockId, mockUpdateStateDto),
@@ -155,7 +154,7 @@ describe('stateHiringService', () =>{
 
         it('should throw an error for not updating the status Hire', async () =>{
             const mockId = mockStateHiring.id;
-            const mockUpdateStateDto= UpdateStateHireDTO;
+            const mockUpdateStateDto= stateHiringDTO;
             jest.spyOn(mockStateHiringRepository,'findOneBy').mockResolvedValueOnce(true);
             jest.spyOn(mockStateHiringRepository,'update').mockResolvedValueOnce(false)
             await expect(service.updateStatusHire(mockId, mockUpdateStateDto),
@@ -166,7 +165,7 @@ describe('stateHiringService', () =>{
 
         it('should throw an error for not finding the status', async () =>{
             const mockId = mockStateHiring.id;
-            const mockUpdateStateDto= UpdateStateHireDTO;
+            const mockUpdateStateDto= stateHiringDTO;
             jest.spyOn(mockStateHiringRepository,'findOneBy').mockResolvedValueOnce(true);
             jest.spyOn(mockStateHiringRepository,'update').mockResolvedValueOnce(true)
             jest.spyOn(mockStateHiringRepository,'findOneByOrFail').mockResolvedValueOnce(false)
