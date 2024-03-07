@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { StateHiring } from './stateHiring.entity';
 import { ResponseMessage } from '../../utils/types/functions.type';
+import { stateHiringDTO } from './dto/stateHiring.dto';
 
 
 @Injectable()
@@ -20,14 +21,15 @@ export class StateHiringService {
    * @throws NotFoundException if a hiring status with the same name already exists.
    * @throws BadRequestException if there was an error while saving the hiring status.
    */
-  async createStatusHire(name: string) {
-    const existingHireStatus = await this.getStatusByName(name);
+  async createStatusHire(stateHire: stateHiringDTO):Promise<StateHiring> {
+    const existingHireStatus = await this.getStatusByName(stateHire.name);
     if (existingHireStatus) {
       throw new NotFoundException('Error ya existe un estado con ese nombre');
     }
-    const saveStatus = await this.stateHiringRepository.save({ name });
+    const NewStatus= this.stateHiringRepository.create(stateHire)
+    const saveStatus = await this.stateHiringRepository.save(NewStatus);
     if(!saveStatus){
-      throw new BadRequestException('Error al guardar estadod de contrato');
+      throw new BadRequestException('Error al guardar estado de contrato');
     }
     return saveStatus;
   }
@@ -73,20 +75,20 @@ export class StateHiringService {
    * @throws NotFoundException if the hire with the given ID does not exist.
    * @throws BadRequestException if there is an error updating the hire status.
    */
-  async updateStatusHire(id: number, UpdateStateHireDTO): Promise<StateHiring> {
+  async updateStatusHire(id: number, stateHiringDTO:stateHiringDTO): Promise<StateHiring> {
     const hireFound = await this.stateHiringRepository.findOneBy({ id })
     if (!hireFound) {
       throw new NotFoundException('El estado del contrato no existe')
     }
-    const statusUpdate= await this.stateHiringRepository.update(id, UpdateStateHireDTO);
+    const statusUpdate= await this.stateHiringRepository.update(id, stateHiringDTO);
     if(!statusUpdate){
       throw new BadRequestException('Error al actualizar el estado de contrato')
     }
-    const returnState = await this.stateHiringRepository.findOneByOrFail({ id });
-    if(!returnState){
+    const updatedState = await this.stateHiringRepository.findOneByOrFail({ id });
+    if(!updatedState){
       throw new NotFoundException('Error al encontrar estado')
     }
-    return returnState
+    return updatedState
   }
 
   /**
