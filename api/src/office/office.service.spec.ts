@@ -46,7 +46,7 @@ describe('OfficeService', () =>{
 
     describe('getAll', () => {
         it('should return all office records', async () => {
-            expect(await service.getAll()).toEqual([mockOffice]);
+            expect(await service.getAllOffices()).toEqual([mockOffice]);
             expect(mockOfficeRepository.find).toHaveBeenCalled();
         });
     });
