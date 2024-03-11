@@ -3,8 +3,11 @@ import Link from "next/link";
 export default function LoginPage() {
   return (
     <section className="min-h-screen flex flex-col justify-center items-center rounded-lg">
-      <h1 className="h-16 mb-4 w-80 flex items-center justify-center shadow-xl bg-secondary-white rounded-lg font-semibold text-2xl">Iniciar Sesión</h1>
-      <article className="w-96 p-8 rounded-lg shadow-xl bg-secondary-white">
+        <img className="mb-3" src="/svg/conectando-logotype.svg" alt="svgimgg"></img>
+      <article className="w-96 px-10 py-12 rounded-lg shadow-xl bg-secondary-white">
+        <div className="flex justify-center items-center">
+          <h1 className="font-bold text-2xl">Iniciar Sesión</h1>
+        </div>
         <div className="my-6">
           <label className="block mb-2">Correo o Celular</label>
           <input
