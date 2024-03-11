@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { StateHiringService } from './stateHiring.service';
 import { ResponseMessage } from '../../utils/types/functions.type';
-import { UpdateStateHireDTO } from './updateStateHiring.dto';
+import { stateHiringDTO } from './dto/stateHiring.dto';
 
 @Controller('state')
 export class StateHiringController {
@@ -20,10 +20,10 @@ export class StateHiringController {
 
   @HttpCode(201)
   @Post('save')
-  async createStatusHire(@Body('name') name: string): Promise<ResponseMessage> {
+  async createStatusHire(@Body() stateHiringDTO:stateHiringDTO): Promise<ResponseMessage> {
     try {
-      await this.stateHiringService.createStatusHire(name);
-      return { message: 'El estado del contrato ha sido creado correctamente' };
+      await this.stateHiringService.createStatusHire(stateHiringDTO);
+      return {message:'El estado del contrato ha sido creado correctamente'};
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
@@ -40,10 +40,10 @@ export class StateHiringController {
   }
   @HttpCode(200)
   @Delete(':id')
-  async deleteStatusHire(@Body('id') id: number) {
+  async deleteStatusHire(@Body('id') id: number): Promise<ResponseMessage>{
     try {
       await this.stateHiringService.deleteStatusHire(id);
-      return 'se ha eliminado correctamente';
+      return {message:'El estado del contrato se ha eliminado correctamente'};
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.FORBIDDEN);
     }
@@ -51,12 +51,13 @@ export class StateHiringController {
 
   @Put(':id')
   async uptadeStatusHire(
-    @Body('id') id: number,
-    UpdateStateHireDTO: UpdateStateHireDTO,
-  ): Promise<string> {
+    @Param('id') id: number,
+    stateHiringDTO:stateHiringDTO
+    ,
+  ): Promise<ResponseMessage> {
     try {
-      await this.stateHiringService.updateStatusHire(id, UpdateStateHireDTO);
-      return 'El contrato se ha actualizado correctamente';
+      await this.stateHiringService.updateStatusHire(id, stateHiringDTO);
+      return {message:'El contrato se ha actualizado correctamente'};
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.FORBIDDEN);
     }

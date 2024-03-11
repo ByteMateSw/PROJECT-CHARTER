@@ -6,7 +6,10 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from './category.entity';
 import { Repository } from 'typeorm';
-import { CreateCategoryDto } from './dto/category.dto';
+import { CategoryDto} from './dto/category.dto';
+import { ResponseMessage } from 'src/utils/types/functions.type';
+
+
 
 @Injectable()
 export class CategoryService {
@@ -39,20 +42,17 @@ export class CategoryService {
    * @returns A Promise that resolves to the newly created category.
    * @throws BadRequestException if the category name already exists or if there are errors during creation or saving.
    */
-  async createCategory(category: CreateCategoryDto): Promise<Category> {
-    const existCategory = await this.existCategoryName(category.name);
+  async createCategory(categoria: CategoryDto): Promise<Category> {
+    const existCategory = await this.existCategoryName(categoria.name);
     if (existCategory) {
-      throw new BadRequestException('La Categoria ya Existe');
+      throw new BadRequestException('La Categoria ya existe');
     }
-    const newCategory = this.categoryRepository.create(category);
-    if (!newCategory) {
-      throw new BadRequestException('Error al crear categoria');
-    }
+    const newCategory = this.categoryRepository.create(categoria);
     const saveCategory = await this.categoryRepository.save(newCategory);
     if (!saveCategory) {
       throw new BadRequestException('Error al guardar la categoria creada');
     }
-    return newCategory;
+    return saveCategory;
   }
 
   /**
@@ -60,7 +60,7 @@ export class CategoryService {
    * @param name - The name of the category to check.
    * @returns A promise that resolves to a boolean indicating whether the category exists.
    */
-  async existCategoryName(name: string): Promise<boolean> {
+  async existCategoryName(name: string) {
     return await this.categoryRepository.existsBy({ name });
   }
 
@@ -68,14 +68,14 @@ export class CategoryService {
    * Deletes a category by its ID.
    * @param id - The ID of the category to delete.
    * @returns A promise that resolves to a string indicating the result of the deletion.
-   * @throws BadRequestException if the category does not exist.
+   * @throws NotFoundException if the category does not exist.
    */
-  async deleteCategory(id: number): Promise<string> {
+  async deleteCategory(id: number): Promise<ResponseMessage> {
     const category = await this.categoryRepository.findOneBy({ id });
-    if (!category) throw new BadRequestException('La categoria no existe');
-    
-    await this.categoryRepository.delete({ id });
-    return "Categoria eliminada";
+    if (!category) throw new NotFoundException('La categoria no existe');
+    const deletedCategory = await this.categoryRepository.delete({ id });
+    if(!deletedCategory) throw new BadRequestException('Error al eliminar categoria')
+    return {message:"Categoria eliminada correctamente"};
   }
 
   /**
@@ -86,12 +86,12 @@ export class CategoryService {
    * @throws NotFoundException if the category with the specified ID does not exist.
    * @throws BadRequestException if there is an error updating the category.
    */
-  async updateCategory(id: number, category): Promise<Category> {
+  async updateCategory(id: number, CategoryDto:CategoryDto): Promise<Category> {
     const categoryFound = await this.categoryRepository.existsBy({ id });
     if (!categoryFound) throw new NotFoundException('la categoria no existe');
     const updateCategory = await this.categoryRepository.update(
       { id },
-      category,
+      CategoryDto,
     );
     if (!updateCategory)
       throw new BadRequestException('Error al actualizar categoria');
