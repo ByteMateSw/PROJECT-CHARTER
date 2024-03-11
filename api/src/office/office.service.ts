@@ -1,13 +1,12 @@
 import {
   BadRequestException,
-  HttpCode,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Office } from './office.entity';
 import { Repository } from 'typeorm';
-import { CreateOfficeDto } from './dto/office.dto';
+import { OfficeDto } from './dto/office.dto';
 
 @Injectable()
 export class OfficeService {
@@ -40,12 +39,12 @@ export class OfficeService {
   /**
    * Creates a new office.
    *
-   * @param newOfficeData - The data for the new office.
+   * @param Office - The data for the new office.
    * @returns A Promise that resolves to the created office.
    * @throws BadRequestException if the office could not be created or saved.
    */
-  async createOffice(newOfficeData: CreateOfficeDto): Promise<Office> {
-    const newOffice = this.officeRepository.create(newOfficeData);
+  async createOffice(Office: OfficeDto): Promise<Office> {
+    const newOffice = this.officeRepository.create(Office);
     if (!newOffice)
       throw new BadRequestException('No se ha podido crear el oficio');
     const saveOffice = await this.officeRepository.save(newOffice);
@@ -64,18 +63,18 @@ export class OfficeService {
    * @throws BadRequestException if the office could not be updated or saved.
    */
   async updateOffice(
-    id: number,
-    updateOfficeData: Partial<CreateOfficeDto>,
+    id:number,
+    updateOfficeData: Partial<OfficeDto>
   ): Promise<Office> {
     const officeFound = await this.officeRepository.findOne({ where: { id } });
     if (!officeFound) throw new NotFoundException('El oficio no existe');
-    const updateOffice = { ...officeFound, ...updateOfficeData };
+    const updateOffice = this.officeRepository.update({id}, updateOfficeData);
     if (!updateOffice)
       throw new BadRequestException('No se pudo actualizar el oficio');
-    const saveOffice = await this.officeRepository.save(updateOffice);
-    if (!saveOffice)
+    const updatedOffice = await this.officeRepository.findOneBy({id});
+    if (!updatedOffice)
       throw new BadRequestException('No se pudo guardar el oficio actualizado');
-    return saveOffice;
+    return updatedOffice;
   }
 
   /**
