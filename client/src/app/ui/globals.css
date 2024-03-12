@@ -13,5 +13,11 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--secondary-color-white);
+  background-color: var(--secondary-color-gray);
+}
+
+.bg-layout-auth{
+  background-color: #2757E6;
+  height: 200px;
+  width: 200px;
 }
