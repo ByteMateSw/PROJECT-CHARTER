@@ -43,7 +43,7 @@ export default function LoginPage() {
         <hr className="border-t border-gray-300 my-4" /> 
 
         <div className="grid flex-col w-full justify-center justify-items-center mt-12">
-         <button className="h-[50px] rounded-lg border-2 mb-3 pl-2 pr-3 py-2 max-w-80 flex items-center">
+         <button className="h-[50px] rounded-lg border-2 mb-3 pl-2 pr-3 py-2 max-w-80 flex items-center hover:scale-105">
            <img className="h-[30px] w-[30px] mr-2" src="/svg/cell-phone-svgrepo-com.svg" alt="PhoneImg"></img>
            <p className="flex justify-center content-center font-bold">
               Continuar con número de teléfono
