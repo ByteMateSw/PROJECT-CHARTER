@@ -10,23 +10,32 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main className="min-h-screen">
-        <section className="flex">
+      <main className="min-h-screen left-0 flex-col justify-center items-center gap-10 inline-flex">
+        <div className="text-center h-[400px] px-8 py-12 text-[#171717] text-xl font-extrabold ">Explora algunos perfiles
+        <section className="h-[190px] inline-flex items-center gap-20 justify-center">
           {profiles.map((profile) => {
             return (
-              <div key={profile.name}>
+              <article className="h-[130px] w-[130px]" key={profile.name}>
                 <img
                   src={profile.imageProfile}
                   alt={profile.name}
-                  className="h-[220px] w-[220px] rounded-full bg-secondary-gray"
+                  className="h-[130px] w-[130px] rounded-full text-[#97989B]"
                 />
+                <div className="flex-col justify-center items-center flex">
+                <article className="text-center text-[#171717] text-sm font-bold">
                 <h2>{profile.name}</h2>
+                <div className="text-[#97989B]">
                 <p>{profile.profesion}</p>
-              </div>
+                </div>
+                </article>
+                </div>
+              </article>
             );
           })}
         </section>
-        <section className="flex items-center flex-col">
+        </div>
+      
+        {/*<section className="flex items-center flex-col">
           <InfiniteLooper speed={velocity} direction="right">
             {cardDetails.map((card) => {
               return (
@@ -41,7 +50,7 @@ export default function Home() {
               );
             })}
           </InfiniteLooper>
-        </section>
+          </section>*/}
       </main>
       <Footer />
     </>
