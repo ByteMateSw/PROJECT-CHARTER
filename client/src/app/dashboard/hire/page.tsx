@@ -2,13 +2,11 @@ import { Profiles } from "@/json/hireProfiles";
 
 export default function HirePage() {
   return (
-    <>
-      <main>
         <section className="flex flex-wrap justify-center p-10">
           {Profiles.map((profile) => {
             return (
               <div
-                className="p-5 bg-slate-50 rounded-2xl border border-neutral-400 m-4"
+                className="p-5 bg-secondary-white rounded-2xl border border-secondary-gray m-4"
                 key={profile.name}
               >
                 <img
@@ -21,16 +19,16 @@ export default function HirePage() {
                     {profile.name}
                   </h2>
                   <p className="text-center text-secondary-gray text-base font-normal">
-                    {profile.profesion}
+                    {profile.profession}
                   </p>
                 </div>
                 <div className="flex justify-between items-end w-full mt-4">
                   <p className="text-secondary-black text-xs font-bold text-start">
-                    {profile.ubicacion}
+                    {profile.ubication}
                   </p>
-                  <button className="w-[104px] h-[38px] px-4 bg-blue-600 rounded-lg">
+                  <button className="w-[104px] h-[38px] px-4 bg-primary-blue rounded-lg">
                     <p className="text-secondary-white text-base font-bold ">
-                      contratar
+                      Contratar
                     </p>
                   </button>
                 </div>
@@ -38,7 +36,5 @@ export default function HirePage() {
             );
           })}
         </section>
-      </main>
-    </>
   );
 }
