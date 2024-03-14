@@ -1,0 +1,92 @@
+export const Profiles = [
+  {
+    imageProfile: "https://randomuser.me/api/portraits/men/75.jpg",
+    name: "John Doe",
+    profession: "Programador",
+    ubication: "Buenos Aires, Argentina",
+  },
+  {
+    imageProfile: "https://randomuser.me/api/portraits/men/75.jpg",
+    name: "Maria Lopez",
+    profession: "Electricista",
+    ubication: "Santa Fe, Argentina",
+  },
+  {
+    imageProfile: "https://randomuser.me/api/portraits/men/75.jpg",
+    name: "Laura Gomez",
+    profession: "Plomero",
+    ubication: "Chubut, Argentina",
+  },
+  {
+    imageProfile: "https://randomuser.me/api/portraits/men/75.jpg",
+    name: "John Doe",
+    profession: "Programador",
+    ubication: "Buenos Aires, Argentina",
+  },
+  {
+    imageProfile: "https://randomuser.me/api/portraits/men/75.jpg",
+    name: "Maria Lopez",
+    profession: "Electricista",
+    ubication: "Santa Fe, Argentina",
+  },
+  {
+    imageProfile: "https://randomuser.me/api/portraits/men/75.jpg",
+    name: "Laura Gomez",
+    profession: "Plomero",
+    ubication: "Chubut, Argentina",
+  },
+  {
+    imageProfile: "https://randomuser.me/api/portraits/men/75.jpg",
+    name: "John Doe",
+    profession: "Programador",
+    ubication: "Buenos Aires, Argentina",
+  },
+  {
+    imageProfile: "https://randomuser.me/api/portraits/men/75.jpg",
+    name: "Maria Lopez",
+    profession: "Electricista",
+    ubication: "Santa Fe, Argentina",
+  },
+  {
+    imageProfile: "https://randomuser.me/api/portraits/men/75.jpg",
+    name: "Laura Gomez",
+    profession: "Plomero",
+    ubication: "Chubut, Argentina",
+  },
+  {
+    imageProfile: "https://randomuser.me/api/portraits/men/75.jpg",
+    name: "John Doe",
+    profession: "Programador",
+    ubication: "Buenos Aires, Argentina",
+  },
+  {
+    imageProfile: "https://randomuser.me/api/portraits/men/75.jpg",
+    name: "Maria Lopez",
+    profession: "Electricista",
+    ubication: "Santa Fe, Argentina",
+  },
+  {
+    imageProfile: "https://randomuser.me/api/portraits/men/75.jpg",
+    name: "Laura Gomez",
+    profession: "Plomero",
+    ubication: "Chubut, Argentina",
+  },
+  {
+    imageProfile: "https://randomuser.me/api/portraits/men/75.jpg",
+    name: "John Doe",
+    profession: "Programador",
+    ubication: "Buenos Aires, Argentina",
+  },
+  {
+    imageProfile: "https://randomuser.me/api/portraits/men/75.jpg",
+    name: "Maria Lopez",
+    profession: "Electricista",
+    ubication: "Santa Fe, Argentina",
+  },
+  {
+    imageProfile: "https://randomuser.me/api/portraits/men/75.jpg",
+    name: "Laura Gomez",
+    profession: "Plomero",
+    ubication: "Chubut, Argentina",
+  },
+];
