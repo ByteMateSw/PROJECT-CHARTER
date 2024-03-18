@@ -30,8 +30,8 @@ export default function LoginPage() {
         </div>
 
         <div className="flex w-full justify-between mb-12">
-          <button className="">
-            <p className="">
+          <button>
+            <p>
               Restablecer contraseña
             </p>
           </button>
