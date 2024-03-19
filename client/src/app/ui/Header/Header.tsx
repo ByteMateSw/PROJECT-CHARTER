@@ -38,8 +38,8 @@ function Header(): JSX.Element {
           <SearchBar />
         </div>
         <ul className="flex-1 flex justify-end items-center gap-2">
-          <NavbarLink title="Trabajos" href="jobs" />
-          <NavbarLink title="Contratar" href="hire" />
+          <NavbarLink title="Trabajos" href="dashboard/jobs" />
+          <NavbarLink title="Contratar" href="dashboard/hire" />
           <NavbarLink title="Iniciar Sesión" href="auth/login" />
           <NavbarLink title="Registrarse" href="auth/register" />
         </ul>
