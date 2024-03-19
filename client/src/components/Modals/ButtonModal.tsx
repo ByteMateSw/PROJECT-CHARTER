@@ -3,13 +3,17 @@
 import { useState } from "react";
 import Modal from "./Modal";
 
-export default function ButtonModal() {
+export default function ButtonModal({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      <button className="btn btn-success" onClick={() => setOpen(true)}>
-        Open
+      <button className="" onClick={() => setOpen(true)}>
+        {children}
       </button>
       <Modal open={open} onClose={() => setOpen(false)}>
         <section className="flex flex-col text-center w-full">

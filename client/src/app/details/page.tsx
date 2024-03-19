@@ -1,14 +1,15 @@
-import Image from "next/image";
+import Header from "../ui/Header/Header";
 
 export default function ProfilePage() {
   return (
     <>
+    <Header />
       {/* Imagenes de Perfil */}
       <div className="flex bg-cover bg-center">
         <img
           src="/img/Proximo-a-Borrar.jpeg"
           alt="Foto de Perfil"
-          className="flex h-48 w-full rounded-md mt-14 mb-2"
+          className="flex h-48 w-full rounded-md mb-2"
         />
       </div>
 
@@ -23,7 +24,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Nombre de Usuario */}
-        <div className="bg-slate-400 mr-2 h-16 w-auto">
+        <div className="mr-2 h-16 w-auto">
           <h1 className="text-xl font-semibold mb-3 whitespace-nowrap">
             Nombre de Usuario
           </h1>

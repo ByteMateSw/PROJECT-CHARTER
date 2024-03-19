@@ -22,7 +22,7 @@ export default function RegisterPage() {
             className="h-16 w-full rounded-lg p-3 appearance-none border"
             type="password"
             name="password"
-            placeholder="*************"
+            placeholder="••••••••••"
           />
         </div>
         <div className="my-6">
@@ -31,7 +31,7 @@ export default function RegisterPage() {
             className="h-16 w-full rounded-lg p-3 appearance-none border"
             type="password"
             name="confirmPassword"
-            placeholder="*************"
+            placeholder="••••••••••"
           />
         </div>
         <hr className="border-t border-gray-300 my-4" />
