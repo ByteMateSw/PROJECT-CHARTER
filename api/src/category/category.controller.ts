@@ -13,8 +13,9 @@ import {
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { Category } from './category.entity';
-import { CreateCategoryDto } from './dto/category.dto';
-import { updateCategoryDto } from './dto/updateCategory.dto';
+import { ResponseMessage } from 'src/utils/types/functions.type';
+import { CategoryDto } from './dto/category.dto';
+
 
 /**
  * Controller for handling category-related operations.
@@ -28,7 +29,7 @@ export class CategoryController {
    * @returns {Promise<Category[]>} A promise that resolves to an array of categories.
    */
   @Get()
-  async getAll() {
+  async getAllCategories(): Promise<Category[]> {
     return await this.categoryService.getAllCategories();
   }
 
@@ -40,7 +41,7 @@ export class CategoryController {
    * @throws HttpException with a NOT_FOUND status if the category is not found.
    */
   @Get(':id')
-  async getById(@Param('id', ParseIntPipe) id: number): Promise<Category> {
+  async getCategoryById(@Param('id', ParseIntPipe) id: number): Promise<Category> {
     try {
       return this.categoryService.getCategoryById(id);
     } catch (error) {
@@ -58,11 +59,11 @@ export class CategoryController {
   @HttpCode(201)
   @Post()
   async createCategory(
-    @Body() CreateCategoryDto: CreateCategoryDto,
-  ): Promise<string> {
+    @Body() CreateCategoryDto: CategoryDto,
+  ): Promise<ResponseMessage> {
     try {
       await this.categoryService.createCategory(CreateCategoryDto);
-      return 'category creada correctamente';
+      return {message:'Categoria creada correctamente'};
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
@@ -76,10 +77,10 @@ export class CategoryController {
    * @throws {HttpException} If an error occurs during the deletion process.
    */
   @Delete(':id')
-  async deleteCategory(@Param('id') id: number): Promise<string> {
+  async deleteCategory(@Param('id') id: number): Promise<ResponseMessage> {
     try {
       await this.categoryService.deleteCategory(id);
-      return 'se ha eliminado correctamente';
+      return {message:'se ha eliminado correctamente'};
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.FORBIDDEN);
     }
@@ -96,11 +97,11 @@ export class CategoryController {
   @Patch(':id')
   async updateCategory(
     @Param('id') id: number,
-    @Body() updateCategoryDto: updateCategoryDto,
-  ): Promise<string> {
+    @Body() updateCategoryDto: CategoryDto,
+  ): Promise<ResponseMessage> {
     try {
       await this.categoryService.updateCategory(id, updateCategoryDto);
-      return 'se ha actualizado correctamente';
+      return {message:'se ha actualizado correctamente'};
     } catch (error) {
       throw new HttpException(error.mesagge, HttpStatus.FORBIDDEN);
     }
