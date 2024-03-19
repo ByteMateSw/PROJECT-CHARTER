@@ -1,7 +1,4 @@
-import type { Metadata } from "next";
 import "./ui/globals.css";
-import Header from "./ui/Header/Header";
-import Footer from "./ui/Footer";
 import { nunito } from "./ui/fonts";
 import Template from "./template";
 
