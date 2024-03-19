@@ -34,7 +34,7 @@ export default function Home() {
           </figure>
         </div>
 
-      <section className="w-full h-[450px] flex items-center justify-center flex-col " >
+      <section className="w-[2700px] h-[450px] flex items-center justify-center flex-col " >
         <h1 className="text-center h-[150px] px-4 py-10 text-secondary-black text-xl font-extrabold">Explora las profesiones</h1>
         <article className="flex items-center w-full flex-col pb-20">
           <InfiniteLooper speed={velocity} direction="right">
