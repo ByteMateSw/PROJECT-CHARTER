@@ -25,11 +25,11 @@ export default function Home() {
             <button className="rounded-2x1 w-40 h-8 font-semibold bg-secondary-gray">numero2</button>
           </div>
         </section>
-        <figure className="flex justify-end pt-10 items-center">
+        <figure className="pt-10 items-center">
           <img
           src="/svg/image.svg" 
           alt="image"
-          className="py-6 flex-col  w-[1000px] h-[400px]"
+          className="py-6 w-[1000px] h-[400px]"
           />
           </figure>
         </div>
