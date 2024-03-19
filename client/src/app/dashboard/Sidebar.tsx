@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { professions } from "@/json/professions";
 import Image from "next/image";
-import Header from "../ui/Header/Header";
 
 export default function Sidebar(): JSX.Element {
   const [checkedItems, setCheckedItems] = useState<{ [key: number]: boolean }>(
@@ -31,8 +30,7 @@ export default function Sidebar(): JSX.Element {
 
   return (
     <>
-      <Header />
-      <nav className="flex h-screen w-72 px-6 py-8 flex-col items-start flex-1 border-r-2 border-secondary-gray overflow-y-hidden">
+      <nav className="flex h-screen w-80 px-6 py-8 flex-col items-start flex-1 border-r-2 border-secondary-gray overflow-y-hidden">
         <section className="flex w-52 items-center rounded-lg border justify-start border-secondary-gray px-2 py-1">
           <Image
             src="/svg/glass.svg"
