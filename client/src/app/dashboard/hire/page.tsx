@@ -9,6 +9,12 @@ export default function HirePage() {
             className="p-5 bg-secondary-white rounded-2xl border border-secondary-gray m-4"
             key={profile.name}
           >
+            <img>
+              src={profile.imageFondo}
+              alt={profile.name}
+              className= "h-36 w-full object-cover"
+
+            </img>
             <img
               src={profile.imageProfile}
               alt={profile.name}

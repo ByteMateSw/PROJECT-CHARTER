@@ -1,5 +1,6 @@
 export const Profiles = [
   {
+    imageFondo: "https://randomuser.me/api/portraits/men/75.jpg",
     imageProfile: "https://randomuser.me/api/portraits/men/75.jpg",
     name: "John Doe",
     profession: "Programador",
