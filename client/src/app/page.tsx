@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main className="min-h-screen w-full left-0 flex-col items-center justify-center gap-10 inline-flex">
+      <main className="min-h-screen w-full flex-col items-center justify-center gap-10 inline-flex">
         <div className="flex justify-between w-[1200px]">
         <section className=" h-[350px] w-[1000px] flex-col flex justify-start items-start pt-24">
           <div>
@@ -34,7 +34,7 @@ export default function Home() {
           </figure>
         </div>
 
-      <section className="w-[2700px] h-[450px] flex items-center justify-center flex-col " >
+      <section className="w-[2500px] h-[450px] flex items-center justify-center flex-col " >
         <h1 className="text-center h-[150px] px-4 py-10 text-secondary-black text-xl font-extrabold">Explora las profesiones</h1>
         <article className="flex items-center w-full flex-col pb-20">
           <InfiniteLooper speed={velocity} direction="right">
