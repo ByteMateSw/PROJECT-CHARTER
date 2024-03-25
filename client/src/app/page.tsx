@@ -7,6 +7,7 @@ import { profiles } from "@/json/profiles";
 
 export default function Home() {
   const velocity: number = 80;
+  
   return (
     <>
       <Header />
