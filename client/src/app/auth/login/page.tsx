@@ -2,44 +2,65 @@ import Link from "next/link";
 
 export default function LoginPage() {
   return (
-    <section className="min-h-screen flex flex-col justify-center items-center rounded-lg bg-transparent">
-      <div className="">
-       <img className="mb-10" src="/svg/conectando-logotype.svg" alt="svgimgg"></img>
-      </div>
-      <article className="w-[550px] px-12 py-12 rounded-3xl shadow-xl bg-secondary-white">
-        <div className="flex justify-center items-center">
-          <h1 className="font-bold text-3xl mb-5">Iniciar Sesión</h1>
+    <section className="min-h-screen flex justify-around items-center bg-secondary-white">
+      <picture className="flex justify-around ">
+        <img src="/svg/Imagotype.svg" alt="Logotype" />
+      </picture>
+      
+      <article className="w-[550px] px-12 py-12 bg-secondary-white flex flex-col">
+        <div className="flex justify-center items-center flex-col">
+          <img className="mb-6 " src="/svg/BIENVENIDO! (1).svg" alt="svgimgg"></img>
+          <h1 className="font-bold text-3xl mb-6">Iniciar Sesión</h1>
         </div>
 
-        <div className="my-6">
-          <label className="block mb-2 font-bold">Correo electrónico</label>
+        <div className="my-4">
+          <label className="block mb-1 font-bold text-xl">Correo electrónico o Celular</label>
           <input
-            className="w-full border-b-2 p-3 bg-secondary-white"
+            className="w-full h-15 border rounded-3xl p-3 border-secondary-gray bg-secondary-white"
             type="text"
             name="email"
+            placeholder="Correo@correo.com"
           />
         </div>
         
-        <div className="my-6">
-          <label className="block mb-2 font-bold">Contraseña</label>
+        <div className="my-4">
+          <label htmlFor="pass" className="block mb-1 font-bold text-xl">
+            Contraseña
+          </label>
+          <span className="flex items-center">
           <input
-            className="w-full border-b-2 p-3 bg-secondary-white"
+            id ="pass"
+            className="w-full h-15 border border-secondary-gray rounded-3xl p-3 bg-secondary-white"
             type="password"
             name="password"
+            placeholder="····················"
           />
+          <button className="mb-4">
+            <img className="absolute flex" src="/svg/VisibilityOff-Icon.svg" alt="ojito" /> 
+          </button>
+          </span>
         </div>
 
-        <div className="flex w-full justify-between mb-12">
-          <button>
-            <p>
-              Restablecer contraseña
-            </p>
-          </button>
-          <button className="w-[135px] h-[35px] bg-primary-blue rounded-lg text-white font-semibold hover:scale-105">
-            Iniciar Sesión
+        <div className="flex w-full justify-between font-semibold items-center">
+          <input type="checkbox" id="SesiónIniciada" name="InicSes" className="hidden"/>
+          <label htmlFor="InicSes" className="flex items-center">
+          <img src="/svg/ToggleOff-Icon.svg" alt="ToggleButton" className="mr-3"/>
+          Mantener sesión iniciada
+          </label> 
+          <button className="w-[180px] h-[35px] text-secondary-black font-semibold hover:scale-105">
+             Restablecer contraseña
           </button>
         </div>
 
+        <div className="w-full flex flex-col justify-center mt-8">
+          <button className=" w-full h-[40px] bg-primary-blue rounded-xl text-secondary-white text-xl mb-2">
+            Continuar
+          </button>
+          <p className="flex justify-center">
+            Sos nuevo? <Link href="" className="text-primary-blue hover:underline"> Podes registrarte acá</Link>
+          </p>
+        </div>
+ {/* 
         <hr className="border-t border-gray-300 my-4" /> 
 
         <div className="grid flex-col w-full justify-center justify-items-center mt-12">
@@ -55,6 +76,7 @@ export default function LoginPage() {
            </p>
          </button>
         </div>
+ */}
 
       </article>
     </section>
