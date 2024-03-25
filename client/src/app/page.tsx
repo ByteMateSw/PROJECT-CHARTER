@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main className="min-h-screen w-full left-0 flex-col items-center justify-center gap-10 inline-flex">
+      <main className="min-h-screen w-full flex-col items-center justify-center gap-10 inline-flex flex-grow">
         <div className="flex justify-between w-[1200px]">
           <section className=" h-[350px] w-[1000px] flex-col flex justify-start items-start pt-24">
             <div>

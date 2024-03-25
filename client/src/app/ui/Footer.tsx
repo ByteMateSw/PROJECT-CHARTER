@@ -31,7 +31,8 @@ function Footer(): JSX.Element {
   // Cambiar divs, mejorar semántica HTML, añadir <Link> a redes sociales y links
   const measure = 32; // analizar usar useState
   return (
-    <footer className="flex justify-between items-center w-full h-[150px] px-6 py-2 bg-secondary-black">
+
+    <footer className="flex justify-between items-center w-full h-[150px] px-8 py-20 m-4 border rounded-[50px] bg-secondary-black">
       <section>
         <Image
           src="/svg/conectando-logotype.svg"
