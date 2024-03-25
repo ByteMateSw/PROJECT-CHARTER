@@ -30,24 +30,24 @@ export default function Sidebar(): JSX.Element {
 
   return (
     <>
-      <nav className="flex h-screen w-80 px-6 py-8 flex-col items-start flex-1 border-r-2 border-secondary-gray overflow-y-hidden">
-        <section className="flex w-52 items-center rounded-lg border justify-start border-secondary-gray px-2 py-1">
+      <nav className="flex h-full w-80 p-6 flex-col items-start flex-1 border rounded-3xl border-secondary-gray overflow-y-hidden">
+        <section className="flex w-full items-center rounded-lg border justify-start border-secondary-gray px-2 py-1">
           <Image
-            src="/svg/glass.svg"
-            alt="Glass Icon"
+            src="/svg/briefcase.svg"
+            alt="Briefcase Icon"
             width={measure}
             height={measure}
           />
           <input
             type="text"
             placeholder="Buscar profesión:"
-            className="flex-1 focus:outline-none w-5"
+            className="flex-1 focus:outline-none w-5 ml-2"
             value={searchTerm}
             onChange={handleSearchTermChange}
           />
         </section>
 
-        <ul className="overflow-y-scroll w-full py-4">
+        <ul className="overflow-y-scroll w-full mt-6">
           {professions
             .filter((profesion) =>
               profesion.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -73,10 +73,18 @@ export default function Sidebar(): JSX.Element {
               );
             })}
         </ul>
-
-        <section className="w-full flex flex-col flex-1 justify-end items-start py-8 border-t gap-4">
-          <a className="text-secondary-black text-xl font-bold">Ubicación</a>
-          <select className="flex justify-between items-center self-stretch  bg-secondary-white text-secondary-gray border p-2 border-secondary-gray rounded-lg">
+        <hr className="w-full mt-6" />
+        <section className="w-full flex flex-col flex-1 justify-end items-start py-6 gap-4">
+          <div className="flex">
+          <Image
+            src="/svg/location.svg"
+            alt="Location Icon"
+            width={measure}
+            height={measure}
+          />
+          <span className="ml-1 text-secondary-black text-xl font-bold">Ubicación</span>
+          </div>
+          <select className="flex justify-between items-center self-stretch  bg-secondary-white text-secondary-gray border p-2 border-secondary-gray rounded-2xl appearance-none">
             <option value="default">Provincia</option>
             {professions.map((profesion, index) => (
               <option key={index} value={profesion.name_country}>
@@ -84,7 +92,7 @@ export default function Sidebar(): JSX.Element {
               </option>
             ))}
           </select>
-          <select className="flex justify-between items-center self-stretch  bg-secondary-white text-secondary-gray border p-2 border-secondary-gray rounded-lg">
+          <select className="flex justify-between items-center self-stretch  bg-secondary-white text-secondary-gray border p-2 border-secondary-gray rounded-2xl appearance-none">
             <option value="default">Ciudad</option>
             {professions.map((profesion, index) => (
               <option key={index} value={profesion.name}>

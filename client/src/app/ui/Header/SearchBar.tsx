@@ -14,7 +14,7 @@ export default function SearchBar(): JSX.Element {
       const measure = 24;
   return (
     // Cambiar input a ComboBox
-    <div className="w-[500px] h-[43px] px-4 py-2 flex rounded-lg border border-secondary-gray border-solid">
+    <div className="w-[500px] h-10 px-4 py-2 flex rounded-2xl border border-secondary-gray border-solid">
       <Image
         src="/svg/glass.svg"
         alt="Glass Icon"
