@@ -56,7 +56,7 @@ export default function Sidebar(): JSX.Element {
               return (
                 <li key={index} className="flex items-center py-1">
                   <input
-                    className={`rounded-full appearance-none w-4 h-4 ring-2 ring-offset-4 ring-[#171717] items-center justify-center  ${
+                    className={`rounded-full appearance-none w-4 h-4 ring-2 ring-offset-4 ring-secondary-black items-center justify-center  ${
                       checkedItems[index]
                         ? " bg-primary-blue ring-2"
                         : "bg-secondary-white"
