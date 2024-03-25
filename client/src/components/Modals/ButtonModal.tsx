@@ -20,7 +20,7 @@ export default function ButtonModal({
           <div className="bg-secondary-black h-36 w-[487px] rounded-3xl" />
           <div className="flex justify-center items-center -ml-14">
             <img
-              className="h-40 w-h-40 rounded-full border-2 -mt-20"
+              className="h-40 w-h-40 rounded-full border-2 -mt-20 aspect-square"
               src="https://randomuser.me/api/portraits/men/75.jpg"
             />
             <div className="h-6 w-6 relative bg-secondary-white rounded-full -mt-[270px] -ml-16"></div>
