@@ -58,9 +58,11 @@ export default function Sidebar(): JSX.Element {
               return (
                 <li key={index} className="flex items-center py-1">
                   <input
-                    className={`rounded-full appearance-none w-4 h-4 border-2 border-neutral-900 ${
-                      checkedItems[index] ? "bg-blue-500" : "bg-white"
-                    } focus:ring-2 focus:ring-blue-500`}
+                    className={`rounded-full appearance-none w-4 h-4 border-2 items-center justify-center border-secondary-black ${
+                      checkedItems[index]
+                        ? "bg-primary-blue "
+                        : "bg-secondary-white"
+                    }`}
                     id={`${index}`}
                     type="checkbox"
                     checked={checkedItems[index] || false}
