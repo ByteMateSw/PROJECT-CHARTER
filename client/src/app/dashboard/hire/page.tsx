@@ -11,7 +11,7 @@ export default function HirePage() {
               <img
                 src={profile.imageProfile}
                 alt={profile.name}
-                className="h-[240px] w-[260px] rounded-full bg-secondary-gray"
+                className="h-[240px] w-[260px] rounded-full bg-secondary-gray aspect-13/12"
               />
               <div className="flex-col items-center flex justify-between mt-4">
                 <h2 className="text-center text-secondary-black text-3xl font-bold">

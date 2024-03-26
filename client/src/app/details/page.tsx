@@ -3,19 +3,19 @@ import Header from "../ui/Header/Header";
 export default function ProfilePage() {
   return (
     <>
-    <Header />
+      <Header />
       {/* Imagenes de Perfil */}
       <div className="flex bg-cover bg-center">
         <img
           src="/img/Proximo-a-Borrar.jpeg"
           alt="Foto de Perfil"
-          className="flex h-48 w-full rounded-md mb-2"
+          className="flex h-48 w-full rounded-md mb-2 aspect-20/3"
         />
       </div>
 
       <section className="flex">
         {/* Imagen rouded full */}
-        <div className="flex size-56 rounded-full mx-6 bg-cover bg-center -mt-28 bg-secondary-gray">
+        <div className="flex size-56 rounded-full mx-6 bg-cover bg-center -mt-28 bg-secondary-gray aspect-square">
           <img
             src="/svg/Proximo-a-borrar-2.svg"
             alt="Foto de Perfil"
