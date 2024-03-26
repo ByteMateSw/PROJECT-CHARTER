@@ -1,4 +1,4 @@
-import Header from "../ui/Header/Header";
+import Header from "../components/Header";
 import Sidebar from "./Sidebar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
