@@ -1,4 +1,4 @@
-import Header from "../ui/Header/Header";
+import Header from "../components/Header";
 
 export default function ProfilePage() {
   return (

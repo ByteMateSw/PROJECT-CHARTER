@@ -54,9 +54,9 @@ export default function Sidebar(): JSX.Element {
             )
             .map((profesion, index) => {
               return (
-                <li key={index} className="flex items-center py-1">
+                <li key={index} className="flex items-center py-1 w-fit" onClick={()=> handleCheckboxChange(index)}>
                   <input
-                    className={`rounded-full appearance-none w-4 h-4 ring-2 ring-offset-4 ring-secondary-black items-center justify-center ${
+                    className={`ml-2 rounded-full appearance-none w-2 h-2 ring-2 ring-offset-2 ring-secondary-black items-center justify-center ${
                       checkedItems[index]
                         ? " bg-primary-blue ring-2"
                         : "bg-secondary-white"
@@ -64,7 +64,6 @@ export default function Sidebar(): JSX.Element {
                     id={`${index}`}
                     type="checkbox"
                     checked={checkedItems[index] || false}
-                    onChange={() => handleCheckboxChange(index)}
                   />
                   <label className="text-neutral-900 text-base ml-2">
                     {profesion.name}
