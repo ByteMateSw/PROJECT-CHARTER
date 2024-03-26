@@ -17,51 +17,26 @@ export default function RegisterPage() {
             className="w-full border-b-2 p-3 bg-secondary-white"
             type="text"
             name="email"
+            placeholder="Correo o Celular"
           />
         </div>
 
         <div className="my-6">
-          <label className="block mb-2 font-bold">Nombre y Apellido</label>
+          <label className="block mb-2">Contraseña</label>
           <input
             className="w-full border-b-2 p-3 bg-secondary-white"
             type="password"
             name="password"
+            placeholder="••••••••••"
           />
         </div>
-        
         <div className="my-6">
-          <label className="block mb-2 font-bold">Contraseña</label>
+          <label className="block mb-2">Confirmar Contraseña</label>
           <input
             className="w-full border-b-2 p-3 bg-secondary-white"
             type="password"
-            name="password"
-          />
-        </div>
-
-        <div className="my-6">
-          <label className="block mb-2 font-bold">Repetir contraseña</label>
-          <input
-            className="w-full border-b-2 p-3 bg-secondary-white"
-            type="password"
-            name="password"
-          />
-        </div>
-
-        <div className="my-6">
-          <label className="block mb-2 font-bold">Numero de teléfono</label>
-          <input
-            className="w-full border-b-2 p-3 bg-secondary-white"
-            type="password"
-            name="password"
-          />
-        </div>
-
-        <div className="my-6">
-          <label className="block mb-2 font-bold">Fecha de nacimiento</label>
-          <input
-            className="w-full border-b-2 p-3 bg-secondary-white"
-            type="password"
-            name="password"
+            name="confirmPassword"
+            placeholder="*************"
           />
         </div>
 
