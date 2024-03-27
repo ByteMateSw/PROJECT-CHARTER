@@ -1,6 +1,15 @@
 import Link from "next/link";
+import { useState } from "react";
+
+export const useClient = true;
 
 export default function LoginPage() {
+  const [showPassword, setShowPassword] = useState(false);
+
+  function togglePassword() {
+    setShowPassword(!showPassword);
+  }
+
   return (
     <section className="min-h-screen flex justify-around items-center bg-secondary-white">
       <picture className="flex justify-around ">
@@ -41,14 +50,13 @@ export default function LoginPage() {
             <input
               id="pass"
               className="w-full h-15 focus:outline-none bg-secondary-white"
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
               placeholder="····················"
             />
-            <button className="">
+            <button onClick={togglePassword}>
               <img
-                className=""
-                src="/svg/VisibilityOff-Icon.svg"
+                src={showPassword ? "/svg/VisibilityOn-Icon.svg" : "/svg/VisibilityOff-Icon.svg"}
                 alt="ojito"
               />
             </button>
@@ -76,7 +84,11 @@ export default function LoginPage() {
         </div>
 
         <div className="w-full flex flex-col justify-center mt-8">
-          <button className=" w-full h-[40px] bg-primary-blue rounded-xl text-secondary-white text-xl mb-2 hover:scale-105">
+          <button
+            id="submit"
+            type="submit"
+            className=" w-full h-[40px] bg-primary-blue rounded-xl text-secondary-white text-xl mb-2 hover:scale-105"
+          >
             Continuar
           </button>
           <p className="flex justify-center">
@@ -87,24 +99,8 @@ export default function LoginPage() {
             </Link>
           </p>
         </div>
-        {/* 
-        <hr className="border-t border-gray-300 my-4" /> 
-
-        <div className="grid flex-col w-full justify-center justify-items-center mt-12">
-         <button className="h-[50px] rounded-lg border-2 mb-3 pl-2 pr-3 py-2 max-w-80 flex items-center hover:scale-105">
-           <img className="h-[30px] w-[30px] mr-2" src="/svg/cell-phone-svgrepo-com.svg" alt="PhoneImg"></img>
-           <p className="flex justify-center content-center font-bold">
-              Continuar con número de teléfono
-           </p>
-         </button>
-         <button className="hover:underline hover:scale-105">
-           <p className="font-bold">
-             Crear cuenta
-           </p>
-         </button>
-        </div>
- */}
       </article>
     </section>
   );
 }
+

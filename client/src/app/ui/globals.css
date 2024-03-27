@@ -16,8 +16,6 @@ body {
   background-color: var(--secondary-color-gray);
 }
 
-<<<<<<< HEAD
-=======
 @layer components {
   .btn {
       @apply flex gap-2 items-center justify-center py-2 px-4 font-semibold shadow-md rounded-lg;
@@ -31,4 +29,3 @@ body {
       @apply text-white bg-green-600 shadow-green-400/10
   }
 }
->>>>>>> 7008a53d2697d25565338ce1ee35800027a60540
