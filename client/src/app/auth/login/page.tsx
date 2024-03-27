@@ -1,15 +1,6 @@
 import Link from "next/link";
-import { useState } from "react";
-
-export const useClient = true;
 
 export default function LoginPage() {
-  const [showPassword, setShowPassword] = useState(false);
-
-  function togglePassword() {
-    setShowPassword(!showPassword);
-  }
-
   return (
     <section className="min-h-screen flex justify-around items-center bg-secondary-white">
       <picture className="flex justify-around ">
@@ -50,13 +41,13 @@ export default function LoginPage() {
             <input
               id="pass"
               className="w-full h-15 focus:outline-none bg-secondary-white"
-              type={showPassword ? "text" : "password"}
+              type="password"
               name="password"
               placeholder="····················"
             />
-            <button onClick={togglePassword}>
+            <button>
               <img
-                src={showPassword ? "/svg/VisibilityOn-Icon.svg" : "/svg/VisibilityOff-Icon.svg"}
+                src="/svg/VisibilityOff-Icon.svg"
                 alt="ojito"
               />
             </button>
@@ -103,4 +94,3 @@ export default function LoginPage() {
     </section>
   );
 }
-
