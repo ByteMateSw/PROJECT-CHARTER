@@ -1,13 +1,13 @@
-import InfiniteLooper from "./ui/InfiniteLooper/InfiniteLooper";
+import InfiniteLooper from "./components/Home/InfiniteLooper";
 import { cardDetails } from "../json/cards";
-import Card from "./ui/Card";
-import Header from "./ui/Header/Header";
-import Footer from "./ui/Footer";
+import Card from "./components/Home/Card";
 import { profiles } from "@/json/profiles";
+import Header from "@/app/components/Header";
+import Footer from "@/app/components/Footer";
 
 export default function Home() {
   const velocity: number = 80;
-  
+
   return (
     <>
       <Header />

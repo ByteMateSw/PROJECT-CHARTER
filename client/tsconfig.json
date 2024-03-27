@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/components", "src/app/auth/login", "src/app/ui/InfiniteLooper", "src/app/ui/Header"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/components", "src/app/auth/login", "src/app/components/Home/InfiniteLooper", "src/app/ui/Header"],
   "exclude": ["node_modules"]
 }
