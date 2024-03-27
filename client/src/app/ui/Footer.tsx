@@ -32,7 +32,7 @@ function Footer(): JSX.Element {
   const measure = 32; // analizar usar useState
   return (
 
-    <footer className="flex justify-between items-center w-full h-[150px] px-8 py-20 m-4 border rounded-[50px] bg-secondary-black">
+    <footer className="flex justify-between items-center h-[150px] px-2 py-2 m-4 border rounded-[40px] bg-secondary-black">
       <section>
         <Image
           src="/svg/conectando-logotype.svg"
