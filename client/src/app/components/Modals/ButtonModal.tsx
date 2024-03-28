@@ -5,14 +5,16 @@ import Modal from "./Modal";
 
 export default function ButtonModal({
   children,
+  className,
 }: {
   children: React.ReactNode;
+  className?: string;
 }) {
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      <button className="" onClick={() => setOpen(true)}>
+      <button className={className} onClick={() => setOpen(true)}>
         {children}
       </button>
       <Modal open={open} onClose={() => setOpen(false)}>

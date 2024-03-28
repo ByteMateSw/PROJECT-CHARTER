@@ -41,12 +41,10 @@ export default function HirePage() {
                   />
                   {profile.ubication}
                 </p>
-                <ButtonModal>
-                  <button className="w-96 h-9 px-4 bg-primary-blue rounded-full m-4 mx-4">
-                    <p className="text-secondary-white text-base font-bold ">
-                      ver perfil
-                    </p>
-                  </button>
+                <ButtonModal className="w-96 h-9 px-4 bg-primary-blue rounded-full m-4 mx-4">
+                  <p className="text-secondary-white text-base font-bold ">
+                    Ver Perfil
+                  </p>  
                 </ButtonModal>
               </div>
             </div>
