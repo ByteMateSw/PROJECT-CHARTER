@@ -1,4 +1,4 @@
-import ButtonModal from "@/app/components/Modals/ButtonModal";
+import ButtonModal from "@/app/components/Modal/ButtonModal";
 import { Profiles } from "@/json/hireProfiles";
 
 export default function HirePage() {
