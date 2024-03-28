@@ -24,6 +24,10 @@ const config: Config = {
           gray: "#97989B",
         },
       },
+      backgroundImage: {
+        'gradient-texture': "url('/img/bg-image.jpg')",
+
+      }
     },
   },
   plugins: [],
