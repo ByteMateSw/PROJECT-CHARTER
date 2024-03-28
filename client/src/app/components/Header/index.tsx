@@ -1,33 +1,14 @@
 import Link from "next/link";
 import SearchBar from "./SearchBar";
+import NavbarLink from "./NavbarLink";
 
-/**
- * NavbarLink Component
- * @param {string} title - Link Title
- * @param {string} href - Link Reference
- * @returns {JSX.Element} NavbarLink
- * @description NavbarLink Component
- */
-const NavbarLink = ({
-  title,
-  href,
-}: {
-  title: string;
-  href: string;
-}): JSX.Element => {
-  return (
-    <li className="px-4 py-2 rounded-lg font-bold text-base hover:text-secondary-white hover:bg-primary-blue duration-300">
-      <Link href={`/${href}`}>{title}</Link>
-    </li>
-  );
-};
 
 /**
  * Header Component
  * @returns {JSX.Element} Header
  * @description Header Component
  */
-function Header(): JSX.Element {
+export default function Header(): JSX.Element {
   return (
     <header>
       <nav className="h-14 flex items-center px-5 m-4 border rounded-3xl border-secondary-gray bg-secondary-white shadow-md">
@@ -47,5 +28,3 @@ function Header(): JSX.Element {
     </header>
   );
 }
-
-export default Header;
