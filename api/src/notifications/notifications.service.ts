@@ -10,12 +10,13 @@ import { CreateNotificationsDTO } from './dto/notification.dto';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { UptadeNotificationsDTO } from './dto/uptadeNotifications.dto';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ResponseMessage } from 'src/utils/types/functions.type';
 
 @Injectable()
 export class NotificationsService {
   constructor(
     @InjectRepository(Notifications)
-    private notificationsRepository: Repository<Notifications>,
+    private readonly notificationsRepository: Repository<Notifications>,
     private userService: UserService,
   ) {}
 
@@ -69,11 +70,11 @@ export class NotificationsService {
    * or if there is an error deleting the expired notifications.
    */
   @Cron(CronExpression.EVERY_DAY_AT_10PM)
-  async CleanExpiredNotifications(): Promise<string> {
+  async CleanExpiredNotifications(): Promise<ResponseMessage> {
     const now = new Date();
-    if (!now) throw new BadRequestException('No se ha podido crear la fecha');
     const expirationDate = new Date();
     expirationDate.setDate(expirationDate.getDate() - 15);
+    console.log(expirationDate)
     if (!expirationDate)
       throw new BadRequestException(
         'No se ha podido crear la fecha de eliminación de expiracion',
@@ -85,11 +86,9 @@ export class NotificationsService {
       .from(Notifications)
       .where('expireAt <= :expirationDate', { expirationDate })
       .execute();
-    if (!deleteNotifications)
-      throw new BadRequestException(
-        'No se ha podido borrar las notificaciones expiradas',
-      );
-    return 'Se han borrado todas las notificaciones expiradas';
+     if (!deleteNotifications) 
+      console.log('No se ha podido borrar las notificaciones expiradas')
+    return {message: 'Se han borrado todas las notificaciones expiradas'}
   }
 
   /**

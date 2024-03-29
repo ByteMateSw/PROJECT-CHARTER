@@ -8,6 +8,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      aspectRatio: {
+        "13/12": "13 / 12",
+        "5/2": "5/2",
+        "20/3": "20/3",
+      },
       colors: {
         primary: {
           blue: "#2757E6",
@@ -19,6 +24,10 @@ const config: Config = {
           gray: "#97989B",
         },
       },
+      backgroundImage: {
+        'gradient-texture': "url('/img/bg-image.jpg')",
+
+      }
     },
   },
   plugins: [],

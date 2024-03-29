@@ -13,5 +13,19 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--secondary-color-white);
+  background-color: var(--secondary-color-gray);
+}
+
+@layer components {
+  .btn {
+      @apply flex gap-2 items-center justify-center py-2 px-4 font-semibold shadow-md rounded-lg;
+  }
+
+  .btn.btn-light {
+      @apply bg-white text-gray-500;
+  }
+
+  .btn.btn-success {
+      @apply text-white bg-green-600 shadow-green-400/10
+  }
 }
