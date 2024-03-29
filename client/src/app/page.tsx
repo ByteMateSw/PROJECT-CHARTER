@@ -4,6 +4,7 @@ import Card from "./components/Home/Card";
 import { profiles } from "@/json/profiles";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
+import BestProfiles from "./components/Home/BestProfile";
 
 export default function Home() {
   const velocity: number = 80;
@@ -69,32 +70,7 @@ export default function Home() {
           </article>
         </section>
 
-        <div className="w-[1200px] flex items-center justify-center flex-col h-[255px] pb-28">
-          <h1 className="text-center h-[150px] px-4 py-10 text-secondary-black text-xl font-extrabold">
-            Mira algunos perfiles
-          </h1>
-          <section className="h-[400px] inline-flex items-center gap-20 justify-center">
-            {profiles.map((profile) => {
-              return (
-                <figure className="h-[140px] w-[140px]" key={profile.name}>
-                  <img
-                    src={profile.imageProfile}
-                    alt={profile.name}
-                    className="h-[140px] w-[140px] rounded-full text-[#97989B] aspect-square"
-                  />
-                  <div className="flex-col justify-center items-center flex">
-                    <article className="text-center text-secondary-black text-sm font-bold">
-                      <h2>{profile.name}</h2>
-                      <h2 className="text-secondary-gray">
-                        <p>{profile.profesion}</p>
-                      </h2>
-                    </article>
-                  </div>
-                </figure>
-              );
-            })}
-          </section>
-        </div>
+        <BestProfiles />
 
         <section className="flex justify-between flex-col w-[1200px]">
           <h1 className="text-secondary-black text-[30px] font-extrabold">
