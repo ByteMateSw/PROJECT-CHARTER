@@ -29,6 +29,16 @@ import { UserParam } from '../utils/params/user.param';
 export class UserController {
   constructor(private userService: UserService) {}
 
+
+  @Get('best-users')
+  /**
+   * Retrieves a list of users.
+   * @returns A promise that resolves to an array of BestUser objects whitout guard.
+   */
+  async getSomeUsers(): Promise<User[]> {
+    return await this.userService.getAllUsers();
+  }
+
   /**
    * Retrieves all users.
    * @returns A promise that resolves to an array of User objects.
