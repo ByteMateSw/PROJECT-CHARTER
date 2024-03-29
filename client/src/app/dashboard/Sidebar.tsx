@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { professions } from "@/json/professions";
 import Image from "next/image";
 import ComboBox from "../components/Header/ComboBox";
-import { provincesBox } from "@/json/professionsBox";
+import { provincesBox } from "@/json/provincesBox";
 import { locationsBox } from "@/json/locations";
 
 export default function Sidebar(): JSX.Element {
