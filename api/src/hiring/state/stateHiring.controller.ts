@@ -11,7 +11,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { StateHiringService } from './stateHiring.service';
-import { UpdateStateHireDTO } from './updateStateHiring.dto';
+import { stateHiringDTO } from './dto/stateHiring.dto';
 import { StateHiring } from './stateHiring.entity';
 import { CustomParseIntPipe } from 'src/utils/pipes/parse-int.pipe';
 
@@ -20,8 +20,8 @@ export class StateHiringController {
   constructor(private readonly stateHiringService: StateHiringService) {}
 
   @Post()
-  async createStatusHire(@Body('name') name: string): Promise<StateHiring> {
-    return await this.stateHiringService.createStatusHire(name);
+  async createStatusHire(@Body() stateHiringDTO:stateHiringDTO): Promise<StateHiring> {
+    return await this.stateHiringService.createStatusHire(stateHiringDTO);
   }
 
   @Get(':name')
@@ -42,11 +42,11 @@ export class StateHiringController {
   @Put(':id')
   async uptadeStatusHire(
     @Body('id') id: number,
-    UpdateStateHireDTO: UpdateStateHireDTO,
+    stateHiringDTO:stateHiringDTO,
   ): Promise<StateHiring> {
     return await this.stateHiringService.updateStatusHire(
       id,
-      UpdateStateHireDTO,
+      stateHiringDTO,
     );
   }
 

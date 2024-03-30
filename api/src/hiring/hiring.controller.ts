@@ -10,7 +10,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { HiringService } from './hiring.service';
-import { UpdateHireDTO } from './Hiring.dto/uptadeHiring.dto';
+import { UpdateHireDTO } from './dto/uptadeHiring.dto';
 import { CustomParseIntPipe } from '../utils/pipes/parse-int.pipe';
 import { Hiring } from './hiring.entity';
 
@@ -20,7 +20,7 @@ export class HiringController {
 
   @Post()
   async createHiring(@Body() hiring) {
-    await this.hiringService.createHiring(hiring);
+    await this.hiringService.createHire(hiring);
   }
 
   @Get(':id')

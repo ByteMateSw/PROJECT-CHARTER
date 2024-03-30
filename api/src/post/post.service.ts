@@ -57,7 +57,7 @@ export class PostService {
    * @throws NotFoundException if the user is not found.
    */
   async createPost(userId: number, postDto: CreatePostDto): Promise<Post> {
-    const user = await this.userService.getUser({ id: userId });
+    const user = await this.userService.getUserBy({ id: userId });
     if (!user) throw new NotFoundException('No se ha encontrado el usuario');
     const newPost = this.postRepository.create(postDto);
     newPost.user = user;

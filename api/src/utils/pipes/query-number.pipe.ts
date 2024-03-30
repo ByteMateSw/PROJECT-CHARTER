@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
+import {
+  ArgumentMetadata,
+  BadRequestException,
+  Injectable,
+  PipeTransform,
+} from '@nestjs/common';
 
 /**
  * A pipe that transforms a query parameter into a number.
@@ -13,8 +18,7 @@ export class QueryNumberPipe implements PipeTransform<any> {
    * @throws BadRequestException if the value is not a number.
    * @returns The transformed value.
    */
-  async transform(value: any, metadata: any) {
-    console.log('Metadata:', metadata);
+  async transform(value: any, metadata: ArgumentMetadata) {
     if (isNaN(value))
       throw new BadRequestException(
         `Invalid number in ${metadata.data} query parameter`,

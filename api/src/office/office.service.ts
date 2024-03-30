@@ -43,7 +43,7 @@ export class OfficeService {
   /**
    * Creates a new office.
    *
-   * @param newOfficeData - The data for the new office.
+   * @param Office - The data for the new office.
    * @returns A Promise that resolves to the created office.
    * @throws BadRequestException if the office already exists.
    */
@@ -74,25 +74,25 @@ export class OfficeService {
    */
   async updateOffice(
     id: number,
-    updateReview: UpdateOfficeDto,
+    updateOffice: UpdateOfficeDto,
   ): Promise<Office> {
     const existsOffice = await this.officeRepository.existsBy({
-      name: updateReview.name,
+      name: updateOffice.name,
     });
     if (existsOffice) throw new BadRequestException('El oficio ya existe');
 
     const office = await this.officeRepository.findOne({ where: { id } });
     if (!office) throw new NotFoundException('El oficio no existe');
 
-    if (updateReview.category) {
+    if (updateOffice.category) {
       const existsCategory = await this.categoryService.getCategoryById(
-        updateReview.category.id,
+        updateOffice.category.id,
       );
       if (!existsCategory)
         throw new BadRequestException('La categoria no existe');
     }
 
-    return await this.officeRepository.save({ ...office, ...updateReview });
+    return await this.officeRepository.save({ ...office, ...updateOffice });
   }
 
   /**

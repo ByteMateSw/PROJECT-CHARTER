@@ -54,7 +54,7 @@ export class CategoryService {
    * @param name - The name of the category to check.
    * @returns A promise that resolves to a boolean indicating whether the category exists.
    */
-  async existCategoryName(name: string): Promise<boolean> {
+  async existCategoryName(name: string) {
     return await this.categoryRepository.existsBy({ name });
   }
 
@@ -62,7 +62,7 @@ export class CategoryService {
    * Deletes a category by its ID.
    * @param id - The ID of the category to delete.
    * @returns A promise that resolves to a string indicating the result of the deletion.
-   * @throws BadRequestException if the category does not exist.
+   * @throws NotFoundException if the category does not exist.
    */
   async deleteCategory(id: number): Promise<void> {
     const category = await this.categoryRepository.findOneBy({ id });

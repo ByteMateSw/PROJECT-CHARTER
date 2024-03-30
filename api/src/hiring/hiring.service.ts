@@ -9,6 +9,8 @@ import { Repository } from 'typeorm';
 import { UserService } from '../user/user.service';
 import { StateHiringService } from './state/stateHiring.service';
 import { ResponseMessage } from '../utils/types/functions.type';
+import { UpdateHireDTO } from './dto/uptadeHiring.dto';
+import { CreateHiringDTO } from './dto/createHiring.dto';
 
 @Injectable()
 export class HiringService {
@@ -16,7 +18,7 @@ export class HiringService {
     @InjectRepository(Hiring) private hiringRepository: Repository<Hiring>,
     private stateHiringService: StateHiringService,
     private userService: UserService,
-  ) {}
+  ) { }
 
   /**
    * Creates a new hiring record.
@@ -26,10 +28,10 @@ export class HiringService {
    * @returns A Promise that resolves to the created Hiring object.
    * @throws BadRequestException if there is an error obtaining user IDs.
    */
-  async createHiring(hiring): Promise<Hiring> {
+  async createHire(createHiringDTO: CreateHiringDTO): Promise<Hiring> {
     const [userContractor, userContracted] = await Promise.all([
-      this.userService.getUserBy({ id: hiring.contractor }),
-      this.userService.getUserBy({ id: hiring.contracted }),
+      this.userService.getUserBy({ id: createHiringDTO.contractorId }),
+      this.userService.getUserBy({ id: createHiringDTO.contractedId }),
     ]);
 
     if (!userContractor || !userContracted)
@@ -77,7 +79,7 @@ export class HiringService {
    * @returns A Promise that resolves to the updated hiring record.
    * @throws BadRequestException if the hiring record does not exist.
    */
-  async updateHiring(id: number, updateHiring): Promise<Hiring> {
+  async updateHiring(id: number, updateHiring: UpdateHireDTO): Promise<Hiring> {
     const hiring = await this.hiringRepository.findOneBy({ id });
     if (!hiring) throw new BadRequestException('El contrato no existe');
 
