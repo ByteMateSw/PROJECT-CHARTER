@@ -7,6 +7,7 @@ import {
   ManyToMany,
   JoinTable,
   OneToOne,
+  CreateDateColumn,
 } from 'typeorm';
 import { User } from '../user/user.entity';
 import { StateHiring } from './state/stateHiring.entity';
@@ -18,7 +19,7 @@ export class Hiring {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'date' })
+  @CreateDateColumn({ type: 'date' })
   dateApplication: Date;
 
   @ManyToOne(() => StateHiring, state => state.hiring)

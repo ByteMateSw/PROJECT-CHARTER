@@ -4,74 +4,46 @@ import {
   Delete,
   Get,
   HttpCode,
-  HttpException,
   HttpStatus,
   Param,
-  ParseIntPipe,
   Post,
   Put,
 } from '@nestjs/common';
 import { HiringService } from './hiring.service';
 import { UpdateHireDTO } from './Hiring.dto/uptadeHiring.dto';
-import { ResponseMessage } from '../utils/types/functions.type';
+import { CustomParseIntPipe } from '../utils/pipes/parse-int.pipe';
+import { Hiring } from './hiring.entity';
 
-
-@Controller('hiring')
+@Controller('hirings')
 export class HiringController {
   constructor(private hiringService: HiringService) {}
 
-  @HttpCode(201)
-  @Post('save')
-  async createHire(@Body() body) {
-    try {
-      await this.hiringService.createHire(body.contractorId, body.contractedId);
-      return 'El contrato ha sido creado correctamente';
-    } catch (error) {
-      throw new HttpException(error.mesage, HttpStatus.BAD_REQUEST);
-    }
+  @Post()
+  async createHiring(@Body() hiring) {
+    await this.hiringService.createHiring(hiring);
   }
 
-  @HttpCode(200)
-  @Get('GetById')
-  async getHireById(@Param(':id',ParseIntPipe) id:number){
-    try {
-      return await this.hiringService.getHireById(id)
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND)
-    }
-  }
-  
-
-  @HttpCode(200)
-  @Get(':name')
-  async getAllHire() {
-    try {
-      return await this.hiringService.getAllHire();
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
-    }
+  @Get(':id')
+  async getHiringById(@Param(':id', CustomParseIntPipe) id: number) {
+    return await this.hiringService.getHiringById(id);
   }
 
+  @Get()
+  async getAllHiring() {
+    return await this.hiringService.getAllHire();
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  async deleteHire (@Body('id') id:number){
-    try {
-     await this.hiringService.deleteHire(id)
-    } catch (error) {
-      throw new HttpException(error.mesage, HttpStatus.BAD_REQUEST);
-    }
+  async deleteHiring(@Param('id') id: number): Promise<void> {
+    await this.hiringService.deleteHire(id);
   }
 
   @Put(':id')
-  async uptadeHire(@Body ('id') id:number):Promise<ResponseMessage>{
-    try {
-      await this.hiringService.updateHire(id, UpdateHireDTO)
-      return { message: 'El contrato se ha actualizado correctamente' };
-  } catch (error) {
-    throw new HttpException(error.mesage, HttpStatus.BAD_REQUEST);
-    }
+  async uptadeHire(
+    @Param('id') id: number,
+    updateHiring: UpdateHireDTO,
+  ): Promise<Hiring> {
+    return await this.hiringService.updateHiring(id, updateHiring);
   }
-  
 }
-
-
-

@@ -31,7 +31,7 @@ export class NotificationsService {
     id: number,
     notificationDto: CreateNotificationsDTO,
   ): Promise<Notifications> {
-    const user = await this.userService.getUser({ id });
+    const user = await this.userService.getUserBy({ id });
     if (!user) {
       throw new NotFoundException('No se ha encontrado el usuario');
     }

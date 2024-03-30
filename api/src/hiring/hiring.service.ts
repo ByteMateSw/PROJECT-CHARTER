@@ -24,68 +24,36 @@ export class HiringService {
    * @param contractorId - The ID of the contractor user.
    * @param contractedId - The ID of the contracted user.
    * @returns A Promise that resolves to the created Hiring object.
-   * @throws BadRequestException if there is an error obtaining user IDs, creating a new instance,
-   *                             getting the 'Pending' status, creating the hiring contract, or saving it.
+   * @throws BadRequestException if there is an error obtaining user IDs.
    */
-  async createHire(
-    contractorId: number,
-    contractedId: number,
-  ): Promise<Hiring> {
+  async createHiring(hiring): Promise<Hiring> {
     const [userContractor, userContracted] = await Promise.all([
-      this.userService.getUser({ id: contractorId }),
-      this.userService.getUser({ id: contractedId }),
+      this.userService.getUserBy({ id: hiring.contractor }),
+      this.userService.getUserBy({ id: hiring.contracted }),
     ]);
 
-    if (!userContractor || !userContracted) {
+    if (!userContractor || !userContracted)
       throw new BadRequestException('Error al obtener el id de los usuarios');
-    }
-
-    const newDate = new Date();
-
-    if (!newDate) {
-      throw new BadRequestException('Error al crear nueva instancia');
-    }
 
     const pendingState =
       await this.stateHiringService.getStatusByName('Pending');
 
-    if (!pendingState) {
-      throw new BadRequestException('Error al obtener el estado de pending');
-    }
-
-    const hire = this.hiringRepository.create({
+    const newHiring = this.hiringRepository.create({
       contractor: userContractor,
       contracted: userContracted,
-      dateApplication: newDate,
       state: pendingState,
-      historyDate: [{ dateofChange: newDate }],
+      //historyDate: [{ dateofChange: newDate }],
     });
 
-    if (!hire) {
-      throw new BadRequestException(
-        'Error al crear contrato con los datos proporcionados',
-      );
-    }
-
-    const savedHire = await this.hiringRepository.save(hire);
-
-    if (!savedHire) {
-      throw new BadRequestException('Error no se pudo guardar correctamente');
-    }
-
-    return savedHire;
+    return await this.hiringRepository.save(newHiring);
   }
 
   /**
    * Retrieves all hire contracts.
    * @returns A promise that resolves to an array of `Hiring` objects representing the hire contracts.
-   * @throws `NotFoundException` if there was an error retrieving the hire contracts.
    */
   async getAllHire(): Promise<Hiring[]> {
-    const allHire: Hiring[] = await this.hiringRepository.find();
-    if (!allHire)
-      throw new NotFoundException('Error al obtener todos los contratos');
-    return allHire;
+    return await this.hiringRepository.find();
   }
 
   /**
@@ -93,43 +61,27 @@ export class HiringService {
    *
    * @param id - The ID of the hiring record to retrieve.
    * @returns A Promise that resolves to the hiring record.
-   * @throws NotFoundException if no hiring record is found with the specified ID.
    */
-  async getHireById(id: number): Promise<Hiring> {
-    const HireById = await this.hiringRepository.findOneByOrFail({ id });
-    if (!HireById)
-      throw new NotFoundException('Error al obtener contrato por id');
-    return HireById;
+  async getHiringById(id: number): Promise<Hiring> {
+    return await this.hiringRepository.findOne({
+      where: { id },
+      relations: { contracted: true, contractor: true },
+    });
   }
 
   /**
    * Updates a hiring record by its ID.
    *
    * @param id - The ID of the hiring record to update.
-   * @param updateHireDTO - The updated hiring record data.
+   * @param updateHiring - The updated hiring record data.
    * @returns A Promise that resolves to the updated hiring record.
-   * @throws NotFoundException if no hiring record is found with the specified ID.
-   * @throws BadRequestException if there is an error updating the hiring record.
+   * @throws BadRequestException if the hiring record does not exist.
    */
-  async updateHire(id: number, updateHireDTO): Promise<Hiring> {
-    const hireFound = await this.hiringRepository.findOneBy({ id });
-    if (!hireFound) {
-      throw new NotFoundException('El contrato no existe');
-    }
+  async updateHiring(id: number, updateHiring): Promise<Hiring> {
+    const hiring = await this.hiringRepository.findOneBy({ id });
+    if (!hiring) throw new BadRequestException('El contrato no existe');
 
-    const hireUpdate = await this.hiringRepository.update(id, updateHireDTO);
-    if (!hireUpdate) {
-      throw new BadRequestException('Error al actualizar contrato');
-    }
-
-    const findHire = await this.hiringRepository.findOneOrFail({
-      where: { id },
-    });
-    if (!findHire) {
-      throw new NotFoundException('Error al encontrar el estado en la base');
-    }
-
-    return findHire;
+    return await this.hiringRepository.save({ ...hiring, ...updateHiring });
   }
 
   /**
