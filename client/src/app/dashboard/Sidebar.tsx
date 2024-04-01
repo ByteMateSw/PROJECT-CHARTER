@@ -2,6 +2,9 @@
 import React, { useState } from "react";
 import { professions } from "@/json/professions";
 import Image from "next/image";
+import ComboBox from "../components/Header/ComboBox";
+import { provincesBox } from "@/json/provincesBox";
+import { locationsBox } from "@/json/locations";
 
 export default function Sidebar(): JSX.Element {
   const [checkedItems, setCheckedItems] = useState<{ [key: number]: boolean }>(
@@ -54,7 +57,11 @@ export default function Sidebar(): JSX.Element {
             )
             .map((profesion, index) => {
               return (
-                <li key={index} className="flex items-center py-1 w-fit" onClick={()=> handleCheckboxChange(index)}>
+                <li
+                  key={index}
+                  className="flex items-center py-1 w-fit"
+                  onClick={() => handleCheckboxChange(index)}
+                >
                   <input
                     className={`ml-2 rounded-full appearance-none w-2 h-2 ring-2 ring-offset-2 ring-secondary-black items-center justify-center ${
                       checkedItems[index]
@@ -75,30 +82,18 @@ export default function Sidebar(): JSX.Element {
         <hr className="w-full mt-6" />
         <section className="w-full flex flex-col flex-1 justify-end items-start py-6 gap-4">
           <div className="flex">
-          <Image
-            src="/svg/location.svg"
-            alt="Location Icon"
-            width={measure}
-            height={measure}
-          />
-          <span className="ml-1 text-secondary-black text-xl font-bold">Ubicación</span>
+            <Image
+              src="/svg/location.svg"
+              alt="Location Icon"
+              width={measure}
+              height={measure}
+            />
+            <span className="ml-1 text-secondary-black text-xl font-bold">
+              Ubicación
+            </span>
           </div>
-          <select className="flex justify-between items-center self-stretch  bg-secondary-white text-secondary-gray border p-2 border-secondary-gray rounded-2xl appearance-none">
-            <option value="default">Provincia</option>
-            {professions.map((profesion, index) => (
-              <option key={index} value={profesion.name_country}>
-                {profesion.name_country}
-              </option>
-            ))}
-          </select>
-          <select className="flex justify-between items-center self-stretch  bg-secondary-white text-secondary-gray border p-2 border-secondary-gray rounded-2xl appearance-none">
-            <option value="default">Ciudad</option>
-            {professions.map((profesion, index) => (
-              <option key={index} value={profesion.name}>
-                {profesion.name}
-              </option>
-            ))}
-          </select>
+          <ComboBox optionsProps={provincesBox} placeholder="Provincia" />
+          <ComboBox optionsProps={locationsBox} placeholder="Localidades" />
         </section>
       </nav>
     </>
