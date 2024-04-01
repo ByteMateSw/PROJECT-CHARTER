@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { professions } from "@/json/professions";
 import Image from "next/image";
-import ComboBox from "../components/Header/ComboBox";
+import ComboBox from "../components/ComboBox";
 import { provincesBox } from "@/json/provincesBox";
 import { locationsBox } from "@/json/locations";
 
@@ -59,11 +59,11 @@ export default function Sidebar(): JSX.Element {
               return (
                 <li
                   key={index}
-                  className="flex items-center py-1 w-fit"
+                  className="flex items-center py-1 w-fit hover:underline cursor-pointer"
                   onClick={() => handleCheckboxChange(index)}
                 >
                   <input
-                    className={`ml-2 rounded-full appearance-none w-2 h-2 ring-2 ring-offset-2 ring-secondary-black items-center justify-center ${
+                    className={`ml-2 rounded-full appearance-none w-2 h-2 ring-2 ring-offset-2 ring-secondary-black items-center justify-center cursor-pointer ${
                       checkedItems[index]
                         ? " bg-primary-blue ring-2"
                         : "bg-secondary-white"
@@ -73,7 +73,7 @@ export default function Sidebar(): JSX.Element {
                     checked={checkedItems[index] || false}
                     onChange={() => {}}
                   />
-                  <label className="text-neutral-900 text-base ml-2">
+                  <label className="text-secondary-black text-base ml-2 cursor-pointer">
                     {profesion.name}
                   </label>
                 </li>
