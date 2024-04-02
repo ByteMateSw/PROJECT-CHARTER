@@ -16,7 +16,7 @@ const NavbarLink = ({
   href: string;
 }): JSX.Element => {
   return (
-    <li className="px-4 py-2 rounded-lg font-bold text-base hover:text-secondary-white hover:bg-primary-blue duration-300">
+    <li className="px-4 py-2 rounded-lg font-bold text-base flex-wrap hover:text-secondary-white hover:bg-primary-blue duration-300">
       <Link href={`/${href}`}>{title}</Link>
     </li>
   );
