@@ -8,7 +8,6 @@ import Template from "./template";
 //     "Conectando es una plataforma de conexión entre trabajadores y empleadores.",
 // };
 
-
 export default function RootLayout({
   children,
 }: {
@@ -18,7 +17,7 @@ export default function RootLayout({
     <html lang="es">
       <body className={`${nunito.className} antialiased`}>
         <main>
-          <Template>{children}</Template>
+            {children}
         </main>
       </body>
     </html>
