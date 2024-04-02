@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { professions } from "@/json/professions";
 import Image from "next/image";
-import ComboBox from "../components/ComboBox";
+import ComboBox from "./ComboBox";
 import { provincesBox } from "@/json/provincesBox";
 import { locationsBox } from "@/json/locations";
 
@@ -33,7 +33,7 @@ export default function Sidebar(): JSX.Element {
 
   return (
     <>
-      <nav className="flex h-full w-80 p-6 flex-col items-start flex-1 border rounded-3xl border-secondary-gray overflow-y-hidden">
+      <nav className="flex h-full w-80 p-6 ml-4 flex-col items-start flex-1 border rounded-3xl border-secondary-gray overflow-y-hidden">
         <section className="flex w-full items-center rounded-lg border justify-start border-secondary-gray px-2 py-1">
           <Image
             src="/svg/briefcase.svg"
@@ -50,7 +50,7 @@ export default function Sidebar(): JSX.Element {
           />
         </section>
 
-        <ul className="overflow-y-scroll w-full mt-6">
+        <ul className="overflow-y-scroll minimal-scrollbar w-full mt-6 select-none">
           {professions
             .filter((profesion) =>
               profesion.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -82,7 +82,7 @@ export default function Sidebar(): JSX.Element {
         </ul>
         <hr className="w-full mt-6" />
         <section className="w-full flex flex-col flex-1 justify-end items-start py-6 gap-4">
-          <div className="flex">
+          <div className="flex cursor-default select-none">
             <Image
               src="/svg/location.svg"
               alt="Location Icon"

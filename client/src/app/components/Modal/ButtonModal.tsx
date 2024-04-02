@@ -2,13 +2,16 @@
 
 import { useState } from "react";
 import Modal from ".";
+import Link from "next/link";
 
 export default function ButtonModal({
   children,
   className,
+  user,
 }: {
   children: React.ReactNode;
   className?: string;
+  user: any;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -18,29 +21,40 @@ export default function ButtonModal({
         {children}
       </button>
       <Modal open={open} onClose={() => setOpen(false)}>
-        <section className="flex flex-col text-center w-full">
-          <div className="bg-secondary-black h-36 w-[487px] rounded-3xl" />
-          <div className="flex justify-center items-center -ml-14">
+        <div className="flex flex-col text-center w-full">
+          <img
+            src={user.imageBackground}
+            alt="Imagen de fondo"
+            className="w-full h-40 object-cover rounded-t-2xl"
+          />
+          <div className="flex justify-center items-center flex-col -mt-20 space-x-4">
+            {" "}
             <img
-              className="h-40 w-h-40 rounded-full border-2 -mt-20 aspect-square"
-              src="https://randomuser.me/api/portraits/men/75.jpg"
+              src={user.imageProfile}
+              alt="imagen de perfil"
+              className="h-32 w-32 rounded-full bg-secondary-gray border-2 border-secondary-white select-none"
             />
-            <div className="h-6 w-6 relative bg-secondary-white rounded-full -mt-[270px] -ml-16"></div>
           </div>
-          <div className="mx-auto my-4 w-56">
-            <h3 className="text-bold text-xl font-black text-gray-800">
-              Joaquín Ezequiel Ortiz
+          <div className="mx-auto my-4 max-w-96">
+            <h3 className="text-bold text-xl font-black text-secondary-black">
+              {user.name}
             </h3>
             <p className="text-sm text-secondary-gray w-full">
-              Desarrollador Web
+              {user.profession}
             </p>
-            <p>Lorem ipsum dolor sit amet</p>
-            <p>Lorem ipsum dolor sit amet</p>
+            <p className="text-left">
+              <strong>Ubicación:</strong> {user.location}
+            </p>
+            <p className="text-left">
+              <strong>Descripción:</strong> {user.description}
+            </p>
           </div>
           <div className="flex mx-auto gap-4">
-            <button className="btn">Button a</button>
-            <button className="btn">Button a</button>
-            <button className="btn">Button a</button>
+            <Link href={`/profile/${user.id}`}>
+              <button className="btn bg-primary-green text-secondary-white font-bold">
+                Ir al perfil completo
+              </button>
+            </Link>
           </div>
           <hr className="border-t border-secondary-gray mt-8" />
           <div className="ml-8 flex flex-col flex-1 my-3">
@@ -57,12 +71,12 @@ export default function ButtonModal({
           <div className="flex justify-center">
             <button
               onClick={() => setOpen(false)}
-              className="btn bg-primary-blue text-secondary-white w-[429px] mb-5"
+              className="btn bg-primary-blue text-secondary-white w-[430px] mx-4 mb-5"
             >
               Cancel
             </button>
           </div>
-        </section>
+        </div>
       </Modal>
     </>
   );
