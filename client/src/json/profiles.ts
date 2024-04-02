@@ -1,32 +1,32 @@
 export const profiles = [
     {
       "name": "Dune",
-      "profesion": "Programador",
+      "profession": "Programador",
       "imageProfile": "https://randomuser.me/api/portraits/men/75.jpg"
     },
     {
       "name": "Foundation",
-      "profesion": "Diseñador Gráfico",
+      "profession": "Diseñador Gráfico",
       "imageProfile": "https://randomuser.me/api/portraits/women/76.jpg"
     },
     {
       "name": "1984",
-      "profesion": "Albañil",
+      "profession": "Albañil",
       "imageProfile": "https://randomuser.me/api/portraits/men/78.jpg"
     },
     {
       "name": "Brave New World",
-      "profesion": "Plomero",
+      "profession": "Plomero",
       "imageProfile": "https://randomuser.me/api/portraits/men/22.jpg"
     },
     {
       "name": "The Hitchhiker's Guide to the Galaxy",
-      "profesion": "Profesor",
+      "profession": "Profesor",
       "imageProfile": "https://randomuser.me/api/portraits/women/45.jpg"
     },
     {
       "name": "Neuromancer",
-      "profesion": "Cocinero",
+      "profession": "Cocinero",
       "imageProfile": "https://randomuser.me/api/portraits/women/17.jpg"
     }
   ]

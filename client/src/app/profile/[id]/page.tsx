@@ -1,10 +1,9 @@
-import Header from "../components/Header";
+import Header from "@/app/components/Header";
 
-export default function ProfilePage() {
+export default function page({ params }: { params: { id: string } }) {
   return (
     <>
       <Header />
-      {/* Imagenes de Perfil */}
       <div className="flex bg-cover bg-center">
         <img
           src="/img/Proximo-a-Borrar.jpeg"
@@ -12,9 +11,7 @@ export default function ProfilePage() {
           className="flex h-48 w-full rounded-md mb-2 aspect-20/3"
         />
       </div>
-
       <section className="flex">
-        {/* Imagen rouded full */}
         <div className="flex size-56 rounded-full mx-6 bg-cover bg-center -mt-28 bg-secondary-gray aspect-square">
           <img
             src="/svg/Proximo-a-borrar-2.svg"
@@ -22,11 +19,9 @@ export default function ProfilePage() {
             className="rounded-full"
           />
         </div>
-
-        {/* Nombre de Usuario */}
         <div className="mr-2 h-16 w-auto">
           <h1 className="text-xl font-semibold mb-3 whitespace-nowrap">
-            Nombre de Usuario
+            Nombre de Usuario {params.id}
           </h1>
           <h2 className="text-lg whitespace-nowrap">Profesión del Usuario</h2>
         </div>
