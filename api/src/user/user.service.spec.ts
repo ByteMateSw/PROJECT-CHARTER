@@ -26,8 +26,6 @@ describe('UserService', () => {
 
   const mockResultBoolean = true;
 
-  const rejectedEmail = 'rejected@gmail.com';
-
   const mockUserRepository = {
     find: jest.fn().mockResolvedValue([mockUser]),
     findOne: jest.fn().mockResolvedValue(mockUser),
@@ -68,7 +66,7 @@ describe('UserService', () => {
 
   describe('getAll', () => {
     it('should return an mocked user list', async () => {
-      expect(await service.getAllUsers()).toEqual([mockUser]);
+      expect(await service.getAllUsers({})).toEqual([mockUser]);
       expect(mockUserRepository.find).toHaveBeenCalled();
     });
   });

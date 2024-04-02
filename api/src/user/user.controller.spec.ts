@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
-import { NotFoundException } from '@nestjs/common';
 import { Role } from '../utils/enums/role.enum';
 
 describe('UserController', () => {
@@ -28,19 +27,11 @@ describe('UserController', () => {
     role: Role.User,
   };
 
-  const mockDeleteMessage = {
-    message: 'El usuario ha sido borrado correctamente',
-  };
-
-  const mockUpdateMessage = {
-    message: 'El usuario se ha actualizado correctamente',
-  };
-
   const mockUserService = {
     getAllUsers: jest.fn().mockResolvedValueOnce([mockUser]),
-    getUser: jest.fn().mockResolvedValueOnce(mockUser),
-    deleteUser: jest.fn().mockResolvedValueOnce(mockDeleteMessage),
-    updateUser: jest.fn().mockResolvedValueOnce(mockUpdateMessage),
+    getUserBy: jest.fn().mockResolvedValueOnce(mockUser),
+    deleteUser: jest.fn().mockResolvedValueOnce(undefined),
+    updateUser: jest.fn().mockResolvedValueOnce(mockUser),
   };
 
   beforeEach(async () => {
@@ -55,13 +46,17 @@ describe('UserController', () => {
     controller = module.get<UserController>(UserController);
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
 
   describe('getAllUsers', () => {
     it('should return an mocked user list', async () => {
-      const users = await controller.getAllUsers();
+      const users = await controller.getAllUsers(0, 0);
       expect(mockUserService.getAllUsers).toHaveBeenCalled();
       expect(users).toEqual([mockUser]);
     });
@@ -71,7 +66,7 @@ describe('UserController', () => {
       mockUserService.getAllUsers = jest
         .fn()
         .mockResolvedValueOnce(emptyUserList);
-      expect(await controller.getAllUsers()).toBe(emptyUserList);
+      expect(await controller.getAllUsers(0, 0)).toBe(emptyUserList);
       expect(mockUserService.getAllUsers).toHaveBeenCalled();
     });
   });
@@ -80,25 +75,14 @@ describe('UserController', () => {
     it('should get an user', async () => {
       const id = mockUser.id;
       expect(await controller.getUserById(id)).toBe(mockUser);
-      expect(mockUserService.getUser).toHaveBeenCalledWith({ id });
-    });
-
-    it('should throw an error to obtain the user', async () => {
-      const id = mockUser.id;
-      mockUserService.getUser.mockResolvedValueOnce(null);
-      expect(async () => await controller.getUserById(id)).rejects.toThrow(
-        new NotFoundException('No se encontró el usuario'),
-      );
-      expect(mockUserService.getUser).toHaveBeenCalledWith({ id });
+      expect(mockUserService.getUserBy).toHaveBeenCalledWith({ id });
     });
   });
 
   describe('deleteUser', () => {
     it('delete an user', async () => {
       const id = mockUser.id;
-      expect(await controller.deleteUser(mockUserParam)).toEqual(
-        mockDeleteMessage,
-      );
+      expect(await controller.deleteUser(mockUserParam)).toEqual(undefined);
       expect(mockUserService.deleteUser).toHaveBeenCalledWith(id);
     });
   });
@@ -106,9 +90,7 @@ describe('UserController', () => {
   describe('updateUser', () => {
     it('should update the user', async () => {
       const id = mockUser.id;
-      expect(await controller.updateUser(id, mockUpdateUser)).toEqual(
-        mockUpdateMessage,
-      );
+      expect(await controller.updateUser(id, mockUpdateUser)).toEqual(mockUser);
       expect(mockUserService.updateUser).toHaveBeenCalledWith(
         id,
         mockUpdateUser,

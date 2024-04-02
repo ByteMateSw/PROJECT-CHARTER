@@ -5,7 +5,6 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  NotFoundException,
   Param,
   Patch,
   Query,
@@ -19,12 +18,9 @@ import { Roles } from '../role/role.decorator';
 import { Role } from '../utils/enums/role.enum';
 import { User } from './user.entity';
 import { CustomParseIntPipe } from '../utils/pipes/parse-int.pipe';
-import {
-  ResponseMessage,
-  UserParam as UserParamType,
-} from '../utils/types/functions.type';
+import { UserParam as UserParamType } from '../utils/types/functions.type';
 import { UserParam } from '../utils/params/user.param';
-import { QueryNumberPipe } from 'src/utils/pipes/query-number.pipe';
+import { QueryNumberPipe } from '../utils/pipes/query-number.pipe';
 
 /**
  * Controller for handling user-related operations.
@@ -40,8 +36,8 @@ export class UserController {
   @UseGuards(AccessTokenGuard)
   @Get()
   async getAllUsers(
-    @Query('page', QueryNumberPipe) page: number,
-    @Query('limit', QueryNumberPipe) limit: number,
+    @Query('page', QueryNumberPipe) page: number | undefined,
+    @Query('limit', QueryNumberPipe) limit: number | undefined,
   ): Promise<User[]> {
     return await this.userService.getAllUsers({ page, limit });
   }
