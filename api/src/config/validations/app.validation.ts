@@ -74,6 +74,6 @@ export class AppEnvironmentVariables {
   //   {
   //     message: createErrorMessageFormatter('Debe ser una URL'),
   //   },
-  //)
+  // )
   ORIGIN: string;
 }

@@ -3,29 +3,45 @@
 @tailwind utilities;
 
 :root {
-  --primary-color-blue: #2757E6;
-  --primary-color-green: #6BBE55;
+  --primary-color-blue: #2757e6;
+  --primary-color-green: #6bbe55;
   --secondary-color-black: #171717;
-  --secondary-color-white: #FBFCFF;
-  --secondary-color-gray: #97989B;
+  --secondary-color-white: #fbfcff;
+  --secondary-color-gray: #97989b;
 }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--secondary-color-white);
 }
 
 @layer components {
   .btn {
-      @apply flex gap-2 items-center justify-center py-2 px-4 font-semibold shadow-md rounded-lg;
+    @apply flex gap-2 items-center justify-center py-2 px-4 font-semibold shadow-md rounded-lg;
   }
 
   .btn.btn-light {
-      @apply bg-white text-gray-500;
+    @apply bg-white text-gray-500;
   }
 
   .btn.btn-success {
-      @apply text-white bg-green-600 shadow-green-400/10
+    @apply text-white bg-green-600 shadow-green-400/10;
   }
+}
+
+.grid-rows-layout {
+  grid-template-rows: auto 1fr;
+}
+.grid-cols-layout {
+  grid-template-columns: 20rem 1fr;
+}
+
+.delete-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.minimal-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
