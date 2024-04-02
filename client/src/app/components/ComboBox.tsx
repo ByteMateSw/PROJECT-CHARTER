@@ -1,7 +1,8 @@
 "use client";
-import Select, { StylesConfig } from "react-select";
+import { StylesConfig } from "react-select";
 import { useState, useEffect } from "react";
 import makeAnimated from "react-select/animated";
+import AsyncSelect from "react-select/async";
 
 interface OptionsPropsType {
   name: string;
@@ -52,7 +53,9 @@ export default function ComboBox({
   return (
     <div className="w-full">
       {isClient ? (
-        <Select
+        <AsyncSelect
+          cacheOptions
+          defaultOptions
           styles={styleComboBox}
           closeMenuOnSelect={false}
           components={animatedComponents}
