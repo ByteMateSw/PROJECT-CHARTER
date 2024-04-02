@@ -1,12 +1,7 @@
 "use client";
 import Select, { StylesConfig } from "react-select";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import makeAnimated from "react-select/animated";
-
-interface OptionType {
-  value: string;
-  label: string;
-}
 
 interface OptionsPropsType {
   name: string;
@@ -38,11 +33,14 @@ export default function ComboBox({
   placeholder?: string;
 }) {
   const animatedComponents = makeAnimated();
-  const [selectedOptions, setSelectedOptions] = useState<OptionType[] | null>(
-    null
-  );
+  const [selectedOptions, setSelectedOptions] = useState<unknown>(null);
+  const [isClient, setIsClient] = useState(false);
 
-  const handleChange = (selectedOptions: OptionType[] | null) => {
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const handleChange = (selectedOptions: unknown) => {
     setSelectedOptions(selectedOptions);
   };
 
@@ -53,17 +51,19 @@ export default function ComboBox({
 
   return (
     <div className="w-full">
-      <Select
-        styles={styleComboBox}
-        closeMenuOnSelect={false}
-        components={animatedComponents}
-        isMulti
-        placeholder={placeholder}
-        value={selectedOptions}
-        onChange={handleChange}
-        options={options}
-        menuPlacement="top"
-      />
+      {isClient ? (
+        <Select
+          styles={styleComboBox}
+          closeMenuOnSelect={false}
+          components={animatedComponents}
+          isMulti
+          placeholder={placeholder}
+          value={selectedOptions}
+          onChange={handleChange}
+          options={options}
+          menuPlacement="top"
+        />
+      ) : null}
     </div>
   );
 }
