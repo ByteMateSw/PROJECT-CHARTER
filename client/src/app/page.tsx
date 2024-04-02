@@ -11,8 +11,8 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main className="min-h-screen w-full flex-col items-center justify-center gap-10 inline-flex">
-        <div className="flex justify-between w-[1200px]">
+      <main className="min-h-screen w-full flex-col items-center flex-wrap justify-center gap-10 inline-flex">
+        <div className="flex justify-between w-[1300px]">
           <section className=" h-[350px] w-[1000px] flex-col flex justify-start items-start pt-24">
             <div>
               <h1 className="text-secondary-black text-[40px] font-extrabold">
@@ -47,29 +47,31 @@ export default function Home() {
           </figure>
         </div>
 
-        <section className="w-full h-[450px] flex items-center justify-center flex-col ">
+        <section className="w-[1300px] h-[450px] flex items-center justify-center flex-col ">
           <h1 className="text-center h-[150px] px-4 py-10 text-secondary-black text-xl font-extrabold">
             Explora las profesiones
           </h1>
-          <article className="flex items-center w-full flex-col pb-20">
+          <article className="flex items-center w-full flex-col pb-20 ">
             <InfiniteLooper speed={velocity} direction="right">
               {cardDetails.map((card) => {
                 return (
-                  <Card key={card.title} src={card.imgUrl} alt={card.title} />
+                  <Card key={card.title} src={card.imgUrl} alt={card.title}/>
                 );
               })}
-            </InfiniteLooper>
+            </InfiniteLooper> 
             <InfiniteLooper speed={velocity} direction="left">
               {cardDetails.map((card) => {
                 return (
+                  <div className="object-fill h-48">
                   <Card key={card.title} src={card.imgUrl} alt={card.title} />
+                  </div>
                 );
               })}
             </InfiniteLooper>
           </article>
         </section>
 
-        <div className="w-[1200px] flex items-center justify-center flex-col h-[255px] pb-28">
+        <div className="w-[1300px]  flex items-center justify-center flex-col h-[255px] pb-28">
           <h1 className="text-center h-[150px] px-4 py-10 text-secondary-black text-xl font-extrabold">
             Mira algunos perfiles
           </h1>
@@ -96,7 +98,7 @@ export default function Home() {
           </section>
         </div>
 
-        <section className="flex justify-between flex-col w-[1200px]">
+        <section className="flex justify-between flex-col w-[1300px]">
           <h1 className="text-secondary-black text-[30px] font-extrabold">
             Potencia tu perfil
           </h1>
@@ -124,7 +126,7 @@ export default function Home() {
         </figure>*/}
         </section>
 
-        <section className="flex justify-end items-end flex-col w-[1200px] pb-20">
+        <section className="flex justify-end items-end flex-col w-[1300px] pb-20">
           <h1 className="text-secondary-black text-[30px] font-extrabold">
             Potencia tu perfil
           </h1>
