@@ -4,16 +4,18 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('/auth/login', { email, password }); 
-      window.location.href = '/';
+      const response = await axios.post("http://localhost:3001/auth/login", { email, password },{withCredentials:true});
+      console.log(response.data)
+      //  window.location.href = "/";
     } catch (error) {
-      console.error('Error al iniciar sesión:');
+      setErrorMessage("Credenciales incorrectas");
     }
   };
 
@@ -38,7 +40,11 @@ export default function LoginPage() {
             Correo electrónico o Celular
           </label>
           <span className="flex items-center border border-secondary-gray rounded-3xl p-3 bg-secondary-white">
-            <img src="/svg/Mail-Icon.svg" alt="LockIcon" className="mr-2 select-none" />
+            <img
+              src="/svg/Mail-Icon.svg"
+              alt="LockIcon"
+              className="mr-2 select-none"
+            />
             <input
               className="w-full h-15 focus:outline-none bg-secondary-white"
               type="text"
@@ -55,7 +61,11 @@ export default function LoginPage() {
             Contraseña
           </label>
           <span className="flex items-center border border-secondary-gray rounded-3xl p-3 bg-secondary-white">
-            <img src="/svg/Lock-Icon.svg" alt="LockIcon" className="mr-2 select-none" />
+            <img
+              src="/svg/Lock-Icon.svg"
+              alt="LockIcon"
+              className="mr-2 select-none"
+            />
             <input
               id="pass"
               className="w-full h-15 focus:outline-none bg-secondary-white"
@@ -66,10 +76,7 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
             />
             <button>
-              <img
-                src="/svg/VisibilityOff-Icon.svg"
-                alt="ojito"
-              />
+              <img src="/svg/VisibilityOff-Icon.svg" alt="ojito" />
             </button>
           </span>
         </div>
@@ -97,6 +104,7 @@ export default function LoginPage() {
         </div>
 
         <div className="w-full flex flex-col justify-center mt-8">
+          {errorMessage && <p>{errorMessage}</p>}
           <button
             id="submit"
             type="submit"
