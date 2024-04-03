@@ -1,51 +1,37 @@
 import Link from "next/link";
 import SearchBar from "./SearchBar";
+import NavbarLink from "./NavbarLink";
 
-/**
- * NavbarLink Component
- * @param {string} title - Link Title
- * @param {string} href - Link Reference
- * @returns {JSX.Element} NavbarLink
- * @description NavbarLink Component
- */
-const NavbarLink = ({
-  title,
-  href,
-}: {
-  title: string;
-  href: string;
-}): JSX.Element => {
-  return (
-    <li className="px-4 py-2 rounded-lg font-bold text-base hover:text-secondary-white hover:bg-primary-blue duration-300">
-      <Link href={`/${href}`}>{title}</Link>
-    </li>
-  );
-};
+const NAV_LINKS = [
+  { title: "Trabajos", href: "dashboard/jobs" },
+  { title: "Contratar", href: "dashboard/hire" },
+  { title: "Iniciar Sesión", href: "auth/login" },
+  { title: "Registrarse", href: "auth/register" },
+];
 
 /**
  * Header Component
  * @returns {JSX.Element} Header
  * @description Header Component
  */
-function Header(): JSX.Element {
+export default function Header(): JSX.Element {
   return (
     <header>
-      <nav className="h-14 flex items-center px-5 m-4 border rounded-3xl border-secondary-gray bg-secondary-white shadow-md">
-        <Link className="flex-1" href="/">
-          <img src="/svg/conectando-icon.svg" alt="Logo" className="h-10" />
-        </Link>
-        <div className="flex-1 flex justify-center">
+      <nav className="h-14 flex justify-between items-center px-5 m-4 border rounded-3xl border-secondary-gray bg-secondary-white shadow-md">
+        <div className="flex justify-start">
+          <Link href="/">
+            <img src="/svg/conectando-icon.svg" alt="Logo" className="h-10" />
+          </Link>
+        </div>
+        <div className="flex justify-center">
           <SearchBar />
         </div>
-        <ul className="flex-1 flex justify-end items-center gap-2">
-          <NavbarLink title="Trabajos" href="dashboard/jobs" />
-          <NavbarLink title="Contratar" href="dashboard/hire" />
-          <NavbarLink title="Iniciar Sesión" href="auth/login" />
-          <NavbarLink title="Registrarse" href="auth/register" />
+        <ul className="flex justify-end items-center gap-2">
+          {NAV_LINKS.map((link) => (
+            <NavbarLink key={link.href} title={link.title} href={link.href} />
+          ))}
         </ul>
       </nav>
     </header>
   );
 }
-
-export default Header;
