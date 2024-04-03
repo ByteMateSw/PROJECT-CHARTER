@@ -11,13 +11,13 @@ export default function Carousel() {
       </h1>
       <article className="flex items-center w-full flex-col pb-20">
         <InfiniteLooper speed={velocity} direction="right">
-          {cardDetails.map((card) => {
-            return <Card key={card.title} src={card.imgUrl} alt={card.title} />;
+          {cardDetails.map((card, index) => {
+            return <Card key={index} src={card.imgUrl} alt={card.title} />;
           })}
         </InfiniteLooper>
         <InfiniteLooper speed={velocity} direction="left">
-          {cardDetails.map((card) => {
-            return <Card key={card.title} src={card.imgUrl} alt={card.title} />;
+          {cardDetails.map((card, index) => {
+            return <Card key={index} src={card.imgUrl} alt={card.title} />;
           })}
         </InfiniteLooper>
       </article>

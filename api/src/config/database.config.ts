@@ -27,12 +27,12 @@ export default registerAs(DatabaseNamespaces.Production, () => {
     logging: process.env.NODE_ENV !== IEnvironment.Development,
     migrations: [__dirname + '/../**/migrations/*{.js,.ts}'],
     migrationsTableName: 'migrations',
-    ssl: true,
-    extra: {
-      ssl: {
-        rejectUnauthorized: false,
-      },
-    },
-    sslmode: 'require',
+    // ssl: true,
+    // extra: {
+    //   ssl: {
+    //     rejectUnauthorized: false,
+    //   },
+    // },
+    // sslmode: 'require',
   };
 });
