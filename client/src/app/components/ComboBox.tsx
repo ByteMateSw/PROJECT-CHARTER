@@ -2,36 +2,20 @@
 import { StylesConfig } from "react-select";
 import { useState, useEffect } from "react";
 import makeAnimated from "react-select/animated";
-import AsyncSelect from "react-select/async";
+import Select from "react-select";
 
 interface OptionsPropsType {
   name: string;
 }
 
-const styleComboBox: StylesConfig = {
-  control: (styles) => ({
-    ...styles,
-    backgroundColor: "#FBFCFF",
-    color: "#97989B",
-    borderWidth: "1px",
-    padding: "0.2rem",
-    margin: "0",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    alignSelf: "stretch",
-    borderColor: "#97989B",
-    borderRadius: "1rem",
-    appearance: "none",
-  }),
-};
-
 export default function ComboBox({
   optionsProps,
   placeholder = "Buscar...",
+  styles,
 }: {
   optionsProps: OptionsPropsType[];
   placeholder?: string;
+  styles: StylesConfig;
 }) {
   const animatedComponents = makeAnimated();
   const [selectedOptions, setSelectedOptions] = useState<unknown>(null);
@@ -45,7 +29,7 @@ export default function ComboBox({
     setSelectedOptions(selectedOptions);
   };
 
-  const options = optionsProps.map((option) => ({
+  const options = optionsProps?.map((option) => ({
     value: option.name,
     label: option.name,
   }));
@@ -53,10 +37,8 @@ export default function ComboBox({
   return (
     <div className="w-full">
       {isClient ? (
-        <AsyncSelect
-          cacheOptions
-          defaultOptions
-          styles={styleComboBox}
+        <Select
+          styles={styles}
           closeMenuOnSelect={false}
           components={animatedComponents}
           isMulti
