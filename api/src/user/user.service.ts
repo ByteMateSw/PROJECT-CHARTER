@@ -114,32 +114,6 @@ export class UserService {
   }
 
   /**
-   * Checks if the Terms of Service have been accepted by a user.
-   * @param id - The ID of the user.
-   * @param email - The email of the user.
-   * @returns A promise that resolves to a boolean indicating if the user has accepted the Terms of Service.
-   */
-  async isToSAcceptedByUser({ id, email }: EmailAndOrId): Promise<boolean> {
-    const user = await this.userRepository.findOne({
-      where: { id, email },
-      select: { acceptedToS: true },
-    });
-    return user.acceptedToS;
-  }
-
-  /**
-   * Accepts the Terms of Service for a user.
-   * @param id - The ID of the user.
-   * @returns A promise that resolves when the Terms of Service are accepted.
-   * @throws BadRequestException if the user does not exist.
-   */
-  async acceptToSUser(id: number): Promise<void> {
-    const existsUser = await this.userRepository.existsBy({ id });
-    if (!existsUser) throw new BadRequestException('Credenciales incorrectas');
-    await this.userRepository.update({ id }, { acceptedToS: true });
-  }
-
-  /**
    * Retrieves the role of a user by their ID.
    * @param id - The ID of the user.
    * @returns A promise that resolves to the name of the user's role.
@@ -153,6 +127,7 @@ export class UserService {
         role: { id: false, name: true },
       },
     });
+    if (user.role === undefined) return RoleEmun.User;
     return user.role.name;
   }
 

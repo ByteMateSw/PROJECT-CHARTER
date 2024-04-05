@@ -181,50 +181,6 @@ describe('UserService', () => {
     });
   });
 
-  describe('isToSAcceptedByUser', () => {
-    it('should return if the user, by their id, accepted the ToS', async () => {
-      const id = mockUser.id;
-      expect(await service.isToSAcceptedByUser({ id })).toEqual(
-        mockUser.acceptedToS,
-      );
-      expect(mockUserRepository.findOne).toHaveBeenCalledWith({
-        where: { id, email: undefined },
-        select: { acceptedToS: true },
-      });
-    });
-
-    it('should return if the user, by their email, accepted the ToS', async () => {
-      const email = mockUser.email;
-      expect(await service.isToSAcceptedByUser({ email })).toEqual(
-        mockUser.acceptedToS,
-      );
-      expect(mockUserRepository.findOne).toHaveBeenCalledWith({
-        where: { id: undefined, email: email },
-        select: { acceptedToS: true },
-      });
-    });
-  });
-
-  describe('accepteToSUser', () => {
-    it('should accept the ToS of an user', async () => {
-      const id = mockUser.id;
-      await service.acceptToSUser(id);
-      expect(mockUserRepository.existsBy).toHaveBeenCalledWith({ id });
-      expect(mockUserRepository.update).toHaveBeenCalledWith(
-        { id },
-        { acceptedToS: true },
-      );
-    });
-
-    it('should throw an error for nonexistent user', async () => {
-      const id = mockUser.id;
-      mockUserRepository.existsBy.mockResolvedValueOnce(false);
-      expect(async () => await service.acceptToSUser(id)).rejects.toThrow(
-        new BadRequestException('Credenciales incorrectas'),
-      );
-    });
-  });
-
   describe('getPassword', () => {
     it('should get the user password of an user', async () => {
       const id = mockUser.id;
