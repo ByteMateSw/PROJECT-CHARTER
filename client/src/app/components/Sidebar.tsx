@@ -1,12 +1,42 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { professions } from "@/json/professions";
 import Image from "next/image";
 import ComboBox from "./ComboBox";
-import { provincesBox } from "@/json/provincesBox";
-import { locationsBox } from "@/json/locations";
-
+import { getCities, getProvinces } from "../api/locations";
+import { StylesConfig } from "react-select";
 export default function Sidebar(): JSX.Element {
+  const [provinces, setProvinces] = useState<any>();
+
+  const [cities, setCities] = useState<any>();
+
+  useEffect(() => {
+    getProvinces().then((data: any) => {
+      setProvinces(data);
+    });
+    getCities().then((data: any) => {
+      setCities(data);
+    });
+  }, []);
+
+  const styleComboBox: StylesConfig = {
+    control: (styles) => ({
+      ...styles,
+      backgroundColor: "#FBFCFF",
+      color: "#97989B",
+      borderWidth: "1px",
+      padding: "0.2rem",
+      margin: "0",
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      alignSelf: "stretch",
+      borderColor: "#97989B",
+      borderRadius: "1rem",
+      appearance: "none",
+    }),
+  };
+
   const [checkedItems, setCheckedItems] = useState<{ [key: number]: boolean }>(
     {}
   );
@@ -93,8 +123,16 @@ export default function Sidebar(): JSX.Element {
               Ubicación
             </span>
           </div>
-          <ComboBox optionsProps={provincesBox} placeholder="Provincia" />
-          <ComboBox optionsProps={locationsBox} placeholder="Localidades" />
+          <ComboBox
+            optionsProps={provinces}
+            placeholder="Provincia"
+            styles={styleComboBox}
+          />
+          <ComboBox
+            optionsProps={cities}
+            placeholder="Localidades"
+            styles={styleComboBox}
+          />
         </section>
       </nav>
     </>
