@@ -1,33 +1,32 @@
 "use client";
-import { useState } from "react";
-import { professions } from "@/json/professions";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import ComboBox from "./ComboBox";
 import { provincesBox } from "@/json/provincesBox";
 import { locationsBox } from "@/json/locations";
+import { getProfessions } from "../api/office";
+
+interface Profession {
+  id: number;
+  name: string;
+}
 
 export default function Sidebar(): JSX.Element {
   const [checkedItems, setCheckedItems] = useState<{ [key: number]: boolean }>(
     {}
   );
+
   const measure = 24;
   const [searchTerm, setSearchTerm] = useState<string>("");
-  // const [users, setUsers] = useState<User[]>([]);
-  // interface User {
-  //   id: number;
-  //   name: string;
-  // }
-  // const URL = "http://localhost:3001/offices";
+  const [professions, setProfessions] = useState<Profession[]>([
+    { id: 1, name: "Ingeniero" },
+  ]);
 
-  // const showData = async () => {
-  //   const response = await fetch(URL);
-  //   const data = await response.json();
-  //   setUsers(data);
-  // };
-
-  // useEffect(() => {
-  //   showData();
-  // }, []);
+  useEffect(() => {
+    getProfessions().then((data: Profession[]) => {
+      setProfessions(data);
+    });
+  }, []);
 
   const handleCheckboxChange = (id: number) => {
     setCheckedItems((prevCheckedItems) => {
@@ -68,29 +67,29 @@ export default function Sidebar(): JSX.Element {
 
         <ul className="overflow-y-scroll minimal-scrollbar w-full mt-6 select-none">
           {professions
-            .filter((profesion) =>
-              profesion.name.toLowerCase().includes(searchTerm.toLowerCase())
+            .filter((profession) =>
+              profession.name.toLowerCase().includes(searchTerm.toLowerCase())
             )
-            .map((user, index) => {
+            .map((profession, id) => {
               return (
                 <li
-                  key={index}
+                  key={id}
                   className="flex items-center py-1 w-fit hover:underline cursor-pointer"
-                  onClick={() => handleCheckboxChange(index)}
+                  onClick={() => handleCheckboxChange(id)}
                 >
                   <input
                     className={`ml-2 rounded-full appearance-none w-2 h-2 ring-2 ring-offset-2 ring-secondary-black items-center justify-center cursor-pointer ${
-                      checkedItems[index]
+                      checkedItems[id]
                         ? " bg-primary-blue ring-2"
                         : "bg-secondary-white"
                     }`}
-                    id={`${index}`}
+                    id={`${id}`}
                     type="checkbox"
-                    checked={checkedItems[index] || false}
+                    checked={checkedItems[id] || false}
                     onChange={() => {}}
                   />
                   <label className="text-secondary-black text-base ml-2 cursor-pointer">
-                    {user.name}
+                    {profession.name}
                   </label>
                 </li>
               );
