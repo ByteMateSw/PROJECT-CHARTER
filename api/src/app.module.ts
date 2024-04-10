@@ -15,6 +15,7 @@ import { ConfigurationModule } from './config/config.module';
 import { MailerModule } from './mailer/mailer.module';
 import { ReviewModule } from './review/review.module';
 import { NotificationModule } from './notifications/notifications.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -37,5 +38,6 @@ import { NotificationModule } from './notifications/notifications.module';
     ReviewModule,
     NotificationModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}
