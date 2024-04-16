@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -23,61 +24,42 @@ export class CityService {
 
   /**
    * Creates a new city with the given name.
-   * 
+   *
    * @param name - The name of the city to create.
-   * @returns A Promise that resolves to a string indicating the status of the operation.
+   * @returns A Promise that resolves to the created city.
    * @throws ConflictException if a city with the same name already exists.
-   * @throws InternalServerErrorException if the city could not be created.
    */
-  async createCity(name: string): Promise<string> {
-    const cityExist = await this.cityRepository.findOne({ where: { name } });
-
-    if (cityExist) {
+  async createCity(name: string): Promise<City> {
+    const existsCity = await this.cityRepository.existsBy({ name });
+    if (existsCity)
       throw new ConflictException('Ya existe una ciudad con ese nombre');
-    }
 
     const newCity = this.cityRepository.create({ name });
-    const savedCity = await this.cityRepository.save(newCity);
-
-    if (!savedCity) {
-      throw new InternalServerErrorException('No se pudo crear la ciudad');
-    }
-    return 'Ciudad Guardada';
+    return await this.cityRepository.save(newCity);
   }
 
   /**
-   * Retrieves all cities along with their associated province and users.
-   * 
-   * @returns A promise that resolves to an array of City objects or a string if an error occurs.
-   * @throws InternalServerErrorException if the cities cannot be retrieved.
+   * Retrieves all cities along with their associated province.
+   *
+   * @returns A promise that resolves to an array of City objects.
    */
-  async getCities(): Promise<City[] | string> {
-    const cities = await this.cityRepository.find({
-      relations: ['province', 'users'],
+  async getAllCities(): Promise<City[]> {
+    return await this.cityRepository.find({
+      relations: { province: true },
     });
-    if (!cities) {
-      throw new InternalServerErrorException('No se pudieron obtener las ciudades');
-    }
-    return cities;
   }
 
   /**
    * Retrieves a single city by its ID.
-   * 
+   *
    * @param id - The ID of the city to retrieve.
-   * @returns A promise that resolves to a City object or a string if an error occurs.
-   * @throws NotFoundException if the city cannot be found.
+   * @returns A promise that resolves to a City object.
    */
-  async getOneCity(id: number): Promise<City> {
-    const city = await this.cityRepository.findOne({
+  async getCityById(id: number): Promise<City> {
+    return await this.cityRepository.findOne({
       where: { id },
-      relations: ['province', 'users'],
+      relations: { province: true },
     });
-
-    if (!city) {
-      throw new NotFoundException('No se encontró la ciudad');
-    }
-    return city;
   }
 
   /**
@@ -108,7 +90,7 @@ export class CityService {
 
   /**
    * Updates the user associated with a city.
-   * 
+   *
    * @param id - The ID of the city to update.
    * @param userId - The ID of the new user for the city.
    * @returns A promise that resolves to a string indicating the success of the update.
@@ -130,7 +112,7 @@ export class CityService {
 
     return 'La ciudad se actualizó correctamente';
   }
-  
+
   /**
    * Updates the name of a city with the specified ID.
    * @param id - The ID of the city to update.
@@ -138,30 +120,27 @@ export class CityService {
    * @returns A Promise that resolves to a string indicating the success of the update operation.
    * @throws NotFoundException if the city with the specified ID does not exist.
    */
-  async updateCity(id: number, name: string): Promise<string> {
-    const cityExist = await this.cityRepository.findOne({ where: { id } });
-    if (!cityExist) {
-      throw new NotFoundException('No se encontró la ciudad');
-    }
+  async updateCity(id: number, name: string): Promise<City> {
+    const existsCity = await this.cityRepository.existsBy({ name });
+    if (existsCity)
+      throw new ConflictException('Ya existe una ciudad con ese nombre');
 
-    await this.cityRepository.update(id, { name });
-    return 'Ciudad actualizada';
+    const city = await this.cityRepository.findOne({ where: { id } });
+    if (!city) throw new BadRequestException('No se encontró la ciudad');
+
+    return await this.cityRepository.save({ ...city, ...{ name } });
   }
 
   /**
    * Deletes a city with the specified ID.
    * @param id - The ID of the city to delete.
-   * @returns A Promise that resolves to a string indicating the success of the operation.
-   * @throws NotFoundException if the city with the specified ID does not exist.
+   * @throws BadRequestException if the city with the specified ID does not exist.
    */
-  async deleteCity(id: number): Promise<string> {
-    const cityExist = await this.cityRepository.findOne({ where: { id } });
-    if (!cityExist) {
-      throw new NotFoundException('No se encontró la ciudad');
-    }
+  async deleteCity(id: number): Promise<void> {
+    const city = await this.cityRepository.findOne({ where: { id } });
+    if (!city) throw new BadRequestException('No existe la ciudad');
 
-    await this.cityRepository.delete({ id });
-    return 'Ciudad eliminada correctamente';
+    await this.cityRepository.remove(city);
   }
 
   /**

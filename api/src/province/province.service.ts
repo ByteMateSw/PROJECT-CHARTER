@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -17,7 +18,6 @@ export class ProvinceService {
     private cityRepository: Repository<City>,
   ) {}
 
-
   /**
    * Creates a new province with the specified name.
    * @param name - The name of the province to create.
@@ -26,26 +26,11 @@ export class ProvinceService {
    *          - If the creation is successful, the string will be 'Provincia Guardada'.
    *          - If the creation fails, a BadRequestException will be thrown.
    */
-  async createProvince(name: string): Promise<string> {
-    const provinceExist = await this.provinceRepository.findOne({
-      where: { name },
-    });
-
-    if (provinceExist) {
-      return 'La provincia ya existe';
-    }
-
+  async createProvince(name: string): Promise<Province> {
+    const provinceExists = await this.provinceRepository.existsBy({ name });
+    if (provinceExists) throw new ConflictException('La provincia ya existe');
     const newProvince = this.provinceRepository.create({ name });
-    if (!newProvince) {
-      throw new BadRequestException('No se ha podido crear la provincia nueva');
-    }
-
-    const saveProvince = await this.provinceRepository.save(newProvince);
-    if (!saveProvince) {
-      throw new BadRequestException('No se ha podido guardar la nueva provincia');
-    }
-
-    return 'Provincia Guardada';
+    return await this.provinceRepository.save(newProvince);
   }
 
   /**
@@ -53,13 +38,10 @@ export class ProvinceService {
    * @returns A Promise that resolves to an array of Province objects or a string if an error occurs.
    * @throws NotFoundException if no cities are found in the province.
    */
-  async getProvinces(): Promise<Province[] | string> {
-    const provinceCity = await this.provinceRepository.find({
-      relations: ['cities'],
+  async getProvinces(): Promise<Province[]> {
+    return await this.provinceRepository.find({
+      relations: { cities: true },
     });
-    if (!provinceCity)
-      throw new NotFoundException('No se encontró la ciudad en la provincia');
-    return provinceCity;
   }
 
   /**
@@ -68,21 +50,11 @@ export class ProvinceService {
    * @returns A Promise that resolves to the found province or an error message if not found.
    * @throws NotFoundException if the province is not found.
    */
-  async getOneProvince(id: number): Promise<Province | string> {
-    if (!id) {
-      return 'Debe proporcionar un ID de provincia';
-    }
-
-    const province = await this.provinceRepository.findOne({
+  async getProvinceById(id: number): Promise<Province> {
+    return await this.provinceRepository.findOne({
       where: { id },
-      relations: ['cities'],
+      relations: { cities: true },
     });
-
-    if (!province) {
-      throw new NotFoundException('No se encontró la provincia');
-    }
-
-    return province;
   }
 
   /**
@@ -96,27 +68,17 @@ export class ProvinceService {
    * @throws NotFoundException - If the province with the specified ID is not found.
    * @throws BadRequestException - If the update operation fails.
    */
-  async updateProvince(id: number, name: string): Promise<string> {
-    if (!id) {
-      return 'No se mando la id de la provincia';
-    }
+  async updateProvince(id: number, name: string): Promise<void> {
+    const existsProvince = await this.provinceRepository.existsBy({ name });
+    if (existsProvince)
+      throw new BadRequestException('Existe una provincia con ese nombre');
 
     const province = await this.provinceRepository.findOne({
       where: { id },
     });
-
-    if (!province) {
-      throw new NotFoundException('No se encontró la provincia');
-    }
-
+    if (!province) throw new BadRequestException('La provincia no existe');
     province.name = name;
-    const saveProvince = await this.provinceRepository.save(province);
-
-    if (!saveProvince) {
-      throw new BadRequestException('No se ha podido guardar la provincia');
-    }
-
-    return 'La provincia actualizada';
+    await this.provinceRepository.save(province);
   }
 
   /**
@@ -167,24 +129,20 @@ export class ProvinceService {
    * @throws BadRequestException if the deletion fails for any other reason.
    */
   async deleteProvince(id: number): Promise<string> {
-    if (!id) {
-      return 'Debe proporcionar un ID de provincia';
+    if (id) {
+      const provinceExist = await this.provinceRepository.findOne({
+        where: { id },
+      });
+
+      if (!provinceExist) {
+        throw new NotFoundException('No se encontró la provincia');
+      }
+      const deleteProvince = await this.provinceRepository.delete({ id });
+      if (!deleteProvince)
+        throw new BadRequestException('No se pudo borrar la provincia');
+    } else {
+      return 'Debe proporcionar un ID  de provincia';
     }
-
-    const province = await this.provinceRepository.findOne({
-      where: { id },
-    });
-
-    if (!province) {
-      throw new NotFoundException('No se encontró la provincia');
-    }
-
-    const deleteResult = await this.provinceRepository.delete({ id });
-
-    if (!deleteResult.affected) {
-      throw new BadRequestException('No se pudo borrar la provincia');
-    }
-
     return 'Provincia eliminada correctamente';
   }
 

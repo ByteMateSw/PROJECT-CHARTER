@@ -6,7 +6,6 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
   Post,
   Put,
   Query,
@@ -68,7 +67,7 @@ export class PostController {
   @UseGuards(AccessTokenGuard)
   @Get(':id')
   async getPostById(
-    @Param(':id', ParseIntPipe) id: number,
+    @Param('id', CustomParseIntPipe) id: number,
   ): Promise<PostEntity> {
     return await this.postService.getPostBy({ id });
   }
@@ -104,7 +103,7 @@ export class PostController {
    */
   @UseGuards(AccessTokenGuard)
   @Post('images/:id')
-  @UseInterceptors(FilesInterceptor('images', 1))
+  @UseInterceptors(FilesInterceptor('images'))
   async addImageToPost(
     @Param('id', CustomParseIntPipe) postId: number,
     @UploadedFiles(FilePipeValidator) images: File[],

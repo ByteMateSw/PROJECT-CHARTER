@@ -3,9 +3,11 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
+  HttpCode,
+  HttpStatus,
   Param,
   Patch,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -16,11 +18,9 @@ import { Roles } from '../role/role.decorator';
 import { Role } from '../utils/enums/role.enum';
 import { User } from './user.entity';
 import { CustomParseIntPipe } from '../utils/pipes/parse-int.pipe';
-import {
-  ResponseMessage,
-  UserParam as UserParamType,
-} from '../utils/types/functions.type';
+import { UserParam as UserParamType } from '../utils/types/functions.type';
 import { UserParam } from '../utils/params/user.param';
+import { QueryNumberPipe } from '../utils/pipes/query-number.pipe';
 
 /**
  * Controller for handling user-related operations.
@@ -29,14 +29,13 @@ import { UserParam } from '../utils/params/user.param';
 export class UserController {
   constructor(private userService: UserService) {}
 
-
   @Get('best-users')
   /**
    * Retrieves a list of users.
    * @returns A promise that resolves to an array of BestUser objects whitout guard.
    */
   async getSomeUsers(): Promise<User[]> {
-    return await this.userService.getAllUsers();
+    return await this.userService.getAllUsers({});
   }
 
   /**
@@ -45,65 +44,62 @@ export class UserController {
    */
   @UseGuards(AccessTokenGuard)
   @Get()
-  async getAllUsers(): Promise<User[]> {
-    return await this.userService.getAllUsers();
+  async getAllUsers(
+    @Query('page', QueryNumberPipe) page: number | undefined,
+    @Query('limit', QueryNumberPipe) limit: number | undefined,
+  ): Promise<User[]> {
+    return await this.userService.getAllUsers({ page, limit });
   }
 
   /**
    * Retrieves a user by their ID.
    * @param id - The ID of the user.
    * @returns A promise that resolves to the User object.
-   * @throws NotFoundException if the user is not found.
    */
   @UseGuards(AccessTokenGuard)
   @Get(':id')
   async getUserById(
     @Param('id', CustomParseIntPipe) id: number,
   ): Promise<User> {
-    const user = await this.userService.getUser({ id });
-    if (!user) throw new NotFoundException('No se encontró el usuario');
-    return user;
+    return await this.userService.getUserBy({ id });
   }
 
   /**
-   * Deletes a user.
+   * Deletes a user. Only the user themselves can delete their account.
    * @param user - The user to be deleted.
-   * @returns  - A json object with a message.
    */
+  @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(AccessTokenGuard)
-  @Delete('')
-  async deleteUser(@UserParam() user: UserParamType): Promise<ResponseMessage> {
+  @Delete()
+  async deleteUser(@UserParam() user: UserParamType): Promise<void> {
     await this.userService.deleteUser(user.id);
-    return { message: 'El usuario ha sido borrado correctamente' };
   }
 
   /**
-   * Deletes a user by their ID.
+   * Deletes a user by their ID. Only users with the admin role can delete users.
    * @param id - The ID of the user to be deleted.
-   * @returns - A json object with a message.
    */
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Roles(Role.Admin)
   @Delete(':id')
   async deleteUserById(
     @Param('id', CustomParseIntPipe) id: number,
-  ): Promise<ResponseMessage> {
+  ): Promise<void> {
     await this.userService.deleteUser(id);
-    return { message: 'El usuario ha sido borrado correctamente' };
   }
 
   /**
    * Updates a user.
    * @param id - The ID of the user to be updated.
    * @param updateUserDto - The data to update the user with.
-   * @returns - A json object with a message.
+   * @returns -
    */
   @UseGuards(AccessTokenGuard)
   @Patch(':id')
   async updateUser(
     @Param('id', CustomParseIntPipe) id: number,
     @Body(EmptyBodyPipe) updateUserDto: UpdateUserDto,
-  ): Promise<ResponseMessage> {
-    await this.userService.updateUser(id, updateUserDto);
-    return { message: 'El usuario se ha actualizado correctamente' };
+  ): Promise<User> {
+    return await this.userService.updateUser(id, updateUserDto);
   }
 }

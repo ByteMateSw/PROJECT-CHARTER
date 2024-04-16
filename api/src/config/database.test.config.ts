@@ -31,6 +31,7 @@ export default registerAs(
       logging: true,
       migrations: [__dirname + '/../**/migrations/*{.js,.ts}'],
       migrationsTableName: 'migrations',
+      ssl: false,
     };
   },
 );
