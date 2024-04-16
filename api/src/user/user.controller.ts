@@ -25,7 +25,7 @@ import { QueryNumberPipe } from '../utils/pipes/query-number.pipe';
 /**
  * Controller for handling user-related operations.
  */
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private userService: UserService) {}
 
