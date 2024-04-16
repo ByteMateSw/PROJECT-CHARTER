@@ -45,3 +45,46 @@ body {
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
+
+.filter-white {
+  filter: none;
+  transition-duration: 300ms;
+}
+
+.link:hover .filter-white {
+  filter: invert(1) grayscale(1) brightness(10);
+  transition-duration: 300ms;
+}
+
+.arrow {
+  width: 0.7rem;
+  height: 0.7rem;
+  box-sizing: border-box;
+  transform: rotate(135deg);
+}
+
+.arrow::before {
+  content: '';
+  width: 100%;
+  height: 100%;
+  border-width: .4vmin .4vmin 0 0; /* Hacer la flecha más delgada */
+  border-style: solid;
+  border-color: var(--secondary-color-black);
+  transition: .2s ease;
+  display: block;
+  transform-origin: 100% 0;
+}
+
+.arrow::after {
+  content: '';
+  float: left;
+  position: relative;
+  top: -100%;
+  width: 100%;
+  height: 100%;
+  border-width: 0 .4vmin 0 0; /* Hacer la flecha más delgada */
+  border-style: solid;
+  border-color: var(--secondary-color-black);
+  transform-origin: 100% 0;
+  transition:.2s ease;
+}
