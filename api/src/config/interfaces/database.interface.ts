@@ -15,6 +15,7 @@ export interface IDatabaseConfig {
   logging: LoggerOptions;
   migrations: MixedList<Function | string>;
   migrationsTableName: string;
+  ssl: boolean | { rejectUnauthorized: boolean };
 }
 
 /**

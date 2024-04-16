@@ -1,11 +1,17 @@
 "use client";
-import { useEffect, useState } from "react";
-import { professions } from "@/data/professions";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import ComboBox from "./ComboBox";
-import { getCities, getProvinces } from "../api/locations";
+import { provincesBox } from "@/json/provincesBox";
+import { locationsBox } from "@/json/locations";
+import { getProfessions } from "../api/office";
 import { StylesConfig } from "react-select";
-import { useRouter, useSearchParams } from "next/navigation";
+import { getCities, getProvinces } from "../api/locations";
+        
+interface Profession {
+  id: number;
+  name: string;
+}
 
 export default function Sidebar(): JSX.Element {
   const router = useRouter();
@@ -74,15 +80,30 @@ export default function Sidebar(): JSX.Element {
     }),
   };
 
-  // Functions
-  const handleCheckboxChange = (index: number) => {
+  const [checkedItems, setCheckedItems] = useState<{ [key: number]: boolean }>(
+    {}
+  );
+
+  const measure = 24;
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [professions, setProfessions] = useState<Profession[]>([
+    { id: 1, name: "Ingeniero" },
+  ]);
+
+  useEffect(() => {
+    getProfessions().then((data: Profession[]) => {
+      setProfessions(data);
+    });
+  }, []);
+
+  const handleCheckboxChange = (id: number) => {
     setCheckedItems((prevCheckedItems) => {
       const updatedCheckedItems = { ...prevCheckedItems };
 
-      if (updatedCheckedItems[index]) {
-        delete updatedCheckedItems[index];
+      if (updatedCheckedItems[id]) {
+        delete updatedCheckedItems[id];
       } else {
-        updatedCheckedItems[index] = true;
+        updatedCheckedItems[id] = true;
       }
 
       return updatedCheckedItems;
@@ -132,22 +153,22 @@ export default function Sidebar(): JSX.Element {
             .filter((profession) =>
               profession.name.toLowerCase().includes(searchTerm.toLowerCase())
             )
-            .map((profession, index) => {
+            .map((profession, id) => {
               return (
                 <li
-                  key={index}
+                  key={id}
                   className="flex items-center py-1 w-fit hover:underline cursor-pointer"
-                  onClick={() => handleCheckboxChange(index)}
+                  onClick={() => handleCheckboxChange(id)}
                 >
                   <input
                     className={`ml-2 rounded-full appearance-none w-2 h-2 ring-2 ring-offset-2 ring-secondary-black items-center justify-center cursor-pointer ${
-                      checkedItems[index]
+                      checkedItems[id]
                         ? " bg-primary-blue ring-2"
                         : "bg-secondary-white"
                     }`}
-                    id={`${index}`}
+                    id={`${id}`}
                     type="checkbox"
-                    checked={checkedItems[index] || false}
+                    checked={checkedItems[id] || false}
                     onChange={() => {}}
                   />
                   <label className="text-secondary-black text-base ml-2 cursor-pointer">

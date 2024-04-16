@@ -27,7 +27,7 @@ export default function BestProfiles() {
                             <img
                                 src={profile.imageProfile}
                                 alt={profile.name}
-                                className="h-[140px] w-[140px] rounded-full text-[#97989B] aspect-square"
+                                className="h-[140px] w-[140px] rounded-full text-secondary-gray aspect-square"
                             />
                             <div className="flex-col justify-center items-center flex">
                                 <article className="text-center text-secondary-black text-sm font-bold">

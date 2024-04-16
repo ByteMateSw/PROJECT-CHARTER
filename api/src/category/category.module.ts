@@ -1,8 +1,8 @@
-import { Module } from "@nestjs/common";
-import {TypeOrmModule} from '@nestjs/typeorm'
-import { CategoryController } from "./category.controller";
-import { CategoryService } from "./category.service";
-import { Category } from "./category.entity";
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { CategoryController } from './category.controller';
+import { CategoryService } from './category.service';
+import { Category } from './category.entity';
 
 /**
  * Represents the Category module of the application.
@@ -10,9 +10,9 @@ import { Category } from "./category.entity";
  * defining the controllers, providers, and exports for the Category feature.
  */
 @Module({
-    imports: [TypeOrmModule.forFeature([Category])],
-    controllers: [CategoryController],
-    providers: [CategoryService]
+  imports: [TypeOrmModule.forFeature([Category])],
+  controllers: [CategoryController],
+  providers: [CategoryService],
+  exports: [CategoryService],
 })
-
 export class CategoryModule {}
