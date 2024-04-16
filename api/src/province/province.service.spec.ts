@@ -68,7 +68,7 @@ describe('ProvinceService', () => {
   describe('findOne', () => {
     it('should return a province by id', async () => {
       const id = 1;
-      const province = await provinceService.getOneProvince(id);
+      const province = await provinceService.getProvinceById(id);
       expect(province).toEqual(mockProvince);
     });
   });
@@ -100,7 +100,7 @@ describe('ProvinceService', () => {
   describe('exists', () => {
     it('should return true if province exists', async () => {
       const id = 1;
-      const exists = await provinceService.getOneProvince(id);
+      const exists = await provinceService.getProvinceById(id);
       expect(exists).toBe(mockProvince);
     });
   });

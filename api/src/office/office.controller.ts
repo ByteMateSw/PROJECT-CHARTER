@@ -12,118 +12,91 @@ import {
 } from '@nestjs/common';
 import { OfficeService } from './office.service';
 import { Office } from './office.entity';
-import { ResponseMessage } from 'src/utils/types/functions.type';
-import { OfficeDto } from './dto/office.dto';
-
+import { CreateOfficeDto } from './dto/create-office.dto';
+import { Roles } from '../role/role.decorator';
+import { Role } from '../utils/enums/role.enum';
+import { CustomParseIntPipe } from 'src/utils/pipes/parse-int.pipe';
+import { UpdateOfficeDto } from './dto/update-office.dto';
 
 /**
  * Controller for managing offices.
  */
 @Controller('offices')
 export class OfficeController {
-  constructor(private readonly officeService: OfficeService) {}
+  constructor(private officeService: OfficeService) {}
 
   /**
    * Retrieves all offices.
    * @returns A promise that resolves to an array of Office objects.
-   * @throws {HttpException} If an error occurs while retrieving the offices.
    */
   @Get()
-  async findAllOffice(): Promise<Office[]> {
-    try {
-      return await this.officeService.getAllOffices();
-    } catch (error) {
-      throw new HttpException(
-        'Error al buscar todos los oficios',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+  async getAllOffices(): Promise<Office[]> {
+    return await this.officeService.getAllOffices();
   }
 
   /**
    * Retrieves an office by its ID.
    * @param id - The ID of the office to retrieve.
-   *
    * @returns A Promise that resolves to the retrieved office.
-   * @throws HttpException if there is an error while retrieving the office.
    */
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Office> {
-    try {
-      return await this.officeService.getOfficeById(+id);
-    } catch (error) {
-      throw new HttpException(
-        'Error al buscar el oficio por ID',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+  async getOfficeById(
+    @Param('id', CustomParseIntPipe) id: number,
+  ): Promise<Office> {
+    return await this.officeService.getOfficeById(id);
   }
 
   /**
-   * Creates a new office.
-   *
-   * @param OfficeDto - The data for creating the office.
+   * Creates a new office. Only users with the Admin role can create offices.
+   * @param createOfficeDto - The data for creating the office.
    * @returns A string indicating the success of the operation.
    * @throws HttpException if an error occurs during the creation process.
    */
-  @HttpCode(201)
+  @Roles(Role.Admin)
   @Post()
   async createOffice(
-    @Body() createOfficeDto: OfficeDto,
-  ): Promise<ResponseMessage> {
-    try {
-      await this.officeService.createOffice(createOfficeDto);
-      return {message:'oficio creado correctamente'};
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-    }
+    @Body() createOfficeDto: CreateOfficeDto,
+  ): Promise<Office> {
+    return await this.officeService.createOffice(createOfficeDto);
   }
 
   /**
-   * Updates an office with the specified ID.
-   *
+   * Updates an office with the specified ID. Only users with the Admin role can update offices.
    * @param id - The ID of the office to update.
    * @param updateOfficeDto - The data to update the office with.
-   * @returns A success message if the office is updated successfully.
-   * @throws HttpException if an error occurs during the update process.
+   * @returns A Promise that resolves to the updated office.
    */
+  @Roles(Role.Admin)
   @Patch(':id')
   async updateOffice(
-    @Param('id') id: number, @Body() updateOfficeDto: OfficeDto): Promise<ResponseMessage> {
-    try {
-      await this.officeService.updateOffice(id, updateOfficeDto);
-      return {message:'El oficio se ha actualizado correctamente'};
-    } catch (error) {
-      throw new HttpException('Test Error', HttpStatus.FORBIDDEN);
-    }
+    @Param('id', CustomParseIntPipe) id: number,
+    @Body() updateOfficeDto: UpdateOfficeDto,
+  ): Promise<Office> {
+    return await this.officeService.updateOffice(id, updateOfficeDto);
   }
 
   /**
    * Deletes an office by its ID.
    *
    * @param id - The ID of the office to delete.
-   * @returns A promise that resolves to a string indicating the success of the deletion.
-   * @throws {HttpException} If an error occurs during the deletion process.
    */
+  @Roles(Role.Admin)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  async deleteOffice(@Param('id') id: number): Promise<ResponseMessage> {
-    try {
-      await this.officeService.deleteOffice(id);
-      return {message:'El oficio ha sido borrado correctamente'};
-    } catch (error) {
-      console.error(error.message);
-      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
-    }
+  async deleteOffice(
+    @Param('id', CustomParseIntPipe) id: number,
+  ): Promise<void> {
+    await this.officeService.deleteOffice(id);
   }
 
+  @HttpCode(200)
+  @Get('search')
   /**
    * Retrieves an office by searching for its name.
    * @param name - The name of the office to search for.
    * @returns A Promise that resolves to the found office.
    * @throws HttpException with a NOT_FOUND status if the office is not found.
    */
-  @HttpCode(200)
-  @Get('search')
   async getOfficeBySearch(name: string): Promise<Office> {
     try {
       const office = this.officeService.getOfficeBySearch(name);

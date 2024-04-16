@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { StateHiring } from './stateHiring.entity';
@@ -15,7 +19,7 @@ export class StateHiringService {
 
   /**
    * Creates a new hiring status with the given name.
-   * 
+   *
    * @param name - The name of the hiring status to create.
    * @returns The newly created hiring status.
    * @throws NotFoundException if a hiring status with the same name already exists.
@@ -41,8 +45,8 @@ export class StateHiringService {
    */
   async getStatusByName(name: string) {
     const existStatus = await this.stateHiringRepository.findOneBy({ name });
-    if(!existStatus){
-      throw new BadRequestException('Nombre incorrecto')
+    if (!existStatus) {
+      throw new BadRequestException('Nombre incorrecto');
     }
     return existStatus;
   }
@@ -54,13 +58,13 @@ export class StateHiringService {
    * @throws NotFoundException if the status hire with the given ID does not exist.
    * @throws BadRequestException if there is an error while deleting the status hire.
    */
-  async deleteStatusHire(id: number):Promise<ResponseMessage>{
-    const deleteStatusHire = await this.stateHiringRepository.findOneBy ({ id })
+  async deleteStatusHire(id: number): Promise<ResponseMessage> {
+    const deleteStatusHire = await this.stateHiringRepository.findOneBy({ id });
     if (!deleteStatusHire) {
-      throw new NotFoundException ('El estado del contrato no existe')
+      throw new NotFoundException('El estado del contrato no existe');
     }
-    const statusDelete = await this.stateHiringRepository.delete(id)
-    if(!statusDelete){
+    const statusDelete = await this.stateHiringRepository.delete(id);
+    if (!statusDelete) {
       throw new BadRequestException('Error al eliminar el estado');
     }
     return { message: 'El estado del contrato se ha borrado correctamente' };
@@ -78,7 +82,7 @@ export class StateHiringService {
   async updateStatusHire(id: number, stateHiringDTO:stateHiringDTO): Promise<StateHiring> {
     const hireFound = await this.stateHiringRepository.findOneBy({ id })
     if (!hireFound) {
-      throw new NotFoundException('El estado del contrato no existe')
+      throw new NotFoundException('El estado del contrato no existe');
     }
     const statusUpdate= await this.stateHiringRepository.update(id, stateHiringDTO);
     if(!statusUpdate){
@@ -94,13 +98,8 @@ export class StateHiringService {
   /**
    * Retrieves all state hiring records.
    * @returns A promise that resolves to an array of StateHiring objects.
-   * @throws BadRequestException if there is an error retrieving the state hiring records.
    */
-  async getAllStateHire():Promise<StateHiring[]>{
-    const allState = await this.stateHiringRepository.find()
-    if(!allState){
-      throw new BadRequestException('Error al traer todos los estados del contrato')
-    }
-    return allState
+  async getAllStateHire(): Promise<StateHiring[]> {
+    return await this.stateHiringRepository.find();
   }
 }
