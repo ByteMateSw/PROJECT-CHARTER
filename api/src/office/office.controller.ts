@@ -12,11 +12,10 @@ import {
 } from '@nestjs/common';
 import { OfficeService } from './office.service';
 import { Office } from './office.entity';
-import { CreateOfficeDto } from './dto/create-office.dto';
+import { OfficeDto } from './dto/office.dto';
 import { Roles } from '../role/role.decorator';
 import { Role } from '../utils/enums/role.enum';
 import { CustomParseIntPipe } from 'src/utils/pipes/parse-int.pipe';
-import { UpdateOfficeDto } from './dto/update-office.dto';
 
 /**
  * Controller for managing offices.
@@ -54,9 +53,7 @@ export class OfficeController {
    */
   @Roles(Role.Admin)
   @Post()
-  async createOffice(
-    @Body() createOfficeDto: CreateOfficeDto,
-  ): Promise<Office> {
+  async createOffice(@Body() createOfficeDto: OfficeDto): Promise<Office> {
     return await this.officeService.createOffice(createOfficeDto);
   }
 
@@ -70,7 +67,7 @@ export class OfficeController {
   @Patch(':id')
   async updateOffice(
     @Param('id', CustomParseIntPipe) id: number,
-    @Body() updateOfficeDto: UpdateOfficeDto,
+    @Body() updateOfficeDto: OfficeDto,
   ): Promise<Office> {
     return await this.officeService.updateOffice(id, updateOfficeDto);
   }
