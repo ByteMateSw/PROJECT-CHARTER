@@ -2,12 +2,11 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import ComboBox from "./ComboBox";
-import { provincesBox } from "@/json/provincesBox";
-import { locationsBox } from "@/json/locations";
 import { getProfessions } from "../api/office";
 import { StylesConfig } from "react-select";
 import { getCities, getProvinces } from "../api/locations";
-        
+import { useRouter, useSearchParams } from "next/navigation";
+
 interface Profession {
   id: number;
   name: string;
@@ -25,6 +24,9 @@ export default function Sidebar(): JSX.Element {
   });
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedProfessions, setSelectedProfessions] = useState<any[]>([]);
+  const [professions, setProfessions] = useState<Profession[]>([
+    { id: 1, name: "Ingeniero" },
+  ]);
   const [checkedItems, setCheckedItems] = useState<{ [key: number]: boolean }>(
     []
   );
@@ -80,16 +82,6 @@ export default function Sidebar(): JSX.Element {
     }),
   };
 
-  const [checkedItems, setCheckedItems] = useState<{ [key: number]: boolean }>(
-    {}
-  );
-
-  const measure = 24;
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [professions, setProfessions] = useState<Profession[]>([
-    { id: 1, name: "Ingeniero" },
-  ]);
-
   useEffect(() => {
     getProfessions().then((data: Profession[]) => {
       setProfessions(data);
@@ -112,13 +104,13 @@ export default function Sidebar(): JSX.Element {
     setSelectedProfessions((prevSelectedProfessions) => {
       const updatedSelectedProfessions = [...prevSelectedProfessions];
 
-      if (updatedSelectedProfessions.includes(professions[index].name)) {
+      if (updatedSelectedProfessions.includes(professions[id].name)) {
         updatedSelectedProfessions.splice(
-          updatedSelectedProfessions.indexOf(professions[index].name),
+          updatedSelectedProfessions.indexOf(professions[id].name),
           1
         );
       } else {
-        updatedSelectedProfessions.push(professions[index].name);
+        updatedSelectedProfessions.push(professions[id].name);
       }
       return updatedSelectedProfessions;
     });
