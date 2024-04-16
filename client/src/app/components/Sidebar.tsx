@@ -1,24 +1,61 @@
 "use client";
 import { useEffect, useState } from "react";
-import { professions } from "@/json/professions";
+import { professions } from "@/data/professions";
 import Image from "next/image";
 import ComboBox from "./ComboBox";
 import { getCities, getProvinces } from "../api/locations";
 import { StylesConfig } from "react-select";
+import { useRouter, useSearchParams } from "next/navigation";
+
 export default function Sidebar(): JSX.Element {
-  const [provinces, setProvinces] = useState<any>();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const [cities, setCities] = useState<any>();
+  // State
+  const professionsParams = searchParams.get("professions");
+  const [locations, setLocations] = useState<{ provinces: any; cities: any }>({
+    provinces: null,
+    cities: null,
+  });
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [selectedProfessions, setSelectedProfessions] = useState<any[]>([]);
+  const [checkedItems, setCheckedItems] = useState<{ [key: number]: boolean }>(
+    []
+  );
+  const measure = 24;
 
+  // Fetch data
   useEffect(() => {
-    getProvinces().then((data: any) => {
-      setProvinces(data);
+    getProvinces().then((newProvinces: any) => {
+      setLocations((prevState) => ({ ...prevState, provinces: newProvinces }));
     });
-    getCities().then((data: any) => {
-      setCities(data);
+    getCities().then((newCities: any) => {
+      setLocations((prevState) => ({ ...prevState, cities: newCities }));
     });
   }, []);
 
+  // Actualizar selectedProfessions cuando cambia professionsParams
+  useEffect(() => {
+    if (professionsParams) setSelectedProfessions(professionsParams.split("-"));
+  }, [professionsParams]);
+
+  // Actualizar la URL cuando cambia selectedProfessions
+  useEffect(() => {
+    if (selectedProfessions.length === 0) router.replace("/dashboard/hire");
+    else router.push(`?professions=${selectedProfessions.join("-")}`);
+  }, [selectedProfessions, router]);
+
+  useEffect(() => {
+    const newCheckedItems = selectedProfessions.reduce((acc, curr) => {
+      const index = professions.findIndex(
+        (profession) => profession.name === curr
+      );
+      return { ...acc, [index]: true };
+    }, {});
+    setCheckedItems(newCheckedItems);
+  }, [selectedProfessions]);
+
+  // Styles
   const styleComboBox: StylesConfig = {
     control: (styles) => ({
       ...styles,
@@ -37,12 +74,7 @@ export default function Sidebar(): JSX.Element {
     }),
   };
 
-  const [checkedItems, setCheckedItems] = useState<{ [key: number]: boolean }>(
-    {}
-  );
-  const measure = 24;
-  const [searchTerm, setSearchTerm] = useState<string>("");
-
+  // Functions
   const handleCheckboxChange = (index: number) => {
     setCheckedItems((prevCheckedItems) => {
       const updatedCheckedItems = { ...prevCheckedItems };
@@ -55,7 +87,22 @@ export default function Sidebar(): JSX.Element {
 
       return updatedCheckedItems;
     });
+
+    setSelectedProfessions((prevSelectedProfessions) => {
+      const updatedSelectedProfessions = [...prevSelectedProfessions];
+
+      if (updatedSelectedProfessions.includes(professions[index].name)) {
+        updatedSelectedProfessions.splice(
+          updatedSelectedProfessions.indexOf(professions[index].name),
+          1
+        );
+      } else {
+        updatedSelectedProfessions.push(professions[index].name);
+      }
+      return updatedSelectedProfessions;
+    });
   };
+
   const handleSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
     setCheckedItems({});
@@ -82,10 +129,10 @@ export default function Sidebar(): JSX.Element {
 
         <ul className="overflow-y-scroll minimal-scrollbar w-full mt-6 select-none">
           {professions
-            .filter((profesion) =>
-              profesion.name.toLowerCase().includes(searchTerm.toLowerCase())
+            .filter((profession) =>
+              profession.name.toLowerCase().includes(searchTerm.toLowerCase())
             )
-            .map((profesion, index) => {
+            .map((profession, index) => {
               return (
                 <li
                   key={index}
@@ -104,7 +151,7 @@ export default function Sidebar(): JSX.Element {
                     onChange={() => {}}
                   />
                   <label className="text-secondary-black text-base ml-2 cursor-pointer">
-                    {profesion.name}
+                    {profession.name}
                   </label>
                 </li>
               );
@@ -124,12 +171,12 @@ export default function Sidebar(): JSX.Element {
             </span>
           </div>
           <ComboBox
-            optionsProps={provinces}
+            optionsProps={locations.provinces}
             placeholder="Provincia"
             styles={styleComboBox}
           />
           <ComboBox
-            optionsProps={cities}
+            optionsProps={locations.cities}
             placeholder="Localidades"
             styles={styleComboBox}
           />

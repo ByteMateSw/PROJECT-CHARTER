@@ -1,4 +1,4 @@
-import { cardDetails } from "@/json/cards";
+import { cardDetails } from "@/data/cards";
 import InfiniteLooper from "./InfiniteLooper";
 import Card from "./Card";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { profiles } from "@/json/profiles";
+import { profiles } from "@/data/profiles";
 // import { getBestUsers } from "@/app/api/user";
 // import { useEffect, useState } from "react";
 
