@@ -1,29 +1,30 @@
 export default function Hero() {
   return (
-    <section className="flex justify-between w-[1200px] select-none">
-      <article className="h-[350px] w-[1000px] flex-col flex justify-start items-start pt-24 text-secondary-black text-[40px] font-extrabold">
-        <div>
-          <h1>Encuentra talentos</h1>
-          <h1>Contrata habilidades</h1>
-          <span className="text-primary-blue">Conéctate </span>
-          <span>con los mejores</span>
+    <section className="flex w-full justify-between h-[750px] bg-primary-blue/85">
+      <article className="mt-60 ml-60 flex flex-col text-secondary-white text-[56px] font-extrabold w-2/4">
+        <div className="[&>h1>span]:text-primary-green">
+          <h1>
+            <span>Conéctate</span> con los mejores <br />
+            <span>Contrata</span> habilidades <br />
+            <span>Encuentra</span> talento <br />
+          </h1>
         </div>
-        <div className="flex gap-5 pt-4 rounded-lg font-semibold text-lg">
-          <button className="btn bg-primary-blue px-4 py-2 hover:bg-primary-green text-secondary-white hover:scale-110 duration-150">
-            ¡Busca Talento!
+        <div className="flex gap-14 pt-4 h-20 font-bold text-xl [&>button]:px-6 [&>button]:py-4 [&>button]:btn [&>button]:bg-primary-green">
+          <button className="hover:scale-110 duration-150">
+            Encuentra Talento!
           </button>
-          <button className="btn bg-primary-blue px-4 py-2 hover:bg-primary-green text-secondary-white hover:scale-110 duration-150">
-            ¡Encuentra tu Trabajo!
+          <button className="hover:scale-110 duration-150">
+            Busca Trabajo!
           </button>
         </div>
       </article>
-      <figure className="pt-10 items-center rounded-2xl">
+      <article className="flex items-end w-2/4">
         <img
-          className="items-center w-[1000px] h-[400px] aspect-5/2 rounded-2xl"
-          src="https://img.freepik.com/foto-gratis/pico-montana-nevada-majestuosidad-galaxia-estrellada-ia-generativa_188544-9650.jpg"
-          alt="image"
+          src="/img/women-home.png"
+          alt="Hero Image"
+          className="object-cover h-[700px]"
         />
-      </figure>
+      </article>
     </section>
   );
 }

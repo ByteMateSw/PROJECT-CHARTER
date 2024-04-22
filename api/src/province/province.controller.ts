@@ -38,8 +38,7 @@ export class ProvinceController {
    * @returns A promise that resolves to an array of Province objects.
    */
   @Get()
-  async getProvinces(@Query('name') name: string): Promise<Province[]> {
-    console.log(name);
+  async getProvinces(): Promise<Province[]> {
     return await this.provinceService.getProvinces();
   }
 

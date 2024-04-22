@@ -15,7 +15,6 @@ interface Profession {
 export default function Sidebar(): JSX.Element {
   const router = useRouter();
   const searchParams = useSearchParams();
-
   // State
   const professionsParams = searchParams.get("professions");
   const [locations, setLocations] = useState<{ provinces: any; cities: any }>({
@@ -123,7 +122,7 @@ export default function Sidebar(): JSX.Element {
 
   return (
     <>
-      <nav className="flex h-full w-80 p-6 ml-4 flex-col items-start flex-1 border rounded-3xl border-secondary-gray overflow-y-hidden">
+      <nav className="flex h-full w-80 p-6 ml-4 flex-col items-start flex-1 border rounded-3xl border-secondary-gray">
         <section className="flex w-full items-center rounded-lg border justify-start border-secondary-gray px-2 py-1">
           <Image
             src="/svg/briefcase.svg"

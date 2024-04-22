@@ -3,13 +3,13 @@ import InfiniteLooper from "./InfiniteLooper";
 import Card from "./Card";
 
 export default function Carousel() {
-  const velocity: number = 160;
+  const velocity: number = 200;
   return (
-    <section className="w-full h-[450px] flex items-center justify-center flex-col ">
-      <h1 className="text-center h-[150px] px-4 py-10 text-secondary-black text-xl font-extrabold">
+    <section className="w-full pt-40 h-[450px] flex items-center justify-center flex-col ">
+      <h1 className="text-center text-secondary-black text-[32px] font-extrabold">
         Explora las profesiones
       </h1>
-      <article className="flex items-center w-full flex-col pb-20">
+      <article className="flex items-center w-full flex-col pt-12">
         <InfiniteLooper speed={velocity} direction="right">
           {cardDetails.map((card, index) => {
             return <Card key={index} src={card.imgUrl} alt={card.title} />;
