@@ -30,10 +30,16 @@ export default function RegisterPage() {
             src="/svg/BIENVENIDO! (1).svg"
             alt="svgimgg"
           ></img>
-          <div className="">
-            <button className="font-bold text-xl my-6 mr-7 text-secondary-gray  pb-2 border-b-4 hover:scale-105">Iniciar Sesión</button>
-            <button className="font-bold text-xl my-6 ml-7 pb-2 border-b-4 border-black hover:scale-105">Registrarse</button>
-          </div>
+          <section className="flex items-center">
+            <a href="http://localhost:3000/auth/login">
+              <button className="font-bold text-xl my-6 mr-7 text-secondary-gray  pb-2 border-b-4 hover:scale-105">
+                Iniciar Sesión
+              </button>
+            </a>
+            <div className="font-bold text-xl my-6 ml-7 pb-2 border-b-4 border-black select-none">
+              Registrarse
+            </div>
+          </section>
         </div>
 
         <section className="w-full flex items-center justify-between my-4">
@@ -137,7 +143,7 @@ export default function RegisterPage() {
           </button>
         </div>
 
-        <hr />
+        <div className="divider divider-horizontal">o</div>
 
         <div className="my-8">
           <span className="w-full h-12 flex items-center justify-center border border-secondary-gray rounded-3xl p-3 bg-secondary-white hover:scale-105">
@@ -146,8 +152,8 @@ export default function RegisterPage() {
               alt="GoogleIcon"
               className="mr-2 select-none"
             />
-            <button className="text-xl"> 
-              Contiuar con Google 
+            <button className="text-xl">
+              Contiuar con Google
             </button>
           </span>
         </div>

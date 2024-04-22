@@ -20,23 +20,28 @@ export default function LoginPage() {
 
   return (
     <section className="min-h-screen flex justify-around items-center bg-secondary-white">
-      <picture className="flex justify-around ">
-        <img src="/svg/Imagotype.svg" alt="Logotype" />
-      </picture>
-
-      <article className="w-[550px] px-12 py-12 bg-secondary-white flex flex-col">
+      <article className="w-[700px] px-12 py-12 bg-secondary-white flex flex-col">
         <div className="flex justify-center items-center flex-col">
           <img
             className="mb-6 "
             src="/svg/BIENVENIDO! (1).svg"
             alt="svgimgg"
           ></img>
-          <h1 className="font-bold text-3xl mb-6">Iniciar Sesión</h1>
+          <section className="flex items-center">
+            <div className="font-bold text-xl my-6 mr-7 pb-2 border-b-4 select-none">
+              Iniciar Sesión
+            </div>
+            <a href="http://localhost:3000/auth/register">
+              <button className="font-bold text-xl my-6 ml-7 text-secondary-gray pb-2 border-b-4 border-black hover:scale-105">
+                Registrarse
+              </button>
+            </a>
+          </section>
         </div>
 
         <div className="my-4">
           <label className="block mb-1 font-bold text-xl">
-            Correo electrónico o Celular
+            Correo electrónico
           </label>
           <span className="flex items-center border border-secondary-gray rounded-3xl p-3 bg-secondary-white">
             <img
@@ -75,7 +80,7 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
             />
             <button onClick={switchShown}>
-              {shown ? (<img src="/svg/Visibility-Icon.svg"/>):(<img src="/svg/VisibilityOff-Icon.svg"/>)}
+              {shown ? (<img src="/svg/Visibility-Icon.svg" />) : (<img src="/svg/VisibilityOff-Icon.svg" />)}
             </button>
           </span>
         </div>
@@ -103,8 +108,8 @@ export default function LoginPage() {
         </div>
 
         <div className="w-full flex flex-col justify-center mt-8">
-          <div  className="text-red-500 w-full flex justify-center mb-4">
-          {errorMessage && <p>{errorMessage}</p>}
+          <div className="text-red-500 w-full flex justify-center mb-4">
+            {errorMessage && <p>{errorMessage}</p>}
           </div>
           <button
             id="submit"
@@ -122,6 +127,11 @@ export default function LoginPage() {
           </p>
         </div>
       </article>
+
+      <picture className="flex justify-around ">
+        <img src="/svg/Imagotype.svg" alt="Logotype" />
+      </picture>
+
     </section>
   );
 }
