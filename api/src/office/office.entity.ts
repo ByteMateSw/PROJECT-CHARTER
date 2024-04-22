@@ -21,6 +21,6 @@ export class Office {
   /**
    * The category of the Office.
    */
-  @ManyToOne(() => Category, (category) => category.offices)
+  @ManyToOne(() => Category, category => category.offices)
   category: Category;
 }

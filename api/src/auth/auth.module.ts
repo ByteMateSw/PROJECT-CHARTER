@@ -5,7 +5,6 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt/access.strategy';
 import { HashService } from './hash.service';
-import { ToSController } from './ToS/ToS.controller';
 import { ConfigModule } from '@nestjs/config';
 import { LocalStrategy } from './local/local.strategy';
 import { PassportModule } from '@nestjs/passport';
@@ -23,7 +22,7 @@ import { MailerModule } from '../mailer/mailer.module';
     JwtModule.register({}),
     MailerModule,
   ],
-  controllers: [AuthController, ToSController],
+  controllers: [AuthController],
   providers: [
     AuthService,
     HashService,

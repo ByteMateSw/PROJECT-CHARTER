@@ -35,7 +35,7 @@ export class AuthService {
    * @throws UnauthorizedException if the user is not found.
    */
   async login(email: string): Promise<Tokens> {
-    const user = await this.userService.getUser({ email });
+    const user = await this.userService.getUserBy({ email });
     if (!user) throw new UnauthorizedException();
     const role = await this.userService.getRole(user.id);
 
@@ -111,7 +111,7 @@ export class AuthService {
    * @throws UnauthorizedException if the user or refresh token is invalid.
    */
   async refreshTokens(id: number, refreshToken: string): Promise<Tokens> {
-    const user = await this.userService.getUser({ id });
+    const user = await this.userService.getUserBy({ id });
     if (!user) throw new UnauthorizedException('Accesso denegado');
 
     const role = await this.userService.getRole(id);

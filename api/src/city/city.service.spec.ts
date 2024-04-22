@@ -85,7 +85,7 @@ describe('CityService', () => {
 
   describe('findAll', () => {
     it('should return an array of cities', async () => {
-      const provinces = await cityService.getCities();
+      const provinces = await cityService.getAllCities();
       expect(provinces).toEqual([mockCity]);
     });
   });
@@ -93,7 +93,7 @@ describe('CityService', () => {
   describe('findOne', () => {
     it('should return a City by id', async () => {
       const id = 1;
-      const city = await cityService.getOneCity(id);
+      const city = await cityService.getCityById(id);
       expect(city).toEqual(mockCity);
     });
   });
@@ -121,7 +121,7 @@ describe('CityService', () => {
   describe('exists', () => {
     it('should return true if cities exists', async () => {
       const id = 1;
-      const exists = await cityService.getOneCity(id);
+      const exists = await cityService.getCityById(id);
       expect(exists).toBe(mockCity);
     });
   });

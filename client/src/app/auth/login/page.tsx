@@ -1,5 +1,5 @@
 "use client";
-import axios from "axios";
+import { login } from "@/app/api/user";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -13,13 +13,9 @@ export default function LoginPage() {
   const switchShown = () => setShown(!shown)
 
   const handleLogin = async () => {
-    try {
-      const response = await axios.post("http://localhost:3001/auth/login", { email, password },{withCredentials:true});
-      console.log(response.data)
-      window.location.href = "/";
-    } catch (error) {
-      setErrorMessage("Credenciales incorrectas");
-    }
+    const data = await login(email, password);
+    console.log(data);
+    //  window.location.href = "/";
   };
 
   return (

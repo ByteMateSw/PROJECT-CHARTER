@@ -6,8 +6,8 @@ import { Category } from "./category.entity";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 
 
-describe('categoryService',() =>{
-    let service: CategoryService;
+describe('categoryService', () => {
+  let service: CategoryService;
 
     const mockCategory ={
         "id":1,
@@ -27,18 +27,21 @@ const mockCategoryRepository ={
     delete: jest.fn().mockResolvedValue(mockCategory)
 }
 
-beforeEach(async ()=> {
+  beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-    providers: [CategoryService ,{
-        provide: getRepositoryToken(Category),
-        useValue: mockCategoryRepository
-    }]
-}).compile();
+      providers: [
+        CategoryService,
+        {
+          provide: getRepositoryToken(Category),
+          useValue: mockCategoryRepository,
+        },
+      ],
+    }).compile();
 
     service = module.get<CategoryService>(CategoryService);
-})
+  });
 
-it('should be defined', ()=>{
+  it('should be defined', () => {
     expect(service).toBeDefined();
 })
 
@@ -57,7 +60,7 @@ describe('getCategoryById',() => {
     })
 })
 
-describe('createCategory', ()=>{
+  describe('createCategory', () => {
     it('should create an category', async () => {
         jest.spyOn(service, 'existCategoryName').mockResolvedValueOnce(false);
         const categoria= await service.createCategory(mockCategory);
