@@ -19,9 +19,9 @@ const MENU_ITEMS = [
 
 export default function Dropdown() {
   return (
-    <div className="dropdown dropdown-hover">
+    <div className="dropdown dropdown-hover hover:[&>label]:text-primary-blue">
       <label
-        className="btn bg-secondary-white my-2 font-semibold text-lg gap-2 p-0"
+        className="btn bg-secondary-white my-2 font-semibold text-lg gap-2 p-0 username"
         tabIndex={0}
       >
         <img
@@ -33,14 +33,22 @@ export default function Dropdown() {
         <div className="arrow"></div>
       </label>
       <div className="dropdown-menu dropdown-menu-bottom-left bg-secondary-white -right-8 mt-1 w-44">
-        <a className="dropdown-item text-sm">Perfil</a>
-        <a tabIndex={-1} className="dropdown-item text-sm">
-          Configuración
-        </a>
-        <div className="dropdown-divider" role="separator"></div>
-        <a tabIndex={-1} className="dropdown-item text-sm">
-          Cerra Sesión
-        </a>
+        <Link href="/profile/username" className="dropdown-item text-sm flex flex-row items-center justify-start gap-1">
+          <img src="/svg/person.svg" alt="" className="h-6" /> Perfil
+        </Link>
+        <Link href="#"
+          tabIndex={-1}
+          className="dropdown-item text-sm flex flex-row items-center justify-start gap-2"
+        >
+          <img src="/svg/settings.svg" alt="" className="h-6 -ml-1" /> Configuración
+        </Link>
+        <div className="dropdown-divider my-2" role="separator"></div>
+        <Link href="#"
+          tabIndex={-1}
+          className="dropdown-item text-sm flex flex-row items-center gap-1"
+        >
+          <img src="/svg/logout.svg" alt="" className="h-6 -ml-1" /> Cerrar Sesión
+        </Link>
       </div>
     </div>
   );

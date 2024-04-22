@@ -7,16 +7,40 @@ import MiniAbout from "./components/Home/MiniAbout";
 
 export default function Home() {
   const paragraphs1 = [
-    "Completa tu perfil profesional con tu experiencia laboral, habilidades y educación",
-    "Muestra tus proyectos más relevantes y logros profesionales",
-    "Establece tu ubicación, tus horarios y días disponible",
-    "Recibe reseñas de clientes",
+    {
+      text: "Completa tu perfil profesional con tu experiencia laboral, habilidades y educación",
+      svg: "/svg/add-person.svg",
+    },
+    {
+      text: "Muestra tus proyectos más relevantes y logros profesionales",
+      svg: "/svg/design-services.svg",
+    },
+    {
+      text: "Establece tu ubicación, tus horarios y días disponible",
+      svg: "/svg/pin-drop.svg",
+    },
+    {
+      text: "Recibe reseñas de clientes",
+      svg: "/svg/reviews.svg",
+    },
   ];
   const paragraphs2 = [
-    "Explora oportunidades laborales que se ajusten a tus habilidades y experiencia",
-    "Personaliza tu búsqueda filtrando por ubicación, industria, nivel de experiencia y más",
-    "Publica tus vacantes laborales para atraer candidatos calificados",
-    "Simplifica tu proceso de contratación comunicándote con potenciales perfiles",
+    {
+      text: "Explora oportunidades laborales que se ajusten a tus habilidades y experiencia",
+      svg: "/svg/manage-search.svg",
+    },
+    {
+      text: "Personaliza tu búsqueda filtrando por ubicación, industria, nivel de experiencia y más",
+      svg: "/svg/contract.svg",
+    },
+    {
+      text: "Publica tus vacantes laborales para atraer candidatos calificados",
+      svg: "/svg/add-post.svg",
+    },
+    {
+      text: "Simplifica tu proceso de contratación comunicándote con potenciales perfiles",
+      svg: "/svg/person-chat.svg",
+    },
   ];
 
   return (
@@ -31,7 +55,7 @@ export default function Home() {
           pText="pl-52"
           pImg="pr-52"
           paragraphsText={paragraphs1}
-          tittle= "Potencia tu perfil"
+          tittle="Potencia tu perfil"
         />
         <MiniAbout
           className="pt-48 pb-60 flex-row-reverse"
