@@ -133,7 +133,7 @@ export default function Sidebar(): JSX.Element {
           <input
             type="text"
             placeholder="Buscar profesión:"
-            className="flex-1 focus:outline-none w-5 ml-2"
+            className="flex-1 focus:outline-none w-5 ml-2 bg-transparent"
             value={searchTerm}
             onChange={handleSearchTermChange}
           />

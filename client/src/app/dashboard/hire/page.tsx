@@ -1,3 +1,4 @@
+import HireModal from "@/app/components/Dashboard/HireModal";
 import ButtonModal from "@/app/components/Modal/ButtonModal";
 import { profiles } from "@/data/hireProfiles";
 
@@ -8,7 +9,7 @@ export default function HirePage() {
         return (
           <div
             key={index}
-            className=" bg-secondary-white rounded-2xl border border-secondary-gray w-[345px]"
+            className="bg-secondary-white rounded-2xl border border-secondary-gray w-[345px] max-h-96"
           >
             <img
               src={profile.imageBackground}
@@ -20,11 +21,11 @@ export default function HirePage() {
               <img
                 src={profile.imageProfile}
                 alt="imagen de perfil"
-                className=" h-20 w-20 rounded-full bg-secondary-gray border-2 border-secondary-white "
+                className=" h-28 rounded-full bg-secondary-gray border-2 border-secondary-white "
               />
             </div>
 
-            <div className="flex-col items-center flex justify-between mt-16">
+            <div className="flex-col items-center flex justify-between pt-8">
               <h2 className="text-center text-secondary-black text-3xl font-bold">
                 {profile.name}
               </h2>
@@ -41,14 +42,7 @@ export default function HirePage() {
                 />
                 {profile.location}
               </p>
-              <ButtonModal
-                user={profile}
-                className="w-11/12 h-9 px-4 bg-primary-blue rounded-2xl m-4 mx-4"
-              >
-                <p className="text-secondary-white text-base font-bold ">
-                  Ver Perfil
-                </p>
-              </ButtonModal>
+              <HireModal user={profile} index={index} />
             </div>
           </div>
         );

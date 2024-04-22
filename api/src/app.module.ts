@@ -3,7 +3,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './config/typeorm.config';
 import { UserModule } from './user/user.module';
-import { CategoryModule } from './category/category.module';
 import { OfficeModule } from './office/office.module';
 import { AuthModule } from './auth/auth.module';
 import { ProvinceModule } from './province/province.module';
@@ -27,7 +26,6 @@ import { AppController } from './app.controller';
     }),
     AuthModule,
     UserModule,
-    CategoryModule,
     ProvinceModule,
     CityModule,
     OfficeModule,

@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
+    <html lang="es" className="bg-secondary-white text-secondary-black">
       <body className={`${nunito.className} antialiased`}>
         <main>
             {children}
