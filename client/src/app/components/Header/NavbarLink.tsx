@@ -19,7 +19,7 @@ export default function NavbarLink({
   alt: string;
 }): JSX.Element {
   return (
-    <Link className="flex flex-col items-center px-4 hover:text-secondary-white hover:bg-primary-blue duration-300 rounded-lg link" href={`/${href}`}>
+    <Link className="flex flex-col items-center px-4 hover:text-primary-blue duration-300 rounded-lg link" href={`/${href}`}>
       <img className="h-6 filter-white" src={src} alt={alt} />
       <li className="font-bold text-base">
         {title}

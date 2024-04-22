@@ -48,12 +48,12 @@ body {
 }
 
 .filter-white {
-  filter: none;
+  filter: invert(5%) sepia(6%) saturate(24%) hue-rotate(358deg) brightness(98%) contrast(91%);;
   transition: filter 300ms;
 }
 
 .link:hover .filter-white {
-  filter: invert(1) grayscale(1) brightness(10);
+  filter: invert(44%) sepia(90%) saturate(7131%) hue-rotate(225deg) brightness(95%) contrast(89%);
   transition: filter 300ms;
 }
 
