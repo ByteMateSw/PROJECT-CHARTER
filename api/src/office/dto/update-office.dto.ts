@@ -1,6 +1,4 @@
-import { IsOptional, IsString, ValidateNested } from 'class-validator';
-import { CategoryDto } from '../../category/dto/category.dto';
-import { Type } from 'class-transformer';
+import { IsOptional, IsString } from 'class-validator';
 
 /**
  * Data transfer object for creating an office.
@@ -10,8 +8,4 @@ export class UpdateOfficeDto {
   @IsString()
   name: string;
 
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => CategoryDto)
-  category: CategoryDto;
 }

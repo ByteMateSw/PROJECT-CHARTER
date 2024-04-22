@@ -3,7 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Office } from './office.entity';
 import { OfficeService } from './office.service';
 import { OfficeController } from './office.controller';
-import { CategoryModule } from 'src/category/category.module';
 
 /**
  * Represents the Office module of the application.
@@ -11,7 +10,7 @@ import { CategoryModule } from 'src/category/category.module';
  * defining the controllers, providers, and exports for the Office feature.
  */
 @Module({
-  imports: [TypeOrmModule.forFeature([Office]), CategoryModule],
+  imports: [TypeOrmModule.forFeature([Office])],
   controllers: [OfficeController],
   providers: [OfficeService],
 })

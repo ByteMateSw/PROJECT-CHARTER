@@ -10,13 +10,18 @@ import Link from "next/link";
 export default function NavbarLink({
   title,
   href,
+  src,
+  alt,
 }: {
   title: string;
   href: string;
+  src: string;
+  alt: string;
 }): JSX.Element {
   return (
-    <Link href={`/${href}`}>
-      <li className="px-4 py-2 rounded-lg font-bold text-base hover:text-secondary-white hover:bg-primary-blue duration-300">
+    <Link className="flex flex-col items-center px-4 text-secondary-black hover:text-primary-blue duration-300 rounded-lg link" href={`/${href}`}>
+      <img className="h-6 filter-white" src={src} alt={alt} />
+      <li className="font-bold text-base">
         {title}
       </li>
     </Link>

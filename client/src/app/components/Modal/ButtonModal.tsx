@@ -51,7 +51,7 @@ export default function ButtonModal({
           </div>
           <div className="flex mx-auto gap-4">
             <Link href={`/profile/${user.id}`}>
-              <button className="btn bg-primary-green text-secondary-white font-bold">
+              <button className="btn py-4 px-6 bg-primary-green text-secondary-white font-bold">
                 Ir al perfil completo
               </button>
             </Link>

@@ -25,11 +25,13 @@ const config: Config = {
         },
       },
       backgroundImage: {
-        'gradient-texture': "url('/img/bg-image.jpg')",
-
-      }
+        "gradient-texture": "url('/img/bg-image.jpg')",
+      },
     },
   },
-  plugins: [],
+  plugins: [require("rippleui")],
+  rippleui: {
+    removeThemes: ["dark"]
+  },
 };
 export default config;
