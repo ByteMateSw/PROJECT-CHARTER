@@ -8,12 +8,15 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [shown, setShown] = useState(false)
+
+  const switchShown = () => setShown(!shown)
 
   const handleLogin = async () => {
     try {
       const response = await axios.post("http://localhost:3001/auth/login", { email, password },{withCredentials:true});
       console.log(response.data)
-      //  window.location.href = "/";
+      window.location.href = "/";
     } catch (error) {
       setErrorMessage("Credenciales incorrectas");
     }
@@ -69,14 +72,14 @@ export default function LoginPage() {
             <input
               id="pass"
               className="w-full h-15 focus:outline-none bg-secondary-white"
-              type="password"
+              type={shown ? "text" : "password"}
               name="password"
               placeholder="····················"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button>
-              <img src="/svg/VisibilityOff-Icon.svg" alt="ojito" />
+            <button onClick={switchShown}>
+              {shown ? (<img src="/svg/Visibility-Icon.svg"/>):(<img src="/svg/VisibilityOff-Icon.svg"/>)}
             </button>
           </span>
         </div>
@@ -104,7 +107,9 @@ export default function LoginPage() {
         </div>
 
         <div className="w-full flex flex-col justify-center mt-8">
+          <div  className="text-red-500 w-full flex justify-center mb-4">
           {errorMessage && <p>{errorMessage}</p>}
+          </div>
           <button
             id="submit"
             type="submit"
@@ -115,7 +120,7 @@ export default function LoginPage() {
           </button>
           <p className="flex justify-center">
             Sos nuevo?
-            <Link href="" className="text-primary-blue hover:underline ml-1">
+            <Link href="http://localhost:3000/auth/register" className="text-primary-blue hover:underline ml-1">
               Podes registrarte acá
             </Link>
           </p>
