@@ -9,7 +9,7 @@ export default function Hero() {
             <span>Encuentra</span> talento <br />
           </h1>
         </div>
-        <div className="flex gap-14 pt-4 h-20 font-bold text-xl [&>button]:px-6 [&>button]:py-4 [&>button]:btn [&>button]:bg-primary-green">
+        <div className="flex gap-14 pt-4 h-20 font-bold text-xl [&>button]:px-6 [&>button]:py-4 [&>button]:bg-primary-green [&>button]:rounded-full">
           <button className="hover:scale-110 duration-150">
             Encuentra Talento!
           </button>

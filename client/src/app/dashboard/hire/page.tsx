@@ -8,7 +8,7 @@ export default function HirePage() {
         return (
           <div
             key={index}
-            className=" bg-secondary-white rounded-2xl border border-secondary-gray w-[345px]"
+            className="bg-secondary-white rounded-2xl border border-secondary-gray w-[345px] max-h-96"
           >
             <img
               src={profile.imageBackground}
@@ -20,11 +20,11 @@ export default function HirePage() {
               <img
                 src={profile.imageProfile}
                 alt="imagen de perfil"
-                className=" h-20 w-20 rounded-full bg-secondary-gray border-2 border-secondary-white "
+                className=" h-28 rounded-full bg-secondary-gray border-2 border-secondary-white "
               />
             </div>
 
-            <div className="flex-col items-center flex justify-between mt-16">
+            <div className="flex-col items-center flex justify-between pt-8">
               <h2 className="text-center text-secondary-black text-3xl font-bold">
                 {profile.name}
               </h2>

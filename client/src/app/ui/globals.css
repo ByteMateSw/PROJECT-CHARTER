@@ -16,20 +16,6 @@ body {
   padding: 0;
 }
 
-@layer components {
-  .btn {
-    @apply flex items-center justify-center rounded-full;
-  }
-
-  .btn.btn-light {
-    @apply bg-white text-gray-500;
-  }
-
-  .btn.btn-success {
-    @apply text-white bg-green-600 shadow-green-400/10;
-  }
-}
-
 .grid-rows-layout {
   grid-template-rows: auto 1fr;
 }
