@@ -1,10 +1,29 @@
 "use client";
+<<<<<<< HEAD
+=======
+import { login } from "@/app/api/user";
+>>>>>>> f178181565cab84f7b20cf48fb11d21810968ef5
 import Link from "next/link";
+import { useState } from "react";
 
 
 
 export default function LoginPage() {
+<<<<<<< HEAD
  
+=======
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [keepLoggedIn, setKeepLoggedIn] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleLogin = async () => {
+    const data = await login(email, password);
+    console.log(data);
+    //  window.location.href = "/";
+  };
+
+>>>>>>> f178181565cab84f7b20cf48fb11d21810968ef5
   return (
     <section className="min-h-screen flex justify-around items-center bg-secondary-white overflow-hidden">
       <picture className="flex justify-around ">
@@ -26,12 +45,18 @@ export default function LoginPage() {
             Correo electrónico o Celular
           </label>
           <span className="flex items-center border border-secondary-gray rounded-3xl p-3 bg-secondary-white">
-            <img src="/svg/Mail-Icon.svg" alt="LockIcon" className="mr-2" />
+            <img
+              src="/svg/Mail-Icon.svg"
+              alt="LockIcon"
+              className="mr-2 select-none"
+            />
             <input
               className="w-full h-15 focus:outline-none bg-secondary-white"
               type="text"
               name="email"
               placeholder="Correo@correo.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </span>
         </div>
@@ -41,19 +66,22 @@ export default function LoginPage() {
             Contraseña
           </label>
           <span className="flex items-center border border-secondary-gray rounded-3xl p-3 bg-secondary-white">
-            <img src="/svg/Lock-Icon.svg" alt="LockIcon" className="mr-2" />
+            <img
+              src="/svg/Lock-Icon.svg"
+              alt="LockIcon"
+              className="mr-2 select-none"
+            />
             <input
               id="pass"
               className="w-full h-15 focus:outline-none bg-secondary-white"
               type="password"
               name="password"
               placeholder="····················"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <button>
-              <img
-                src="/svg/VisibilityOff-Icon.svg"
-                alt="ojito"
-              />
+              <img src="/svg/VisibilityOff-Icon.svg" alt="ojito" />
             </button>
           </span>
         </div>
@@ -64,12 +92,14 @@ export default function LoginPage() {
             id="SesiónIniciada"
             name="InicSes"
             className="hidden"
+            checked={keepLoggedIn}
+            onChange={(e) => setKeepLoggedIn(e.target.checked)}
           />
           <label htmlFor="InicSes" className="flex items-center">
             <img
               src="/svg/ToggleOff-Icon.svg"
               alt="ToggleButton"
-              className="mr-3"
+              className="mr-3 select-none"
             />
             Mantener sesión iniciada
           </label>
@@ -78,20 +108,25 @@ export default function LoginPage() {
           </button>
         </div>
 
+<<<<<<< HEAD
         <div className="w-full flex flex-col justify-center my-4 overflow-hidden">
+=======
+        <div className="w-full flex flex-col justify-center mt-8">
+          {errorMessage && <p>{errorMessage}</p>}
+>>>>>>> f178181565cab84f7b20cf48fb11d21810968ef5
           <button
             id="submit"
             type="submit"
             className=" w-full h-[40px] bg-primary-blue rounded-xl text-secondary-white text-xl mb-2 hover:scale-105"
+            onClick={handleLogin}
           >
             Continuar
           </button>
         
           
           <p className="flex justify-center">
-            Sos nuevo?{" "}
+            Sos nuevo?
             <Link href="" className="text-primary-blue hover:underline ml-1">
-              {" "}
               Podes registrarte acá
             </Link>
           </p>

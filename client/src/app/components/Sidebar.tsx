@@ -2,31 +2,67 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import ComboBox from "./ComboBox";
-import { provincesBox } from "@/json/provincesBox";
-import { locationsBox } from "@/json/locations";
 import { getProfessions } from "../api/office";
 import { StylesConfig } from "react-select";
 import { getCities, getProvinces } from "../api/locations";
-        
+import { useRouter, useSearchParams } from "next/navigation";
+
 interface Profession {
   id: number;
   name: string;
 }
 
 export default function Sidebar(): JSX.Element {
-  const [provinces, setProvinces] = useState<any>();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  // State
+  const professionsParams = searchParams.get("professions");
+  const [locations, setLocations] = useState<{ provinces: any; cities: any }>({
+    provinces: null,
+    cities: null,
+  });
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [selectedProfessions, setSelectedProfessions] = useState<any[]>([]);
+  const [professions, setProfessions] = useState<Profession[]>([
+    { id: 1, name: "Ingeniero" },
+  ]);
+  const [checkedItems, setCheckedItems] = useState<{ [key: number]: boolean }>(
+    []
+  );
+  const measure = 24;
 
-  const [cities, setCities] = useState<any>();
-
+  // Fetch data
   useEffect(() => {
-    getProvinces().then((data: any) => {
-      setProvinces(data);
+    getProvinces().then((newProvinces: any) => {
+      setLocations((prevState) => ({ ...prevState, provinces: newProvinces }));
     });
-    getCities().then((data: any) => {
-      setCities(data);
+    getCities().then((newCities: any) => {
+      setLocations((prevState) => ({ ...prevState, cities: newCities }));
     });
   }, []);
 
+  // Actualizar selectedProfessions cuando cambia professionsParams
+  useEffect(() => {
+    if (professionsParams) setSelectedProfessions(professionsParams.split("-"));
+  }, [professionsParams]);
+
+  // Actualizar la URL cuando cambia selectedProfessions
+  useEffect(() => {
+    if (selectedProfessions.length === 0) router.replace("/dashboard/hire");
+    else router.push(`?professions=${selectedProfessions.join("-")}`);
+  }, [selectedProfessions, router]);
+
+  useEffect(() => {
+    const newCheckedItems = selectedProfessions.reduce((acc, curr) => {
+      const index = professions.findIndex(
+        (profession) => profession.name === curr
+      );
+      return { ...acc, [index]: true };
+    }, {});
+    setCheckedItems(newCheckedItems);
+  }, [selectedProfessions]);
+
+  // Styles
   const styleComboBox: StylesConfig = {
     control: (styles) => ({
       ...styles,
@@ -44,16 +80,6 @@ export default function Sidebar(): JSX.Element {
       appearance: "none",
     }),
   };
-
-  const [checkedItems, setCheckedItems] = useState<{ [key: number]: boolean }>(
-    {}
-  );
-
-  const measure = 24;
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [professions, setProfessions] = useState<Profession[]>([
-    { id: 1, name: "Ingeniero" },
-  ]);
 
   useEffect(() => {
     getProfessions().then((data: Profession[]) => {
@@ -73,7 +99,22 @@ export default function Sidebar(): JSX.Element {
 
       return updatedCheckedItems;
     });
+
+    setSelectedProfessions((prevSelectedProfessions) => {
+      const updatedSelectedProfessions = [...prevSelectedProfessions];
+
+      if (updatedSelectedProfessions.includes(professions[id].name)) {
+        updatedSelectedProfessions.splice(
+          updatedSelectedProfessions.indexOf(professions[id].name),
+          1
+        );
+      } else {
+        updatedSelectedProfessions.push(professions[id].name);
+      }
+      return updatedSelectedProfessions;
+    });
   };
+
   const handleSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
     setCheckedItems({});
@@ -81,7 +122,7 @@ export default function Sidebar(): JSX.Element {
 
   return (
     <>
-      <nav className="flex h-full w-80 p-6 ml-4 flex-col items-start flex-1 border rounded-3xl border-secondary-gray overflow-y-hidden">
+      <nav className="flex h-full w-80 p-6 ml-4 flex-col items-start flex-1 border rounded-3xl border-secondary-gray">
         <section className="flex w-full items-center rounded-lg border justify-start border-secondary-gray px-2 py-1">
           <Image
             src="/svg/briefcase.svg"
@@ -142,12 +183,12 @@ export default function Sidebar(): JSX.Element {
             </span>
           </div>
           <ComboBox
-            optionsProps={provinces}
+            optionsProps={locations.provinces}
             placeholder="Provincia"
             styles={styleComboBox}
           />
           <ComboBox
-            optionsProps={cities}
+            optionsProps={locations.cities}
             placeholder="Localidades"
             styles={styleComboBox}
           />
