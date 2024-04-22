@@ -26,7 +26,7 @@ export default function Dropdown() {
       >
         <img
           className="rounded-full h-10 border-2 border-secondary-black"
-          src="https://randomuser.me/api/portraits/men/0.jpg"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRenkUTJ2tnqhmukhJwDsDWnoSXC6apMdbtHPjhRFJjsg&s"
           alt="Profile Image"
         />
         Furry
