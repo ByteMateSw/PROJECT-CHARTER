@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { OfficeController } from './office.controller';
 import { OfficeService } from './office.service';
 import { HttpException } from '@nestjs/common';
-import { CreateOfficeDto } from './dto/office.dto';
+import { CreateOfficeDto } from './dto/create-office.dto';
 import { HttpStatus } from '@nestjs/common';
 
 describe('OfficeController', () => {
@@ -15,6 +15,7 @@ describe('OfficeController', () => {
 
   const mockCreateOfficeDto: CreateOfficeDto = {
     name: 'New Office',
+    category: { id: 1 },
   };
 
   const mockError = new Error('Test Error');
@@ -52,16 +53,20 @@ describe('OfficeController', () => {
   });
   describe('findAllOffice', () => {
     it('should return all offices', async () => {
-      const offices = await controller.findAllOffice();
+      const offices = await controller.getAllOffices();
       expect(offices).toEqual([mockOffice]);
     });
 
     it('should throw an error when officeService throws an error', async () => {
-      mockOfficeService.getAll.mockRejectedValueOnce()
-      await expect(async () => await controller.findAllOffice()).rejects.toThrow(new HttpException(
-        'Error al buscar todos los oficios',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      ))
+      mockOfficeService.getAll.mockRejectedValueOnce();
+      await expect(
+        async () => await controller.getAllOffices(),
+      ).rejects.toThrow(
+        new HttpException(
+          'Error al buscar todos los oficios',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        ),
+      );
     });
   });
   describe('createOffice', () => {
@@ -71,8 +76,9 @@ describe('OfficeController', () => {
     });
 
     it('should throw an HttpException with HttpStatus.BAD_REQUEST when officeService throws an error', async () => {
-      mockOfficeService.createOffice.mockRejectedValueOnce(mockError)
-      await expect(async () => await controller.createOffice(mockCreateOfficeDto),
+      mockOfficeService.createOffice.mockRejectedValueOnce(mockError);
+      await expect(
+        async () => await controller.createOffice(mockCreateOfficeDto),
       ).rejects.toThrow(
         new HttpException(mockError.message, HttpStatus.BAD_REQUEST),
       );
@@ -82,18 +88,20 @@ describe('OfficeController', () => {
   describe('findOne', () => {
     it('should return the office with the specified ID', async () => {
       const mockOffice = { id: 1, name: 'Office 1' };
-      const result = await controller.findOne('1');
+      const result = await controller.getOfficeById(1);
       expect(result).toEqual(mockOffice);
     });
 
     it('should throw an HttpException with HttpStatus.INTERNAL_SERVER_ERROR when officeService throws an error', async () => {
-      mockOfficeService.getOfficeById.mockRejectedValueOnce(mockError)
-      await expect(async () => await controller.findOne('1')).rejects.toThrow(
-          new HttpException(
-            'Error al buscar el oficio por ID',
-            HttpStatus.INTERNAL_SERVER_ERROR,
-          ),
-        );
+      mockOfficeService.getOfficeById.mockRejectedValueOnce(mockError);
+      await expect(
+        async () => await controller.getOfficeById(1),
+      ).rejects.toThrow(
+        new HttpException(
+          'Error al buscar el oficio por ID',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        ),
+      );
     });
   });
 
@@ -105,9 +113,11 @@ describe('OfficeController', () => {
     });
 
     it('should throw an HttpException with HttpStatus.FORBIDDEN when officeService throws an error', async () => {
-      mockOfficeService.deleteOffice.mockRejectedValueOnce(mockError)
+      mockOfficeService.deleteOffice.mockRejectedValueOnce(mockError);
       const id = 1;
-      await expect(async () => await controller.deleteOffice(id)).rejects.toThrow(
+      await expect(
+        async () => await controller.deleteOffice(id),
+      ).rejects.toThrow(
         new HttpException(mockError.message, HttpStatus.FORBIDDEN),
       );
     });
@@ -121,10 +131,12 @@ describe('OfficeController', () => {
     });
 
     it('should throw an HttpException with HttpStatus.FORBIDDEN when officeService throws an error', async () => {
-      mockOfficeService.updateOffice.mockRejectedValueOnce(mockError)
+      mockOfficeService.updateOffice.mockRejectedValueOnce(mockError);
       const id = 1;
-      await expect(async () => await controller.updateOffice(id, mockCreateOfficeDto)).rejects.toThrow(
-        new HttpException(mockError.message, HttpStatus.FORBIDDEN)
+      await expect(
+        async () => await controller.updateOffice(id, mockCreateOfficeDto),
+      ).rejects.toThrow(
+        new HttpException(mockError.message, HttpStatus.FORBIDDEN),
       );
     });
   });

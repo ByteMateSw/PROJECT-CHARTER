@@ -12,7 +12,6 @@ import {
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
-import { ToSGuard } from './ToS/ToS.guard';
 import { HashPasswordPipe } from '../utils/pipes/hash.pipe';
 import { Response } from 'express';
 import { LocalAuthGuard } from './local/local-auth.guard';
@@ -61,7 +60,7 @@ export class AuthController {
    * @returns An access token for the logged-in user.
    */
   @HttpCode(HttpStatus.ACCEPTED)
-  @UseGuards(LocalAuthGuard, ToSGuard)
+  @UseGuards(LocalAuthGuard)
   @Post('login')
   async loginUser(
     @Body() signInDto: LoginDto,

@@ -13,6 +13,9 @@ import { HiringModule } from './hiring/hiring.module';
 import { PostModule } from './post/post.module';
 import { ConfigurationModule } from './config/config.module';
 import { MailerModule } from './mailer/mailer.module';
+import { ReviewModule } from './review/review.module';
+import { NotificationModule } from './notifications/notifications.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -32,6 +35,9 @@ import { MailerModule } from './mailer/mailer.module';
     HiringModule,
     PostModule,
     MailerModule,
+    ReviewModule,
+    NotificationModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}

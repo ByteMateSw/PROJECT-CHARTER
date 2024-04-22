@@ -80,12 +80,6 @@ export class User {
   birthday: Date;
 
   /**
-   * Indicates whether the user has accepted the Terms of Service.
-   */
-  @Column({ default: false, select: false })
-  acceptedToS: boolean;
-
-  /**
    * The DNI (National Identity Document) of the user.
    */
   @Column()

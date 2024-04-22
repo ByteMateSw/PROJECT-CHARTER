@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { ToSGuard } from './ToS/ToS.guard';
 import { Response } from 'express';
 import { LocalAuthGuard } from './local/local-auth.guard';
 import { RefreshTokenGuard } from './jwt/refresh.guard';
@@ -45,10 +44,6 @@ describe('AuthController', () => {
     SendVerificationMail: jest.fn(),
   };
 
-  let mockToSGuard = {
-    canActivate: () => true,
-  };
-
   let mockLocalAuthGuard = {
     canActivate: () => true,
   };
@@ -75,8 +70,6 @@ describe('AuthController', () => {
         },
       ],
     })
-      .overrideGuard(ToSGuard)
-      .useValue(mockToSGuard)
       .overrideGuard(LocalAuthGuard)
       .useValue(mockLocalAuthGuard)
       .overrideGuard(RefreshTokenGuard)

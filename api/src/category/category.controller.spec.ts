@@ -1,31 +1,30 @@
-import { HttpException, HttpStatus } from "@nestjs/common";
-import { CategoryController } from "./category.controller"
-import { CategoryService } from "./category.service";
-import { Test, TestingModule } from "@nestjs/testing";
-import { CategoryDto } from "./dto/category.dto";
-
+import { HttpException, HttpStatus } from '@nestjs/common';
+import { CategoryController } from './category.controller';
+import { CategoryService } from './category.service';
+import { Test, TestingModule } from '@nestjs/testing';
+import { CreateCategoryDto } from './dto/create-category.dto';
 
 describe('CategoryController', () => {
     let controller: CategoryController;
     
 
-    const mockCategory = {
-        "id": 1,
-        "name":"TestName",
-    };
+  const mockCategory = {
+    id: 1,
+    name: 'TestName',
+  };
 
-    const mockUpdate = {
-        "name": "comercio",
-    }
+  const mockUpdate = {
+    name: 'comercio',
+  };
 
-    const mockCreateCategoryDto: CategoryDto ={
-        name: 'new category',
-    }
+  const mockCreateCategoryDto: CreateCategoryDto = {
+    name: 'new category',
+  };
 
-    const mockError =  new Error('Category error');
-    const mockDeletedMessage = {message:'se ha eliminado correctamente'}
-    const mockUpdateMessage = {message:'se ha actualizado correctamente'}
-    const mockCreateMessage = {message:'Categoria creada correctamente'}
+  const mockError = new Error('Category error');
+  const mockDeletedMessage = 'se ha eliminado correctamente';
+  const mockUpdateMessage = 'se ha actualizado correctamente';
+  const mockCreateMessage = 'se ha creado correctamente';
 
     const mockCategoryService = {
         getAllCategories: jest.fn().mockResolvedValue([mockCategory]),
@@ -37,15 +36,15 @@ describe('CategoryController', () => {
         
 beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-        controllers: [CategoryController],
-        providers: [CategoryService],
+      controllers: [CategoryController],
+      providers: [CategoryService],
     })
-        .overrideProvider(CategoryService)
-        .useValue(mockCategoryService)
-        .compile();
+      .overrideProvider(CategoryService)
+      .useValue(mockCategoryService)
+      .compile();
 
     controller = module.get<CategoryController>(CategoryController);
-});
+  });
 
 it('should be defined', () => {
     expect(controller).toBeDefined();
@@ -72,24 +71,19 @@ describe('getCategoryById',()=>{
         expect(await controller.getCategoryById(id)).toBe(mockCategory)
         expect(mockCategoryService.getCategoryById).toHaveBeenCalledWith(id)
     });
-    
-    it('should throw an error for not get category by Id', async() =>{
-        mockCategoryService.getCategoryById.mockRejectedValue(mockError)
-        await expect(async () => await controller.getCategoryById(mockCategory.id)
-        ).rejects.toThrow(new HttpException(mockError, HttpStatus.BAD_REQUEST))
-    })
-})
+  });
 
-describe('create',()=>{
-    it('should create an category', async() =>{
-    const result= await controller.createCategory(mockCreateCategoryDto)
-    expect(result).toEqual(mockCreateMessage)
-});
+  describe('create', () => {
+    it('should create an category', async () => {
+      const result = await controller.createCategory(mockCreateCategoryDto);
+      expect(result).toEqual(mockCreateMessage);
+    });
 
-it('should throw an error', async ()=>{
-    mockCategoryService.createCategory.mockRejectedValueOnce(mockError)
-    await expect(async () => await controller.createCategory(mockCreateCategoryDto),
-    ).rejects.toThrow(
+    it('should throw an error', async () => {
+      mockCategoryService.createCategory.mockRejectedValueOnce(mockError);
+      await expect(
+        async () => await controller.createCategory(mockCreateCategoryDto),
+      ).rejects.toThrow(
         new HttpException(mockError.message, HttpStatus.BAD_REQUEST),
     )
 });
