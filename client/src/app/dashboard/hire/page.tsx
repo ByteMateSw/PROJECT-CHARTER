@@ -1,3 +1,4 @@
+import HireModal from "@/app/components/Dashboard/HireModal";
 import ButtonModal from "@/app/components/Modal/ButtonModal";
 import { profiles } from "@/data/hireProfiles";
 
@@ -41,14 +42,7 @@ export default function HirePage() {
                 />
                 {profile.location}
               </p>
-              <ButtonModal
-                user={profile}
-                className="w-11/12 h-9 px-4 bg-primary-blue rounded-2xl m-4 mx-4"
-              >
-                <p className="text-secondary-white text-base font-bold ">
-                  Ver Perfil
-                </p>
-              </ButtonModal>
+              <HireModal user={profile} index={index} />
             </div>
           </div>
         );
