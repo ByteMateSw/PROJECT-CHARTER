@@ -1,39 +1,10 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { gapi } from "gapi-script";
-import GoogleLogin, { GoogleLoginResponse, GoogleLoginResponseOffline } from "react-google-login";
+
 
 
 export default function LoginPage() {
-  const GOOGLE_CLIENT_ID = '483719238317-0b67hs4cfkkhbr17ieikrknd9h7oib12.apps.googleusercontent.com'
-  
-  const [user, setUser] = useState({}); 
-  
-
-  if (typeof window !== 'undefined') {
-     useEffect(() => {
-      const start = () => {
-        gapi.auth2.init({
-          clientId: GOOGLE_CLIENT_ID, 
-        })
-      }
-      gapi.load("client:auth2", start)
-    }, [])
-  }
-
-  const onSuccess = (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
-    if ('profileObj' in response) {
-      console.log(response.profileObj);
-    }else{
-      console.error('profileObj is not present in the response');
-    }
-  }
-  const onFailure = (response: any) => {
-    console.log("error")
-  }
-
-  
+ 
   return (
     <section className="min-h-screen flex justify-around items-center bg-secondary-white overflow-hidden">
       <picture className="flex justify-around ">
@@ -116,13 +87,6 @@ export default function LoginPage() {
             Continuar
           </button>
         
-          <GoogleLogin
-            clientId={GOOGLE_CLIENT_ID}
-            onSuccess={onSuccess}
-            onFailure={onFailure}
-            buttonText="Continue with Google"
-            className="btn w-full md:h-full  bg-secondary-white rounded-xl flex justify-center my-4 hover:scale-105"
-          />
           
           <p className="flex justify-center">
             Sos nuevo?{" "}
@@ -134,6 +98,6 @@ export default function LoginPage() {
         </div>
       </article>
     </section>
-  );
-}
+    )
+  }
 
