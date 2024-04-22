@@ -17,23 +17,30 @@ const MENU_ITEMS = [
   { href: "#", text: "Configuración" },
 ];
 
-export default function Dropdown({ isOpen }: { isOpen: boolean}) {
+export default function Dropdown() {
   return (
-    <div
-      className={`absolute -left-5 mt-4 w-36 rounded-md shadow-lg bg-secondary-white ring-1 ring-black ring-opacity-5 dropdown-content ${
-        isOpen ? "open" : ""
-      }`}
-    >
-      <div
-        role="menu"
-        aria-orientation="vertical"
-        aria-labelledby="options-menu"
+    <div className="dropdown dropdown-hover">
+      <label
+        className="btn bg-secondary-white my-2 font-semibold text-lg gap-2 p-0"
+        tabIndex={0}
       >
-        {MENU_ITEMS.map((item) => {
-          return <Menu key={item.text} href={item.href} text={item.text} />;
-        })}
-        <hr />
-        <Menu href="/logout" text="Cerrar Sesión" />
+        <img
+          className="rounded-full h-10 border-2 border-secondary-black"
+          src="https://randomuser.me/api/portraits/men/0.jpg"
+          alt="Profile Image"
+        />
+        Furry
+        <div className="arrow"></div>
+      </label>
+      <div className="dropdown-menu dropdown-menu-bottom-left bg-secondary-white -right-8 mt-1 w-44">
+        <a className="dropdown-item text-sm">Perfil</a>
+        <a tabIndex={-1} className="dropdown-item text-sm">
+          Configuración
+        </a>
+        <div className="dropdown-divider" role="separator"></div>
+        <a tabIndex={-1} className="dropdown-item text-sm">
+          Cerra Sesión
+        </a>
       </div>
     </div>
   );

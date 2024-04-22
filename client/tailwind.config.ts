@@ -30,5 +30,8 @@ const config: Config = {
     },
   },
   plugins: [require("rippleui")],
+  rippleui: {
+    removeThemes: ["dark"]
+  },
 };
 export default config;
