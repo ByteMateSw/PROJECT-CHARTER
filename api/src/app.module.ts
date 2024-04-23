@@ -15,6 +15,7 @@ import { MailerModule } from './mailer/mailer.module';
 import { ReviewModule } from './review/review.module';
 import { NotificationModule } from './notifications/notifications.module';
 import { AppController } from './app.controller';
+import { S3Module } from './storage/s3.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { AppController } from './app.controller';
     MailerModule,
     ReviewModule,
     NotificationModule,
+    S3Module,
   ],
   controllers: [AppController],
 })

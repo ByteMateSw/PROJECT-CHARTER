@@ -6,6 +6,7 @@ import { IEnvironment } from './interfaces/app.interface';
 import 'dotenv/config';
 import databaseTestConfig from './database.test.config';
 import mailerConfig from './mailer.config';
+import s3Config from './s3.config';
 
 /**
  * The database configuration based on the current environment.
@@ -22,7 +23,7 @@ const dbConfig =
  * Loads the specified configuration files and sets up global configuration.
  */
 export const ConfigurationModule = ConfigModule.forRoot({
-  load: [appConfig, jwtConfig, dbConfig, mailerConfig],
+  load: [appConfig, jwtConfig, dbConfig, mailerConfig, s3Config],
   cache: process.env.NODE_ENV === IEnvironment.Production,
   isGlobal: true,
 });
