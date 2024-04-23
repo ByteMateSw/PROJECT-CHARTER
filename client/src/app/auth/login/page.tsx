@@ -112,7 +112,13 @@ export default function LoginPage() {
           </button>
         </div>
 
-        <div className="w-full flex flex-col justify-center mt-8">
+        <GoogleOAuthProvider clientId="483719238317-0b67hs4cfkkhbr17ieikrknd9h7oib12.apps.googleusercontent.com">
+            <React.StrictMode>
+                <GoogleOauth />
+            </React.StrictMode>
+          </GoogleOAuthProvider>,
+
+        <div className="w-full flex flex-col justify-center mt-4">
           <div className="text-red-500 w-full flex justify-center mb-4">
             {errorMessage && <p>{errorMessage}</p>}
           </div>
@@ -124,11 +130,7 @@ export default function LoginPage() {
           >
             Continuar
           </button>
-          <GoogleOAuthProvider clientId="483719238317-0b67hs4cfkkhbr17ieikrknd9h7oib12.apps.googleusercontent.com">
-            <React.StrictMode>
-                <GoogleOauth />
-            </React.StrictMode>
-          </GoogleOAuthProvider>,
+          
           <p className="flex justify-center">
             Sos nuevo?
             <Link href="http://localhost:3000/auth/register" className="text-primary-blue hover:underline ml-1">
