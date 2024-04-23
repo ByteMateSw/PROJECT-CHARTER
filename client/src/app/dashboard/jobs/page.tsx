@@ -1,5 +1,5 @@
 "use client";
-import { cardDetails } from "@/json/cards";
+import { cardDetails } from "@/data/cards";
 import NanoClamp from "nanoclamp";
 
 export default function JobsPage() {
