@@ -16,20 +16,6 @@ body {
   padding: 0;
 }
 
-@layer components {
-  .btn {
-    @apply flex items-center justify-center rounded-full;
-  }
-
-  .btn.btn-light {
-    @apply bg-white text-gray-500;
-  }
-
-  .btn.btn-success {
-    @apply text-white bg-green-600 shadow-green-400/10;
-  }
-}
-
 .grid-rows-layout {
   grid-template-rows: auto 1fr;
 }
@@ -48,26 +34,21 @@ body {
 }
 
 .filter-white {
-  filter: none;
+  filter: invert(5%) sepia(6%) saturate(24%) hue-rotate(358deg) brightness(98%)
+    contrast(91%);
   transition: filter 300ms;
 }
 
 .link:hover .filter-white {
-  filter: invert(1) grayscale(1) brightness(10);
+  filter: invert(44%) sepia(90%) saturate(7131%) hue-rotate(225deg)
+    brightness(95%) contrast(89%);
   transition: filter 300ms;
 }
 
-.dropdown-content {
-  transform: scale(0, 0);
-  transform-origin: top center;
-  transition: all 1s ease-out;
-  opacity: 0;
+.username:hover {
+  color: var(--primary-color-blue);
 }
 
-.dropdown-content.open {
-  transform: scale(1, 1);
-  opacity: 1;
-}
 
 .arrow {
   width: 0.5rem;

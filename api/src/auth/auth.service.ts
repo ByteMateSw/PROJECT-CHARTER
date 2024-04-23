@@ -176,7 +176,7 @@ export class AuthService {
    * @throws BadRequestException if the credentials are incorrect.
    */
   async validate(email: string, password: string): Promise<User> {
-    const user = await this.userService.getUser({ email });
+    const user = await this.userService.getUserBy({ email });
     if (!user) throw new BadRequestException('El usuario no existe');
 
     const hash = await this.userService.getUserPassword(user.id);

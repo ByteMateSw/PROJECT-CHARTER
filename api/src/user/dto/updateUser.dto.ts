@@ -42,6 +42,20 @@ export class UpdateUserDto {
   lastName?: string;
 
   /**
+   * The username of the user.
+   * @remarks
+   * - Must be a string.
+   * - Cannot be empty.
+   * @example johndoe
+   */
+  @IsOptional()
+  @IsString({
+    message: 'El nombre de usuario debe ser una cadena de caracteres.',
+  })
+  @IsNotEmpty({ message: 'El nombre de usuario no puede estar vacío.' })
+  username?: string;
+
+  /**
    * The email address of the user.
    * @remarks
    * - Must be a valid email address.

@@ -8,14 +8,12 @@ import { Office } from './office.entity';
 import { Repository } from 'typeorm';
 import { CreateOfficeDto } from './dto/create-office.dto';
 import { UpdateOfficeDto } from './dto/update-office.dto';
-import { CategoryService } from '../category/category.service';
 
 @Injectable()
 export class OfficeService {
   constructor(
     @InjectRepository(Office)
     private officeRepository: Repository<Office>,
-    private categoryService: CategoryService,
   ) {}
 
   /**
@@ -24,7 +22,6 @@ export class OfficeService {
    */
   async getAllOffices(): Promise<Office[]> {
     return await this.officeRepository.find({
-      relations: { category: true },
     });
   }
 
@@ -36,7 +33,6 @@ export class OfficeService {
   async getOfficeById(id: number): Promise<Office> {
     return await this.officeRepository.findOne({
       where: { id },
-      relations: { category: true },
     });
   }
 
@@ -52,12 +48,6 @@ export class OfficeService {
       name: createOffice.name,
     });
     if (existsOffice) throw new BadRequestException('El oficio ya existe');
-
-    const existsCategory = await this.categoryService.getCategoryById(
-      createOffice.category.id,
-    );
-    if (!existsCategory)
-      throw new BadRequestException('La categoria no existe');
 
     const newOffice = this.officeRepository.create(createOffice);
     return await this.officeRepository.save(newOffice);
@@ -83,14 +73,6 @@ export class OfficeService {
 
     const office = await this.officeRepository.findOne({ where: { id } });
     if (!office) throw new NotFoundException('El oficio no existe');
-
-    if (updateOffice.category) {
-      const existsCategory = await this.categoryService.getCategoryById(
-        updateOffice.category.id,
-      );
-      if (!existsCategory)
-        throw new BadRequestException('La categoria no existe');
-    }
 
     return await this.officeRepository.save({ ...office, ...updateOffice });
   }

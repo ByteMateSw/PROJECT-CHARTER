@@ -17,23 +17,38 @@ const MENU_ITEMS = [
   { href: "#", text: "Configuración" },
 ];
 
-export default function Dropdown({ isOpen }: { isOpen: boolean}) {
+export default function Dropdown() {
   return (
-    <div
-      className={`absolute -left-5 mt-4 w-36 rounded-md shadow-lg bg-secondary-white ring-1 ring-black ring-opacity-5 dropdown-content ${
-        isOpen ? "open" : ""
-      }`}
-    >
-      <div
-        role="menu"
-        aria-orientation="vertical"
-        aria-labelledby="options-menu"
+    <div className="dropdown dropdown-hover hover:[&>label]:text-primary-blue">
+      <label
+        className="btn bg-secondary-white my-2 font-semibold text-lg gap-2 p-0 username"
+        tabIndex={0}
       >
-        {MENU_ITEMS.map((item) => {
-          return <Menu key={item.text} href={item.href} text={item.text} />;
-        })}
-        <hr />
-        <Menu href="/logout" text="Cerrar Sesión" />
+        <img
+          className="rounded-full h-10 border-2 border-secondary-black"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRenkUTJ2tnqhmukhJwDsDWnoSXC6apMdbtHPjhRFJjsg&s"
+          alt="Profile Image"
+        />
+        Furry
+        <div className="arrow"></div>
+      </label>
+      <div className="dropdown-menu dropdown-menu-bottom-left bg-secondary-white -right-8 mt-1 w-44">
+        <Link href="/profile/username" className="dropdown-item text-sm flex flex-row items-center justify-start gap-1">
+          <img src="/svg/person.svg" alt="" className="h-6" /> Perfil
+        </Link>
+        <Link href="#"
+          tabIndex={-1}
+          className="dropdown-item text-sm flex flex-row items-center justify-start gap-2"
+        >
+          <img src="/svg/settings.svg" alt="" className="h-6 -ml-1" /> Configuración
+        </Link>
+        <div className="dropdown-divider my-2" role="separator"></div>
+        <Link href="#"
+          tabIndex={-1}
+          className="dropdown-item text-sm flex flex-row items-center gap-1"
+        >
+          <img src="/svg/logout.svg" alt="" className="h-6 -ml-1" /> Cerrar Sesión
+        </Link>
       </div>
     </div>
   );
