@@ -1,17 +1,14 @@
 "use client";
-<<<<<<< HEAD
-=======
 import { login } from "@/app/api/user";
->>>>>>> f178181565cab84f7b20cf48fb11d21810968ef5
+import GoogleOauth from "@/app/components/googleOauth";
+import { GoogleCredentialResponse, GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import Link from "next/link";
 import { useState } from "react";
+import React from 'react';
 
 
 
 export default function LoginPage() {
-<<<<<<< HEAD
- 
-=======
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
@@ -23,14 +20,13 @@ export default function LoginPage() {
     //  window.location.href = "/";
   };
 
->>>>>>> f178181565cab84f7b20cf48fb11d21810968ef5
   return (
-    <section className="min-h-screen flex justify-around items-center bg-secondary-white overflow-hidden">
+    <section className="min-h-screen flex justify-around items-center bg-secondary-white">
       <picture className="flex justify-around ">
         <img src="/svg/Imagotype.svg" alt="Logotype" />
       </picture>
 
-      <article className="w-[550px] px-12 py-8 bg-secondary-white flex flex-col">
+      <article className="w-[550px] px-12 py-12 bg-secondary-white flex flex-col">
         <div className="flex justify-center items-center flex-col">
           <img
             className="mb-6 "
@@ -108,12 +104,8 @@ export default function LoginPage() {
           </button>
         </div>
 
-<<<<<<< HEAD
-        <div className="w-full flex flex-col justify-center my-4 overflow-hidden">
-=======
         <div className="w-full flex flex-col justify-center mt-8">
           {errorMessage && <p>{errorMessage}</p>}
->>>>>>> f178181565cab84f7b20cf48fb11d21810968ef5
           <button
             id="submit"
             type="submit"
@@ -122,8 +114,11 @@ export default function LoginPage() {
           >
             Continuar
           </button>
-        
-          
+          <GoogleOAuthProvider clientId="483719238317-0b67hs4cfkkhbr17ieikrknd9h7oib12.apps.googleusercontent.com">
+            <React.StrictMode>
+                <GoogleOauth />
+            </React.StrictMode>
+          </GoogleOAuthProvider>,
           <p className="flex justify-center">
             Sos nuevo?
             <Link href="" className="text-primary-blue hover:underline ml-1">
@@ -133,6 +128,5 @@ export default function LoginPage() {
         </div>
       </article>
     </section>
-    )
-  }
-
+  );
+}
