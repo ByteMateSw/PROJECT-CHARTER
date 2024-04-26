@@ -47,6 +47,9 @@ export class PostService {
     });
     if (!findedPost)
       throw new NotFoundException('No se ha podido traer el post');
+    findedPost.images.map(image => {
+      image.filename = this.s3Service.getURLFile(image.filename);
+    });
     return findedPost;
   }
 
