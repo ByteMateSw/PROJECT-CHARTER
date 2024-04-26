@@ -1,4 +1,4 @@
-import { IsDefined } from 'class-validator';
+import { IsDefined, IsUrl } from 'class-validator';
 import { createErrorMessageFormatter } from 'src/utils/validation/validate-util';
 
 export class S3EnvironmentVariables {
@@ -22,4 +22,28 @@ export class S3EnvironmentVariables {
     ),
   })
   R2_SECRET_ACCESS_KEY: string;
+
+  @IsDefined({
+    message: createErrorMessageFormatter(
+      'Se requiere el nombre del bucket de R2.',
+    ),
+  })
+  R2_BUCKET_NAME: string;
+
+  @IsDefined({
+    message: createErrorMessageFormatter(
+      'Se requiere el nombre del dominio usado en el bucket de R2.',
+    ),
+  })
+  @IsUrl(
+    {
+      require_port: false,
+      require_tld: false,
+      require_valid_protocol: false,
+    },
+    {
+      message: createErrorMessageFormatter('Debe ser una URL'),
+    },
+  )
+  R2_PUBLIC_DOMAIN: string;
 }

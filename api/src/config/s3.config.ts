@@ -15,5 +15,7 @@ export default registerAs('s3', (): IS3Config => {
     client_id: process.env.R2_CLIENT_ID,
     access_key_id: process.env.R2_ACCESS_KEY_ID,
     secret_access_key: process.env.R2_SECRET_ACCESS_KEY,
+    bucket_name: process.env.R2_BUCKET_NAME,
+    domain: process.env.R2_PUBLIC_DOMAIN,
   };
 });

@@ -13,16 +13,10 @@ export class ImagePost {
   id: number;
 
   /**
-   * The image data of the ImagePost.
-   */
-  @Column({ type: 'bytea' })
-  imageData: Buffer;
-
-  /**
-   * The content type of the ImagePost.
+   * The filename of the image
    */
   @Column()
-  contentType: string;
+  filename: string;
 
   /**
    * The post that the ImagePost belongs to.
