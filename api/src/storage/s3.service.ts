@@ -64,16 +64,16 @@ export class S3Service {
     return response.Body.transformToByteArray();
   }
 
-  async removeFile(filename: string, path: string): Promise<void> {
+  async removeFile(pathFile: string): Promise<void> {
     const response = await this.S3Client.send(
       new DeleteObjectCommand({
         Bucket: this.bucketName,
-        Key: `${path}/${filename}`,
+        Key: pathFile,
       }),
     );
     if (response.$metadata.httpStatusCode != 204)
       throw new InternalServerErrorException(
-        `Hubo un error al borrar el archivo ${filename}`,
+        `Hubo un error al borrar el archivo ${pathFile}`,
       );
   }
 

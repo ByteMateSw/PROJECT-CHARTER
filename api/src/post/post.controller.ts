@@ -90,7 +90,8 @@ export class PostController {
     @UploadedFiles(FilePipeValidator) images: File[],
   ): Promise<PostEntity> {
     const newPost = await this.postService.createPost(userId, createPostDto);
-    await this.postService.addImagesToPost(newPost.id, images);
+    if (images.length > 0)
+      await this.postService.addImagesToPost(newPost.id, images);
     return newPost;
   }
 
