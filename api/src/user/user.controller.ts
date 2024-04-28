@@ -57,11 +57,11 @@ export class UserController {
    * @returns A promise that resolves to the User object.
    */
   @UseGuards(AccessTokenGuard)
-  @Get(':id')
+  @Get(':username')
   async getUserById(
-    @Param('id', CustomParseIntPipe) id: number,
+    @Param('username') username: string,
   ): Promise<User> {
-    return await this.userService.getUserBy({ id });
+    return await this.userService.getUserBy({ username });
   }
 
   /**
