@@ -8,7 +8,6 @@ import { UserService } from '../user/user.service';
 import { UpdatePostDto } from './dto/updatePost.dto';
 import { File, TitleAndOrId } from '../utils/types/functions.type';
 import { S3Service } from 'src/storage/s3.service';
-import { changeNameFile, generateRandomName } from 'src/utils/tools/files';
 
 @Injectable()
 export class PostService {
@@ -84,7 +83,7 @@ export class PostService {
     return Promise.all(
       images.map(async image => {
         const path = await this.s3Service.uploadFile(
-          changeNameFile(image.originalname, generateRandomName()),
+          image.originalname,
           `posts/${postId}`,
           image.mimetype,
           image.buffer,

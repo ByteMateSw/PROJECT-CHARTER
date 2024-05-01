@@ -1,4 +1,10 @@
-import { HttpStatus, ParseFilePipeBuilder } from '@nestjs/common';
+import {
+  HttpStatus,
+  ParseFilePipeBuilder,
+  PipeTransform,
+} from '@nestjs/common';
+import { File } from '../types/functions.type';
+import { changeNameFile, generateRandomName } from '../tools/files';
 
 /**
  * FilePipeValidator is a pipe validator for images uploads.
@@ -17,3 +23,15 @@ export const FilePipeValidator = new ParseFilePipeBuilder()
     errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
     fileIsRequired: false,
   });
+
+export class FilesNamePipe implements PipeTransform<File[]> {
+  transform(images: File[]) {
+    images.map(image => {
+      image.originalname = changeNameFile(
+        image.originalname,
+        generateRandomName(),
+      );
+    });
+    return images;
+  }
+}
