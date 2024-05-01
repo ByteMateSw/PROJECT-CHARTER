@@ -13,10 +13,10 @@ export class ImagePost {
   id: number;
 
   /**
-   * The filename of the image
+   * The path of the image
    */
   @Column()
-  filename: string;
+  path: string;
 
   /**
    * The post that the ImagePost belongs to.
