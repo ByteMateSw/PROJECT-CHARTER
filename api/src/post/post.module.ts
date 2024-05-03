@@ -5,6 +5,7 @@ import { PostController } from './post.controller';
 import { PostService } from './post.service';
 import { ImagePost } from '../image/imagePost.entity';
 import { UserModule } from '../user/user.module';
+import { S3Module } from 'src/storage/s3.module';
 
 /**
  * Represents the Post module of the application.
@@ -12,7 +13,7 @@ import { UserModule } from '../user/user.module';
  * defining the controllers, providers, and exports for the Post feature.
  */
 @Module({
-  imports: [TypeOrmModule.forFeature([Post, ImagePost]), UserModule],
+  imports: [TypeOrmModule.forFeature([Post, ImagePost]), UserModule, S3Module],
   controllers: [PostController],
   providers: [PostService],
 })

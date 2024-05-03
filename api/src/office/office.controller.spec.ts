@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { OfficeController } from './office.controller';
 import { OfficeService } from './office.service';
 import { HttpException } from '@nestjs/common';
-import { CreateOfficeDto } from './dto/create-office.dto';
+import { OfficeDto } from './dto/office.dto';
 import { HttpStatus } from '@nestjs/common';
 
 describe('OfficeController', () => {
@@ -13,9 +13,8 @@ describe('OfficeController', () => {
     name: 'Office 1',
   };
 
-  const mockCreateOfficeDto: CreateOfficeDto = {
+  const mockCreateOfficeDto: OfficeDto = {
     name: 'New Office',
-    category: { id: 1 },
   };
 
   const mockError = new Error('Test Error');

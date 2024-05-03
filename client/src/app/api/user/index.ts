@@ -21,7 +21,7 @@ export const login = async (email: string, password: string): Promise<User> => {
     const response = await axios.post(
       `https://political-jenn-bytemate.koyeb.app/auth/login`,
       { email, password },
-      { withCredentials: false }
+      { withCredentials: true }
     );
     return response.data;
   } catch (error) {

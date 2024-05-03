@@ -34,9 +34,19 @@ export type RequireAtLeastOne<T> = {
 type EmailAndId = Pick<User, 'id' | 'email'>;
 
 /**
+ * Represents a type that includes the 'id', 'username' and 'email' properties from the User entity.
+ */
+type EmailUsernameAndId = Pick<User, 'id' | 'email' | 'username'>;
+
+/**
  * Represents a type that includes the 'id' and 'title' properties from the Post entity.
  */
 type TitleAndId = Pick<Post, 'id' | 'title'>;
+
+/**
+ * Represents a type that requires at least one property from the EmailAndId type.
+ */
+export type EmailUsernameAndOrId = RequireAtLeastOne<EmailUsernameAndId>;
 
 /**
  * Represents a type that requires at least one property from the EmailAndId type.

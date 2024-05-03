@@ -21,8 +21,8 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { AccessTokenGuard } from '../auth/jwt/access.guard';
 import { UserParamID } from '../utils/params/user.param';
 import { CustomParseIntPipe } from '../utils/pipes/parse-int.pipe';
-import { FilePipeValidator } from '../utils/pipes/file-validator.pipe';
-import { File, ResponseMessage } from '../utils/types/functions.type';
+import { FilesNamePipe, FilePipeValidator } from '../utils/pipes/file.pipe';
+import { File } from '../utils/types/functions.type';
 import { InfoParam } from '../utils/params/info.param';
 import { EmptyBodyPipe } from '../utils/pipes/empty-body.pipe';
 import { QueryNumberPipe } from '../utils/pipes/query-number.pipe';
@@ -87,10 +87,11 @@ export class PostController {
   async createPost(
     @InfoParam() createPostDto: CreatePostDto,
     @UserParamID(CustomParseIntPipe) userId: number,
-    @UploadedFiles(FilePipeValidator) images: File[],
+    @UploadedFiles(FilePipeValidator, FilesNamePipe) images: File[],
   ): Promise<PostEntity> {
     const newPost = await this.postService.createPost(userId, createPostDto);
-    await this.postService.addImagesToPost(newPost.id, images);
+    if (images.length > 0)
+      await this.postService.addImagesToPost(newPost.id, images);
     return newPost;
   }
 
@@ -106,7 +107,7 @@ export class PostController {
   @UseInterceptors(FilesInterceptor('images'))
   async addImageToPost(
     @Param('id', CustomParseIntPipe) postId: number,
-    @UploadedFiles(FilePipeValidator) images: File[],
+    @UploadedFiles(FilePipeValidator, FilesNamePipe) images: File[],
   ): Promise<ImagePost[]> {
     return await this.postService.addImagesToPost(postId, images);
   }
@@ -115,15 +116,14 @@ export class PostController {
    * Removes an image from a post.
    *
    * @param imageId - The ID of the image to be removed.
-   * @returns A Promise that resolves to a ResponseMessage indicating the success of the operation.
    */
   @UseGuards(AccessTokenGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Delete('images/:id')
   async removeImageFromPost(
     @Param('id', CustomParseIntPipe) imageId: number,
-  ): Promise<ResponseMessage> {
+  ): Promise<void> {
     await this.postService.removeImageFromPost(imageId);
-    return { message: 'La imagen se ha borrado correctamente' };
   }
 
   /**
@@ -131,7 +131,7 @@ export class PostController {
    *
    * @param id - The ID of the post to update.
    * @param updatePostDto - The data to update the post with.
-   * @returns A Promise that resolves to a ResponseMessage indicating the success of the update operation.
+   * @returns - The data to update the post with.
    */
   @UseGuards(AccessTokenGuard)
   @UseInterceptors(FilesInterceptor('images'))
@@ -139,23 +139,21 @@ export class PostController {
   async updatePost(
     @Param('id') id: number,
     @Body(EmptyBodyPipe) updatePostDto: UpdatePostDto,
-  ): Promise<ResponseMessage> {
-    await this.postService.updatePost(id, updatePostDto);
-    return { message: 'La publicación se actualizó correctamente' };
+  ): Promise<PostEntity> {
+    return await this.postService.updatePost(id, updatePostDto);
   }
 
   /**
    * Deletes a post with the specified ID.
    *
    * @param id - The ID of the post to delete.
-   * @returns A Promise that resolves to a ResponseMessage indicating the success of the deletion.
    */
   @UseGuards(AccessTokenGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
   async deletePost(
     @Param('id', CustomParseIntPipe) postId: number,
-  ): Promise<ResponseMessage> {
+  ): Promise<void> {
     await this.postService.deletePost(postId);
-    return { message: 'La publicación se ha borrado correctamente' };
   }
 }
