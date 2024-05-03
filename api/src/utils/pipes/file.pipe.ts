@@ -1,5 +1,7 @@
 import {
+  ArgumentMetadata,
   HttpStatus,
+  InternalServerErrorException,
   ParseFilePipeBuilder,
   PipeTransform,
 } from '@nestjs/common';
@@ -25,13 +27,13 @@ export const FilePipeValidator = new ParseFilePipeBuilder()
   });
 
 export class FilesNamePipe implements PipeTransform<File[]> {
-  transform(images: File[]) {
-    images.map(image => {
-      image.originalname = changeNameFile(
-        image.originalname,
+  transform(file: File[]): File[] {
+    file.map(file => {
+      file.originalname = changeNameFile(
+        file.originalname,
         generateRandomName(),
       );
     });
-    return images;
+    return file;
   }
 }
