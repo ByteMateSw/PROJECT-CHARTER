@@ -100,13 +100,13 @@ export class User {
   /**
    * The photo of the user.
    */
-  @Column({ type: 'bytea', nullable: true })
-  photo: Buffer;
+  @Column({ nullable: true })
+  photo: string;
 
   /**
    * The city associated with the user.
    */
-  @ManyToOne(() => City, (city) => city.users)
+  @ManyToOne(() => City, city => city.users)
   city: City;
 
   /**
@@ -119,24 +119,24 @@ export class User {
   /**
    * The reviews made by the user.
    */
-  @OneToMany(() => Review, (review) => review.user)
+  @OneToMany(() => Review, review => review.user)
   reviews: Review[];
 
   /**
    * The posts made by the user.
    */
-  @OneToMany(() => Post, (post) => post.user)
+  @OneToMany(() => Post, post => post.user)
   posts: Post[];
 
   /**
    * The role of the user.
    */
-  @ManyToOne(() => Role, (role) => role.user)
+  @ManyToOne(() => Role, role => role.user)
   role: Role;
 
   /**
    * The notifications received by the user.
    */
-  @OneToMany(() => Notifications, (notifications) => notifications.user)
+  @OneToMany(() => Notifications, notifications => notifications.user)
   notifications: Notification[];
 }

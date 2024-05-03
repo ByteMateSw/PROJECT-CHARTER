@@ -21,7 +21,10 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { AccessTokenGuard } from '../auth/jwt/access.guard';
 import { UserParamID } from '../utils/params/user.param';
 import { CustomParseIntPipe } from '../utils/pipes/parse-int.pipe';
-import { FilesNamePipe, FilePipeValidator } from '../utils/pipes/file.pipe';
+import {
+  RandomFilesNamePipe,
+  FilePipeValidator,
+} from '../utils/pipes/file.pipe';
 import { File } from '../utils/types/functions.type';
 import { InfoParam } from '../utils/params/info.param';
 import { EmptyBodyPipe } from '../utils/pipes/empty-body.pipe';
@@ -87,7 +90,7 @@ export class PostController {
   async createPost(
     @InfoParam() createPostDto: CreatePostDto,
     @UserParamID(CustomParseIntPipe) userId: number,
-    @UploadedFiles(FilePipeValidator, FilesNamePipe) images: File[],
+    @UploadedFiles(FilePipeValidator, RandomFilesNamePipe) images: File[],
   ): Promise<PostEntity> {
     const newPost = await this.postService.createPost(userId, createPostDto);
     if (images.length > 0)
@@ -107,7 +110,7 @@ export class PostController {
   @UseInterceptors(FilesInterceptor('images'))
   async addImageToPost(
     @Param('id', CustomParseIntPipe) postId: number,
-    @UploadedFiles(FilePipeValidator, FilesNamePipe) images: File[],
+    @UploadedFiles(FilePipeValidator, RandomFilesNamePipe) images: File[],
   ): Promise<ImagePost[]> {
     return await this.postService.addImagesToPost(postId, images);
   }

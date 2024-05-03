@@ -10,13 +10,19 @@ import { RegisterDto } from '../auth/dto/register.dto';
 import { Role } from '../role/role.entity';
 import { Role as RoleEmun } from '../utils/enums/role.enum';
 import { UpdateUserDto } from './dto/updateUser.dto';
-import { EmailAndOrId, EmailUsernameAndOrId } from '../utils/types/functions.type';
+import {
+  EmailAndOrId,
+  EmailUsernameAndOrId,
+} from '../utils/types/functions.type';
+import { S3Service } from 'src/storage/s3.service';
+import { File } from '../utils/types/functions.type';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
     @InjectRepository(Role) private roleRepository: Repository<Role>,
+    private s3Service: S3Service,
   ) {}
 
   /**
@@ -47,7 +53,11 @@ export class UserService {
    * @param email - The email of the user.
    * @returns A promise that resolves to a User object.
    */
-  async getUserBy({ id, email, username }: EmailUsernameAndOrId): Promise<User> {
+  async getUserBy({
+    id,
+    email,
+    username,
+  }: EmailUsernameAndOrId): Promise<User> {
     return await this.userRepository.findOne({
       where: { id, email, username },
       relations: { city: true },
@@ -101,16 +111,32 @@ export class UserService {
    * @throws NotFoundException if the user does not exist.
    * @throws BadRequestException if the email already exists.
    */
-  async updateUser(id: number, updateUser: UpdateUserDto): Promise<User> {
+  async updateUser(
+    id: number,
+    updateUser: UpdateUserDto,
+    profileImage: File,
+  ): Promise<User> {
     const user = await this.userRepository.findOneBy({ id });
     if (!user) throw new BadRequestException('El usuario no existe');
-    if (updateUser.email !== undefined) {
+    if (updateUser != undefined && updateUser.email !== undefined) {
       const existsEmail = await this.userRepository.existsBy({
         email: updateUser.email,
       });
       if (existsEmail) throw new BadRequestException('El email ya existe');
     }
-    return await this.userRepository.save({ ...user, ...updateUser });
+    if (profileImage !== undefined)
+      user.photo = await this.s3Service.uploadFile(
+        profileImage.originalname,
+        `users/${id}`,
+        profileImage.mimetype,
+        profileImage.buffer,
+      );
+    const updatedUser = await this.userRepository.save({
+      ...user,
+      ...updateUser,
+    });
+    updatedUser.photo = `${this.s3Service.getURLFile(updatedUser.photo)}`;
+    return updatedUser;
   }
 
   /**

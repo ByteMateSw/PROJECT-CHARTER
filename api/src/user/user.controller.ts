@@ -1,5 +1,4 @@
 import {
-  Body,
   Controller,
   Delete,
   Get,
@@ -8,19 +7,27 @@ import {
   Param,
   Patch,
   Query,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { AccessTokenGuard } from '../auth/jwt/access.guard';
-import { EmptyBodyPipe } from '../utils/pipes/empty-body.pipe';
 import { Roles } from '../role/role.decorator';
 import { Role } from '../utils/enums/role.enum';
 import { User } from './user.entity';
 import { CustomParseIntPipe } from '../utils/pipes/parse-int.pipe';
-import { UserParam as UserParamType } from '../utils/types/functions.type';
-import { UserParam } from '../utils/params/user.param';
+import {
+  File,
+  UserParam as UserParamType,
+} from '../utils/types/functions.type';
+import { UserParam, UserParamID } from '../utils/params/user.param';
 import { QueryNumberPipe } from '../utils/pipes/query-number.pipe';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Role as RoleEnum } from '../../src/utils/enums/role.enum';
+import { FileNamePipe, FilePipeValidator } from 'src/utils/pipes/file.pipe';
+import { InfoParam } from 'src/utils/params/info.param';
 
 /**
  * Controller for handling user-related operations.
@@ -58,9 +65,7 @@ export class UserController {
    */
   @UseGuards(AccessTokenGuard)
   @Get(':username')
-  async getUserById(
-    @Param('username') username: string,
-  ): Promise<User> {
+  async getUserById(@Param('username') username: string): Promise<User> {
     return await this.userService.getUserBy({ username });
   }
 
@@ -89,17 +94,39 @@ export class UserController {
   }
 
   /**
-   * Updates a user.
-   * @param id - The ID of the user to be updated.
+   * Updates the user info.
+   * @param id - The ID of the user to be updated given by its token.
    * @param updateUserDto - The data to update the user with.
    * @returns -
    */
   @UseGuards(AccessTokenGuard)
-  @Patch(':id')
+  @UseInterceptors(FileInterceptor('avatar'))
+  @Patch()
   async updateUser(
-    @Param('id', CustomParseIntPipe) id: number,
-    @Body(EmptyBodyPipe) updateUserDto: UpdateUserDto,
+    @UserParamID(CustomParseIntPipe) id: number,
+    @InfoParam() updateUserDto: UpdateUserDto,
+    @UploadedFile(FilePipeValidator, new FileNamePipe('avatar'))
+    profileImage: File,
   ): Promise<User> {
-    return await this.userService.updateUser(id, updateUserDto);
+    return await this.userService.updateUser(id, updateUserDto, profileImage);
+  }
+
+  /**
+   * Updates a user by its Id.
+   * @param id - The ID of the user to be updated.
+   * @param updateUserDto - The data to update the user with.
+   * @returns -
+   */
+  @Roles(RoleEnum.Admin)
+  @UseInterceptors(FileInterceptor('avatar'))
+  @Patch(':id')
+  async updateUserById(
+    @Param('id', CustomParseIntPipe) id: number,
+    @InfoParam() updateUserDto: UpdateUserDto,
+    @UploadedFile(FilePipeValidator, new FileNamePipe('avatar'))
+    profileImage: File,
+  ) /*: Promise<User>*/ {
+    return profileImage;
+    //return await this.userService.updateUser(id, updateUserDto, profileImage);
   }
 }

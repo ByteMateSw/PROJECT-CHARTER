@@ -26,7 +26,7 @@ export const FilePipeValidator = new ParseFilePipeBuilder()
     fileIsRequired: false,
   });
 
-export class FilesNamePipe implements PipeTransform<File[]> {
+export class RandomFilesNamePipe implements PipeTransform<File[]> {
   transform(file: File[]): File[] {
     file.map(file => {
       file.originalname = changeNameFile(
@@ -34,6 +34,17 @@ export class FilesNamePipe implements PipeTransform<File[]> {
         generateRandomName(),
       );
     });
+    return file;
+  }
+}
+
+export class FileNamePipe implements PipeTransform<File> {
+  private filename: string;
+  constructor(filename: string) {
+    this.filename = filename;
+  }
+  transform(file: File): File {
+    file.originalname = changeNameFile(file.originalname, this.filename);
     return file;
   }
 }
