@@ -29,3 +29,16 @@ export const login = async (email: string, password: string): Promise<User> => {
     throw error;
   }
 };
+
+export const register = async (user: any) => {
+  try {
+    const response = await axios.post(
+      `http://localhost:3032/auth/register`,
+      user
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

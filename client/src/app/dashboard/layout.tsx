@@ -7,9 +7,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <Suspense fallback="loading...">
       <div className="h-screen grid grid-rows-layout grid-cols-layout">
-        <div className="row-start-1 row-end-2 col-start-1 col-end-3 fixed w-full">
-          <Header />
-        </div>
         <div className="row-start-2 row-end-3 col-start-1 col-end-2 fixed h-[90%] mt-20">
           <Sidebar />
         </div>
