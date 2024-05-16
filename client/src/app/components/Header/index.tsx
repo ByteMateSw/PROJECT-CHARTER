@@ -36,7 +36,7 @@ const CENTER_NAV_LINKS = [
 export default function Header(): JSX.Element {
   return (
     <header className="absolute w-full">
-      <nav className="h-[3.75rem] flex justify-between items-center px-10 m-4 border rounded-full border-secondary-gray bg-secondary-white shadow-md">
+      <nav className="h-[3.75rem] w-full flex justify-between items-center px-10 m-4 border rounded-full border-secondary-gray bg-secondary-white shadow-md">
         <div className="flex justify-start">
           <Link href="/">
             <img src="/svg/conectando-icon.svg" alt="Logo" className="h-10" />

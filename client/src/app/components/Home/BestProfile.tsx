@@ -18,7 +18,7 @@ export default function BestProfiles() {
       <h1 className="text-center text-secondary-black text-[32px] font-extrabold">
         Descubrí algunos perfiles
       </h1>
-      <div className="flex justify-between items-center w-full px-60 pt-12">
+      <div className="flex items-center justify-around w-full pt-12">
         {profiles.map((profile) => (
           <figure className="h-[200px] w-h-[200px]" key={profile.name}>
             <img

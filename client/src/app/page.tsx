@@ -45,27 +45,25 @@ export default function Home() {
 
   return (
     <>
-      <Header />
-      <main className="w-full flex-col items-center justify-center gap-12 inline-flex bg-secondary-white">
-        <Hero />
-        <BestProfiles />
-        <Carousel />
-        <MiniAbout
-          className="pt-72"
-          pText="pl-52"
-          pImg="pr-52"
-          paragraphsText={paragraphs1}
-          tittle="Potencia tu perfil"
-        />
-        <MiniAbout
-          className="pt-48 pb-60 flex-row-reverse"
-          pImg="pl-52"
-          pText="pr-52"
-          paragraphsText={paragraphs2}
-          tittle="Encuentra o publica trabajos"
-        />
-      </main>
-      <Footer />
+      {/* <Header /> */}
+      <Hero />
+      <BestProfiles />
+      <Carousel />
+      <MiniAbout
+        className="pt-72"
+        pText="pl-52"
+        pImg="pr-52"
+        paragraphsText={paragraphs1}
+        tittle="Potencia tu perfil"
+      />
+      <MiniAbout
+        className="pt-48 pb-60 flex-row-reverse"
+        pImg="pl-52"
+        pText="pr-52"
+        paragraphsText={paragraphs2}
+        tittle="Encuentra o publica trabajos"
+      />
+      {/* <Footer /> */}
     </>
   );
 }
