@@ -133,7 +133,7 @@ export default function Form2({
           <button
             id="submit"
             type="submit"
-            className="w-full h-12 bg-primary-blue rounded-3xl text-secondary-white text-xl mb-2 hover:scale-105"
+            className="w-full h-12 bg-primary-blue rounded-3xl text-secondary-white text-xl mb-2 hover:scale-105 duration-150"
             onClick={onClickFunction}
           >
             Volver
@@ -141,7 +141,7 @@ export default function Form2({
           <button
             id="submit"
             type="submit"
-            className="w-full h-12 bg-primary-blue rounded-3xl text-secondary-white text-xl mb-2 hover:scale-105"
+            className="w-full h-12 bg-primary-blue rounded-3xl text-secondary-white text-xl mb-2 hover:scale-105 duration-150"
             onClick={handleSubmit}
           >
             Continuar

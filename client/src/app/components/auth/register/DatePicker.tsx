@@ -28,11 +28,11 @@ export default function DatePicker({ id, inputValue, setInputValue, selected, se
     return (
         <>
             <div className='flex items-center w-full h-12 p-3 border border-secondary-gray rounded-3xl'>
-                <div className="flex justify-between w-full dropdown dropdown-hover" tabIndex={22}>
+                <div className="flex justify-between w-full dropdown dropdown-hover cursor-default" tabIndex={22}>
                     <input
                         id={id}
                         disabled
-                        className='focus:outline-none bg-transparent'
+                        className='focus:outline-none bg-transparent cursor-default'
                         type="text"
                         placeholder={format(new Date(), 'dd - MM - y')}
                         value={inputValue}
