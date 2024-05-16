@@ -49,7 +49,7 @@ export default function Home() {
       <Hero />
       <BestProfiles />
       <Carousel />
-      <MiniAbout
+      {/* <MiniAbout
         className="pt-72"
         pText="pl-52"
         pImg="pr-52"
@@ -62,7 +62,7 @@ export default function Home() {
         pText="pr-52"
         paragraphsText={paragraphs2}
         tittle="Encuentra o publica trabajos"
-      />
+      /> */}
       {/* <Footer /> */}
     </>
   );

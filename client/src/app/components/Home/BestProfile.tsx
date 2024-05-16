@@ -14,8 +14,8 @@ export default function BestProfiles() {
   // }, [])
 
   return (
-    <section className="flex items-center justify-center flex-col w-full">
-      <h1 className="text-center text-secondary-black text-[32px] font-extrabold">
+    <section className="flex items-center justify-center flex-col w-full mt-5">
+      <h1 className="text-center text-secondary-black text-2xl font-extrabold">
         Descubrí algunos perfiles
       </h1>
       <div className="flex items-center justify-around w-full pt-12">

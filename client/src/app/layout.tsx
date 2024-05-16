@@ -1,6 +1,7 @@
 import "./ui/globals.css";
 import { nunito } from "./ui/fonts";
 import Hero from "./components/Home/Hero";
+import Header from "./components/Header";
 
 export default function RootLayout({
   children,
@@ -10,7 +11,7 @@ export default function RootLayout({
   return (
     <html lang="es" className="bg-secondary-white text-secondary-black">
       <body className={`${nunito.className} antialiased h-screen`}>
-        {/* <Hero /> */}
+        {/* <Header /> */}
         {children}
       </body>
     </html>
