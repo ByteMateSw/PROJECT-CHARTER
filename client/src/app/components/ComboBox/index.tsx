@@ -9,13 +9,17 @@ export default function ComboBox({
   optionsProps,
   placeholder = "Buscar...",
   styles,
+  selectedOptions,
+  setSelectedOptions,
 }: {
   optionsProps: OptionsPropsType[];
   placeholder?: string;
   styles: StylesConfig;
+  selectedOptions: unknown;
+  setSelectedOptions: any;
 }) {
   const animatedComponents = makeAnimated();
-  const { selectedOptions, isClient, handleChange } = useComboBox();
+  const { isClient, handleChange } = useComboBox({ selectedOptions, setSelectedOptions });
 
   const options = mapOptions(optionsProps);
 
@@ -23,7 +27,7 @@ export default function ComboBox({
     <div className="w-full">
       {isClient ? (
         <Select
-          isMulti
+          // isMulti
           placeholder={placeholder}
           styles={styles}
           closeMenuOnSelect={false}
