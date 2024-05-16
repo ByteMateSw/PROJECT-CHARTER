@@ -8,7 +8,7 @@ export interface City {
 export interface Province {
   id: number;
   name: string;
-  cities: City[];
+  cities?: City[];
 }
 
 export interface Locations {

@@ -12,7 +12,21 @@ export default function LoginPage() {
 
   const switchShown = () => setShown(!shown)
 
+  const handleChange = (e: any) => {
+    setErrorMessage("");
+    const { name, value } = e.target;
+    if (name === "email") {
+      setEmail(value);
+    } else if (name === "password") {
+      setPassword(value);
+    }
+  }
+
   const handleLogin = async () => {
+    if (!email || !password) {
+      setErrorMessage("Por favor, complete todos los campos");
+      return;
+    }
     const data = await login(email, password);
     console.log(data);
     //  window.location.href = "/";
@@ -28,11 +42,11 @@ export default function LoginPage() {
             alt="svgimgg"
           ></img>
           <section className="flex items-center">
-            <div className="font-bold text-xl my-6 mr-7 pb-2 border-b-4 select-none">
+            <div className="font-bold text-xl my-6 mr-7 pb-2 border-b-4 border-black select-none">
               Iniciar Sesión
             </div>
             <a href="http://localhost:3000/auth/register">
-              <button className="font-bold text-xl my-6 ml-7 text-secondary-gray pb-2 border-b-4 border-black hover:scale-105">
+              <button className="font-bold text-xl my-6 ml-7 text-secondary-gray pb-2 border-b-4 hover:scale-105">
                 Registrarse
               </button>
             </a>
@@ -53,9 +67,9 @@ export default function LoginPage() {
               className="w-full h-15 focus:outline-none bg-secondary-white"
               type="text"
               name="email"
-              placeholder="Correo@correo.com"
+              placeholder="correo@correo.com"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleChange}
             />
           </span>
         </div>
@@ -77,7 +91,7 @@ export default function LoginPage() {
               name="password"
               placeholder="····················"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handleChange}
             />
             <button onClick={switchShown}>
               {shown ? (<img src="/svg/Visibility-Icon.svg" />) : (<img src="/svg/VisibilityOff-Icon.svg" />)}
@@ -95,14 +109,10 @@ export default function LoginPage() {
             onChange={(e) => setKeepLoggedIn(e.target.checked)}
           />
           <label htmlFor="InicSes" className="flex items-center">
-            <img
-              src="/svg/ToggleOff-Icon.svg"
-              alt="ToggleButton"
-              className="mr-3 select-none"
-            />
+            <input className="switch mx-2" type="checkbox" name="" id="" />
             Mantener sesión iniciada
           </label>
-          <button className="w-[180px] h-[35px] text-secondary-black font-semibold hover:scale-105">
+          <button className="w-[180px] h-[35px] text-primary-blue font-semibold hover:border-primary-blue hover:border-b">
             Restablecer contraseña
           </button>
         </div>

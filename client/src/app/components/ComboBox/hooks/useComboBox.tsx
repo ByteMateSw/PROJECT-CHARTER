@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
-export const useComboBox = () => {
-  const [selectedOptions, setSelectedOptions] = useState<unknown>(null);
+export const useComboBox = ({ selectedOptions, setSelectedOptions }: { selectedOptions: unknown, setSelectedOptions: any }) => {
+
   const [isClient, setIsClient] = useState<boolean>(false);
 
   useEffect(() => {

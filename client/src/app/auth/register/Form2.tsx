@@ -1,0 +1,153 @@
+"use client";
+import InputField from "@/app/components/auth/register/InputField";
+import { Field, HandleChange, OnClickFunction, User } from "./interfaces";
+import DatePicker from "@/app/components/auth/register/DatePicker";
+import ComboBox from "@/app/components/ComboBox";
+import { StylesConfig } from "react-select";
+import { Locations } from "@/app/components/Sidebar/hooks/interfaces";
+
+export const styleComboBox: StylesConfig = {
+  control: (styles) => ({
+    ...styles,
+    backgroundColor: "#FBFCFF",
+    color: "#97989B",
+    borderWidth: "1px",
+    padding: "0.2rem",
+    margin: "0",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    alignSelf: "stretch",
+    borderColor: "#97989B",
+    borderRadius: "1.5rem",
+    appearance: "none",
+    width: "100%",
+    height: "3rem",
+  }),
+};
+
+
+
+export default function Form2({
+  fields,
+  errorMessage,
+  user,
+  handleChange,
+  onClickFunction,
+  handleSubmit,
+  locations,
+  inputValue,
+  setInputValue,
+  selected,
+  setSelected,
+  province,
+  setProvince,
+  city,
+  setCity,
+
+}:
+  {
+    fields: Field[],
+    errorMessage: string,
+    user: User,
+    handleChange: HandleChange,
+    onClickFunction: OnClickFunction,
+    handleSubmit: OnClickFunction,
+    locations: Locations,
+    inputValue: string,
+    setInputValue: any,
+    selected: any,
+    setSelected: any,
+    province: unknown,
+    setProvince: any,
+    city: unknown,
+    setCity: any,
+  }) {
+
+
+  return (
+    <>
+      <section className="flex flex-col justify-between">
+        <label htmlFor="date" className="block mb-1 ml-4 font-bold text-xl">Fecha de Nacimiento</label>
+        <DatePicker id="date" inputValue={inputValue} selected={selected} setInputValue={setInputValue} setSelected={setSelected} />
+      </section>
+      <section className="flex flex-wrap justify-between w-full">
+        <div className="my-4">
+          <label htmlFor={fields[0].name} className="block mb-1 ml-4 font-bold text-xl">
+            {fields[0].label}
+          </label>
+          <InputField
+            id={fields[0].name}
+            type={fields[0].type || "text"}
+            name={fields[0].name}
+            placeholder={fields[0].placeholder}
+            value={user[fields[0].name]}
+            onChange={handleChange}
+            iconSrc={fields[0].iconSrc}
+            autoComplete={fields[0].autoComplete}
+          />
+        </div>
+        <div className="my-4">
+          <label htmlFor={fields[1].name} className="block mb-1 ml-4 font-bold text-xl">
+            {fields[1].label}
+          </label>
+          <InputField
+            id={fields[1].name}
+            type={fields[1].type || "text"}
+            name={fields[1].name}
+            placeholder={fields[1].placeholder}
+            value={`+54${user[fields[1].name]}`}
+            onChange={handleChange}
+            iconSrc={fields[1].iconSrc}
+            autoComplete={fields[1].autoComplete}
+          />
+        </div>
+        <div className="flex w-full">
+          <div className="my-4 mr-6 w-full">
+            <label htmlFor="date" className="block mb-1 ml-4 font-bold text-xl">Provincia</label>
+            <ComboBox
+              optionsProps={locations.provinces}
+              styles={styleComboBox}
+              placeholder="Provincia"
+              selectedOptions={province}
+              setSelectedOptions={setProvince}
+            />
+          </div>
+          <div className="my-4 w-full">
+            <label htmlFor="date" className="block mb-1 ml-4 font-bold text-xl">Ciudad</label>
+            <ComboBox
+              optionsProps={locations.cities}
+              styles={styleComboBox}
+              placeholder="Ciudad"
+              selectedOptions={city}
+              setSelectedOptions={setCity}
+            />
+          </div>
+        </div>
+      </section>
+      <div className="w-full flex flex-col justify-center my-2">
+        <div className="text-red-500 w-full flex justify-center mb-4">
+          {errorMessage && <p>{errorMessage}</p>}
+        </div>
+        <div className="flex justify-center items-center mx-8 gap-20">
+          <button
+            id="submit"
+            type="submit"
+            className="w-full h-12 bg-primary-blue rounded-3xl text-secondary-white text-xl mb-2 hover:scale-105"
+            onClick={onClickFunction}
+          >
+            Volver
+          </button>
+          <button
+            id="submit"
+            type="submit"
+            className="w-full h-12 bg-primary-blue rounded-3xl text-secondary-white text-xl mb-2 hover:scale-105"
+            onClick={handleSubmit}
+          >
+            Continuar
+          </button>
+        </div>
+      </div>
+    </>
+  )
+}
