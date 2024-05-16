@@ -101,11 +101,15 @@ export default function Sidebar(): JSX.Element {
             </span>
           </div>
           <ComboBox
+            selectedOptions={locations.provinces}
+            setSelectedOptions={setLocations}
             optionsProps={locations.provinces}
             placeholder="Provincia"
             styles={styleComboBox}
           />
           <ComboBox
+            selectedOptions={locations.cities}
+            setSelectedOptions={setLocations}
             optionsProps={locations.cities}
             placeholder="Localidades"
             styles={styleComboBox}
