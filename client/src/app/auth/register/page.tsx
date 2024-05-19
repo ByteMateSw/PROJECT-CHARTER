@@ -104,7 +104,7 @@ export default function RegisterPage() {
           <section className="flex justify-center items-center flex-col">
             <img className="mb-6 " src="/svg/BIENVENIDO! (1).svg" alt="svgimgg" />
             <div className="flex items-center">
-              <a href="http://localhost:3000/auth/login">
+              <a href="/auth/login">
                 <button className="font-bold text-xl my-6 mr-7 text-secondary-gray pb-2 border-b-4 hover:scale-105 duration-150">
                   Iniciar Sesión
                 </button>

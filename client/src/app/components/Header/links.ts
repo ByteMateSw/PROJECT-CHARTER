@@ -1,11 +1,5 @@
 export const NAV_LINKS = [
     {
-      title: "Mensajes",
-      href: "dashboard/jobs",
-      src: "/svg/mail.svg",
-      alt: "Mail",
-    },
-    {
       title: "Notificaciones",
       href: "dashboard/hire",
       src: "/svg/notification.svg",

@@ -11,7 +11,7 @@ export default function HireModal({
   // Mejorar el diseño de este modal, principalmente el código HTML
   return (
     <>
-      <label className="btn btn-primary my-4" htmlFor={`modal-${index}`}>
+      <label className="w-full btn btn-primary rounded-full" htmlFor={`modal-${index}`}>
         Ver Perfil
       </label>
       <input className="modal-state" id={`modal-${index}`} type="checkbox" />
