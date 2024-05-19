@@ -27,8 +27,7 @@ export default function ComboBox({
     <div className="w-full">
       {isClient ? (
         <Select
-          // isMulti
-          placeholder={placeholder}
+          classNamePrefix={placeholder}
           styles={styles}
           closeMenuOnSelect={false}
           components={animatedComponents}

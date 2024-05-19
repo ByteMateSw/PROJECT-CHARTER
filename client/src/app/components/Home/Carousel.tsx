@@ -5,7 +5,7 @@ import Card from "./Card";
 export default function Carousel() {
   const velocity: number = 200;
   return (
-    <section className="w-full pt-12 h-[450px] flex items-center justify-center flex-col ">
+    <section className="w-full pt-12 md:my-32 h-[450px] flex items-center justify-center flex-col ">
       <h1 className="text-center text-secondary-black text-[32px] font-extrabold">
         Explora las profesiones
       </h1>

@@ -3,6 +3,7 @@ import "./ui/globals.css";
 import { nunito } from "./ui/fonts";
 import Header from "./components/Header";
 import { usePathname } from "next/navigation";
+import Footer from "./components/Footer";
 
 export default function RootLayout({
   children,
@@ -23,6 +24,10 @@ export default function RootLayout({
             null : <Header />
         }
         {children}
+        {
+          hideHeader ?
+            null : <Footer />
+        }
       </body>
     </html>
   );
