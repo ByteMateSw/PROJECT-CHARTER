@@ -20,7 +20,7 @@ export const login = async (email: string, password: string): Promise<any> => {
     const response = await axios.post(
       `${LOCAL_URL}/auth/login`,
       { email, password },
-      { withCredentials: false }
+      { withCredentials: true }
     );
     return response.data;
   } catch (error: any) {

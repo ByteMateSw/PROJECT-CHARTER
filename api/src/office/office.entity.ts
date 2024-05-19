@@ -16,5 +16,4 @@ export class Office {
    */
   @Column()
   name: string;
-
 }

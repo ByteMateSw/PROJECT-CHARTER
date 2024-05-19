@@ -10,7 +10,7 @@ import { RegisterDto } from '../auth/dto/register.dto';
 import { Role } from '../role/role.entity';
 import { Role as RoleEmun } from '../utils/enums/role.enum';
 import { UpdateUserDto } from './dto/updateUser.dto';
-import { EmailAndOrId } from '../utils/types/functions.type';
+import { EmailAndOrId, EmailUsernameAndOrId } from '../utils/types/functions.type';
 
 @Injectable()
 export class UserService {
@@ -47,9 +47,9 @@ export class UserService {
    * @param email - The email of the user.
    * @returns A promise that resolves to a User object.
    */
-  async getUserBy({ id, email }: EmailAndOrId): Promise<User> {
+  async getUserBy({ id, email, username }: EmailUsernameAndOrId): Promise<User> {
     return await this.userRepository.findOne({
-      where: { id, email },
+      where: { id, email, username },
       relations: { city: true },
       select: {
         city: { id: false, name: true },
