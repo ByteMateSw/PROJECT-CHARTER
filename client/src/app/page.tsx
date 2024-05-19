@@ -45,25 +45,23 @@ export default function Home() {
 
   return (
     <>
-      {/* <Header /> */}
       <Hero />
       <BestProfiles />
       <Carousel />
-      {/* <MiniAbout
-        className="pt-72"
-        pText="pl-52"
-        pImg="pr-52"
+      <MiniAbout
+        className=""
+        pText=""
+        pImg=""
         paragraphsText={paragraphs1}
         tittle="Potencia tu perfil"
       />
       <MiniAbout
-        className="pt-48 pb-60 flex-row-reverse"
-        pImg="pl-52"
-        pText="pr-52"
+        className=""
+        pImg=""
+        pText=""
         paragraphsText={paragraphs2}
         tittle="Encuentra o publica trabajos"
-      /> */}
-      {/* <Footer /> */}
+      />
     </>
   );
 }

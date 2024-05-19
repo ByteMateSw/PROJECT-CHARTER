@@ -36,7 +36,7 @@ export default function Header(): JSX.Element {
           </Link>
         </div>
         <div className="flex md:hidden flex-col flex-end justify-center items-center">
-          <a href="" className="flex flex-col btn bg-secondary-white text-primary-blue m-0 p-0" >
+          <a href="/auth/login" className="flex flex-col btn bg-secondary-white text-primary-blue m-0 p-0" >
             <img
               src="/svg/logout.svg"
             />

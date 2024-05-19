@@ -11,12 +11,12 @@ interface InputFieldProps {
 
 export default function InputField({ id, type, name, placeholder, value, onChange, iconSrc, autoComplete }: InputFieldProps) {
   return (
-    <span className="w-72 h-12 flex items-center border border-secondary-gray rounded-3xl p-3 bg-secondary-white">
+    <span className="w-full h-12 flex items-center border border-secondary-gray rounded-3xl p-3 bg-secondary-white">
       <img src={iconSrc} alt="Icon" className="mr-2 mt-2 select-none" />
       <input
         autoComplete={autoComplete}
         id={id}
-        className="h-12 focus:outline-none bg-transparent"
+        className="h-12 focus:outline-none bg-transparent w-full"
         type={type}
         name={name}
         placeholder={placeholder}

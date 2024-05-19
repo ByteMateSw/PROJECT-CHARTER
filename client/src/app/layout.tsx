@@ -3,6 +3,7 @@ import "./ui/globals.css";
 import { nunito } from "./ui/fonts";
 import Header from "./components/Header";
 import { usePathname } from "next/navigation";
+import Footer from "./components/Footer";
 
 export default function RootLayout({
   children,
@@ -12,8 +13,10 @@ export default function RootLayout({
 
   const pathname = usePathname();
   const noHeader = ["/auth"];
+  const noFooter = ["/dashboard"];
 
   const hideHeader = noHeader.some(route => pathname.includes(route));
+  const hideFooter = noFooter.some(route => pathname.includes(route));
 
   return (
     <html lang="es" className="bg-secondary-white text-secondary-black">
@@ -23,6 +26,10 @@ export default function RootLayout({
             null : <Header />
         }
         {children}
+        {
+          hideFooter ?
+            null : <Footer />
+        }
       </body>
     </html>
   );

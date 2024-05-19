@@ -72,7 +72,8 @@ export default function Form2({
         <DatePicker id="date" inputValue={inputValue} selected={selected} setInputValue={setInputValue} setSelected={setSelected} />
       </section>
       <section className="flex flex-wrap justify-between w-full">
-        <div className="my-4">
+        {/* Primer campo de entrada */}
+        <div className="my-4 w-full md:w-1/2 md:pr-2">
           <label htmlFor={fields[0].name} className="block mb-1 ml-4 font-bold text-xl">
             {fields[0].label}
           </label>
@@ -87,7 +88,9 @@ export default function Form2({
             autoComplete={fields[0].autoComplete}
           />
         </div>
-        <div className="my-4">
+
+        {/* Segundo campo de entrada */}
+        <div className="my-4 w-full md:w-1/2 md:pl-2">
           <label htmlFor={fields[1].name} className="block mb-1 ml-4 font-bold text-xl">
             {fields[1].label}
           </label>
@@ -96,15 +99,19 @@ export default function Form2({
             type={fields[1].type || "text"}
             name={fields[1].name}
             placeholder={fields[1].placeholder}
-            value={`+54${user[fields[1].name]}`}
+            value={`${user[fields[1].name]}`}
             onChange={handleChange}
             iconSrc={fields[1].iconSrc}
             autoComplete={fields[1].autoComplete}
           />
         </div>
-        <div className="flex w-full">
-          <div className="my-4 mr-6 w-full">
-            <label htmlFor="date" className="block mb-1 ml-4 font-bold text-xl">Provincia</label>
+
+        {/* Campos de selección de provincia y ciudad */}
+        <div className="flex flex-wrap w-full">
+          <div className="my-4 w-full md:w-1/2 md:pr-2">
+            <label htmlFor="province" className="block mb-1 ml-4 font-bold text-xl">
+              Provincia
+            </label>
             <ComboBox
               optionsProps={locations.provinces}
               styles={styleComboBox}
@@ -113,8 +120,10 @@ export default function Form2({
               setSelectedOptions={setProvince}
             />
           </div>
-          <div className="my-4 w-full">
-            <label htmlFor="date" className="block mb-1 ml-4 font-bold text-xl">Ciudad</label>
+          <div className="my-4 w-full md:w-1/2 md:pl-2">
+            <label htmlFor="city" className="block mb-1 ml-4 font-bold text-xl">
+              Ciudad
+            </label>
             <ComboBox
               optionsProps={locations.cities}
               styles={styleComboBox}
@@ -125,6 +134,7 @@ export default function Form2({
           </div>
         </div>
       </section>
+
       <div className="w-full flex flex-col justify-center my-2">
         <div className="text-red-500 w-full flex justify-center mb-4">
           {errorMessage && <p>{errorMessage}</p>}

@@ -45,7 +45,7 @@ export default function DatePicker({ id, inputValue, setInputValue, selected, se
                                 locale={es}
                                 captionLayout="dropdown-buttons"
                                 showOutsideDays
-                                defaultMonth={new Date(2000, 4)}
+                                defaultMonth={new Date(1960, 0)}
                                 fromYear={1960} toYear={2014}
                                 className='h-full flex justify-center'
                                 classNames={defaultStyles}

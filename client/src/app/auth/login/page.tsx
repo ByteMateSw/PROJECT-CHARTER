@@ -22,7 +22,9 @@ export default function LoginPage() {
       setErrorMessage("Por favor, complete todos los campos");
       return;
     }
-    // const data = await login(user);
+    const data = await login(user.email, user.password);
+    console.log(data.message);
+    
     //  window.location.href = "/";
   };
 
