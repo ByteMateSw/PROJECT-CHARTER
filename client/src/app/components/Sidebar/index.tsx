@@ -48,7 +48,7 @@ export default function Sidebar(): JSX.Element {
           height={measure}
         />
         <span className="ml-1 text-secondary-black text-xl font-bold">
-          Ubicación
+          Profesiones
         </span>
       </div>
       <section className="flex w-full items-center rounded-lg border justify-start border-secondary-gray px-2 py-1">
