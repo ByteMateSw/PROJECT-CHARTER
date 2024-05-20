@@ -11,7 +11,10 @@ export default function HireModal({
 }) {
   return (
     <>
-      <label className="w-full btn btn-primary rounded-full" htmlFor={`modal-${index}`}>
+      <label
+        className="w-full btn btn-primary rounded-full"
+        htmlFor={`modal-${index}`}
+      >
         Ver Perfil
       </label>
       <input className="modal-state" id={`modal-${index}`} type="checkbox" />
@@ -33,14 +36,18 @@ export default function HireModal({
           </div>
           {/* Nombre, Ubicación, Trabajos y Puntuación */}
           <div className="px-4 pb-2">
-            <h2 className="text-secondary-blackt text-center text-3xl font-bold">{user.name}</h2>
+            <h2 className="text-secondary-blackt text-center text-3xl font-bold">
+              {user.name}
+            </h2>
             <span className="flex justify-center items-center">
               <img
                 src="/svg/Location-Icon.svg"
                 alt="image"
                 className="inline h-5 w-5 mr-1"
               />
-              <p className="text-secondary-black text-xs font-bold">{user.location}</p>
+              <p className="text-secondary-black text-xs font-bold">
+                {user.location}
+              </p>
             </span>
             <p className="text-secondary-gray text-center text-base font-normal my-2">
               {user.professions.map((profession: any, index: number) => (
@@ -51,27 +58,43 @@ export default function HireModal({
               ))}
             </p>
             <span className="w-full inline-flex items-center justify-center">
-              {
-                [0, 1, 2, 3, 4].map((item, index) => {
-                  return (
+              {[0, 1, 2, 3, 4].map((item, index) => {
+                return (
+                  <React.Fragment key={index}>
                     <img
                       src="/svg/star.svg"
                       alt="image"
                       className="inline h-5 w-5"
                     />
-                  )
-                })
-              }
-              <p className="ml-2 text-secondary-black text-xs font-bold">{user.review}</p>
+                  </React.Fragment>
+                );
+              })}
+              <p className="ml-2 text-secondary-black text-xs font-bold">
+                {user.review}
+              </p>
             </span>
           </div>
           <div className="pt-4 px-9 text-justify">
-            <h2 className="text-secondary-black text-2xl font-bold">Sobre Mí</h2>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias cupiditate modi deserunt dolor laudantium perspiciatis? Qui reiciendis at omnis sed architecto quia nihil, consequatur possimus dolorum ut minima! Optio, ex.</p>
+            <h2 className="text-secondary-black text-2xl font-bold">
+              Sobre Mí
+            </h2>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias
+              cupiditate modi deserunt dolor laudantium perspiciatis? Qui
+              reiciendis at omnis sed architecto quia nihil, consequatur
+              possimus dolorum ut minima! Optio, ex.
+            </p>
           </div>
           <div className="pt-2 px-9 text-justify">
-            <h2 className="text-secondary-black text-2xl font-bold">Servicios</h2>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias cupiditate modi deserunt dolor laudantium perspiciatis? Qui reiciendis at omnis sed architecto quia nihil, consequatur possimus dolorum ut minima! Optio, ex.</p>
+            <h2 className="text-secondary-black text-2xl font-bold">
+              Servicios
+            </h2>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias
+              cupiditate modi deserunt dolor laudantium perspiciatis? Qui
+              reiciendis at omnis sed architecto quia nihil, consequatur
+              possimus dolorum ut minima! Optio, ex.
+            </p>
           </div>
           <ul className="inline-flex py-4 justify-center items-center gap-x-10">
             <li>1</li>
@@ -81,9 +104,19 @@ export default function HireModal({
             <li>5</li>
           </ul>
           <div className="flex justify-center items-center gap-x-6">
-            <label htmlFor={`modal-${index}`} className="btn bg-primary-blue text-secondary-white rounded-full">Cerrar</label>
+            <label
+              htmlFor={`modal-${index}`}
+              className="btn bg-primary-blue text-secondary-white rounded-full"
+            >
+              Cerrar
+            </label>
             <Link href={`/profile/${user.name}`}>
-              <label htmlFor={`modal-${index}`} className="btn bg-primary-blue text-secondary-white rounded-full">Perfil Completo</label>
+              <label
+                htmlFor={`modal-${index}`}
+                className="btn bg-primary-blue text-secondary-white rounded-full"
+              >
+                Perfil Completo
+              </label>
             </Link>
           </div>
         </article>
@@ -91,7 +124,6 @@ export default function HireModal({
     </>
   );
 }
-
 
 /*
 
