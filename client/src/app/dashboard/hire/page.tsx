@@ -1,5 +1,4 @@
 import HireModal from "@/app/components/Dashboard/HireModal";
-import ButtonModal from "@/app/components/Modal/ButtonModal";
 import { profiles } from "@/data/hireProfiles";
 import React from "react";
 

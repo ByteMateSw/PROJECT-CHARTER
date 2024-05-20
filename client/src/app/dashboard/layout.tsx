@@ -15,9 +15,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
 
         {/* Main content */}
-        <div className="col-start-1 col-end-3 md:col-start-2 md:col-end-3 h-full w-full overflow-hidden">
+        <div className="col-span-full md:col-start-2 md:col-end-3 h-full w-full overflow-hidden">
           <Animate>
-            <section className="h-full w-full flex justify-center flex-wrap overflow-auto delete-scrollbar border rounded-3xl border-secondary-gray">
+            <section className="h-full w-full flex justify-center flex-wrap overflow-auto delete-scrollbar md:border md:rounded-3xl md:border-secondary-gray">
               {children}
             </section>
           </Animate>

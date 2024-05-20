@@ -81,9 +81,9 @@ export default function HireModal({
             <li>5</li>
           </ul>
           <div className="flex justify-center items-center gap-x-6">
-            <label htmlFor={`modal-${index}`} className="btn bg-primary-blue text-secondary-white">Cerrar</label>
+            <label htmlFor={`modal-${index}`} className="btn bg-primary-blue text-secondary-white rounded-full">Cerrar</label>
             <Link href={`/profile/${user.name}`}>
-              <label htmlFor={`modal-${index}`} className="btn bg-primary-blue text-secondary-white">Ver Perfil Completo</label>
+              <label htmlFor={`modal-${index}`} className="btn bg-primary-blue text-secondary-white rounded-full">Perfil Completo</label>
             </Link>
           </div>
         </article>
