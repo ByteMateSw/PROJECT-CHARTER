@@ -12,7 +12,7 @@ export default function SidebarContent() {
                 <NavbarLink
                   key="/"
                   title="Home"
-                  href="/"
+                  href=""
                   src={"/svg/home.svg"}
                   alt="Home"
                 />
@@ -28,7 +28,7 @@ export default function SidebarContent() {
                 <NavbarLink
                   key="/auth/login"
                   title="Acceder"
-                  href="/auth/login"
+                  href="auth/login"
                   src={"/svg/login-blue.svg"}
                   alt="Acceder"
                 />
