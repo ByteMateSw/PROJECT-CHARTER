@@ -102,7 +102,7 @@ export default function RegisterPage() {
 
         <article className="w-[700px] px-12 py-12 bg-secondary-white flex flex-col">
           <section className="flex justify-center items-center flex-col">
-            <img className="mb-6 " src="/svg/BIENVENIDO! (1).svg" alt="svgimgg" />
+            <img className="mb-6 " src="/svg/BIENVENIDO! (1).svg" alt="svg-img" />
             <div className="flex items-center">
               <a href="/auth/login">
                 <button className="font-bold text-xl my-6 mr-7 text-secondary-gray pb-2 border-b-4 hover:scale-105 duration-150">
@@ -141,15 +141,6 @@ export default function RegisterPage() {
               setProvince={setProvince}
             />
           }
-
-          <div className="divider divider-horizontal">o</div>
-
-          <div className="my-2">
-            <span className="w-full h-12 flex items-center justify-center border border-secondary-gray rounded-3xl p-3 bg-secondary-white hover:scale-105">
-              <img src="/svg/Google.svg" alt="GoogleIcon" className="mr-2 select-none" />
-              <button className="text-xl">Registrarse con Google</button>
-            </span>
-          </div>
         </article>
       </section>
     </>

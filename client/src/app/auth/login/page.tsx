@@ -1,6 +1,6 @@
 "use client";
 import { login } from "@/app/api/user";
-import GoogleOauth from "@/app/components/googleOauth";
+import GoogleOauth from "@/app/auth/googleOauth";
 import { GoogleCredentialResponse, GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import Link from "next/link";
 import { useState } from "react";
@@ -113,9 +113,7 @@ export default function LoginPage() {
         </div>
         <div className="divider divider-horizontal">o</div>
         <GoogleOAuthProvider clientId="483719238317-0b67hs4cfkkhbr17ieikrknd9h7oib12.apps.googleusercontent.com">
-          <React.StrictMode>
-            <GoogleOauth />
-          </React.StrictMode>
+            <GoogleOauth check={true}/>
         </GoogleOAuthProvider>
       </article>
 

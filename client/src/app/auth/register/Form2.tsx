@@ -4,7 +4,11 @@ import { Field, HandleChange, OnClickFunction, User } from "./interfaces";
 import DatePicker from "@/app/components/auth/register/DatePicker";
 import ComboBox from "@/app/components/ComboBox";
 import { StylesConfig } from "react-select";
-import { Locations } from "@/app/components/Sidebar/hooks/interfaces";
+import {
+  CheckedItems,
+  Locations,
+} from "@/app/components/Sidebar/hooks/interfaces";
+import { useState } from "react";
 
 export const styleComboBox: StylesConfig = {
   control: (styles) => ({
@@ -26,8 +30,6 @@ export const styleComboBox: StylesConfig = {
   }),
 };
 
-
-
 export default function Form2({
   fields,
   errorMessage,
@@ -44,37 +46,57 @@ export default function Form2({
   setProvince,
   city,
   setCity,
+}: {
+  fields: Field[];
+  errorMessage: string;
+  user: User;
+  handleChange: HandleChange;
+  onClickFunction: OnClickFunction;
+  handleSubmit: OnClickFunction;
+  locations: Locations;
+  inputValue: string;
+  setInputValue: any;
+  selected: any;
+  setSelected: any;
+  province: unknown;
+  setProvince: any;
+  city: unknown;
+  setCity: any;
+}) {
+  const [checkedItems, setCheckedItems] = useState<CheckedItems>([]);
+  const handleCheckboxChange = (id: number) => {
+    setCheckedItems((prevCheckedItems: CheckedItems) => {
+      const updatedCheckedItems = { ...prevCheckedItems };
 
-}:
-  {
-    fields: Field[],
-    errorMessage: string,
-    user: User,
-    handleChange: HandleChange,
-    onClickFunction: OnClickFunction,
-    handleSubmit: OnClickFunction,
-    locations: Locations,
-    inputValue: string,
-    setInputValue: any,
-    selected: any,
-    setSelected: any,
-    province: unknown,
-    setProvince: any,
-    city: unknown,
-    setCity: any,
-  }) {
+      updatedCheckedItems[id]
+        ? delete updatedCheckedItems[id]
+        : (updatedCheckedItems[id] = true);
 
+      return updatedCheckedItems;
+    });
+  };
 
   return (
     <>
       <section className="flex flex-col justify-between">
-        <label htmlFor="date" className="block mb-1 ml-4 font-bold text-xl">Fecha de Nacimiento</label>
-        <DatePicker id="date" inputValue={inputValue} selected={selected} setInputValue={setInputValue} setSelected={setSelected} />
+        <label htmlFor="date" className="block mb-1 ml-4 font-bold text-xl">
+          Fecha de Nacimiento
+        </label>
+        <DatePicker
+          id="date"
+          inputValue={inputValue}
+          selected={selected}
+          setInputValue={setInputValue}
+          setSelected={setSelected}
+        />
       </section>
       <section className="flex flex-wrap justify-between w-full">
         {/* Primer campo de entrada */}
         <div className="my-4 w-full md:w-1/2 md:pr-2">
-          <label htmlFor={fields[0].name} className="block mb-1 ml-4 font-bold text-xl">
+          <label
+            htmlFor={fields[0].name}
+            className="block mb-1 ml-4 font-bold text-xl"
+          >
             {fields[0].label}
           </label>
           <InputField
@@ -91,7 +113,10 @@ export default function Form2({
 
         {/* Segundo campo de entrada */}
         <div className="my-4 w-full md:w-1/2 md:pl-2">
-          <label htmlFor={fields[1].name} className="block mb-1 ml-4 font-bold text-xl">
+          <label
+            htmlFor={fields[1].name}
+            className="block mb-1 ml-4 font-bold text-xl"
+          >
             {fields[1].label}
           </label>
           <InputField
@@ -109,7 +134,10 @@ export default function Form2({
         {/* Campos de selección de provincia y ciudad */}
         <div className="flex flex-wrap w-full">
           <div className="my-4 w-full md:w-1/2 md:pr-2">
-            <label htmlFor="province" className="block mb-1 ml-4 font-bold text-xl">
+            <label
+              htmlFor="province"
+              className="block mb-1 ml-4 font-bold text-xl"
+            >
               Provincia
             </label>
             <ComboBox
@@ -136,9 +164,34 @@ export default function Form2({
       </section>
 
       <div className="w-full flex flex-col justify-center my-2">
-        <div className="text-red-500 w-full flex justify-center mb-4">
+        <div className="text-red-500 w-full flex justify-center">
           {errorMessage && <p>{errorMessage}</p>}
         </div>
+        <span className="flex items-center mb-6 w-fit cursor-default">
+          <input
+            className={`ml-2 rounded-full appearance-none w-2 h-2 ring-2 ring-offset-2 ring-secondary-black items-center justify-center cursor-pointer ${
+              checkedItems[522]
+                ? " bg-primary-blue ring-2"
+                : "bg-secondary-white"
+            }`}
+            id={`${522}`}
+            type="checkbox"
+            checked={checkedItems[522] || false}
+            onClick={() => handleCheckboxChange(522)}
+            onChange={() => {}}
+          />
+          <label className="text-secondary-black text-base ml-2 cursor-default">
+            Acepto los
+            <a href="" className="text-primary-blue hover:underline">
+              Términos y condiciones{" "}
+            </a>
+            y la
+            <a href="" className="text-primary-blue hover:underline">
+              {" "}
+              Política de Privacidad
+            </a>
+          </label>
+        </span>
         <div className="flex justify-center items-center mx-8 gap-20">
           <button
             id="submit"
@@ -159,5 +212,5 @@ export default function Form2({
         </div>
       </div>
     </>
-  )
+  );
 }
