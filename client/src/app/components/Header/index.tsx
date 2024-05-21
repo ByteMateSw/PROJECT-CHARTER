@@ -11,13 +11,16 @@ export default function Header(): JSX.Element {
   return (
     <header className="absolute w-full md:p-4">
       <nav className="h-16 p-4 w-full inline-flex justify-between items-center border md:rounded-full border-secondary-gray bg-secondary-white shadow-md">
-        <div className="flex flex-start  md:hidden justify-start">
+        <div className="flex flex-start md:hidden justify-start">
           <input type="checkbox" id="drawer-left" className="drawer-toggle" />
           <label htmlFor="drawer-left" className="btn bg-secondary-white">
             <Image className="m-0 p-0" src="/svg/burger.svg" alt="X" width={24} height={24} />
+            <Link href="/">
+            <img src="/svg/conectando-isotype.svg" alt="Logo" className="ml-6 h-6" />
+          </Link>
           </label>
           <label className="overlay" htmlFor="drawer-left"></label>
-          <div className="drawer">
+          <div className="drawer rounded-r-2xl">
             <div className="drawer-content pt-10 flex flex-col h-full">
               <label
                 htmlFor="drawer-left"
@@ -25,12 +28,11 @@ export default function Header(): JSX.Element {
               >
                 <Image className="m-0 p-0" src="/svg/arrow-back.svg" alt="X" width={24} height={24} />
               </label>
-              <img src="/svg/conectando-icon.svg" alt="Logo" className="h-10 mb-12" />
               <SidebarContent />
             </div>
           </div>
         </div>
-        <div className="flex justify-center md:justify-start">
+        <div className="hidden md:flex md:justify-start">
           <Link href="/">
             <img src="/svg/conectando-icon.svg" alt="Logo" className="h-10" />
           </Link>
@@ -38,9 +40,8 @@ export default function Header(): JSX.Element {
         <div className="flex md:hidden flex-col flex-end justify-center items-center">
           <a href="/auth/login" className="flex flex-col btn bg-secondary-white text-primary-blue m-0 p-0" >
             <img
-              src="/svg/logout.svg"
+              src="/svg/login-blue.svg"
             />
-            Acceder
           </a>
         </div>
         <ul className="hidden md:flex justify-center items-center gap-2">

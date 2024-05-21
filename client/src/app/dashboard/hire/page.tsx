@@ -22,7 +22,7 @@ export default function HirePage() {
             </div>
 
             <div className="px-4 pt-4 pb-2">
-              <h2 className="text-secondary-blackt text-center text-3xl font-bold">{profile.name}</h2>
+              <h2 className="text-secondary-black text-center text-3xl font-bold">{profile.name}</h2>
               <span className="flex justify-center items-center">
                 <img
                   src="/svg/Location-Icon.svg"

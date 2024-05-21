@@ -55,7 +55,7 @@ export default function LoginPage() {
             <div className="font-bold text-xl my-6 mr-7 pb-2 border-b-4 border-black select-none">
               Iniciar Sesión
             </div>
-            <a href="http://localhost:3000/auth/register">
+            <a href="/auth/register">
               <button className="font-bold text-xl my-6 ml-7 text-secondary-gray pb-2 border-b-4 hover:scale-105 duration-150">
                 Registrarse
               </button>

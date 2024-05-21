@@ -20,7 +20,7 @@ export default function HireModal({
       <input className="modal-state" id={`modal-${index}`} type="checkbox" />
       <section className="modal">
         <label className="modal-overlay" htmlFor={`modal-${index}`}></label>
-        <article className="modal-content h-full w-full flex flex-col gap-5 p-0 rounded-[2rem]">
+        <article className="modal-content h-full w-full flex flex-col gap-5 p-0 rounded-[2rem] minimal-scrollbar">
           {/* Foto de perfíl */}
           <div className="flex flex-col w-full justify-center items-center">
             <img
@@ -36,7 +36,7 @@ export default function HireModal({
           </div>
           {/* Nombre, Ubicación, Trabajos y Puntuación */}
           <div className="px-4 pb-2">
-            <h2 className="text-secondary-blackt text-center text-3xl font-bold">
+            <h2 className="text-secondary-black text-center text-3xl font-bold">
               {user.name}
             </h2>
             <span className="flex justify-center items-center">
