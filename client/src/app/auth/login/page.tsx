@@ -1,5 +1,4 @@
 "use client";
-import { login } from "@/app/api/user";
 import GoogleOauth from "@/app/auth/googleOauth";
 import {
   GoogleCredentialResponse,
