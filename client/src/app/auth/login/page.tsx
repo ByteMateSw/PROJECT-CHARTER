@@ -116,7 +116,7 @@ export default function LoginPage() {
             <React.StrictMode>
                 <GoogleOauth />
             </React.StrictMode>
-          </GoogleOAuthProvider>,
+          </GoogleOAuthProvider>
 
         <div className="w-full flex flex-col justify-center mt-4">
           <div className="text-red-500 w-full flex justify-center mb-4">
