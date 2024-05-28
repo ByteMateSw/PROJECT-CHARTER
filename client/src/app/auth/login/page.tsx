@@ -1,33 +1,22 @@
 "use client";
 import { login } from "@/app/api/user";
 import GoogleOauth from "@/app/auth/googleOauth";
-import { GoogleCredentialResponse, GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import {
+  GoogleCredentialResponse,
+  GoogleLogin,
+  GoogleOAuthProvider,
+} from "@react-oauth/google";
 import Link from "next/link";
 import { useState } from "react";
-import React from 'react';
+import React from "react";
 import { fields3 } from "../register/fields";
 import InputField from "@/app/components/auth/register/InputField";
-
-
+import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [shown, setShown] = useState(false)
-
-  const switchShown = () => setShown(!shown)
-
-  const handleLogin = async () => {
-    if (!user.email || !user.password) {
-      setErrorMessage("Por favor, complete todos los campos");
-      return;
-    }
-    const data = await login(user.email, user.password);
-    console.log(data.message);
-    
-    //  window.location.href = "/";
-  };
-
+  const [shown, setShown] = useState(false);
   const [user, setUser] = useState<any>({
     email: "",
     password: "",
@@ -38,9 +27,32 @@ export default function LoginPage() {
     const { name, value } = e.target;
     setUser({
       ...user,
-      [name]: value
+      [name]: value,
     });
-  }
+  };
+
+  const handleLogin = async () => {
+    if (!user.email || !user.password) {
+      setErrorMessage("Por favor, complete todos los campos");
+      return;
+    }
+
+    const email = user.email;
+    const password = user.password;
+
+    const responseNextAuth = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (responseNextAuth?.error) {
+      setErrorMessage(responseNextAuth.error);
+      return;
+    }
+        
+     window.location.href = "/";
+  };
 
   return (
     <section className="min-h-screen flex justify-around items-center bg-secondary-white">
@@ -65,7 +77,10 @@ export default function LoginPage() {
 
         {fields3.map((field, index) => (
           <div key={index} className="w-full my-4">
-            <label htmlFor={field.name} className="block mb-1 ml-4 font-bold text-xl">
+            <label
+              htmlFor={field.name}
+              className="block mb-1 ml-4 font-bold text-xl"
+            >
               {field.label}
             </label>
             <InputField
@@ -113,14 +128,13 @@ export default function LoginPage() {
         </div>
         <div className="divider divider-horizontal">o</div>
         <GoogleOAuthProvider clientId="483719238317-0b67hs4cfkkhbr17ieikrknd9h7oib12.apps.googleusercontent.com">
-            <GoogleOauth check={true}/>
+          <GoogleOauth check={true} />
         </GoogleOAuthProvider>
       </article>
 
       <picture className="hidden md:flex justify-around ">
         <img src="/svg/Imagotype.svg" alt="Logotype" />
       </picture>
-
     </section>
   );
 }

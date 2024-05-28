@@ -43,13 +43,13 @@ export class AuthController {
     @Body(HashPasswordPipe) registerDto: RegisterDto,
   ): Promise<ResponseMessage> {
     const newUser = await this.authService.register(registerDto);
-    const verificationToken = await this.authService.getVerificationToken(
-      newUser.email,
-    );
-    await this.mailerService.SendVerificationMail(
-      newUser.email,
-      verificationToken,
-    );
+    // const verificationToken = await this.authService.getVerificationToken(
+    //   newUser.email,
+    // );
+    // await this.mailerService.SendVerificationMail(
+    //   newUser.email,
+    //   verificationToken,
+    // );
     return { message: 'El usuario a sido creado con éxito' };
   }
 

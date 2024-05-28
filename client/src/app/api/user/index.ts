@@ -15,18 +15,20 @@ export const getBestUsers = async (): Promise<User[]> => {
   }
 };
 
-export const login = async (email: string, password: string): Promise<any> => {
-  try {
-    const response = await axios.post(
-      `${LOCAL_URL}/auth/login`,
-      { email, password },
-      { withCredentials: true }
-    );
-    return response.data;
-  } catch (error: any) {
-    return error;
-  }
-};
+
+
+// export const login = async (email: string, password: string): Promise<any> => {
+//   try {
+//     const response = await axios.post(
+//       `${LOCAL_URL}/auth/login`,
+//       { email, password },
+//       { withCredentials: true }
+//     );
+//     return response.data;
+//   } catch (error: any) {
+//     return error;
+//   }
+// };
 
 export const register = async (user: any) => {
   try {
