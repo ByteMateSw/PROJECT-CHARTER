@@ -1,13 +1,12 @@
 import axios from "axios";
 import { User } from "../interface";
 
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = "https://political-jenn-bytemate.koyeb.app";
+const LOCAL_URL = "http://localhost:3032";
 
 export const getBestUsers = async (): Promise<User[]> => {
   try {
-    const response = await axios.get(
-      `https://political-jenn-bytemate.koyeb.app/user/best-users`
-    );
+    const response = await axios.get(`${LOCAL_URL}/user/best-users`);
     console.log(response.data);
     return response.data;
   } catch (error) {
@@ -16,16 +15,26 @@ export const getBestUsers = async (): Promise<User[]> => {
   }
 };
 
-export const login = async (email: string, password: string): Promise<User> => {
+
+
+// export const login = async (email: string, password: string): Promise<any> => {
+//   try {
+//     const response = await axios.post(
+//       `${LOCAL_URL}/auth/login`,
+//       { email, password },
+//       { withCredentials: true }
+//     );
+//     return response.data;
+//   } catch (error: any) {
+//     return error;
+//   }
+// };
+
+export const register = async (user: any) => {
   try {
-    const response = await axios.post(
-      `https://political-jenn-bytemate.koyeb.app/auth/login`,
-      { email, password },
-      { withCredentials: false }
-    );
+    const response = await axios.post(`${LOCAL_URL}/auth/register`, user);
     return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
+  } catch (error: any) {
+    return error;
   }
 };

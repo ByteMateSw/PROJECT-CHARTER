@@ -6,10 +6,12 @@ export default function InfiniteLooper({
   speed,
   direction,
   children,
+  className,
 }: {
   speed: number;
   direction: "right" | "left";
   children: React.ReactNode;
+  className: string;
 }) {
   const [looperInstances, setLooperInstances] = useState(1);
   const outerRef = useRef<HTMLDivElement>(null);
@@ -46,8 +48,7 @@ export default function InfiniteLooper({
 
     resetAnimation();
   }, [looperInstances]);
-  
-  
+
   /*
     6 instances, 200 each = 1200
     parent = 1700
@@ -64,8 +65,8 @@ export default function InfiniteLooper({
   }, [looperInstances, setupInstances]);
 
   return (
-    <div className="looper" ref={outerRef}>
-      <div className="looper__innerList" ref={innerRef} data-animate="true">
+    <div className={`${className} looper`} ref={outerRef}>
+      <div className={`${className} looper__innerList`} ref={innerRef} data-animate="true">
         {[...Array(looperInstances)].map((_, ind) => (
           <div
             key={ind}

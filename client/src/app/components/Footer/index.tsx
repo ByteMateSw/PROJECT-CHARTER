@@ -29,19 +29,19 @@ const SocialMedia = ({
 
 function Footer(): JSX.Element {
   // Cambiar divs, mejorar semántica HTML, añadir <Link> a redes sociales y links
-  const measure = 32; // analizar usar useState
+  const measure = 20; // analizar usar useState
   return (
 
-    <footer className="flex justify-between items-center h-[150px] px-8 py-20 m-4 border rounded-full bg-secondary-black">
+    <footer className="hidden md:flex justify-between items-center h-[150px] px-8 py-20 bg-secondary-black">
       <section>
         <Image
           src="/svg/conectando-logotype.svg"
           alt="X"
-          width={280}
+          width={200}
           height={28}
         />
       </section>
-      <section className="flex justify-center gap-8">
+      <section className="flex justify-center gap-4">
         <Links description="Desarrollado por ByteMate" />
         <Links description="© 2024 All rights reserved." />
         <Links description="Términos y condiciones" />

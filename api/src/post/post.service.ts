@@ -7,6 +7,7 @@ import { CreatePostDto } from './dto/createPost.dto';
 import { UserService } from '../user/user.service';
 import { UpdatePostDto } from './dto/updatePost.dto';
 import { File, TitleAndOrId } from '../utils/types/functions.type';
+import { S3Service } from 'src/storage/s3.service';
 
 @Injectable()
 export class PostService {
@@ -15,6 +16,7 @@ export class PostService {
     @InjectRepository(ImagePost)
     private imagePostRepository: Repository<ImagePost>,
     private userService: UserService,
+    private s3Service: S3Service,
   ) {}
 
   /**
@@ -45,6 +47,9 @@ export class PostService {
     });
     if (!findedPost)
       throw new NotFoundException('No se ha podido traer el post');
+    findedPost.images.map(image => {
+      image.path = this.s3Service.getURLFile(image.path);
+    });
     return findedPost;
   }
 
@@ -77,9 +82,14 @@ export class PostService {
     if (!post) throw new NotFoundException('No se ha encontrado el post');
     return Promise.all(
       images.map(async image => {
+        const path = await this.s3Service.uploadFile(
+          image.originalname,
+          `posts/${postId}`,
+          image.mimetype,
+          image.buffer,
+        );
         const newImage = this.imagePostRepository.create({
-          imageData: image.buffer,
-          contentType: image.mimetype,
+          path,
           post,
         });
         await this.imagePostRepository.save(newImage);
@@ -100,7 +110,8 @@ export class PostService {
       where: { id: imagePostId },
     });
     if (!imagePost) throw new NotFoundException('Imágen no encontrada');
-    return await this.imagePostRepository.remove(imagePost);
+    await this.s3Service.removeFile(imagePost.path);
+    return this.imagePostRepository.remove(imagePost);
   }
 
   /**
@@ -134,9 +145,10 @@ export class PostService {
     if (!postDelFound) throw new NotFoundException('La publicacion no existe');
     if (postDelFound.images.length > 0)
       Promise.all(
-        postDelFound.images.map(
-          async image => await this.imagePostRepository.remove(image),
-        ),
+        postDelFound.images.map(async image => {
+          await this.s3Service.removeFile(image.path);
+          await this.imagePostRepository.remove(image);
+        }),
       );
     await this.postRepository.remove(postDelFound);
   }

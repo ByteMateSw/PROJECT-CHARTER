@@ -6,8 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Office } from './office.entity';
 import { Repository } from 'typeorm';
-import { CreateOfficeDto } from './dto/create-office.dto';
-import { UpdateOfficeDto } from './dto/update-office.dto';
+import { OfficeDto } from './dto/office.dto';
 
 @Injectable()
 export class OfficeService {
@@ -21,8 +20,7 @@ export class OfficeService {
    * @returns A promise that resolves to an array of Office objects.
    */
   async getAllOffices(): Promise<Office[]> {
-    return await this.officeRepository.find({
-    });
+    return await this.officeRepository.find();
   }
 
   /**
@@ -43,7 +41,7 @@ export class OfficeService {
    * @returns A Promise that resolves to the created office.
    * @throws BadRequestException if the office already exists.
    */
-  async createOffice(createOffice: CreateOfficeDto): Promise<Office> {
+  async createOffice(createOffice: OfficeDto): Promise<Office> {
     const existsOffice = await this.officeRepository.existsBy({
       name: createOffice.name,
     });
@@ -62,10 +60,7 @@ export class OfficeService {
    * @throws NotFoundException if the office does not exist.
    * @throws BadRequestException if the category does not exist.
    */
-  async updateOffice(
-    id: number,
-    updateOffice: UpdateOfficeDto,
-  ): Promise<Office> {
+  async updateOffice(id: number, updateOffice: OfficeDto): Promise<Office> {
     const existsOffice = await this.officeRepository.existsBy({
       name: updateOffice.name,
     });

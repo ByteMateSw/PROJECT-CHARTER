@@ -1,21 +1,29 @@
 import { Suspense } from "react";
-import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Animate from "./template";
+import Filters from "./Filters";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <Suspense fallback="loading...">
-      <div className="h-screen grid grid-rows-layout grid-cols-layout">
-        <div className="row-start-1 row-end-2 col-start-1 col-end-3 fixed w-full">
-          <Header />
+      <div className="h-screen grid grid-cols-layout justify-between gap-x-4 px-4 pb-4">
+        {/* Navbar placeholder */}
+        <div className="col-span-full h-24"></div>
+
+        {/* Sidebar */}
+        <div className="hidden md:block md:col-start-1 md:col-end-2 h-full">
+          <nav className="flex h-full w-80 p-6 flex-col items-start flex-1 border rounded-3xl border-secondary-gray">
+            <Sidebar />
+          </nav>
         </div>
-        <div className="row-start-2 row-end-3 col-start-1 col-end-2 fixed h-[90%] mt-20">
-          <Sidebar />
+        {/* Drawer Top in Mobile */}
+        <div className="block md:hidden col-span-full h-full">
+          <Filters />
         </div>
-        <div className="row-start-2 row-end-3 col-start-2 col-end-3 h-[90%] w-[96.8%] mt-20 ml-8 overflow-y-hidden">
+        {/* Main content */}
+        <div className="col-span-full md:col-start-2 md:col-end-3 h-full w-full overflow-hidden">
           <Animate>
-            <section className="h-full w-full flex justify-center flex-wrap overflow-auto delete-scrollbar border rounded-3xl border-secondary-gray">
+            <section className="h-full w-full flex justify-center flex-wrap overflow-auto delete-scrollbar md:border md:rounded-3xl md:border-secondary-gray">
               {children}
             </section>
           </Animate>

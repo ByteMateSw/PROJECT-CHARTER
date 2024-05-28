@@ -19,7 +19,7 @@ export default function MiniAbout({
   tittle,
 }: MiniAboutProps) {
   return (
-    <section className={`flex justify-between w-full ${className}`}>
+    <section className={`flex flex-col justify-center items-center w-full ${className} px-8`}>
       <article className={`${pText}`}>
         <h1 className="text-start text-secondary-black text-5xl font-extrabold">
           {tittle}
@@ -33,8 +33,8 @@ export default function MiniAbout({
           ))}
         </div>
       </article>
-      <article className={`${pImg}`}>
-        <img src="/img/default.png" alt="img" className="h-[400px] w-[400px]" />
+      <article className={`${pImg} my-8`}>
+        <img src="/img/default.png" alt="img" className="h-[13.5rem] w-full" />
       </article>
     </section>
   );
