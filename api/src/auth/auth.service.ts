@@ -39,10 +39,9 @@ export class AuthService {
     if (!user) throw new UnauthorizedException();
     const role = await this.userService.getRole(user.id);
 
-    const payload: Payload = { sub: user.id, email: user.email, role };
+    const payload: any = { user, role };
     const tokens = await this.getTokens(payload);
     await this.updateRefreshToken(user.id, tokens.refresh_token);
-    console.log(user);
     return tokens;
   }
 
