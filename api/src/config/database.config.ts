@@ -24,7 +24,7 @@ export default registerAs(
       database: process.env.DATABASE_NAME,
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
-      synchronize: process.env.NODE_ENV !== IEnvironment.Production,
+      synchronize: true,//process.env.NODE_ENV !== IEnvironment.Production,
       entities: [__dirname + '/../**/*entity{.js,.ts}'],
       logging: process.env.NODE_ENV !== IEnvironment.Development,
       migrations: [__dirname + '/../**/migrations/*{.js,.ts}'],
