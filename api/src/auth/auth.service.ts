@@ -42,6 +42,7 @@ export class AuthService {
     const payload: Payload = { sub: user.id, email: user.email, role };
     const tokens = await this.getTokens(payload);
     await this.updateRefreshToken(user.id, tokens.refresh_token);
+    console.log(user);
     return tokens;
   }
 
