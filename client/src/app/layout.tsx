@@ -22,11 +22,13 @@ export default function RootLayout({
   return (
     <html lang="es" className="bg-secondary-white text-secondary-black">
       <SessionAuthProvider>
-        <body className={`${nunito.className} antialiased h-screen w-full`}>
-          {hideHeader ? null : <Header />}
-          <UserProvider>{children}</UserProvider>
-          {hideFooter ? null : <Footer />}
-        </body>
+        <UserProvider>
+          <body className={`${nunito.className} antialiased h-screen w-full`}>
+            {hideHeader ? null : <Header />}
+            {children}
+            {hideFooter ? null : <Footer />}
+          </body>
+        </UserProvider>
       </SessionAuthProvider>
     </html>
   );
