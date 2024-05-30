@@ -1,14 +1,16 @@
+import Link from "next/link";
+import Dropdown from "./Dropdown";
 import NavbarLink from "./NavbarLink";
 import { CENTER_NAV_LINKS } from "./links";
 
-export default function SidebarContent() {
+export default function SidebarContent({ user }: { user: any }) {
   return (
     <>
       <section className="sidebar-content h-fit min-h-[20rem] mt-8 overflow-visible">
         <nav className="menu rounded-md">
           <section className="menu-section">
             <label htmlFor="drawer-left">
-              <ul className="menu-items gap-8">
+              <ul className="menu-items gap-4">
                 <NavbarLink
                   key="/"
                   title="Home"
@@ -25,13 +27,91 @@ export default function SidebarContent() {
                     alt={link.alt}
                   />
                 ))}
-                <NavbarLink
-                  key="/auth/login"
-                  title="Acceder"
-                  href="auth/login"
-                  src={"/svg/login-blue.svg"}
-                  alt="Acceder"
-                />
+                {!user ? (
+                  <NavbarLink
+                    key="/auth/login"
+                    title="Acceder"
+                    href="auth/login"
+                    src={"/svg/login-blue.svg"}
+                    alt="Acceder"
+                  />
+                ) : (
+                  <li className="-mt-2">
+                    <input
+                      type="checkbox"
+                      id="menu-2"
+                      className="menu-toggle"
+                    />
+                    <label
+                      className="menu-item justify-between"
+                      htmlFor="menu-2"
+                    >
+                      <div className="flex gap-2">
+                        <img
+                          className="h-6 filter-white"
+                          src={
+                            !user.photo ? "/svg/profile-circle.svg" : user.photo
+                          }
+                          alt={"Foto de Perfil"}
+                        />
+                        <span className="font-bold text-base">
+                          {user.username}
+                        </span>
+                      </div>
+
+                      <span className="menu-icon">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </span>
+                    </label>
+
+                    <div className="menu-item-collapse">
+                      <div className="min-h-0 bg-secondary-white">
+                        <Link
+                          href={`/profile/${user.username}`}
+                          className="menu-item ml-5 text-sm flex flex-row items-center justify-start gap-1"
+                        >
+                          <img src="/svg/person.svg" alt="" className="h-4" />{" "}
+                          Perfil
+                        </Link>
+                        <Link
+                          href="#"
+                          tabIndex={-1}
+                          className="menu-item ml-5 text-sm flex flex-row items-center justify-start gap-2"
+                        >
+                          <img
+                            src="/svg/settings.svg"
+                            alt=""
+                            className="h-4 -ml-1"
+                          />{" "}
+                          Configuración
+                        </Link>
+                        <Link
+                          href="#"
+                          tabIndex={-1}
+                          className="menu-item ml-5 text-sm flex flex-row items-center gap-1"
+                        >
+                          <img
+                            src="/svg/logout.svg"
+                            alt=""
+                            className="h-4 -ml-1"
+                          />{" "}
+                          Cerrar Sesión
+                        </Link>
+                      </div>
+                    </div>
+                  </li>
+                )}
               </ul>
             </label>
           </section>

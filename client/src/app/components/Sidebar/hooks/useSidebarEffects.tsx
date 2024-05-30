@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { getProfessions } from "@/app/api/office";
 import { getCities, getProvinces } from "@/app/api/locations";
 import { CheckedItems, Profession, SidebarEffectsArgs } from "./interfaces";
@@ -16,7 +16,9 @@ export const useSidebarEffects = ({
   const router = useRouter();
   const searchParams: URLSearchParams = useSearchParams();
   const professionsParams: string | null = searchParams.get("professions");
-
+  const path = usePathname();
+  
+  
   useEffect(() => {
     getProvinces().then((newProvinces: Province[]) => {
       setLocations((prevState: Locations) => ({
@@ -37,7 +39,7 @@ export const useSidebarEffects = ({
   }, [professionsParams]);
 
   useEffect(() => {
-    if (selectedProfessions.length === 0) router.replace("/dashboard/hire");
+    if (selectedProfessions.length === 0 && path === "/dashboard/hire") router.replace("/dashboard/hire");
     else router.push(`?professions=${selectedProfessions.join("-")}`);
   }, [selectedProfessions, router]);
 

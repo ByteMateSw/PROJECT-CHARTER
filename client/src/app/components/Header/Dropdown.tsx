@@ -17,37 +17,65 @@ const MENU_ITEMS = [
   { href: "#", text: "Configuración" },
 ];
 
-export default function Dropdown() {
+export default function Dropdown({ user }: { user: any }) {
   return (
     <div className="dropdown dropdown-hover hover:[&>label]:text-primary-blue">
       <label
         className="btn bg-secondary-white my-2 font-semibold text-lg gap-2 p-0 username"
         tabIndex={0}
       >
-        <img
-          className="rounded-full h-10 border-2 border-secondary-black"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRenkUTJ2tnqhmukhJwDsDWnoSXC6apMdbtHPjhRFJjsg&s"
-          alt="Profile Image"
-        />
-        Furry
-        <div className="arrow"></div>
+        {user.photo ? (
+          <img
+            className="rounded-full h-10 border-2 border-secondary-black"
+            src={user.photo}
+            alt="Profile Image"
+          />
+        ) : (
+          <img
+            className="rounded-full h-10 border-2 border-secondary-black"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRenkUTJ2tnqhmukhJwDsDWnoSXC6apMdbtHPjhRFJjsg&s"
+            alt="Profile Image"
+          />
+        )}
+        {user.username}
+        <span className="menu-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </span>{" "}
       </label>
-      <div className="dropdown-menu dropdown-menu-bottom-left bg-secondary-white -right-8 mt-1 w-44">
-        <Link href="/profile/username" className="dropdown-item text-sm flex flex-row items-center justify-start gap-1">
+      <div className="dropdown-menu dropdown-menu-bottom-left bg-secondary-white -right-4 mt-2 w-44">
+        <Link
+          href={`/profile/${user.username}`}
+          className="dropdown-item text-sm flex flex-row items-center justify-start gap-1"
+        >
           <img src="/svg/person.svg" alt="" className="h-6" /> Perfil
         </Link>
-        <Link href="#"
+        <Link
+          href="#"
           tabIndex={-1}
           className="dropdown-item text-sm flex flex-row items-center justify-start gap-2"
         >
-          <img src="/svg/settings.svg" alt="" className="h-6 -ml-1" /> Configuración
+          <img src="/svg/settings.svg" alt="" className="h-6 -ml-1" />{" "}
+          Configuración
         </Link>
         <div className="dropdown-divider my-2" role="separator"></div>
-        <Link href="#"
+        <Link
+          href="#"
           tabIndex={-1}
           className="dropdown-item text-sm flex flex-row items-center gap-1"
         >
-          <img src="/svg/logout.svg" alt="" className="h-6 -ml-1" /> Cerrar Sesión
+          <img src="/svg/logout.svg" alt="" className="h-6 -ml-1" /> Cerrar
+          Sesión
         </Link>
       </div>
     </div>

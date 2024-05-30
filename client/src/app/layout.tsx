@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import { usePathname } from "next/navigation";
 import Footer from "./components/Footer";
 import SessionAuthProvider from "@/context/SessionAuthProvider";
+import { UserProvider } from "@/context/userContext";
 
 export default function RootLayout({
   children,
@@ -13,7 +14,7 @@ export default function RootLayout({
 }) {
   const pathname = usePathname();
   const noHeader = ["/auth"];
-  const noFooter = ["/auth", "/dashboard"];
+  const noFooter = ["/auth", "/dashboard", "/profile"];
 
   const hideHeader = noHeader.some((route) => pathname.includes(route));
   const hideFooter = noFooter.some((route) => pathname.includes(route));
@@ -23,7 +24,7 @@ export default function RootLayout({
       <SessionAuthProvider>
         <body className={`${nunito.className} antialiased h-screen w-full`}>
           {hideHeader ? null : <Header />}
-          {children}
+          <UserProvider>{children}</UserProvider>
           {hideFooter ? null : <Footer />}
         </body>
       </SessionAuthProvider>

@@ -22,8 +22,6 @@ const handler = NextAuth({
             withCredentials: true,
           }
         );
-        console.log(res.data);
-
         // if (res.error) throw res;
 
         return res.data;

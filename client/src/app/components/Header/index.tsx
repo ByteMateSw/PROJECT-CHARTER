@@ -6,13 +6,23 @@ import SidebarContent from "./SidebarContent";
 import Image from "next/image";
 import { CENTER_NAV_LINKS, NAV_LINKS } from "./links";
 import { useSession } from "next-auth/react";
+import { jwtDecode } from "jwt-decode";
 
 export default function Header() {
-  const { data: session, status } = useSession();
+  const { data: session, status }: any = useSession();
 
-  console.log({ session, status });
+  let decoded: any;
+  if (typeof session?.user?.access_token === "string") {
+    decoded = jwtDecode(session?.user?.access_token);
+  }
 
-  if (status === "loading") return <>loading...</>;
+  if (status === "loading") {
+    return (
+      <header className="absolute w-full md:p-4">
+        <nav className="skeleton h-16 p-4 w-full shadow-md md:rounded-full"></nav>
+      </header>
+    );
+  }
 
   if (status === "unauthenticated") {
     return (
@@ -51,7 +61,7 @@ export default function Header() {
                     height={24}
                   />
                 </label>
-                <SidebarContent />
+                <SidebarContent user={undefined} />
               </div>
             </div>
           </div>
@@ -130,7 +140,7 @@ export default function Header() {
                     height={24}
                   />
                 </label>
-                <SidebarContent />
+                <SidebarContent user={decoded.user} />
               </div>
             </div>
           </div>
@@ -140,12 +150,12 @@ export default function Header() {
             </Link>
           </div>
           <div className="flex md:hidden flex-col flex-end justify-center items-center">
-            <a
-              href="/auth/login"
+            <Link
+              href=""
               className="flex flex-col btn bg-secondary-white text-primary-blue m-0 p-0"
             >
-              <img src="/svg/login-blue.svg" />
-            </a>
+              <img src="/svg/notification.svg" />
+            </Link>
           </div>
           <ul className="hidden md:flex justify-center items-center gap-2">
             {CENTER_NAV_LINKS.map((link) => (
@@ -168,7 +178,7 @@ export default function Header() {
                 alt={link.alt}
               />
             ))}
-            <Dropdown />
+            <Dropdown user={decoded.user} />
           </ul>
         </nav>
       </header>
