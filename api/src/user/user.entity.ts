@@ -40,7 +40,7 @@ export class User {
   /**
    * The username of the user.
    */
-  @Column()
+  @Column({ unique: true })
   username: string;
 
   /**
@@ -60,12 +60,6 @@ export class User {
    */
   @Column({ default: false, select: false })
   isAccountValidate: boolean;
-
-  /**
-   * Indicates whether the user's DNI is validated.
-   */
-  @Column({ default: false, select: false })
-  dniValidate: boolean;
 
   /**
    * Indicates whether the user is deleted.
