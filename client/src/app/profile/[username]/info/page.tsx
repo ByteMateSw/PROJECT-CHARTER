@@ -1,9 +1,11 @@
 "use client";
+import React from "react";
 import { useUser } from "@/context/userContext";
 
-export default function page() {
+const Page: React.FC = () => {
   const [user] = useUser();
   console.log(user);
+
   return (
     <>
       <section className="flex flex-col justify-center items-start w-full p-4">
@@ -29,4 +31,6 @@ export default function page() {
       </section>
     </>
   );
-}
+};
+
+export default Page;
