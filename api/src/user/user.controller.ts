@@ -56,7 +56,6 @@ export class UserController {
    * @param id - The ID of the user.
    * @returns A promise that resolves to the User object.
    */
-  @UseGuards(AccessTokenGuard)
   @Get(':username')
   async getUserById(
     @Param('username') username: string,
