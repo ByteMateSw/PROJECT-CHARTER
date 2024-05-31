@@ -13,6 +13,7 @@ import { Post } from '../post/post.entity';
 import { Role } from '../role/role.entity';
 import { City } from '../city/city.entity';
 import { Notifications } from '../notifications/notifications.entity';
+import { Experiencie } from 'src/experiencie/experiencie.entity';
 
 /**
  * Represents a User entity.
@@ -133,4 +134,13 @@ export class User {
    */
   @OneToMany(() => Notifications, (notifications) => notifications.user)
   notifications: Notification[];
+
+  @OneToMany(() => Experiencie, (experiencie) => experiencie.user)
+  experiencie: Experiencie[];
+
+  @Column({ nullable: true })
+  about: string;
+
+  @Column({ nullable: true })
+  habilities: string;
 }
