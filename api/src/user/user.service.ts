@@ -50,7 +50,7 @@ export class UserService {
   async getUserBy({ id, email, username }: EmailUsernameAndOrId): Promise<User> {
     return await this.userRepository.findOne({
       where: { id, email, username },
-      relations: { city: true, offices: true, reviews: true, posts: true },
+      relations: { city: true, offices: true, reviews: true, posts: true, experience: true },
       select: {
         city: { id: false, name: true },
       },

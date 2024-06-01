@@ -16,6 +16,7 @@ import { ReviewModule } from './review/review.module';
 import { NotificationModule } from './notifications/notifications.module';
 import { AppController } from './app.controller';
 import { S3Module } from './storage/s3.module';
+import { ExperienceModule } from './experiencie/experience.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { S3Module } from './storage/s3.module';
     ReviewModule,
     NotificationModule,
     S3Module,
+    ExperienceModule,
   ],
   controllers: [AppController],
 })
