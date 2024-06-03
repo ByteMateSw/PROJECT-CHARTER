@@ -61,7 +61,7 @@ export default function Dropdown({ user }: { user: any }) {
           <img src="/svg/person.svg" alt="" className="h-6" /> Perfil
         </Link>
         <Link
-          href="#"
+          href="/settings"
           tabIndex={-1}
           className="dropdown-item text-sm flex flex-row items-center justify-start gap-2"
         >

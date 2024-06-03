@@ -85,7 +85,7 @@ export default function SidebarContent({ user }: { user: any }) {
                           Perfil
                         </Link>
                         <Link
-                          href="#"
+                          href="/settings"
                           tabIndex={-1}
                           className="menu-item ml-5 text-sm flex flex-row items-center justify-start gap-2"
                         >

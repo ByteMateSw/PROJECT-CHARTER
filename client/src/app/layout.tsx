@@ -14,7 +14,7 @@ export default function RootLayout({
 }) {
   const pathname = usePathname();
   const noHeader = ["/auth"];
-  const noFooter = ["/auth", "/dashboard", "/profile"];
+  const noFooter = ["auth", "dashboard", "profile", "settings"];
 
   const hideHeader = noHeader.some((route) => pathname.includes(route));
   const hideFooter = noFooter.some((route) => pathname.includes(route));

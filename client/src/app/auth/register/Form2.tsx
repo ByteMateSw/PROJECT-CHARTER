@@ -141,6 +141,7 @@ export default function Form2({
               Provincia
             </label>
             <ComboBox
+              label="province"
               optionsProps={locations.provinces}
               styles={styleComboBox}
               placeholder="Provincia"
@@ -153,6 +154,7 @@ export default function Form2({
               Ciudad
             </label>
             <ComboBox
+              label="city"
               optionsProps={locations.cities}
               styles={styleComboBox}
               placeholder="Ciudad"

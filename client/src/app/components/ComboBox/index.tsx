@@ -11,25 +11,33 @@ export default function ComboBox({
   styles,
   selectedOptions,
   setSelectedOptions,
+  isMulti = false,
+  optionsToDisable,
 }: {
   optionsProps: OptionsPropsType[];
   placeholder?: string;
   styles: StylesConfig;
   selectedOptions: unknown;
   setSelectedOptions: any;
+  isMulti?: boolean;
+  optionsToDisable?: any;
 }) {
   const animatedComponents = makeAnimated();
-  const { isClient, handleChange } = useComboBox({ selectedOptions, setSelectedOptions });
+  const { isClient, handleChange } = useComboBox({
+    selectedOptions,
+    setSelectedOptions,
+  });
 
-  const options = mapOptions(optionsProps);
+  const options = mapOptions(optionsProps, optionsToDisable);
 
   return (
     <div className="w-full">
-      {isClient ? (
+      {isClient && options.length > 0 ? (
         <Select
-          classNamePrefix={placeholder}
+          isMulti={isMulti}
+          placeholder={placeholder}
           styles={styles}
-          closeMenuOnSelect={false}
+          closeMenuOnSelect={!isMulti}
           components={animatedComponents}
           value={selectedOptions}
           onChange={handleChange}
