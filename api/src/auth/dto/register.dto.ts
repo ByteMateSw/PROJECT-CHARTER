@@ -64,13 +64,12 @@ export class RegisterDto {
     {
       minLength: 8,
       minLowercase: 1,
-      minSymbols: 1,
       minUppercase: 1,
       minNumbers: 1,
     },
     {
       message:
-        'La contraseña debe contener al menos 8 carácteres, de los cuales 1 debe ser un símbolo, un número, una letra mayúscula y minúscula',
+        'La contraseña debe contener al menos 8 carácteres, de los cuales 1 debe ser un número, una letra mayúscula y minúscula',
     },
   )
   password: string;

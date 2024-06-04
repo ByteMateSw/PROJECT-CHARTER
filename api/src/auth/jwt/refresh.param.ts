@@ -16,6 +16,8 @@ import { existsCookie } from '../../utils/tools/cookies';
 export const RefreshTokenCookie = createParamDecorator(
   (_: string, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
+    console.log(request);
+    
     if (!existsCookie(refreshCookieName, request))
       throw new ForbiddenException('Access Denied');
     return request.cookies[refreshCookieName];

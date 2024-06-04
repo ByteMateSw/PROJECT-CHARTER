@@ -20,10 +20,10 @@ export const fields: Field[] = [
     label: "Correo electrónico",
     placeholder: "correo@correo.com",
     iconSrc: "/svg/Mail-Icon.svg",
-    autoComplete: "on",
+    autoComplete: "off",
   },
   {
-    name: "userName",
+    name: "username",
     label: "Nombre de Usuario",
     placeholder: "Nombre de Usuario",
     iconSrc: "/svg/person.svg",
@@ -35,7 +35,7 @@ export const fields: Field[] = [
     placeholder: "····················",
     iconSrc: "/svg/Lock-Icon.svg",
     type: "password",
-    autoComplete: "on",
+    autoComplete: "off",
   },
   {
     name: "confirmPassword",

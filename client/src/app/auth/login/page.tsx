@@ -1,10 +1,4 @@
 "use client";
-import GoogleOauth from "@/app/auth/googleOauth";
-import {
-  GoogleCredentialResponse,
-  GoogleLogin,
-  GoogleOAuthProvider,
-} from "@react-oauth/google";
 import Link from "next/link";
 import { useState } from "react";
 import React from "react";
@@ -49,8 +43,8 @@ export default function LoginPage() {
       setErrorMessage(responseNextAuth.error);
       return;
     }
-        
-     window.location.href = "/";
+
+    window.location.href = "/";
   };
 
   return (
@@ -126,9 +120,6 @@ export default function LoginPage() {
           </button>
         </div>
         <div className="divider divider-horizontal">o</div>
-        <GoogleOAuthProvider clientId="483719238317-0b67hs4cfkkhbr17ieikrknd9h7oib12.apps.googleusercontent.com">
-          <GoogleOauth check={true} />
-        </GoogleOAuthProvider>
       </article>
 
       <picture className="hidden md:flex justify-around ">

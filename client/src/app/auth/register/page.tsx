@@ -38,7 +38,7 @@ export default function RegisterPage() {
   const [user, setUser] = useState<User>({
     firstName: "",
     lastName: "",
-    userName: "",
+    username: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -60,7 +60,9 @@ export default function RegisterPage() {
   }
 
   const handleSubmit = async () => {
-    if (!user.name || !user.lastName || !user.userName || !user.email || !user.password || !user.confirmPassword) {
+    if (!user.firstName || !user.lastName || !user.username || !user.email || !user.password || !user.confirmPassword) {
+      console.log(user.name, user.lastName, user.username, user.email, user.password, user.confirmPassword);
+      
       setWarningMessage("Por favor, complete todos los campos");
       return;
     }
@@ -71,7 +73,7 @@ export default function RegisterPage() {
     const finalUser = {
       firstName: user.firstName,
       lastName: user.lastName,
-      username: user.userName,
+      username: user.username,
       email: user.email,
       password: user.password,
       dni: user.dni,
@@ -82,13 +84,16 @@ export default function RegisterPage() {
     };
 
     const data = await register(finalUser);
-    if (data.response.data.message) {
-      setErrorMessage(data.response.data.message);
-      setShowAlert(true);
-    }
+    // if (data.response.data.message) {
+    //   setErrorMessage(data.response.data.message);
+    //   setShowAlert(true);
+    // }
 
+    console.log(data);
+    
   };
 
+  
 
   return (
     <>
