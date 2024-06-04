@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Post,
   Query,
+  Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -100,5 +101,28 @@ export class AuthController {
     const verifyToken = await this.authService.verifyVerificationToken(token);
     this.authService.validateAccount(verifyToken.email);
     return { message: 'La cuenta del usuario ha sido validada.' };
+  }
+
+  /**
+   * Logs out the user by removing the refresh token and clearing the cookie.
+   * @param req - The request object.
+   * @param res - The response object.
+   */
+  @Post('logout')
+  @HttpCode(HttpStatus.OK)
+  async logout(@Body() body: { userId: number }, @Res() res: Response) {
+    const userId = body.userId;
+
+    if (userId) {
+      await this.authService.logout(userId);
+      this.authService.clearRefreshToken(res);
+      return res
+        .status(HttpStatus.OK)
+        .json({ message: 'Sesión cerrada exitosamente' });
+    } else {
+      return res
+        .status(HttpStatus.BAD_REQUEST)
+        .json({ message: 'User ID is required' });
+    }
   }
 }

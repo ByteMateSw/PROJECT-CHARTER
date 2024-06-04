@@ -46,6 +46,22 @@ export class AuthService {
   }
 
   /**
+   * Verifies the provided access token.
+   * @param token - The access token to verify.
+   * @returns A promise that resolves to the payload of the verified token.
+   * @throws UnauthorizedException if the token is invalid.
+   */
+  async verifyAccessToken(token: string): Promise<Payload> {
+    try {
+      return await this.jwtService.verifyAsync(token, {
+        secret: this.configService.get<string>('JWT_ACCESS_SECRET_KEY'),
+      });
+    } catch (error) {
+      throw new UnauthorizedException('Invalid token');
+    }
+  }
+
+  /**
    * Generates a verification token for the provided email.
    * @param email - The email for which to generate the verification token.
    * @returns A promise that resolves to the generated verification token.
@@ -183,5 +199,17 @@ export class AuthService {
     const passMatch = await this.hashService.compareHash(hash, password);
     if (!passMatch) throw new BadRequestException('Credenciales incorrectas');
     return user;
+  }
+
+  async logout(userId: number) {
+    await this.userService.removeRefreshToken(userId);
+  }
+
+  clearRefreshToken(res: Response) {
+    res.clearCookie('refresh_token', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+    });
   }
 }
