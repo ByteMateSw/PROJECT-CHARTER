@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import Footer from "./components/Footer";
 import SessionAuthProvider from "@/context/SessionAuthProvider";
 import { UserProvider } from "@/context/userContext";
+import GoogleAdsense from "./GoogleAdsense";
 
 export default function RootLayout({
   children,
@@ -30,6 +31,7 @@ export default function RootLayout({
           </body>
         </UserProvider>
       </SessionAuthProvider>
+      <GoogleAdsense pId={process.env.NEXT_GOOGLEADS || ""} />
     </html>
   );
 }

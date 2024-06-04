@@ -1,5 +1,3 @@
-import Header from "@/app/components/Header";
-import Footer from "@/app/components/Footer";
 import BestProfiles from "./components/Home/BestProfile";
 import Hero from "./components/Home/Hero";
 import Carousel from "./components/Home/Carousel";

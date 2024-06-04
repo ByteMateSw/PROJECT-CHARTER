@@ -1,6 +1,6 @@
 "use client";
 import { useSession } from "next-auth/react";
-import { fields } from "./fields";
+import { fields, redes } from "./fields";
 import InputField from "../components/auth/register/InputField";
 import { useEffect, useState } from "react";
 import {
@@ -13,6 +13,7 @@ import ComboBox from "../components/ComboBox";
 import { StylesConfig } from "react-select";
 import { getProfessions } from "../api/office";
 import { jwtDecode } from "jwt-decode";
+import InputField1 from "../components/Inputs/InputField1";
 
 export const styleComboBox: StylesConfig = {
   control: (styles) => ({
@@ -86,6 +87,15 @@ export default function Page() {
     });
   }, []);
 
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setUser((prevUser: any) => ({
+      ...prevUser,
+      [name]: value
+    }));
+  };
+
+
   const handleRemoveOffice = (officeId: number) => {
     setUser((prevUser: any) => ({
       ...prevUser,
@@ -117,8 +127,8 @@ export default function Page() {
   };
 
   console.log(user);
-  
-  
+
+
   if (status === "loading") {
     return <></>;
   }
@@ -130,14 +140,18 @@ export default function Page() {
         <div className="col-span-3 h-24 flex-shrink-0"></div>
 
         {/* Sidebar */}
-        <div className="h-full col-span-1 border border-secondary-gray rounded-[2rem]">
-          d
+        <div className="h-full col-span-1 pl-20 pt-16">
+          <ul className="flex flex-col gap-9">
+            <li><a className="cursor-pointer" href="#">Imagen de perfil y portada</a></li>
+            <li><a className="cursor-pointer" href="#">Información básica</a></li>
+            <li><a className="cursor-pointer" href="#">Redes de contacto</a></li>
+          </ul>
         </div>
 
         {/* Main content */}
         <div className="col-span-2">
           {/* Sección de selección de imagen */}
-          <section className="flex flex-col gap-6 w-full pb-8">
+          <section className="flex flex-col gap-6 w-full pb-8 pt-20">
             <div className="w-full">
               <span className="text-xl font-bold">Imagen de Perfil</span>
               <div className="flex">
@@ -220,8 +234,8 @@ export default function Page() {
             </div>
           </section>
           {/* Sección de selección básica */}
-          <section className="flex flex-col gap-6 w-full pb-8">
-            <h2 className="">Información básica</h2>
+          <section className="flex flex-col gap-6 w-full pb-8 pt-20">
+            <h2 className="text-xl font-bold">Información básica</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {fields.map((field, index) => (
                 <div key={index}>
@@ -238,7 +252,7 @@ export default function Page() {
                     name={field.name}
                     placeholder={field.placeholder}
                     value={user[field.name]}
-                    onChange={() => {}}
+                    onChange={() => { }}
                     iconSrc={field.iconSrc}
                   />
                 </div>
@@ -301,6 +315,44 @@ export default function Page() {
                 </div>
               </div>
             </div>
+          </section>
+          <section className="flex flex-col gap-6 w-full pb-8 pt-20">
+            <h2 className="text-xl font-bold">Redes de Contacto</h2>
+            {redes.map(({ name, iconSrc, label, autoComplete, type, placeholder }, index) => (
+              <div key={name || index}>
+                <label
+                  htmlFor={name}
+                  className="flex flex-col items-start mb-1 ml-4 text-base"
+                >
+                  <span className="flex items-center justify-center">
+                    <img src={iconSrc} alt="Icon" className="h-6 w-6 mr-2 select-none" />
+                    {label}
+                  </span>
+                </label>
+                <InputField1
+                  id={name}
+                  autoComplete={autoComplete}
+                  type={type || "text"}
+                  name={name}
+                  placeholder={placeholder}
+                  value={user[name]}
+                  iconSrc=""
+                  onChange={handleChange}
+                />
+              </div>
+            ))}
+          </section>
+          <section className="flex flex-col gap-6 w-full pb-8 pt-20">
+            <h2 className="text-xl font-bold">Acerca de Mí</h2>
+            <span className="w-full h-64 flex border border-secondary-gray rounded-3xl p-3 bg-secondary-white">
+              <textarea
+                className="w-full h-full focus:outline-none bg-transparent resize-none"
+                autoComplete="off"
+                name="about"
+                placeholder="Descripción"
+              />
+            </span>
+
           </section>
         </div>
       </div>

@@ -32,5 +32,32 @@ export const fields: Field[] = [
 ];
 
 export const redes: Field[] = [
-    
-]
+  {
+    name: "instagram",
+    label: "Instagram",
+    placeholder: "Link del perfil",
+    iconSrc: "/svg/instagram-icon.svg",
+    autoComplete: "off",
+  },
+  {
+    name: "twitter",
+    label: "Twitter (X)",
+    placeholder: "Link del perfil",
+    iconSrc: "/svg/twitter-x-icon.svg",
+    autoComplete: "off",
+  },
+  {
+    name: "facebook",
+    label: "Facebook",
+    placeholder: "Link del perfil",
+    iconSrc: "/svg/facebook-icon.svg",
+    autoComplete: "off",
+  },
+  {
+    name: "instagram",
+    label: "LinkedIn",
+    placeholder: "Link del perfil",
+    iconSrc: "/svg/linkedin-icon.svg",
+    autoComplete: "off",
+  },
+];
