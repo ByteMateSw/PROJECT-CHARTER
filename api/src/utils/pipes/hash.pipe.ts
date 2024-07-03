@@ -1,5 +1,5 @@
 import { PipeTransform, Injectable, BadRequestException } from '@nestjs/common';
-import argon2 from 'argon2';
+import * as argon2 from 'argon2';
 
 /**
  * HashPipe class is a custom pipe used to hash the password value.

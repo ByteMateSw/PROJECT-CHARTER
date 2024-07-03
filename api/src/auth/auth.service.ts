@@ -135,5 +135,4 @@ export class AuthService {
     if (!passMatch) throw new BadRequestException('Credenciales incorrectas');
     return user;
   }
-
 }
