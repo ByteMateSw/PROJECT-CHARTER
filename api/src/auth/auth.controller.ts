@@ -67,7 +67,7 @@ export class AuthController {
     @Body() signInDto: LoginDto,
     @Res({ passthrough: true }) res: Response,
   ): Promise<AccessToken> {
-    const tokens: Tokens = await this.authService.login(signInDto.email);
+    const tokens: Tokens = await this.authService.login(signInDto);
     this.authService.setRefreshToken(tokens.refresh_token, res);
     return tokens;
   }

@@ -96,7 +96,7 @@ export class RegisterDto {
   @IsPhoneNumber(undefined, {
     message: 'El número de teléfono debe de tener un formato válido',
   })
-  numberPhone?: string;
+  numberPhone: string;
 
   /**
    * The DNI (National Identity Document) of the user.
@@ -112,6 +112,7 @@ export class RegisterDto {
    * The birthday of the user.
    * @remarks
    * - Must be a valid date.
+   * - format date (YYYY-MM-DD)
    */
   @IsDateString(
     { strictSeparator: false },

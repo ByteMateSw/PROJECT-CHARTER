@@ -15,6 +15,7 @@ import { hashData, verifyData } from '../utils/tools/hash';
 import { setCookie } from '../utils/tools/cookies';
 import { Response } from 'express';
 import { refreshCookieName } from '../config/jwt.config';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -25,12 +26,13 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
-  async login(email: string): Promise<Tokens> {
-    const user = await this.userService.getUserBy({ email });
-    if (!user) throw new UnauthorizedException();
-    const role = await this.userService.getRole(user.id);
+  async login(signInDto: LoginDto): Promise<Tokens> {
+    // const user = await this.userService.getUserBy({ email });
+    // if (!user) throw new UnauthorizedException();
+    // const role = await this.userService.getRole(user.id);
+    const user = await this.validate(signInDto.email, signInDto.password);
 
-    const payload: any = { user, role };
+    const payload: any = { user, role: user.role };
     const tokens = await this.getTokens(payload);
     await this.updateRefreshToken(user.id, tokens.refresh_token);
     return tokens;
