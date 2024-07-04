@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { Response } from 'express';
 import { LocalAuthGuard } from './local/local-auth.guard';
 import { RefreshTokenGuard } from './jwt/refresh.guard';
-import { MailerService } from '../mailer/mailer.service';
+import { MailService } from '../mailer/mailer.service';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -65,7 +65,7 @@ describe('AuthController', () => {
           useValue: mockAuthService,
         },
         {
-          provide: MailerService,
+          provide: MailService,
           useValue: mockMailerService,
         },
       ],

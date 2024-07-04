@@ -21,7 +21,7 @@ import { ResponseMessage } from '../utils/types/functions.type';
 import { RefreshTokenCookie } from './jwt/refresh.param';
 import { RefreshTokenGuard } from './jwt/refresh.guard';
 import { UserParamID } from '../utils/params/user.param';
-import { MailerService } from '../mailer/mailer.service';
+import { MailService } from '../mailer/mailer.service';
 
 /**
  * Controller responsible for handling authentication-related requests.
@@ -30,7 +30,7 @@ import { MailerService } from '../mailer/mailer.service';
 export class AuthController {
   constructor(
     private authService: AuthService,
-    private mailerService: MailerService,
+    private mailerService: MailService,
   ) {}
 
   /**
@@ -44,13 +44,13 @@ export class AuthController {
     @Body(HashPasswordPipe) registerDto: RegisterDto,
   ): Promise<ResponseMessage> {
     const newUser = await this.authService.register(registerDto);
-    // const verificationToken = await this.authService.getVerificationToken(
-    //   newUser.email,
-    // );
-    // await this.mailerService.SendVerificationMail(
-    //   newUser.email,
-    //   verificationToken,
-    // );
+    const verificationToken = await this.authService.getVerificationToken(
+      newUser.email,
+    );
+    await this.mailerService.SendVerificationMail(
+      newUser.email,
+      verificationToken,
+    );
     return { message: 'El usuario a sido creado con éxito' };
   }
 
@@ -87,7 +87,6 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ): Promise<AccessToken> {
     console.log(refreshToken);
-    
     const tokens = await this.authService.refreshTokens(id, refreshToken);
     this.authService.setRefreshToken(tokens.refresh_token, res);
     return tokens;
@@ -104,5 +103,4 @@ export class AuthController {
     this.authService.validateAccount(verifyToken.email);
     return { message: 'La cuenta del usuario ha sido validada.' };
   }
-
 }

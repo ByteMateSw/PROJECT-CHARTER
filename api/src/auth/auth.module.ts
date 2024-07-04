@@ -9,7 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { LocalStrategy } from './local/local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { RefreshTokenStrategy } from './jwt/refresh.strategy';
-import { MailerModule } from '../mailer/mailer.module';
+import { MailModule } from '../mailer/mailer.module';
 
 /**
  * Module responsible for authentication-related functionality.
@@ -20,7 +20,7 @@ import { MailerModule } from '../mailer/mailer.module';
     PassportModule,
     UserModule,
     JwtModule.register({}),
-    MailerModule,
+    MailModule,
   ],
   controllers: [AuthController],
   providers: [
