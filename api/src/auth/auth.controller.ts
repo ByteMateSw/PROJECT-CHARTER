@@ -22,6 +22,7 @@ import { RefreshTokenCookie } from './jwt/refresh.param';
 import { RefreshTokenGuard } from './jwt/refresh.guard';
 import { UserParamID } from '../utils/params/user.param';
 import { MailService } from '../mailer/mailer.service';
+import { GoogleAuthGuard } from './google/google.guard';
 
 /**
  * Controller responsible for handling authentication-related requests.
@@ -102,5 +103,20 @@ export class AuthController {
     const verifyToken = await this.authService.verifyVerificationToken(token);
     this.authService.validateAccount(verifyToken.email);
     return { message: 'La cuenta del usuario ha sido validada.' };
+  }
+
+  @Get('google')
+  @UseGuards(GoogleAuthGuard)
+  async googleLogin() {
+    return HttpStatus.OK;
+  }
+
+  @Get('google/callback')
+  @UseGuards(GoogleAuthGuard)
+  async googleLoginCallback() {
+    return {
+      status: HttpStatus.OK,
+      redirect: true,
+    };
   }
 }

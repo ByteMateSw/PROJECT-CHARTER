@@ -10,6 +10,7 @@ import { LocalStrategy } from './local/local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { RefreshTokenStrategy } from './jwt/refresh.strategy';
 import { MailModule } from '../mailer/mailer.module';
+import { GoogleAuthStrategy } from './google/google.strategy';
 
 /**
  * Module responsible for authentication-related functionality.
@@ -29,6 +30,7 @@ import { MailModule } from '../mailer/mailer.module';
     JwtStrategy,
     RefreshTokenStrategy,
     LocalStrategy,
+    GoogleAuthStrategy,
   ],
   exports: [AuthService],
 })
