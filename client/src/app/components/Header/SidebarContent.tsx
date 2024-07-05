@@ -2,8 +2,13 @@ import Link from "next/link";
 import Dropdown from "./Dropdown";
 import NavbarLink from "./NavbarLink";
 import { CENTER_NAV_LINKS } from "./links";
+import { signOut } from "next-auth/react";
 
 export default function SidebarContent({ user }: { user: any }) {
+
+  let image = user?.photo || user?.image 
+  let name = user?.username || user?.name
+
   return (
     <>
       <section className="sidebar-content h-fit min-h-[20rem] mt-8 overflow-visible">
@@ -50,12 +55,12 @@ export default function SidebarContent({ user }: { user: any }) {
                         <img
                           className="h-6 filter-white"
                           src={
-                            !user.photo ? "/svg/profile-circle.svg" : user.photo
+                            !image ? "/svg/profile-circle.svg" : image
                           }
                           alt={"Foto de Perfil"}
                         />
                         <span className="font-bold text-base">
-                          {user.username}
+                          {name}
                         </span>
                       </div>
 
@@ -78,7 +83,7 @@ export default function SidebarContent({ user }: { user: any }) {
                     <div className="menu-item-collapse">
                       <div className="min-h-0 bg-secondary-white">
                         <Link
-                          href={`/profile/${user.username}`}
+                          href={`/profile/${name}`}
                           className="menu-item ml-5 text-sm flex flex-row items-center justify-start gap-1"
                         >
                           <img src="/svg/person.svg" alt="" className="h-4" />{" "}
@@ -96,8 +101,10 @@ export default function SidebarContent({ user }: { user: any }) {
                           />{" "}
                           Configuración
                         </Link>
-                        <Link
-                          href="#"
+                        <button
+                        onClick={async () => await signOut({
+                          callbackUrl: '/'
+                        })}
                           tabIndex={-1}
                           className="menu-item ml-5 text-sm flex flex-row items-center gap-1"
                         >
@@ -107,7 +114,7 @@ export default function SidebarContent({ user }: { user: any }) {
                             className="h-4 -ml-1"
                           />{" "}
                           Cerrar Sesión
-                        </Link>
+                        </button>
                       </div>
                     </div>
                   </li>

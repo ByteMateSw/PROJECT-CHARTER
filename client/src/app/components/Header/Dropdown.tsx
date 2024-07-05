@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 
 function Menu({ href, text }: { href: string; text: string }): JSX.Element {
   return (
@@ -18,16 +19,20 @@ const MENU_ITEMS = [
 ];
 
 export default function Dropdown({ user }: { user: any }) {
+
+  let image = user.photo || user.image
+  let name = user.username || user.name
+
   return (
     <div className="dropdown dropdown-hover hover:[&>label]:text-primary-blue">
       <label
         className="btn bg-secondary-white my-2 font-semibold text-lg gap-2 p-0 username"
         tabIndex={0}
       >
-        {user.photo ? (
+        {image ? (
           <img
             className="rounded-full h-10 border-2 border-secondary-black"
-            src={user.photo}
+            src={image}
             alt="Profile Image"
           />
         ) : (
@@ -37,7 +42,7 @@ export default function Dropdown({ user }: { user: any }) {
             alt="Profile Image"
           />
         )}
-        {user.username}
+        {name}
         <span className="menu-icon">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +60,7 @@ export default function Dropdown({ user }: { user: any }) {
       </label>
       <div className="dropdown-menu dropdown-menu-bottom-left bg-secondary-white -right-4 mt-2 w-44">
         <Link
-          href={`/profile/${user.username}`}
+          href={`/profile/${name}`}
           className="dropdown-item text-sm flex flex-row items-center justify-start gap-1"
         >
           <img src="/svg/person.svg" alt="" className="h-6" /> Perfil
@@ -69,14 +74,16 @@ export default function Dropdown({ user }: { user: any }) {
           Configuración
         </Link>
         <div className="dropdown-divider my-2" role="separator"></div>
-        <Link
-          href="#"
+        <button
+        onClick={async () => await signOut({
+          callbackUrl: '/'
+        })}
           tabIndex={-1}
           className="dropdown-item text-sm flex flex-row items-center gap-1"
         >
           <img src="/svg/logout.svg" alt="" className="h-6 -ml-1" /> Cerrar
           Sesión
-        </Link>
+        </button>
       </div>
     </div>
   );

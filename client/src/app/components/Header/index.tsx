@@ -15,6 +15,7 @@ export default function Header() {
   if (typeof session?.user?.access_token === "string") {
     decoded = jwtDecode(session?.user?.access_token);
   }
+  console.log(session)
 
   if (status === "loading") {
     return (
@@ -140,7 +141,7 @@ export default function Header() {
                     height={24}
                   />
                 </label>
-                <SidebarContent user={decoded.user} />
+                <SidebarContent user={session.user.name} />
               </div>
             </div>
           </div>
@@ -178,7 +179,7 @@ export default function Header() {
                 alt={link.alt}
               />
             ))}
-            <Dropdown user={decoded.user} />
+            <Dropdown user={session.user} />
           </ul>
         </nav>
       </header>

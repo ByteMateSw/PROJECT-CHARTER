@@ -1,6 +1,7 @@
 import axios from "axios";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from 'next-auth/providers/google';
 
 const handler = NextAuth({
   providers: [
@@ -27,6 +28,11 @@ const handler = NextAuth({
         return res.data;
       },
     }),
+    GoogleProvider({
+      name: 'google',
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    })
   ],
   callbacks: {
     async jwt({ token, user }) {
@@ -37,9 +43,9 @@ const handler = NextAuth({
       return session;
     },
   },
-  pages: {
-    signIn: "/auth/login",
-  },
+  // pages: {
+  //   signIn: "/auth/login",
+  // },
 });
 
 export { handler as GET, handler as POST };

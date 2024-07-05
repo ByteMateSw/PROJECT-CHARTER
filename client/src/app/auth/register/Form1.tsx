@@ -55,9 +55,9 @@ export default function Form1({
         </button>
       </div>
       <div className="divider divider-horizontal">o</div>
-      <GoogleOAuthProvider clientId="483719238317-0b67hs4cfkkhbr17ieikrknd9h7oib12.apps.googleusercontent.com">
+      {/* <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID as string}> */}
         <GoogleOauth check={false}/>
-      </GoogleOAuthProvider>
+      {/* </GoogleOAuthProvider> */}
     </>
   );
 }
