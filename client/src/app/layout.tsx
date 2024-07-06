@@ -22,6 +22,9 @@ export default function RootLayout({
 
   return (
     <html lang="es" className="bg-secondary-white text-secondary-black">
+      <head>
+      <GoogleAdsense pId={process.env.NEXT_GOOGLEADS || ""} />
+      </head>
       <SessionAuthProvider>
         <UserProvider>
           <body className={`${nunito.className} antialiased h-screen w-full`}>
@@ -31,7 +34,6 @@ export default function RootLayout({
           </body>
         </UserProvider>
       </SessionAuthProvider>
-      <GoogleAdsense pId={process.env.NEXT_GOOGLEADS || ""} />
     </html>
   );
 }

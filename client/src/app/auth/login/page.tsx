@@ -5,6 +5,8 @@ import React from "react";
 import { fields3 } from "../register/fields";
 import InputField from "@/app/components/auth/register/InputField";
 import { signIn } from "next-auth/react";
+import GoogleOauth from "../googleOauth";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
@@ -14,6 +16,8 @@ export default function LoginPage() {
     email: "",
     password: "",
   });
+
+  const router = useRouter()
 
   const handleChange = (e: any) => {
     setErrorMessage("");
@@ -44,7 +48,8 @@ export default function LoginPage() {
       return;
     }
 
-    window.location.href = "/";
+    //window.location.href = "/";
+    router.push('/')
   };
 
   return (
@@ -120,6 +125,7 @@ export default function LoginPage() {
           </button>
         </div>
         <div className="divider divider-horizontal">o</div>
+        <GoogleOauth check={false}/>
       </article>
 
       <picture className="hidden md:flex justify-around ">

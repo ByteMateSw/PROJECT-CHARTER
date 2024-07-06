@@ -44,23 +44,23 @@ const handler = NextAuth({
       session.user = token as any;
       return session;
     },
-    async signIn({user, account, profile}) {
-      const data = {name: user.name as string, email: user.email as string}
-      const verify:any = await googleAccountVerify(user.email as string)
-      //const result:any = await googleLogin(data)
-      if(!verify.userEmail) {
-        if(!verify.UserProvider) {
-          await googleLogin(data)
-          return true;
-        }
-        return false
-      } 
-      else
-    },
+    // async signIn({user, account, profile}) {
+    //   const data = {name: user.name as string, email: user.email as string}
+    //   const verify:any = await googleAccountVerify(user.email as string)
+    //   //const result:any = await googleLogin(data)
+    //   if(!verify.UserProvider) {
+    //     if(!verify.userEmail) {
+    //       await googleLogin(data)
+    //       return true;
+    //     }
+    //     return false
+    //   } 
+    //   return true;
+    // },
   },
-  // pages: {
-  //   signIn: "/auth/login",
-  // },
+  pages: {
+    signIn: "/auth/login",
+  },
 });
 
 export { handler as GET, handler as POST };
