@@ -10,11 +10,24 @@ export class GoogleAuthStrategy extends PassportStrategy(Strategy, 'google') {
       clientID: config.get('GOOGLE_CLIENT_ID'),
       clientSecret: config.get('GOOGLE_CLIENT_SECRET'),
       callbackURL: config.get('GOOGLE_CALLBACK_URL'),
+      scope: ['profile', 'email'],
     });
   }
 
-  async validate(accessToken: string, refreshToken: string, profile: any) {
+  async validate(
+    accessToken: string,
+    refreshToken: string,
+    profile: any,
+    done: (err: any, user?: any) => void,
+  ) {
+    const { name, emails, photos } = profile;
+    const user = {
+      name,
+      emails,
+      photos,
+    };
     //const user = await this.authService.validateOrCreateUser(profile);
-    console.log(profile);
+    console.log(user);
+    done(null, user);
   }
 }

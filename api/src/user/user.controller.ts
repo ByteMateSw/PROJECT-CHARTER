@@ -21,6 +21,8 @@ import { CustomParseIntPipe } from '../utils/pipes/parse-int.pipe';
 import { UserParam as UserParamType } from '../utils/types/functions.type';
 import { UserParam } from '../utils/params/user.param';
 import { QueryNumberPipe } from '../utils/pipes/query-number.pipe';
+import { UserFilter } from './dto/userFilter.dto';
+import { UserPagination } from './dto/userpagination.dto';
 
 /**
  * Controller for handling user-related operations.
@@ -51,15 +53,39 @@ export class UserController {
     return await this.userService.getAllUsers({ page, limit });
   }
 
+  @Get('/google-verify')
+  async googleAccountVerify(@Query('email') email: string) {
+    return await this.userService.googleAccountVerify(
+      email,
+      'google.account89',
+    );
+  }
+
+  @Get('filter')
+  async userFilter(
+    @Query('limit') limit: number,
+    @Query('page') page: number,
+    @Query('habilities') habilities: string,
+    @Query('location') location: string,
+  ) {
+    const filter: UserFilter = {
+      habilities,
+      location,
+    };
+    const pagination: UserPagination = {
+      limit,
+      page,
+    };
+    return await this.userService.getUsersFilter(filter, pagination);
+  }
+
   /**
    * Retrieves a user by their ID.
    * @param id - The ID of the user.
    * @returns A promise that resolves to the User object.
    */
   @Get(':username')
-  async getUserById(
-    @Param('username') username: string,
-  ): Promise<User> {
+  async getUserById(@Param('username') username: string): Promise<User> {
     return await this.userService.getUserBy({ username });
   }
 

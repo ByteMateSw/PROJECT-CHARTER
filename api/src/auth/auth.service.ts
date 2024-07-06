@@ -128,6 +128,33 @@ export class AuthService {
     return newUser;
   }
 
+  separateName(fullName: string) {
+    const separate = fullName.split(' ');
+    const name = separate[0];
+    const lastName = separate[1];
+    return {
+      name,
+      lastName,
+    };
+  }
+
+  async googgleRegister(data: { name: string; email: string }) {
+    const { name, lastName } = this.separateName(data.name);
+    const info = {
+      username: name,
+      firstName: name,
+      lastName: lastName,
+      dni: '100000000',
+      email: data.email,
+      numberPhone: '+100000000000',
+      password: 'google.account89',
+      birthday: new Date('1900-01-01'),
+    };
+    const newUser = await this.userService.createUser(info);
+    if (!newUser) throw new ForbiddenException('Error al crear al usuario');
+    return newUser;
+  }
+
   async validate(email: string, password: string): Promise<User> {
     const user = await this.userService.getUserBy({ email });
     if (!user) throw new BadRequestException('El usuario no existe');

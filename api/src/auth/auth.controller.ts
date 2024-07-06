@@ -105,18 +105,17 @@ export class AuthController {
     return { message: 'La cuenta del usuario ha sido validada.' };
   }
 
-  @Get('google')
-  @UseGuards(GoogleAuthGuard)
-  async googleLogin() {
-    return HttpStatus.OK;
+  @Post('google')
+  async googleLogin(@Body() data: { name: string; email: string }) {
+    return await this.authService.googgleRegister(data);
   }
 
-  @Get('google/callback')
-  @UseGuards(GoogleAuthGuard)
-  async googleLoginCallback() {
-    return {
-      status: HttpStatus.OK,
-      redirect: true,
-    };
-  }
+  // @Get('google/callback')
+  // @UseGuards(GoogleAuthGuard)
+  // async googleLoginCallback() {
+  //   return {
+  //     status: HttpStatus.OK,
+  //     redirect: true,
+  //   };
+  // }
 }

@@ -14,11 +14,14 @@ import {
   EmailAndOrId,
   EmailUsernameAndOrId,
 } from '../utils/types/functions.type';
+import { UserFilter } from './dto/userFilter.dto';
+import { UserPagination } from './dto/userpagination.dto';
+import { UserRepository } from './repository/user.repository';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(User) private userRepository: UserRepository,
     @InjectRepository(Role) private roleRepository: Repository<Role>,
   ) {}
 
@@ -42,6 +45,32 @@ export class UserService {
       skip: page,
       take: limit,
     });
+  }
+
+  /**
+   * retrieve users by filtering by skill and location.
+   * @param filter - object with filter parameters.
+   * @param pagination - object with pagination parameters.
+   * @returns A promise that resolves to a User object.
+   */
+  async getUsersFilter(
+    filter: UserFilter,
+    pagination: UserPagination,
+  ): Promise<User[]> {
+    const { habilities, location } = filter;
+    const { limit, page } = pagination;
+    const query = this.userRepository.createQueryBuilder('user');
+    query.leftJoinAndSelect('user.city', 'city');
+
+    if (habilities) {
+      query.andWhere('user.habilities = :habilities', { habilities });
+    }
+
+    if (location) {
+      query.andWhere('city.name = :name', { name: location });
+    }
+    const users = await query.skip(page).take(limit).getMany();
+    return users;
   }
 
   /**
@@ -93,6 +122,16 @@ export class UserService {
    */
   async existsEmail(email: string): Promise<boolean> {
     return await this.userRepository.existsBy({ email });
+  }
+
+  async googleAccountVerify(email: string, provider: string) {
+    const user = await this.userRepository.findOne({
+      where: { email, password: provider },
+    });
+    if (!user) {
+      return user;
+    }
+    return user;
   }
 
   /**
