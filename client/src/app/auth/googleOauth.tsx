@@ -1,11 +1,12 @@
 "use client";
 import { useGoogleLogin } from '@react-oauth/google';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 
 export default function GoogleOauth({check}: {check: boolean} ) {
 
-  const {data: session} = useSession()
-  console.log(session)
+  
+  //console.log(session)
+
 
   // const login = useGoogleLogin({
   //   onSuccess: tokenResponse => console.log(tokenResponse),
@@ -22,7 +23,9 @@ export default function GoogleOauth({check}: {check: boolean} ) {
           alt="GoogleIcon"
           className="mr-2 select-none"
         />
-        <button onClick={() => signIn('google')} className="text-xl w-full">Continuar con Google</button>
+        <button onClick={() => signIn('google', {
+          callbackUrl: '/'
+        })} className="text-xl w-full">Continuar con Google</button>
       </span>
     </div>
   );

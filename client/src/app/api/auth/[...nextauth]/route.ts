@@ -2,6 +2,8 @@ import axios from "axios";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from 'next-auth/providers/google';
+import { googleLogin, googleAccountVerify } from "../../user";
+import { signOut } from "next-auth/react";
 
 const handler = NextAuth({
   providers: [
@@ -41,6 +43,19 @@ const handler = NextAuth({
     async session({ session, token }) {
       session.user = token as any;
       return session;
+    },
+    async signIn({user, account, profile}) {
+      const data = {name: user.name as string, email: user.email as string}
+      const verify:any = await googleAccountVerify(user.email as string)
+      //const result:any = await googleLogin(data)
+      if(!verify.userEmail) {
+        if(!verify.UserProvider) {
+          await googleLogin(data)
+          return true;
+        }
+        return false
+      } 
+      else
     },
   },
   // pages: {

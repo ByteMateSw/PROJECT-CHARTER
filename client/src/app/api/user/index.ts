@@ -25,6 +25,26 @@ export const register = async (user: any) => {
     return error;
   }
 };
+export const googleLogin = async (user: {name: string, email: string}) => {
+  try {
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/google`,
+      user
+    );
+  } catch (error) {
+    return error;
+  }
+}
+
+export const googleAccountVerify = async (email: string) => {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/google-verify?email=${email}`)
+    return response;
+  } catch (error) {
+    return error
+  }
+}
 
 export const getUserByUsername = async (username: string) => {
   try {
