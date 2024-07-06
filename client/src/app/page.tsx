@@ -2,6 +2,7 @@ import BestProfiles from "./components/Home/BestProfile";
 import Hero from "./components/Home/Hero";
 import Carousel from "./components/Home/Carousel";
 import MiniAbout from "./components/Home/MiniAbout";
+import AdBanner from "./AdsenseBanner";
 
 export default function Home() {
   const paragraphs1 = [
@@ -46,6 +47,11 @@ export default function Home() {
       <Hero />
       <BestProfiles />
       <Carousel />
+      <AdBanner
+                dataAdFormat="auto"
+                dataFullWidthResponsive={true}
+                dataAdSlot="4284247248"
+              />
       <MiniAbout
         className=""
         pText=""

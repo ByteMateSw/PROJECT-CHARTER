@@ -50,6 +50,13 @@ export default function RegisterPage() {
   const [showAlert, setShowAlert] = useState(false);
   const [page, setPage] = useState(1);
 
+  const nextPage = () => {
+    if(!user.firstName || !user.lastName || !user.username || !user.email || !user.password || !user.confirmPassword) {
+      return setWarningMessage("Por favor, complete todos los campos")
+    }
+    setPage(2)
+  }
+
   const handleChange = (e: any) => {
     setWarningMessage("");
     const { name, value } = e.target;
@@ -125,8 +132,7 @@ export default function RegisterPage() {
               errorMessage={warningMessage}
               user={user}
               handleChange={handleChange}
-              onClickFunction={() =>
-                setPage(2)}
+              onClickFunction={nextPage}
             /> :
             <Form2 fields={fields2}
               errorMessage={warningMessage}
