@@ -8,6 +8,8 @@ import { getCities, getProvinces } from "@/app/api/locations";
 import { fields, fields2 } from "./fields";
 import { register } from "@/app/api/user";
 import Alert from "./Alert";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 export default function RegisterPage() {
 
@@ -19,6 +21,9 @@ export default function RegisterPage() {
   const [inputValue, setInputValue] = useState<string>('');
   const [province, setProvince] = useState<{ label: string }>({ label: "" });
   const [city, setCity] = useState<{ label: string }>({ label: "" });
+  const [viewError, setViewError] = useState([])
+
+  const router = useRouter()
 
   useEffect(() => {
     getProvinces().then((newProvinces: Province[]) => {
@@ -53,6 +58,9 @@ export default function RegisterPage() {
   const nextPage = () => {
     if(!user.firstName || !user.lastName || !user.username || !user.email || !user.password || !user.confirmPassword) {
       return setWarningMessage("Por favor, complete todos los campos")
+    }
+    if(user.password != user.confirmPassword){
+      return setWarningMessage('Las contraseñas no coincide')
     }
     setPage(2)
   }
@@ -97,10 +105,14 @@ export default function RegisterPage() {
     // }
 
     console.log(data);
-    
+    signIn("credentials", {
+      email: finalUser.email,
+      password: finalUser.password,
+      redirect: false,
+    })
+    router.push('/')
   };
 
-  
 
   return (
     <>
