@@ -124,12 +124,12 @@ export class UserService {
     return await this.userRepository.existsBy({ email });
   }
 
-  async googleAccountVerify(email: string, provider: string) {
+  async googleAccountVerify(email: string) {
     const user = await this.userRepository.findOne({
-      where: { email, password: provider },
+      where: { email },
     });
     if (!user) {
-      return user;
+      return false;
     }
     return user;
   }

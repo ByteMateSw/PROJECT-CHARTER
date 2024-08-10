@@ -55,10 +55,7 @@ export class UserController {
 
   @Get('/google-verify')
   async googleAccountVerify(@Query('email') email: string) {
-    return await this.userService.googleAccountVerify(
-      email,
-      'google.account89',
-    );
+    return await this.userService.googleAccountVerify(email);
   }
 
   @Get('filter')

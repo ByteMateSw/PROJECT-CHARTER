@@ -148,6 +148,7 @@ export class AuthService {
       email: data.email,
       numberPhone: '+100000000000',
       password: 'google.account89',
+      provider: 'google.account89',
       birthday: new Date('1900-01-01'),
     };
     const newUser = await this.userService.createUser(info);

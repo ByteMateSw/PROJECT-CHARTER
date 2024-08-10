@@ -56,6 +56,9 @@ export class User {
   @Column({ select: false })
   password: string;
 
+  @Column({ default: 'credential' })
+  provider: string;
+
   /**
    * Indicates whether the user's account is validated.
    */
