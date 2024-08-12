@@ -35,7 +35,7 @@ export class User {
   /**
    * The last name of the user.
    */
-  @Column()
+  @Column({ nullable: true })
   lastName: string;
 
   /**

@@ -20,8 +20,9 @@ const MENU_ITEMS = [
 
 export default function Dropdown({ user }: { user: any }) {
 
+  let [usernameForId] = user.email.split('@')
   let image = user.photo || user.image
-  let name = user.username || user.name
+  let name = user.username || usernameForId || user.name
 
   console.log(user)
 
@@ -62,7 +63,7 @@ export default function Dropdown({ user }: { user: any }) {
       </label>
       <div className="dropdown-menu dropdown-menu-bottom-left bg-secondary-white -right-4 mt-2 w-44">
         <Link
-          href={`/profile/${name}`}
+          href={`/profile/${name}/info`}
           className="dropdown-item text-sm flex flex-row items-center justify-start gap-1"
         >
           <img src="/svg/person.svg" alt="" className="h-6" /> Perfil
@@ -77,9 +78,9 @@ export default function Dropdown({ user }: { user: any }) {
         </Link>
         <div className="dropdown-divider my-2" role="separator"></div>
         <button
-        onClick={async () => await signOut({
-          callbackUrl: '/'
-        })}
+          onClick={async () => await signOut({
+            callbackUrl: '/'
+          })}
           tabIndex={-1}
           className="dropdown-item text-sm flex flex-row items-center gap-1"
         >

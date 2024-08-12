@@ -138,10 +138,15 @@ export class AuthService {
     };
   }
 
+  separateEmail(email: string) {
+    const [username] = email.split('@');
+    return username;
+  }
+
   async googgleRegister(data: { name: string; email: string }) {
     const { name, lastName } = this.separateName(data.name);
     const info = {
-      username: name,
+      username: this.separateEmail(data.email),
       firstName: name,
       lastName: lastName,
       dni: '100000000',
