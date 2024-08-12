@@ -50,7 +50,7 @@ export default function Home() {
       <AdBanner
                 dataAdFormat="auto"
                 dataFullWidthResponsive={true}
-                dataAdSlot="4284247248"
+                dataAdSlot="1784343311"
               />
       <MiniAbout
         className=""

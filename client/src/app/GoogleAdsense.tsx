@@ -8,7 +8,7 @@ const GoogleAdsense: React.FC<Props> = ({ pId }) => {
     return (
         <Script
             async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2868851941806861`}
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${pId}`}
             crossOrigin="anonymous"
             strategy="afterInteractive"
         />

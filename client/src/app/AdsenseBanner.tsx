@@ -27,7 +27,7 @@ const AdBanner = ({
     <ins
       className="adsbygoogle"
       style={{ display: "block" }}
-      data-ad-client={process.env.NEXT_GOOGLEADS}
+      data-ad-client={process.env.NEXT_PUBLIC_GOOGLEADS}
       data-ad-slot={dataAdSlot}
       data-ad-format={dataAdFormat}
       data-full-width-responsive={dataFullWidthResponsive.toString()}

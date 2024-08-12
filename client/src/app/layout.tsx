@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="es" className="bg-secondary-white text-secondary-black">
       <head>
-        <GoogleAdsense pId={process.env.NEXT_GOOGLEADS as string} />
+        <GoogleAdsense pId={process.env.NEXT_PUBLIC_GOOGLEADS as string} />
       </head>
       <SessionAuthProvider>
         <UserProvider>
