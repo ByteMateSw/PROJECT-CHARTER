@@ -47,13 +47,11 @@ export default function Home() {
       <Hero />
       <BestProfiles />
       <Carousel />
-      <div className="bg-black">
-        <AdBanner
-          dataAdFormat="auto"
-          dataFullWidthResponsive={true}
-          dataAdSlot="1784343311"
-        />
-      </div>
+      <AdBanner
+                dataAdFormat="auto"
+                dataFullWidthResponsive={true}
+                dataAdSlot="1784343311"
+              />
       <MiniAbout
         className=""
         pText=""
