@@ -15,7 +15,7 @@ import { getProfessions } from "../api/office";
 import { jwtDecode } from "jwt-decode";
 import InputField1 from "../components/Inputs/InputField1";
 
-export const styleComboBox: StylesConfig = {
+const styleComboBox: StylesConfig = {
   control: (styles) => ({
     ...styles,
     backgroundColor: "#FBFCFF",

@@ -3,32 +3,13 @@ import InputField from "@/app/components/auth/register/InputField";
 import { Field, HandleChange, OnClickFunction, User } from "./interfaces";
 import DatePicker from "@/app/components/auth/register/DatePicker";
 import ComboBox from "@/app/components/ComboBox";
-import { StylesConfig } from "react-select";
 import {
   CheckedItems,
   Locations,
 } from "@/app/components/Sidebar/hooks/interfaces";
 import { useState } from "react";
+import { styleComboBox } from "./ComboBoxFormStyles";
 
-export const styleComboBox: StylesConfig = {
-  control: (styles) => ({
-    ...styles,
-    backgroundColor: "#FBFCFF",
-    color: "#97989B",
-    borderWidth: "1px",
-    padding: "0.2rem",
-    margin: "0",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    alignSelf: "stretch",
-    borderColor: "#97989B",
-    borderRadius: "1.5rem",
-    appearance: "none",
-    width: "100%",
-    height: "3rem",
-  }),
-};
 
 export default function Form2({
   fields,
@@ -141,7 +122,6 @@ export default function Form2({
               Provincia
             </label>
             <ComboBox
-              label="province"
               optionsProps={locations.provinces}
               styles={styleComboBox}
               placeholder="Provincia"
@@ -154,7 +134,6 @@ export default function Form2({
               Ciudad
             </label>
             <ComboBox
-              label="city"
               optionsProps={locations.cities}
               styles={styleComboBox}
               placeholder="Ciudad"
