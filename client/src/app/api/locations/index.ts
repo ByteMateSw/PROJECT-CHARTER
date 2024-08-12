@@ -1,10 +1,8 @@
 import axios from "axios";
 
-const API_URL = process.env.REACT_APP_API_URL;
-
 export const getProvinces = async () => {
   try {
-    const response = await axios.get(`https://political-jenn-bytemate.koyeb.app/provinces`);
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/provinces`);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -13,7 +11,7 @@ export const getProvinces = async () => {
 };
 export const getCities = async () => {
   try {
-    const response = await axios.get(`https://political-jenn-bytemate.koyeb.app/cities`);
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/cities`);
     return response.data;
   } catch (error) {
     console.error(error);
