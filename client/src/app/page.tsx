@@ -48,10 +48,10 @@ export default function Home() {
       <BestProfiles />
       <Carousel />
       <AdBanner
-                dataAdFormat="auto"
-                dataFullWidthResponsive={true}
-                dataAdSlot="1784343311"
-              />
+        dataAdFormat="auto"
+        dataFullWidthResponsive={true}
+        dataAdSlot="1784343311"
+      />
       <MiniAbout
         className=""
         pText=""

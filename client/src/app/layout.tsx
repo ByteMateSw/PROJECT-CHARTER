@@ -24,6 +24,7 @@ export default function RootLayout({
     <html lang="es" className="bg-secondary-white text-secondary-black">
       <head>
         <GoogleAdsense pId={process.env.NEXT_PUBLIC_GOOGLEADS as string} />
+        <meta name="google-adsense-account" content="ca-pub-2868851941806861"></meta>
       </head>
       <SessionAuthProvider>
         <UserProvider>
