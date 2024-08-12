@@ -7,7 +7,6 @@ import Footer from "./components/Footer";
 import SessionAuthProvider from "@/context/SessionAuthProvider";
 import { UserProvider } from "@/context/userContext";
 import GoogleAdsense from "./GoogleAdsense";
-import { NextScript } from "next/document";
 
 export default function RootLayout({
   children,
@@ -29,7 +28,6 @@ export default function RootLayout({
       <SessionAuthProvider>
         <UserProvider>
           <body className={`${nunito.className} antialiased h-screen w-full`}>
-            <NextScript />
             {hideHeader ? null : <Header />}
             {children}
             {hideFooter ? null : <Footer />}
