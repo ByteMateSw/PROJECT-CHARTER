@@ -21,10 +21,9 @@ export default function RootLayout({
   const hideFooter = noFooter.some((route) => pathname.includes(route));
 
   return (
-    <html lang="es" className="bg-secondary-white text-secondary-black">
-      {/* <head>
+    <html lang="es" className="bg-secondary-white text-secondary-black"><head>
       <GoogleAdsense pId={process.env.NEXT_GOOGLEADS as string} />
-      </head> */}
+      </head>
       <SessionAuthProvider>
         <UserProvider>
           <body className={`${nunito.className} antialiased h-screen w-full`}>
