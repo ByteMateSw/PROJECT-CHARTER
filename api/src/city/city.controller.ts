@@ -125,4 +125,17 @@ export class CityController {
       throw new HttpException(error.message, HttpStatus.NOT_FOUND);
     }
   }
+
+  @Get('/byProvinceName/:provinceName')
+  async getCitiesByProvinceName(@Param('provinceName') provinceName: string) {
+    return await this.cityService.getCitiesByProvinceName(provinceName);
+  }
+
+  @Put('/updateCityUserByName')
+  async updateCityUserByName(
+    @Body('cityName') cityName: string,
+    @Body('userId', ParseIntPipe) userId: number,
+  ) {
+    return this.cityService.updateCityUserByName(cityName, userId);
+  }
 }

@@ -1,19 +1,17 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { fields, redes } from "./fields";
-import InputField from "../components/auth/register/InputField";
 import { useEffect, useState } from "react";
-import {
-  City,
-  Locations,
-  Province,
-} from "../components/Sidebar/hooks/interfaces";
-import { getCities, getProvinces } from "../api/locations";
-import ComboBox from "../components/ComboBox";
+import { getCities, getProvinces, updateCityUserByName } from "../api/locations";
 import { StylesConfig } from "react-select";
 import { getProfessions } from "../api/office";
 import { jwtDecode } from "jwt-decode";
-import InputField1 from "../components/Inputs/InputField1";
+import { getUserByUsername, updateUser } from "../api/user";
+import SocialMedia from "./SocialMedia";
+import About from "./About";
+import Images from "./Images";
+import Sidebar from "./Sidebar";
+import { useSpring, animated } from "react-spring";
 
 const styleComboBox: StylesConfig = {
   control: (styles) => ({
@@ -37,80 +35,171 @@ const styleComboBox: StylesConfig = {
 
 export default function Page() {
   const { data: session, status }: any = useSession();
-
+  const [userData, setUserData] = useState<any>(null);
   const [user, setUser] = useState<any>({
     firstName: "",
     lastName: "",
-    userName: "",
+    username: "",
+    dni: "",
     email: "",
-    numberPhone: "",
-    offices: [],
+    numberPhone: ""
   });
-
   const [comboBoxOptions, setComboBoxOptions] = useState<any>({
     provinces: [],
     cities: [],
     offices: [],
   });
-  const [province, setProvince] = useState();
-  const [city, setCity] = useState();
-  const [offices, setOffices] = useState();
+  const [province, setProvince] = useState<any>(null);
+  const [city, setCity] = useState<any>(null);
+  const [offices, setOffices] = useState<any>(null);
+  const [hasChanges, setHasChanges] = useState(false);
+
+  // Animations using react-spring
+  const [styles, api] = useSpring(() => ({
+    transform: "translateY(100%)",
+    opacity: 0,
+  }));
 
   useEffect(() => {
-    if (session?.user?.access_token) {
-      const decoded: any = jwtDecode(session.user.access_token);
-      setUser((prevUser: any) => ({
-        ...prevUser,
-        ...decoded.user,
-      }));
+    if (session) {
+      const { email, username } = session.user;
+      const finalUsername = username || email.split("@")[0];
+
+      getUserByUsername(finalUsername).then(setUserData);
     }
   }, [session]);
 
   useEffect(() => {
-    getProvinces().then((newProvinces: Province[]) => {
-      setComboBoxOptions((prevState: Locations) => ({
-        ...prevState,
+    const fetchLocations = async () => {
+      const [newProvinces, newOffices] = await Promise.all([
+        getProvinces(),
+        getProfessions(),
+      ]);
+
+      setComboBoxOptions((prevOptions: any) => ({
+        ...prevOptions,
         provinces: newProvinces,
-      }));
-    });
-    getCities().then((newCities: City[]) => {
-      setComboBoxOptions((prevState: Locations) => ({
-        ...prevState,
-        cities: newCities,
-      }));
-    });
-    getProfessions().then((newOffices: any) => {
-      setComboBoxOptions((prevState: any) => ({
-        ...prevState,
         offices: newOffices,
       }));
-    });
+    };
+
+    fetchLocations();
   }, []);
+
+  const handleProvinceChange = async (selectedProvince: any) => {
+    setProvince(selectedProvince);
+    setCity(null); // Resetea la ciudad seleccionada cuando cambia la provincia
+
+    if (selectedProvince) {
+      const newCities = await getCities(selectedProvince.value);
+      setComboBoxOptions((prevOptions: any) => ({
+        ...prevOptions,
+        cities: newCities,
+      }));
+    } else {
+      setComboBoxOptions((prevOptions: any) => ({
+        ...prevOptions,
+        cities: [],
+      }));
+    }
+
+    setHasChanges(true);
+    api.start({ transform: "translateY(0%)", opacity: 1 });
+  };
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setUser((prevUser: any) => ({
       ...prevUser,
-      [name]: value
+      [name]: value,
     }));
+
+    // Check for changes and update hasChanges
+    if (value !== userData?.[name]) {
+      setHasChanges(true);
+      api.start({ transform: "translateY(0%)", opacity: 1 });
+    } else if (!Object.keys(user).some(key => user[key] !== userData?.[key])) {
+      setHasChanges(false);
+      api.start({ transform: "translateY(100%)", opacity: 0 });
+    }
   };
 
+  const handleUpdateUser = async () => {
+    try {
+      // Verificar si todos los campos relevantes están llenos
+      if (
+        (user.firstName ||
+          user.lastName ||
+          user.username ||
+          user.email ||
+          user.numberPhone ||
+          user.dni) && (
+          user.firstName.length() > 0 ||
+          user.lastName.length() > 0 ||
+          user.username.length() > 0 ||
+          user.email.length() > 0 ||
+          user.numberPhone.length() > 0 ||
+          user.dni.length() > 0
+        )
+      ) {
+        const updatedUserData = {
+          ...(user.firstName && { firstName: user.firstName }),
+          ...(user.lastName && { lastName: user.lastName }),
+          ...(user.username && { username: user.username }),
+          ...(user.email && { email: user.email }),
+          ...(user.numberPhone && { numberPhone: user.numberPhone }),
+          ...(user.dni && { dni: user.dni }),
+        };
+
+        // Actualizar la información básica del usuario solo si todos los campos están llenos
+        await updateUser(userData.id, updatedUserData);
+      }
+
+      // Verificar si hubo cambios en la ciudad y actualizar la relación con el usuario
+      if (city && city !== userData.city) {
+        await updateCityUserByName(city.name, userData.id);
+      }
+
+      // Recargar la página después de la actualización
+      window.location.reload();
+
+    } catch (error) {
+      console.error("Error actualizando el usuario:", error);
+    }
+  };
+
+
+  const handleCancel = () => {
+    setUser({
+      firstName: "",
+      lastName: "",
+      username: "",
+      email: "",
+      dni: "",
+      numberPhone: "",
+      offices: [],
+    });
+    setProvince(null);
+    setCity(null);
+    setHasChanges(false);
+    api.start({ transform: "translateY(100%)", opacity: 0 });
+  };
 
   const handleRemoveOffice = (officeId: number) => {
     setUser((prevUser: any) => ({
       ...prevUser,
       offices: prevUser.offices.filter((office: any) => office.id !== officeId),
     }));
+    setHasChanges(true);
+    api.start({ transform: "translateY(0%)", opacity: 1 });
   };
 
   const handleChangeOffices = (selectedOptions: any) => {
-    // Filtrar los oficios seleccionados que ya estén en el estado de usuario
     const newOffices = selectedOptions.filter(
       (option: any) =>
         !user.offices.some((office: any) => office.id === option.value)
     );
 
-    // Actualizar el estado de oficios del usuario con los nuevos oficios seleccionados
     setUser((prevUser: any) => ({
       ...prevUser,
       offices: [
@@ -122,15 +211,22 @@ export default function Page() {
       ],
     }));
 
-    // Actualizar el estado de los oficios seleccionados en el ComboBox
     setOffices(selectedOptions);
+    setHasChanges(true);
+    api.start({ transform: "translateY(0%)", opacity: 1 });
   };
 
-  console.log(user);
-
-
   if (status === "loading") {
-    return <></>;
+    return (
+      <div className="h-screen w-full grid grid-rows-layout grid-cols-3 gap-x-4 pb-4 md:px-4">
+        <div className="col-span-3 h-24 flex-shrink-0" />
+        <div className="h-full col-span-3 flex items-center justify-center skeleton">
+          <h1 className="text-2xl font-bold">
+            Aguarde un momento <br /> Estamos cargando tu información...
+          </h1>
+        </div>
+      </div>
+    );
   }
 
   if (status === "authenticated" && user) {
@@ -141,219 +237,51 @@ export default function Page() {
 
         {/* Sidebar */}
         <div className="h-full col-span-1 pl-20 pt-16">
-          <ul className="flex flex-col gap-9">
-            <li><a className="cursor-pointer" href="#">Imagen de perfil y portada</a></li>
-            <li><a className="cursor-pointer" href="#">Información básica</a></li>
-            <li><a className="cursor-pointer" href="#">Redes de contacto</a></li>
-          </ul>
+          <Sidebar />
         </div>
 
         {/* Main content */}
         <div className="col-span-2">
           {/* Sección de selección de imagen */}
-          <section className="flex flex-col gap-6 w-full pb-8 pt-20">
-            <div className="w-full">
-              <span className="text-xl font-bold">Imagen de Perfil</span>
-              <div className="flex">
-                <picture className="flex justify-center items-center w-72 h-32 px-24 py-5 rounded-3xl bg-secondary-gray/15">
-                  <label htmlFor="uploadProfileImg">
-                    {user.photo ? (
-                      <img
-                        className="h-24 w-24 border-2 rounded-full border-secondary-white"
-                        src={user.photo}
-                        alt="Imagen de Perfil"
-                      />
-                    ) : (
-                      <img
-                        className="h-24 w-24 border-2 rounded-full border-secondary-white"
-                        src="/img/png.png"
-                        alt="Imagen de Perfil"
-                      />
-                    )}
-                  </label>
-                </picture>
-                <label
-                  className="ml-6 inline-flex items-center"
-                  htmlFor="uploadProfileImg"
-                >
-                  <img
-                    className="h-6 w-6 mr-2"
-                    src="/svg/upload.svg"
-                    alt="Cargar Archivo"
-                  />
-                  <span className="text-sm">Cargar imagen</span>
-                  <input
-                    className="hidden"
-                    type="file"
-                    name="uploadProfileImg"
-                    id="uploadProfileImg"
-                    placeholder=""
-                  />
-                </label>
-              </div>
-            </div>
-            <div className="w-full">
-              <span className="text-xl font-bold">Imagen de Portada</span>
-              <div className="flex">
-                <picture className="flex justify-center items-center w-72 h-32 px-24 py-5 rounded-3xl bg-secondary-gray/15">
-                  <label htmlFor="uploadPortadaImg">
-                    {user.photo ? (
-                      <img
-                        className="h-24 w-60 border-2 rounded-full border-secondary-white"
-                        src={user.photo}
-                        alt="Imagen de Portada"
-                      />
-                    ) : (
-                      <img
-                        className="h-24 w-60 border-2 rounded-full border-secondary-white"
-                        src="/img/png.png"
-                        alt="Imagen de Portada"
-                      />
-                    )}
-                  </label>
-                </picture>
-                <label
-                  className="ml-6 inline-flex items-center"
-                  htmlFor="uploadPortadaImg"
-                >
-                  <img
-                    className="h-6 w-6 mr-2"
-                    src="/svg/upload.svg"
-                    alt="Cargar Archivo"
-                  />
-                  <span className="text-sm">Cargar imagen</span>
-                  <input
-                    className="hidden"
-                    type="file"
-                    name="uploadPortadaImg"
-                    id="uploadPortadaImg"
-                    placeholder=""
-                  />
-                </label>
-              </div>
-            </div>
-          </section>
+          <Images user={user} />
           {/* Sección de selección básica */}
-          <section className="flex flex-col gap-6 w-full pb-8 pt-20">
-            <h2 className="text-xl font-bold">Información básica</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {fields.map((field, index) => (
-                <div key={index}>
-                  <label
-                    htmlFor={field.name}
-                    className="block mb-1 ml-4 font-bold text-xl"
-                  >
-                    {field.label}
-                  </label>
-                  <InputField
-                    id={field.name}
-                    autoComplete={field.autoComplete}
-                    type={field.type || "text"}
-                    name={field.name}
-                    placeholder={field.placeholder}
-                    value={user[field.name]}
-                    onChange={() => { }}
-                    iconSrc={field.iconSrc}
-                  />
-                </div>
-              ))}
-            </div>
-            {/* Campos de selección de provincia y ciudad */}
-            <div className="flex flex-wrap w-full">
-              <div className="w-full md:w-1/2 md:pr-2">
-                <span className="block mb-1 ml-4 font-bold text-xl">
-                  Provincia
-                </span>
-                <ComboBox
-                  optionsProps={comboBoxOptions.provinces}
-                  styles={styleComboBox}
-                  placeholder="Provincia"
-                  selectedOptions={province}
-                  setSelectedOptions={setProvince}
-                />
-              </div>
-              <div className="w-full md:w-1/2 md:pl-2">
-                <span className="block mb-1 ml-4 font-bold text-xl">
-                  Ciudad
-                </span>
-                <ComboBox
-                  optionsProps={comboBoxOptions.cities}
-                  styles={styleComboBox}
-                  placeholder="Ciudad"
-                  selectedOptions={city}
-                  setSelectedOptions={setCity}
-                />
-              </div>
-            </div>
-            {/* Campos de selección de Profesiones */}
-            <div>
-              <div className="w-full">
-                <span className="block mb-1 ml-4 font-bold text-xl">
-                  Profesión
-                </span>
-                <ComboBox
-                  isMulti
-                  optionsProps={comboBoxOptions.offices}
-                  optionsToDisable={user.offices}
-                  styles={styleComboBox}
-                  placeholder="Oficios"
-                  selectedOptions={offices}
-                  setSelectedOptions={handleChangeOffices}
-                />
-                <div className="flex gap-2 mt-2">
-                  {user.offices.map((office: any) => {
-                    return (
-                      <span
-                        className="border text-xs text-secondary-gray rounded-full px-2 py-1 cursor-pointer"
-                        key={office.id}
-                        onClick={() => handleRemoveOffice(office.id)}
-                      >
-                        {office.name} X
-                      </span>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </section>
-          <section className="flex flex-col gap-6 w-full pb-8 pt-20">
-            <h2 className="text-xl font-bold">Redes de Contacto</h2>
-            {redes.map(({ name, iconSrc, label, autoComplete, type, placeholder }, index) => (
-              <div key={name || index}>
-                <label
-                  htmlFor={name}
-                  className="flex flex-col items-start mb-1 ml-4 text-base"
-                >
-                  <span className="flex items-center justify-center">
-                    <img src={iconSrc} alt="Icon" className="h-6 w-6 mr-2 select-none" />
-                    {label}
-                  </span>
-                </label>
-                <InputField1
-                  id={name}
-                  autoComplete={autoComplete}
-                  type={type || "text"}
-                  name={name}
-                  placeholder={placeholder}
-                  value={user[name]}
-                  iconSrc=""
-                  onChange={handleChange}
-                />
-              </div>
-            ))}
-          </section>
-          <section className="flex flex-col gap-6 w-full pb-8 pt-20">
-            <h2 className="text-xl font-bold">Acerca de Mí</h2>
-            <span className="w-full h-64 flex border border-secondary-gray rounded-3xl p-3 bg-secondary-white">
-              <textarea
-                className="w-full h-full focus:outline-none bg-transparent resize-none"
-                autoComplete="off"
-                name="about"
-                placeholder="Descripción"
-              />
-            </span>
-
-          </section>
+          <About
+            fields={fields}
+            userData={userData}
+            comboBoxOptions={comboBoxOptions}
+            styleComboBox={styleComboBox}
+            province={province}
+            setProvince={handleProvinceChange} // Cambiado para manejar el cambio de provincia
+            city={city}
+            setCity={setCity}
+            user={user}
+            offices={offices}
+            handleChange={handleChange}
+            handleChangeOffices={handleChangeOffices}
+            handleRemoveOffice={handleRemoveOffice}
+          />
+          {/* Redes de Contacto */}
+          <SocialMedia redes={redes} user={user} handleChange={handleChange} />
+          {/* Botones flotantes */}
+          {hasChanges && (
+            <animated.div
+              style={styles}
+              className="fixed bottom-4 right-4 flex space-x-4"
+            >
+              <button
+                onClick={handleUpdateUser}
+                className="bg-blue-600 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-blue-700"
+              >
+                Guardar
+              </button>
+              <button
+                onClick={handleCancel}
+                className="bg-gray-600 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-gray-700"
+              >
+                Cancelar
+              </button>
+            </animated.div>
+          )}
         </div>
       </div>
     );

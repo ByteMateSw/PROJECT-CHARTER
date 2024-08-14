@@ -8,6 +8,8 @@ import {
   Param,
   Patch,
   Query,
+  Req,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -110,18 +112,17 @@ export class UserController {
     await this.userService.deleteUser(id);
   }
 
-  /**
-   * Updates a user.
-   * @param id - The ID of the user to be updated.
-   * @param updateUserDto - The data to update the user with.
-   * @returns -
-   */
-  @UseGuards(AccessTokenGuard)
   @Patch(':id')
   async updateUser(
     @Param('id', CustomParseIntPipe) id: number,
     @Body(EmptyBodyPipe) updateUserDto: UpdateUserDto,
+    @Req() req: any,
   ): Promise<User> {
+    // const userId = req.session.userId; // o donde sea que almacenes el ID del usuario en la sesión
+    // if (userId !== id) {
+    //   throw new UnauthorizedException('No estás autorizado para modificar este usuario');
+    // }
+    // console.log(req);
     return await this.userService.updateUser(id, updateUserDto);
   }
 }

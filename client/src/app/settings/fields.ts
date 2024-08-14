@@ -23,12 +23,26 @@ export const fields: Field[] = [
     autoComplete: "on",
   },
   {
-    name: "userName",
+    name: "username",
     label: "Nombre de Usuario",
     placeholder: "Nombre de Usuario",
     iconSrc: "",
     autoComplete: "off",
   },
+  {
+    name: "dni",
+    label: "Documento Nacional de Identidad",
+    placeholder: "DNI (Sin puntos ni espacios)",
+    iconSrc: "",
+    autoComplete: "off",
+  },
+  {
+    name: "numberPhone",
+    label: "Número de Teléfono",
+    placeholder: "Número de Teléfono",
+    iconSrc: "",
+    autoComplete: "off",
+  }
 ];
 
 export const redes: Field[] = [
@@ -54,7 +68,7 @@ export const redes: Field[] = [
     autoComplete: "off",
   },
   {
-    name: "instagram",
+    name: "linkedin",
     label: "LinkedIn",
     placeholder: "Link del perfil",
     iconSrc: "/svg/linkedin-icon.svg",

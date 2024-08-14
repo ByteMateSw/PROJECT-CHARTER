@@ -24,8 +24,6 @@ export default function Dropdown({ user }: { user: any }) {
   let image = user.photo || user.image
   let name = user.username || usernameForId || user.name
 
-  console.log(user)
-
   return (
     <div className="dropdown dropdown-hover hover:[&>label]:text-primary-blue">
       <label

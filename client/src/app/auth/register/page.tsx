@@ -86,16 +86,16 @@ export default function RegisterPage() {
       return;
     }
     const finalUser = {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      username: user.username,
-      email: user.email,
-      password: user.password,
-      dni: user.dni,
+      firstName: "",
+      lastName: "",
+      username: "",
+      email: "",
+      password: "",
+      dni: "",
       birthday: selected,
       // province: province.label,
       // city: city.label,
-      numberPhone: "+54" + user.numberPhone,
+      numberPhone: "",
     };
 
     const data = await register(finalUser);

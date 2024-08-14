@@ -56,3 +56,16 @@ export const getUserByUsername = async (username: string) => {
     return error;
   }
 };
+
+export const updateUser = async (id: number, updateUserDto: any) => {
+  try {
+    const response = await axios.patch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${id}`,
+      updateUserDto
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error(error);
+    throw error;
+  }
+};

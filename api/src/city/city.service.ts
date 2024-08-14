@@ -157,4 +157,30 @@ export class CityService {
     }
     return city;
   }
+
+  async getCitiesByProvinceName(provinceName: string): Promise<City[]> {
+    // Buscar la provincia por su nombre
+    const province = await this.provinceRepository.findOne({
+      where: { name: provinceName },
+      relations: ['cities'],
+    });
+
+    if (!province) {
+      throw new NotFoundException('Provincia no encontrada');
+    }
+
+    // Devolver las ciudades relacionadas
+    return province.cities;
+  }
+
+  async updateCityUserByName(cityName: string, userId: number) {
+    const city = await this.cityRepository.findOne({
+      where: { name: cityName },
+    });
+    if (!city) {
+      throw new NotFoundException('City not found');
+    }
+
+    return this.userRepository.update(userId, { city: city });
+  }
 }

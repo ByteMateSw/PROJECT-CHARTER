@@ -3,7 +3,6 @@ import { useUser } from "@/context/userContext";
 
 export default function Page() {
   const [user, setUser] = useUser();
-  console.log(user);
   return (
     <>
       <section className="flex flex-col justify-center items-start w-full p-4">
