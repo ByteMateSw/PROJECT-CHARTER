@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { getCities, getProvinces, updateCityUserByName } from "../api/locations";
 import { StylesConfig } from "react-select";
 import { getProfessions } from "../api/office";
-import { jwtDecode } from "jwt-decode";
 import { getUserByUsername, updateUser } from "../api/user";
 import SocialMedia from "./SocialMedia";
 import About from "./About";
@@ -42,7 +41,9 @@ export default function Page() {
     username: "",
     dni: "",
     email: "",
-    numberPhone: ""
+    numberPhone: "",
+    experience: [],
+    isWorker: false,
   });
   const [comboBoxOptions, setComboBoxOptions] = useState<any>({
     provinces: [],
@@ -134,12 +135,12 @@ export default function Page() {
           user.email ||
           user.numberPhone ||
           user.dni) && (
-          user.firstName.length() > 0 ||
-          user.lastName.length() > 0 ||
-          user.username.length() > 0 ||
-          user.email.length() > 0 ||
-          user.numberPhone.length() > 0 ||
-          user.dni.length() > 0
+          user.firstName.length > 0 ||
+          user.lastName.length > 0 ||
+          user.username.length > 0 ||
+          user.email.length > 0 ||
+          user.numberPhone.length > 0 ||
+          user.dni.length > 0
         )
       ) {
         const updatedUserData = {
@@ -168,7 +169,6 @@ export default function Page() {
     }
   };
 
-
   const handleCancel = () => {
     setUser({
       firstName: "",
@@ -178,6 +178,8 @@ export default function Page() {
       dni: "",
       numberPhone: "",
       offices: [],
+      experience: [],
+      isWorker: false,
     });
     setProvince(null);
     setCity(null);
@@ -216,6 +218,35 @@ export default function Page() {
     api.start({ transform: "translateY(0%)", opacity: 1 });
   };
 
+  const handleSaveExperience = (experience: any) => {
+    setUser((prevUser: any) => ({
+      ...prevUser,
+      experience: prevUser.experience.map((exp: any) =>
+        exp.id === experience.id ? experience : exp
+      ),
+    }));
+    setHasChanges(true);
+    api.start({ transform: "translateY(0%)", opacity: 1 });
+  };
+
+  const handleDeleteExperience = (experienceId: number) => {
+    setUser((prevUser: any) => ({
+      ...prevUser,
+      experience: prevUser.experience.filter((exp: any) => exp.id !== experienceId),
+    }));
+    setHasChanges(true);
+    api.start({ transform: "translateY(0%)", opacity: 1 });
+  };
+
+  const handleToggleIsWorker = () => {
+    setUser((prevUser: any) => ({
+      ...prevUser,
+      isWorker: !prevUser.isWorker,
+    }));
+    setHasChanges(true);
+    api.start({ transform: "translateY(0%)", opacity: 1 });
+  };
+
   if (status === "loading") {
     return (
       <div className="h-screen w-full grid grid-rows-layout grid-cols-3 gap-x-4 pb-4 md:px-4">
@@ -228,6 +259,9 @@ export default function Page() {
       </div>
     );
   }
+
+  console.log(userData);
+  
 
   if (status === "authenticated" && user) {
     return (
@@ -259,6 +293,9 @@ export default function Page() {
             handleChange={handleChange}
             handleChangeOffices={handleChangeOffices}
             handleRemoveOffice={handleRemoveOffice}
+            handleSaveExperience={handleSaveExperience}
+            handleDeleteExperience={handleDeleteExperience}
+            handleToggleIsWorker={handleToggleIsWorker}
           />
           {/* Redes de Contacto */}
           <SocialMedia redes={redes} user={user} handleChange={handleChange} />

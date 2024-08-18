@@ -25,7 +25,7 @@ export const register = async (user: any) => {
     return error;
   }
 };
-export const googleLogin = async (user: {name: string, email: string}) => {
+export const googleLogin = async (user: { name: string; email: string }) => {
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/google`,
@@ -34,17 +34,18 @@ export const googleLogin = async (user: {name: string, email: string}) => {
   } catch (error) {
     return error;
   }
-}
+};
 
 export const googleAccountVerify = async (email: string) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/google-verify?email=${email}`)
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/google-verify?email=${email}`
+    );
     return response;
   } catch (error) {
-    return error
+    return error;
   }
-}
+};
 
 export const getUserByUsername = async (username: string) => {
   try {
@@ -66,6 +67,36 @@ export const updateUser = async (id: number, updateUserDto: any) => {
     return response.data;
   } catch (error: any) {
     console.error(error);
+    throw error;
+  }
+};
+
+export const getWorkers = async (): Promise<any> => {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/workers`
+    );    
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getAllUsers = async (page?: number, limit?: number): Promise<any> => {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users`,
+      {
+        params: {
+          page,
+          limit,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching users:', error);
     throw error;
   }
 };

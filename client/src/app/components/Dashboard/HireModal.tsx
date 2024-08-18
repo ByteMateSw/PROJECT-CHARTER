@@ -29,7 +29,7 @@ export default function HireModal({
               className="w-full h-36 object-cover rounded-t-[2rem]"
             />
             <img
-              src={user.imageProfile}
+              src={user.photo}
               alt="imagen de perfil"
               className="h-36 w-36 rounded-full flex justify-center items-center flex-col -mt-20 space-x-4 bg-secondary-gray border-2 border-secondary-white select-none"
             />
@@ -37,7 +37,7 @@ export default function HireModal({
           {/* Nombre, Ubicación, Trabajos y Puntuación */}
           <div className="px-4 pb-2">
             <h2 className="text-secondary-black text-center text-3xl font-bold">
-              {user.name}
+              {user.firstName} {user.lastName}
             </h2>
             <span className="flex justify-center items-center">
               <img
@@ -46,14 +46,14 @@ export default function HireModal({
                 className="inline h-5 w-5 mr-1"
               />
               <p className="text-secondary-black text-xs font-bold">
-                {user.location}
+                {user.city}
               </p>
             </span>
             <p className="text-secondary-gray text-center text-base font-normal my-2">
-              {user.professions.map((profession: any, index: number) => (
+              {user.experience.map((experience: any, index: number) => (
                 <React.Fragment key={index}>
-                  {profession}
-                  {index !== user.professions.length - 1 && ", "}
+                  {experience}
+                  {index !== user.experience.length - 1 && ", "}
                 </React.Fragment>
               ))}
             </p>
@@ -110,7 +110,7 @@ export default function HireModal({
             >
               Cerrar
             </label>
-            <Link href={`/profile/${user.name}`}>
+            <Link href={`/profile/${user.username}`}>
               <label
                 htmlFor={`modal-${index}`}
                 className="btn bg-primary-blue text-secondary-white rounded-full"

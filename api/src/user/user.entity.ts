@@ -62,7 +62,7 @@ export class User {
   /**
    * Indicates whether the user's account is validated.
    */
-  @Column({ default: false, select: false })
+  @Column({ default: false })
   isAccountValidate: boolean;
 
   /**
@@ -100,6 +100,9 @@ export class User {
    */
   @Column({ type: 'bytea', nullable: true })
   photo: Buffer;
+
+  @Column({ type: 'bytea', nullable: true })
+  backgroundPhoto: Buffer;
 
   /**
    * The city associated with the user.
@@ -146,4 +149,7 @@ export class User {
 
   @Column({ nullable: true })
   habilities: string;
+
+  @Column({ default: false })
+  isWorker: boolean;
 }

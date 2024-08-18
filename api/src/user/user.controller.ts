@@ -46,7 +46,7 @@ export class UserController {
    * Retrieves all users.
    * @returns A promise that resolves to an array of User objects.
    */
-  @UseGuards(AccessTokenGuard)
+  // @UseGuards(AccessTokenGuard)
   @Get()
   async getAllUsers(
     @Query('page', QueryNumberPipe) page: number | undefined,
@@ -124,5 +124,10 @@ export class UserController {
     // }
     // console.log(req);
     return await this.userService.updateUser(id, updateUserDto);
+  }
+
+  @Get('workers')
+  async getAllWorkers() {
+    return this.userService.getAllWorkers();
   }
 }
