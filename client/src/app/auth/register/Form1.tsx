@@ -1,6 +1,5 @@
 import InputField from "@/app/components/auth/register/InputField";
 import { Field, User, HandleChange, OnClickFunction } from "./interfaces";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import GoogleOauth from "../googleOauth";
 
 export default function Form1({
@@ -51,7 +50,7 @@ export default function Form1({
           className=" w-full h-12 bg-primary-blue rounded-3xl text-secondary-white text-xl mb-2 hover:scale-105 duration-150"
           onClick={onClickFunction}
         >
-          Siguiente
+          Registrarse
         </button>
       </div>
       <div className="divider divider-horizontal">o</div>

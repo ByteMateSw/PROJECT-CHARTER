@@ -108,15 +108,5 @@ export class RegisterDto {
   @MaxLength(20, { message: 'El DNI debe de tener hasta 20 caracteres.' })
   dni: string;
 
-  /**
-   * The birthday of the user.
-   * @remarks
-   * - Must be a valid date.
-   * - format date (YYYY-MM-DD)
-   */
-  @IsDateString(
-    { strictSeparator: false },
-    { message: 'La fecha de cumpleaños debe de ser una fecha válida.' },
-  )
-  birthday: Date;
+
 }

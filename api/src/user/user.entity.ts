@@ -74,19 +74,19 @@ export class User {
   /**
    * The phone number of the user.
    */
-  @Column()
+  @Column({ nullable: true })
   numberPhone: string;
 
   /**
    * The birthday of the user.
    */
-  @Column({ type: 'date' })
+  @Column({ type: 'date', nullable: true })
   birthday: Date;
 
   /**
    * The DNI (National Identity Document) of the user.
    */
-  @Column()
+  @Column({ unique: true })
   dni: string;
 
   /**

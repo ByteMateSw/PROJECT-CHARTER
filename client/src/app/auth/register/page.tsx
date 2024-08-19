@@ -1,44 +1,15 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { User } from "./interfaces";
 import Form1 from "./Form1";
-import Form2 from "./Form2";
-import { City, Locations, Province } from "@/app/components/Sidebar/hooks/interfaces";
-import { getCities, getProvinces } from "@/app/api/locations";
-import { fields, fields2 } from "./fields";
+import { fields } from "./fields";
 import { register } from "@/app/api/user";
 import Alert from "./Alert";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 
 export default function RegisterPage() {
-
-  const [locations, setLocations] = useState<Locations>({
-    provinces: [],
-    cities: [],
-  });
-  const [selected, setSelected] = useState<Date>();
-  const [inputValue, setInputValue] = useState<string>('');
-  const [province, setProvince] = useState<{ label: string }>({ label: "" });
-  const [city, setCity] = useState<{ label: string }>({ label: "" });
-  const [viewError, setViewError] = useState([])
-
   const router = useRouter()
-
-  useEffect(() => {
-    getProvinces().then((newProvinces: Province[]) => {
-      setLocations((prevState: Locations) => ({
-        ...prevState,
-        provinces: newProvinces,
-      }));
-    });
-    getCities().then((newCities: City[]) => {
-      setLocations((prevState: Locations) => ({
-        ...prevState,
-        cities: newCities,
-      }));
-    });
-  }, []);
 
   const [user, setUser] = useState<User>({
     firstName: "",
@@ -48,22 +19,11 @@ export default function RegisterPage() {
     password: "",
     confirmPassword: "",
     dni: "",
-    numberPhone: "",
+    numberPhone: ""
   });
   const [warningMessage, setWarningMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
-  const [page, setPage] = useState(1);
-
-  const nextPage = () => {
-    if(!user.firstName || !user.lastName || !user.username || !user.email || !user.password || !user.confirmPassword) {
-      return setWarningMessage("Por favor, complete todos los campos")
-    }
-    if(user.password != user.confirmPassword){
-      return setWarningMessage('Las contraseñas no coincide')
-    }
-    setPage(2)
-  }
 
   const handleChange = (e: any) => {
     setWarningMessage("");
@@ -73,11 +33,11 @@ export default function RegisterPage() {
       [name]: value
     });
   }
-
+  
   const handleSubmit = async () => {
     if (!user.firstName || !user.lastName || !user.username || !user.email || !user.password || !user.confirmPassword) {
-      console.log(user.name, user.lastName, user.username, user.email, user.password, user.confirmPassword);
-      
+      console.log(user.firstName, user.lastName, user.username, user.email, user.password, user.confirmPassword);
+  
       setWarningMessage("Por favor, complete todos los campos");
       return;
     }
@@ -86,31 +46,29 @@ export default function RegisterPage() {
       return;
     }
     const finalUser = {
-      firstName: "",
-      lastName: "",
-      username: "",
-      email: "",
-      password: "",
-      dni: "",
-      birthday: selected,
-      // province: province.label,
-      // city: city.label,
-      numberPhone: "",
+      firstName: user.firstName,
+      lastName: user.lastName,
+      username: user.username,
+      email: user.email,
+      password: user.password,
+      dni: user.dni,
+      numberPhone: "+549" + user.numberPhone
     };
-
-    const data = await register(finalUser);
-    // if (data.response.data.message) {
-    //   setErrorMessage(data.response.data.message);
-    //   setShowAlert(true);
-    // }
-
-    console.log(data);
-    signIn("credentials", {
-      email: finalUser.email,
-      password: finalUser.password,
-      redirect: false,
-    })
-    router.push('/')
+  
+    try {
+      const data = await register(finalUser); 
+      signIn("credentials", {
+        email: finalUser.email,
+        password: finalUser.password,
+        redirect: false,
+      });
+      // router.push('/');
+      console.log(data);
+      
+    } catch (error) {
+      console.error("Error registering user:", error);
+      setWarningMessage("Error al registrar el usuario");
+    }
   };
 
 
@@ -139,31 +97,13 @@ export default function RegisterPage() {
             </div>
           </section>
 
-          {page === 1 ?
-            <Form1 fields={fields}
-              errorMessage={warningMessage}
-              user={user}
-              handleChange={handleChange}
-              onClickFunction={nextPage}
-            /> :
-            <Form2 fields={fields2}
-              errorMessage={warningMessage}
-              user={user}
-              handleChange={handleChange}
-              onClickFunction={() =>
-                setPage(1)}
-              handleSubmit={handleSubmit}
-              locations={locations}
-              inputValue={inputValue}
-              selected={selected}
-              setInputValue={setInputValue}
-              setSelected={setSelected}
-              city={city}
-              province={province}
-              setCity={setCity}
-              setProvince={setProvince}
-            />
-          }
+
+          <Form1 fields={fields}
+            errorMessage={warningMessage}
+            user={user}
+            handleChange={handleChange}
+            onClickFunction={handleSubmit}
+          />
         </article>
       </section>
     </>

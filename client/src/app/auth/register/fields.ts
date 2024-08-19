@@ -45,6 +45,20 @@ export const fields: Field[] = [
     type: "password",
     autoComplete: "on",
   },
+  {
+    name: "dni",
+    label: "DNI",
+    placeholder: "xxxxxxxx",
+    iconSrc: "/svg/person.svg",
+    autoComplete: "off",
+  },
+  {
+    name: "numberPhone",
+    label: "Celular",
+    placeholder: "Celular",
+    iconSrc: "/svg/cell-phone.svg",
+    autoComplete: "off",
+  },
 ];
 
 export const fields2: Field[] = [
