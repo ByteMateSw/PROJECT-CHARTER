@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { getProfessions } from "@/app/api/office";
-import { getCities, getProvinces } from "@/app/api/locations";
+import { getProvinces } from "@/app/api/locations";
 import { CheckedItems, Profession, SidebarEffectsArgs } from "./interfaces";
 import { Province, City, Locations } from "./interfaces";
 
@@ -26,12 +26,12 @@ export const useSidebarEffects = ({
         provinces: newProvinces,
       }));
     });
-    getCities().then((newCities: City[]) => {
-      setLocations((prevState: Locations) => ({
-        ...prevState,
-        cities: newCities,
-      }));
-    });
+    // getCities().then((newCities: City[]) => {
+    //   setLocations((prevState: Locations) => ({
+    //     ...prevState,
+    //     cities: newCities,
+    //   }));
+    // });
   }, []);
 
   useEffect(() => {
