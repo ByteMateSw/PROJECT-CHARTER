@@ -136,6 +136,7 @@ export class CityController {
     @Body('cityName') cityName: string,
     @Body('userId', ParseIntPipe) userId: number,
   ) {
+    console.log(cityName, userId);
     return this.cityService.updateCityUserByName(cityName, userId);
   }
 }

@@ -32,4 +32,15 @@ export class UpdateUserDto {
   @IsString()
   dni?: string;
 
+  @IsOptional()
+  photo?: CustomFile | any;
+
+  @IsOptional()
+  backgroundPhoto?: CustomFile | any;
+}
+
+interface CustomFile extends File {
+  originalname: string;
+  mimetype: string;
+  buffer: Buffer;
 }

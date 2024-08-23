@@ -17,12 +17,15 @@ import {
 import { UserFilter } from './dto/userFilter.dto';
 import { UserPagination } from './dto/userpagination.dto';
 import { UserRepository } from './repository/user.repository';
+import { S3Service } from 'src/storage/s3.service';
+import 'dotenv/config';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: UserRepository,
     @InjectRepository(Role) private roleRepository: Repository<Role>,
+    private s3Service: S3Service,
   ) {}
 
   async getAllUsers({
@@ -121,15 +124,39 @@ export class UserService {
     await this.userRepository.update({ id }, { isDeleted: true });
   }
 
+  
+
   async updateUser(id: number, updateUser: UpdateUserDto): Promise<User> {
     const user = await this.userRepository.findOneBy({ id });
     if (!user) throw new BadRequestException('El usuario no existe');
+
     if (updateUser.email !== undefined) {
       const existsEmail = await this.userRepository.existsBy({
         email: updateUser.email,
       });
       if (existsEmail) throw new BadRequestException('El email ya existe');
     }
+
+    if (updateUser.photo) {
+      const profileImagePath = await this.s3Service.uploadFile(
+        updateUser.photo.originalname,
+        `users/${id}/profile`,
+        updateUser.photo.mimetype,
+        updateUser.photo.buffer,
+      );
+      updateUser.photo = process.env.R2_PUBLIC_DOMAIN + profileImagePath;
+    }
+
+    if (updateUser.backgroundPhoto) {
+      const coverImagePath = await this.s3Service.uploadFile(
+        updateUser.backgroundPhoto.originalname,
+        `users/${id}/cover`,
+        updateUser.backgroundPhoto.mimetype,
+        updateUser.backgroundPhoto.buffer,
+      );
+      updateUser.backgroundPhoto = process.env.R2_PUBLIC_DOMAIN + coverImagePath;
+    }
+
     return await this.userRepository.save({ ...user, ...updateUser });
   }
 

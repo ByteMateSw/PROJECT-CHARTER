@@ -60,18 +60,6 @@ export class RegisterDto {
    */
   @IsString({ message: 'La contraseña debe ser una cadena de caracteres.' })
   @IsNotEmpty({ message: 'La contraseña no puede estar vacía.' })
-  @IsStrongPassword(
-    {
-      minLength: 8,
-      minLowercase: 1,
-      minUppercase: 1,
-      minNumbers: 1,
-    },
-    {
-      message:
-        'La contraseña debe contener al menos 8 carácteres, de los cuales 1 debe ser un número, una letra mayúscula y minúscula',
-    },
-  )
   password: string;
 
   /**

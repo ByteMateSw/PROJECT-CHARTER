@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Role } from '../role/role.entity';
 import { UserRepository } from './repository/user.repository';
+import { S3Module } from 'src/storage/s3.module';
 
 /**
  * Represents the User module of the application.
@@ -12,7 +13,7 @@ import { UserRepository } from './repository/user.repository';
  * defining the controllers, providers, and exports for the User feature.
  */
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Role, UserRepository])],
+  imports: [TypeOrmModule.forFeature([User, Role, UserRepository]), S3Module],
   controllers: [UserController],
   providers: [UserService],
   exports: [UserService],

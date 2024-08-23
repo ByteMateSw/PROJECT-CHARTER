@@ -30,6 +30,9 @@ export default function Page({
     });
   }, []);
 
+  console.log(user);
+  
+
   return (
     <div className="h-screen grid grid-rows-layout grid-cols-3 gap-x-4 pb-4 md:px-4">
       {/* Navbar placeholder */}
@@ -49,7 +52,7 @@ export default function Page({
         <section className="flex flex-col w-full justify-center items-center">
           <img
             className="hidden md:block h-44 w-full rounded-2xl"
-            src="/img/bg-image.jpg"
+            src={user?.backgroundPhoto || "/img/bg-image.jpg"}
             alt="Fondo de Perfil"
           />
           <div className="flex space-x-4 mt-4 [&>a]:px-4 [&>a]:py-2 [&>a]:rounded-full [&>a]:bg-primary-blue [&>a]:w-32 [&>a]:md:w-40 text-secondary-white [&>a]:flex [&>a]:justify-center [&>a]:items-center">

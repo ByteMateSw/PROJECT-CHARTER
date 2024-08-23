@@ -98,11 +98,11 @@ export class User {
   /**
    * The photo of the user.
    */
-  @Column({ type: 'bytea', nullable: true })
-  photo: Buffer;
+  @Column({ nullable: true })
+  photo: string;
 
-  @Column({ type: 'bytea', nullable: true })
-  backgroundPhoto: Buffer;
+  @Column({ nullable: true })
+  backgroundPhoto: string;
 
   /**
    * The city associated with the user.

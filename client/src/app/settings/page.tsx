@@ -277,7 +277,7 @@ export default function Page() {
         {/* Main content */}
         <div className="col-span-2">
           {/* Sección de selección de imagen */}
-          <Images user={user} />
+          <Images user={user} userData={userData} />
           {/* Sección de selección básica */}
           <About
             fields={fields}

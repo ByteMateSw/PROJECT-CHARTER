@@ -10,7 +10,9 @@ import {
   Query,
   Req,
   UnauthorizedException,
+  UploadedFiles,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/updateUser.dto';
@@ -25,6 +27,7 @@ import { UserParam } from '../utils/params/user.param';
 import { QueryNumberPipe } from '../utils/pipes/query-number.pipe';
 import { UserFilter } from './dto/userFilter.dto';
 import { UserPagination } from './dto/userpagination.dto';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
 /**
  * Controller for handling user-related operations.
@@ -113,16 +116,47 @@ export class UserController {
   }
 
   @Patch(':id')
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'profileImage', maxCount: 1 },
+      { name: 'coverImage', maxCount: 1 },
+    ]),
+  )
+  @Patch(':id')
   async updateUser(
     @Param('id', CustomParseIntPipe) id: number,
     @Body(EmptyBodyPipe) updateUserDto: UpdateUserDto,
-    @Req() req: any,
   ): Promise<User> {
     // const userId = req.session.userId; // o donde sea que almacenes el ID del usuario en la sesión
     // if (userId !== id) {
     //   throw new UnauthorizedException('No estás autorizado para modificar este usuario');
     // }
     // console.log(req);
+
+    return await this.userService.updateUser(id, updateUserDto);
+  }
+
+  @Patch(':id/images')
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'profileImage', maxCount: 1 },
+      { name: 'coverImage', maxCount: 1 },
+    ]),
+  )
+  async updateUserImages(
+    @Param('id', CustomParseIntPipe) id: number,
+    @UploadedFiles() files: { profileImage?: Express.Multer.File[], coverImage?: Express.Multer.File[] },
+  ): Promise<User> {
+    const updateUserDto = new UpdateUserDto();
+
+    if (files.profileImage) {
+      updateUserDto.photo = files.profileImage[0];
+    }
+
+    if (files.coverImage) {
+      updateUserDto.backgroundPhoto = files.coverImage[0];
+    }
+
     return await this.userService.updateUser(id, updateUserDto);
   }
 
