@@ -2,10 +2,10 @@
 import { useSession } from "next-auth/react";
 import { fields, redes } from "./fields";
 import { useEffect, useState } from "react";
-import { getCities, getProvinces, updateCityUserByName } from "../api/locations";
+import { getCities, getProvinces, updateCityUserByName } from "../../api/locations";
 import { StylesConfig } from "react-select";
-import { getProfessions } from "../api/office";
-import { getUserByUsername, updateUser } from "../api/user";
+import { getProfessions } from "../../api/office";
+import { getUserByUsername, updateUser } from "../../api/user";
 import SocialMedia from "./SocialMedia";
 import About from "./About";
 import Images from "./Images";
@@ -32,7 +32,7 @@ const styleComboBox: StylesConfig = {
   }),
 };
 
-export default function Page() {
+export default function Page({params}: { params: {username: string}}) {
   const { data: session, status }: any = useSession();
   const [userData, setUserData] = useState<any>(null);
   const [user, setUser] = useState<any>({
@@ -60,6 +60,8 @@ export default function Page() {
     transform: "translateY(100%)",
     opacity: 0,
   }));
+
+  console.log(params.username)
 
   useEffect(() => {
     if (session) {

@@ -1,4 +1,4 @@
-import InputField1 from "../components/Inputs/InputField1";
+import InputField1 from "../../components/Inputs/InputField1";
 
 export default function SocialMedia({ redes, user, handleChange }: any) {
     return (

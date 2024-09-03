@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSpring, animated } from "@react-spring/web";
-import InputField from "../components/auth/register/InputField";
-import ComboBox from "../components/ComboBox";
+import InputField from "../../components/auth/register/InputField";
+import ComboBox from "../../components/ComboBox";
 
 export default function About({
   fields,

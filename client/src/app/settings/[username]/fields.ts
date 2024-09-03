@@ -1,4 +1,4 @@
-import { Field } from "../auth/register/interfaces";
+import { Field } from "../../auth/register/interfaces";
 
 export const fields: Field[] = [
   {
