@@ -13,12 +13,19 @@ export class ExperienceService {
     private userService: UserService,
   ) {}
 
-  async createExperience(newExperience: CreateExperienceDTO): Promise<Experience> {
-    const user = await this.userService.getUserBy({id: newExperience.userId});
+  async createExperience(
+    newExperience: CreateExperienceDTO,
+  ): Promise<Experience> {
+    const user = await this.userService.getUserBy({ id: newExperience.userId });
     if (!user) {
-      throw new NotFoundException(`Usuario con ID ${newExperience.userId} no encontrado`);
+      throw new NotFoundException(
+        `Usuario con ID ${newExperience.userId} no encontrado`,
+      );
     }
-    const experience = this.experienceRepository.create({ ...newExperience, user });
+    const experience = this.experienceRepository.create({
+      ...newExperience,
+      user,
+    });
     return await this.experienceRepository.save(experience);
   }
 
@@ -27,19 +34,40 @@ export class ExperienceService {
   }
 
   async getExperienceById(id: number): Promise<Experience> {
-    const experience = await this.experienceRepository.findOne({ where: { id }, relations: ['user'] });
+    const experience = await this.experienceRepository.findOne({
+      where: { id },
+      relations: ['user'],
+    });
     if (!experience) {
       throw new NotFoundException(`Experiencia con ID ${id} no encontrada`);
     }
     return experience;
   }
 
-  async updateExperience(id: number, updateExperience: UpdateExperienceDTO): Promise<Experience> {
+  async getExperienceByUserId(id: number): Promise<Experience[]> {
+    const experience = await this.experienceRepository.find({
+      relations: ['user'],
+      where: { user: { id } },
+    });
+    if (!experience) {
+      throw new NotFoundException(`Experiencia con UserID ${id} no encontrada`);
+    }
+    return experience;
+  }
+
+  async updateExperience(
+    id: number,
+    updateExperience: UpdateExperienceDTO,
+  ): Promise<Experience> {
     const experience = await this.getExperienceById(id);
     if (updateExperience.userId) {
-      const user = await this.userService.getUserBy({id: updateExperience.userId});
+      const user = await this.userService.getUserBy({
+        id: updateExperience.userId,
+      });
       if (!user) {
-        throw new NotFoundException(`Usuario con ID ${updateExperience.userId} no encontrado`);
+        throw new NotFoundException(
+          `Usuario con ID ${updateExperience.userId} no encontrado`,
+        );
       }
       experience.user = user;
     }

@@ -80,10 +80,11 @@ export class RegisterDto {
    * - Optional field.
    * - Must be a valid phone number.
    */
-  @IsOptional()
-  @IsPhoneNumber(undefined, {
-    message: 'El número de teléfono debe de tener un formato válido',
-  })
+  // @IsOptional()
+  // @IsPhoneNumber(undefined, {
+  //   message: 'El número de teléfono debe de tener un formato válido',
+  // })
+  @IsString()
   numberPhone: string;
 
   /**

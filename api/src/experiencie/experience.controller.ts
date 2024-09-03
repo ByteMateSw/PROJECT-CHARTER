@@ -21,6 +21,11 @@ export class ExperienceController {
     return await this.experienceService.getExperienceById(id);
   }
 
+  @Get('user/:id')
+  async getExperienceByUserId(@Param('id') id: number) {
+    return await this.experienceService.getExperienceByUserId(id);
+  }
+
   @Patch(':id')
   async updateExperience(
     @Param('id', ParseIntPipe) id: number,

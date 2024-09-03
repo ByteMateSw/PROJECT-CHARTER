@@ -20,9 +20,9 @@ const MENU_ITEMS = [
 
 export default function Dropdown({ user }: { user: any }) {
 
-  //let [usernameForId] = user.email.split('@')
+  let [usernameForId] = user.email.split('@')
   let image = user.photo || user.image
-  let name = user.username /*|| usernameForId**/ || user.name
+  let name = user.username || usernameForId || user.name
   console.log(user)
 
   return (
