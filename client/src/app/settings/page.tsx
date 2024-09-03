@@ -64,7 +64,8 @@ export default function Page() {
   useEffect(() => {
     if (session) {
       const { email, username } = session.user;
-      const finalUsername = username || email.split("@")[0];
+      //const finalUsername = username || email.split("@")[0];
+      const finalUsername = 'pedro'
 
       getUserByUsername(finalUsername).then(setUserData);
     }

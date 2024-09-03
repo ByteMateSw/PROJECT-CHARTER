@@ -10,6 +10,7 @@ import { jwtDecode } from "jwt-decode";
 
 export default function Header() {
   const { data: session, status }: any = useSession();
+  console.log(session)
 
   let decoded: any;
   if (typeof session?.user?.access_token === "string") {
@@ -178,7 +179,7 @@ export default function Header() {
                 alt={link.alt}
               />
             ))}
-            <Dropdown user={session.user} />
+            <Dropdown user={decoded.user} />
           </ul>
         </nav>
       </header>
