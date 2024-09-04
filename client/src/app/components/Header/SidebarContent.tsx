@@ -9,6 +9,9 @@ export default function SidebarContent({ user }: { user: any }) {
   let image = user?.photo || user?.image 
   let name = user?.username || user?.name
 
+  console.log(image)
+  console.log(name)
+
   return (
     <>
       <section className="sidebar-content h-fit min-h-[20rem] mt-8 overflow-visible">
