@@ -1,5 +1,6 @@
 "use client";
 import { useSession } from "next-auth/react";
+import { jwtDecode } from "jwt-decode";
 import { fields, redes } from "./fields";
 import { useEffect, useState } from "react";
 import { getCities, getProvinces, updateCityUserByName } from "../../api/locations";
@@ -61,17 +62,17 @@ export default function Page({params}: { params: {username: string}}) {
     opacity: 0,
   }));
 
-  console.log(params.username)
 
-  useEffect(() => {
-    if (session) {
-      const { email, username } = session.user;
-      //const finalUsername = username || email.split("@")[0];
-      const finalUsername = 'pedro'
+    let decoded: any
+    if (typeof session?.user?.access_token === "string") {
+      decoded = jwtDecode(session?.user?.access_token)
+      const {username, email, city} = decoded.user;
+      const finalUsername = username || email.split("@")[0];
+      console.log(decoded.user)
 
-      getUserByUsername(finalUsername).then(setUserData);
+      //getUserByUsername(finalUsername).then(setUserData);
     }
-  }, [session]);
+ 
 
   useEffect(() => {
     const fetchLocations = async () => {
@@ -156,11 +157,11 @@ export default function Page({params}: { params: {username: string}}) {
         };
 
         // Actualizar la información básica del usuario solo si todos los campos están llenos
-        await updateUser(userData.id, updatedUserData);
+        await updateUser(decoded.user.id, updatedUserData);
       }
 
       // Verificar si hubo cambios en la ciudad y actualizar la relación con el usuario
-      if (city && city !== userData.city) {
+      if (city && city !== city) {
         await updateCityUserByName(city.name, userData.id);
       }
 
@@ -263,7 +264,7 @@ export default function Page({params}: { params: {username: string}}) {
     );
   }
 
-  console.log(userData);
+  //console.log(userData);
   
 
   if (status === "authenticated" && user) {
@@ -280,7 +281,7 @@ export default function Page({params}: { params: {username: string}}) {
         {/* Main content */}
         <div className="col-span-2">
           {/* Sección de selección de imagen */}
-          <Images user={user} userData={userData} />
+          <Images user={user} userData={decoded.user} />
           {/* Sección de selección básica */}
           <About
             fields={fields}
