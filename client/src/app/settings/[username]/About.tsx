@@ -153,6 +153,7 @@ export default function About({
           <textarea
             className="w-full h-full focus:outline-none bg-transparent resize-none"
             autoComplete="off"
+            onChange={handleChange}
             name="about"
             placeholder="Descripción"
           />
@@ -162,7 +163,8 @@ export default function About({
           <textarea
             className="w-full h-full focus:outline-none bg-transparent resize-none"
             autoComplete="off"
-            name="about"
+            onChange={handleChange}
+            name="habilities"
             placeholder="Descripción"
           />
         </span>

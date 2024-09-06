@@ -45,6 +45,8 @@ export default function Page({params}: { params: {username: string}}) {
     numberPhone: "",
     experience: [],
     isWorker: false,
+    about: "",
+    habilities: ""
   });
   const [comboBoxOptions, setComboBoxOptions] = useState<any>({
     provinces: [],
@@ -138,13 +140,17 @@ export default function Page({params}: { params: {username: string}}) {
           user.username ||
           user.email ||
           user.numberPhone ||
-          user.dni) && (
+          user.dni ||
+          user.about ||
+          user.habilities) && (
           user.firstName.length > 0 ||
           user.lastName.length > 0 ||
           user.username.length > 0 ||
           user.email.length > 0 ||
           user.numberPhone.length > 0 ||
-          user.dni.length > 0
+          user.dni.length > 0 ||
+          user.about.length > 0 ||
+          user.habilities.length > 0
         ) || user.isWorker === true
       ) {
         const updatedUserData = {
@@ -155,6 +161,8 @@ export default function Page({params}: { params: {username: string}}) {
           ...(user.numberPhone && { numberPhone: user.numberPhone }),
           ...(user.dni && { dni: user.dni }),
           ...(user.isWorker && { isWorker: user.isWorker }),
+          ...(user.about && { about: user.about }),
+          ...(user.habilities && { habilities: user.habilities })
         };
         console.log(updatedUserData)
 
