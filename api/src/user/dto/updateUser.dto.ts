@@ -3,7 +3,7 @@ import {
   IsString,
   IsEmail,
   IsPhoneNumber,
-  IsBoolean
+  IsBoolean,
 } from 'class-validator';
 
 export class UpdateUserDto {
@@ -41,7 +41,15 @@ export class UpdateUserDto {
 
   @IsOptional()
   @IsBoolean()
-  isWorker: boolean;
+  isWorker?: boolean;
+
+  @IsOptional()
+  @IsString()
+  about?: string;
+
+  @IsOptional()
+  @IsString()
+  habilities?: string;
 }
 
 interface CustomFile extends File {
