@@ -32,7 +32,7 @@ export default function ComboBox({
 
   return (
     <div className="w-full">
-      {isClient && options.length > 0 ? (
+      {isClient ? (
         <Select
           isMulti={isMulti}
           placeholder={placeholder}

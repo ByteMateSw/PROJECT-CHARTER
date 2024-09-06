@@ -25,6 +25,7 @@ export default function About({
     user.experience || [{ id: null, position: "", startDate: "", endDate: "", company: "" }]
   );
 
+  //console.log(user)
   const handleChangeExperience = (index: any, e: any) => {
     const { name, value } = e.target;
     const newExperiences: any = [...experiences];

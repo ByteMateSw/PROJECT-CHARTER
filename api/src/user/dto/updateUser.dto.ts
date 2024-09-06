@@ -3,6 +3,7 @@ import {
   IsString,
   IsEmail,
   IsPhoneNumber,
+  IsBoolean
 } from 'class-validator';
 
 export class UpdateUserDto {
@@ -37,6 +38,10 @@ export class UpdateUserDto {
 
   @IsOptional()
   backgroundPhoto?: CustomFile | any;
+
+  @IsOptional()
+  @IsBoolean()
+  isWorker: boolean;
 }
 
 interface CustomFile extends File {

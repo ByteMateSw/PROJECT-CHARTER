@@ -145,7 +145,7 @@ export default function Page({params}: { params: {username: string}}) {
           user.email.length > 0 ||
           user.numberPhone.length > 0 ||
           user.dni.length > 0
-        )
+        ) || user.isWorker === true
       ) {
         const updatedUserData = {
           ...(user.firstName && { firstName: user.firstName }),
@@ -154,7 +154,9 @@ export default function Page({params}: { params: {username: string}}) {
           ...(user.email && { email: user.email }),
           ...(user.numberPhone && { numberPhone: user.numberPhone }),
           ...(user.dni && { dni: user.dni }),
+          ...(user.isWorker && { isWorker: user.isWorker }),
         };
+        console.log(updatedUserData)
 
         // Actualizar la información básica del usuario solo si todos los campos están llenos
         await updateUser(decoded.user.id, updatedUserData);
@@ -268,6 +270,7 @@ export default function Page({params}: { params: {username: string}}) {
   
 
   if (status === "authenticated" && user) {
+    console.log(user)
     return (
       <div className="h-screen grid grid-rows-layout grid-cols-3 gap-x-4 pb-4 md:px-4">
         {/* Navbar placeholder */}
