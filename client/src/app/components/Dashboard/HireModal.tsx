@@ -49,10 +49,10 @@ export default function HireModal({
                 {user.city}
               </p>
             </span>
-            <p className="text-secondary-gray text-center text-base font-normal my-2">
+            <p className="text-secondary-gray text-center text-base font-semibold my-2">
               {user.experience.map((experience: any, index: number) => (
                 <React.Fragment key={index}>
-                  {experience}
+                  {experience.title}
                   {index !== user.experience.length - 1 && ", "}
                 </React.Fragment>
               ))}
@@ -79,10 +79,7 @@ export default function HireModal({
               Sobre Mí
             </h2>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias
-              cupiditate modi deserunt dolor laudantium perspiciatis? Qui
-              reiciendis at omnis sed architecto quia nihil, consequatur
-              possimus dolorum ut minima! Optio, ex.
+              {user.about}
             </p>
           </div>
           <div className="pt-2 px-9 text-justify">
@@ -110,7 +107,7 @@ export default function HireModal({
             >
               Cerrar
             </label>
-            <Link href={`/profile/${user.username}`}>
+            <Link href={`/profile/${user.username}/info`}>
               <label
                 htmlFor={`modal-${index}`}
                 className="btn bg-primary-blue text-secondary-white rounded-full"

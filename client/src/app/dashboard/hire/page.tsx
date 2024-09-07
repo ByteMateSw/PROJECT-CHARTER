@@ -28,7 +28,7 @@ export default function HirePage() {
 
 
   return (
-    <section className="h-full w-full flex justify-center flex-wrap gap-6 p-6">
+    <section className="grid grid-flow-row grid-cols-2 h-full overflow-auto w-full gap-6 p-6">
       {users.map((profile: any, index: number) => {
         return (
           <div key={index} className="bg-secondary-white rounded-2xl border border-secondary-gray w-96 h-80 relative overflow-hidden">
@@ -61,10 +61,10 @@ export default function HirePage() {
                 />
                 <p className="text-secondary-black text-xs font-bold">{profile.review}</p>
               </span>
-              <p className="text-secondary-gray text-center text-base font-normal mt-4">
+              <p className="text-secondary-gray font-semibold text-center text-base mt-4">
                 {profile.experience.map((experience: any, index: number) => (
                   <React.Fragment key={index}>
-                    {experience}
+                    {experience.title}
                     {index !== profile.experience.length - 1 && ", "}
                   </React.Fragment>
                 ))}
