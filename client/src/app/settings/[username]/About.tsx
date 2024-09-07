@@ -22,7 +22,7 @@ export default function About({
   handleToggleIsWorker,
 }: any) {
   const [experiences, setExperiences] = useState(
-    user.experience || [{ position: "", startDate: "", endDate: "", company: "" }]
+    user.experience || [{ position: "", description: "", startDate: "", endDate: "", company: "" }]
   );
 
   //console.log(user)
@@ -36,7 +36,7 @@ export default function About({
   const handleAddExperience = () => {
     setExperiences([
       ...experiences,
-      { position: "", startDate: "", endDate: "", company: "" },
+      { position: "", description: "", startDate: "", endDate: "", company: "" },
     ]);
   };
 
@@ -182,6 +182,19 @@ export default function About({
                 name="position"
                 id={`position-${index}`}
                 value={experience.position}
+                onChange={(e) => handleChangeExperience(index, e)}
+                className="border rounded p-2"
+              />
+            </div>
+              <div className="flex flex-col gap-2">
+              <label htmlFor={`description-${index}`} className="font-bold">
+                Description:
+              </label>
+              <input
+                type="text"
+                name="description"
+                id={`description-${index}`}
+                value={experience.description}
                 onChange={(e) => handleChangeExperience(index, e)}
                 className="border rounded p-2"
               />

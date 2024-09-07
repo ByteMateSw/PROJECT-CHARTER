@@ -7,6 +7,7 @@ import { getCities, getProvinces, updateCityUserByName } from "../../api/locatio
 import { StylesConfig } from "react-select";
 import { getProfessions } from "../../api/office";
 import { getUserByUsername, updateUser } from "../../api/user";
+import { createExperience } from "@/app/api/experience";
 import SocialMedia from "./SocialMedia";
 import About from "./About";
 import Images from "./Images";
@@ -172,6 +173,19 @@ export default function Page({params}: { params: {username: string}}) {
       // Verificar si hubo cambios en la ciudad y actualizar la relación con el usuario
       if (city && city !== city) {
         await updateCityUserByName(city.name, userData.id);
+      }
+
+      if (user.experience.length > 0) {
+        user.experience.map(async (exp) => (
+          await createExperience(
+            exp.position,
+            exp.description,
+            exp.company,
+            exp.startDate,
+            exp.endDate,
+            decoded.user.id
+          )
+        ))
       }
 
       // Recargar la página después de la actualización
