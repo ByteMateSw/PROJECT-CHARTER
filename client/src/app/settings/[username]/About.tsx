@@ -22,7 +22,7 @@ export default function About({
   handleToggleIsWorker,
 }: any) {
   const [experiences, setExperiences] = useState(
-    user.experience || [{ id: null, position: "", startDate: "", endDate: "", company: "" }]
+    user.experience || [{ position: "", startDate: "", endDate: "", company: "" }]
   );
 
   //console.log(user)
@@ -36,7 +36,7 @@ export default function About({
   const handleAddExperience = () => {
     setExperiences([
       ...experiences,
-      { id: null, position: "", startDate: "", endDate: "", company: "" },
+      { position: "", startDate: "", endDate: "", company: "" },
     ]);
   };
 
@@ -54,6 +54,8 @@ export default function About({
     from: { opacity: 0, transform: "translateY(-20px)" },
     to: { opacity: 1, transform: "translateY(0)" },
   });
+
+  console.log(experiences)
 
   return (
     <>

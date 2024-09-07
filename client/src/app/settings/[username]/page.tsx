@@ -164,7 +164,6 @@ export default function Page({params}: { params: {username: string}}) {
           ...(user.about && { about: user.about }),
           ...(user.habilities && { habilities: user.habilities })
         };
-        console.log(updatedUserData)
 
         // Actualizar la información básica del usuario solo si todos los campos están llenos
         await updateUser(decoded.user.id, updatedUserData);
@@ -233,11 +232,12 @@ export default function Page({params}: { params: {username: string}}) {
   };
 
   const handleSaveExperience = (experience: any) => {
+    console.log(experience)
     setUser((prevUser: any) => ({
       ...prevUser,
-      experience: prevUser.experience.map((exp: any) =>
-        exp.id === experience.id ? experience : exp
-      ),
+      experience: [...prevUser.experience, experience] /*prevUser.experience.map((exp: any) => [1,4]*/
+        // exp.id === experience.id ? experience : exp
+      //),
     }));
     setHasChanges(true);
     api.start({ transform: "translateY(0%)", opacity: 1 });
