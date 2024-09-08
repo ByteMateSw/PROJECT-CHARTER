@@ -126,7 +126,7 @@ export class User {
   /**
    * The posts made by the user.
    */
-  @OneToMany(() => Post, (post) => post.user)
+  @OneToMany(() => Post, (post) => post.user, { eager: false })
   posts: Post[];
 
   /**

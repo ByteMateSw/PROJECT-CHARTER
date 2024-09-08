@@ -24,7 +24,7 @@ export default function HireModal({
           {/* Foto de perfíl */}
           <div className="flex flex-col w-full justify-center items-center">
             <img
-              src={user.imageBackground}
+              src={user.backgroundPhoto}
               alt="Imagen de fondo"
               className="w-full h-36 object-cover rounded-t-[2rem]"
             />

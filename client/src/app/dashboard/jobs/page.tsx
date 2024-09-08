@@ -1,32 +1,50 @@
 "use client";
+import { useEffect, useState } from "react";
 import { cardDetails } from "@/data/cards";
 import NanoClamp from "nanoclamp";
 import Image from "next/image";
 import Link from "next/link";
+import JobsModal from "@/app/components/Dashboard/JobsModal";
+
+import { getAllPosts } from '@/app/api/post';
 
 export default function JobsPage() {
+
+  const [posts, setPosts] = useState<any>([])
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await getAllPosts()
+        setPosts(response)
+      } catch (error) {
+        console.error('Error fetching posts:', error)
+      }
+    }
+
+    fetchPosts()
+  },[])
+
+  console.log(posts)
   return (
-    <article className="h-full w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-      {cardDetails.map((cards, index) => {
+    <article className="h-32 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+      {posts.map((post: any, index: number) => {
         return (
           <div className="shadow-md p-4 rounded-xl" key={index}>
             <span className="flex md:justify-between min-[1620px]:items-center items-start flex-col-reverse min-[1620px]:flex-row">
               <h2 className="flex-start text-lg text-primary-blue font-bold">
-                Necesito cambiar una canilla
+                {post.title}
               </h2>
               <h6 className="flex-end text-xs text-secondary-gray">
                 Publicado hace 17 días
               </h6>
             </span>
-            <h4 className="text-sm mb-2 text-secondary-gray">John Doe</h4>
+            <h4 className="text-sm mb-2 text-secondary-gray">{`${post.user.firstName} ${post.user.lastName}`}</h4>
             <NanoClamp
               className="text-secondary-gray"
               is="p"
               lines={3}
-              text={`Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
-                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                 culpa qui officia deserunt mollit anim id est laborum`}
+              text={post.description}
             />
             <div className="flex items-start flex-col min-[1150px]:justify-between min-[1150px]:items-center min-[1150px]:flex-row mt-4">
               <div className="flex cursor-default select-none">
@@ -40,9 +58,10 @@ export default function JobsPage() {
                   Ubicación
                 </span>
               </div>
-              <Link className="btn btn-primary rounded-full h-8" href="/">
+              {/* <Link className="btn btn-primary rounded-full h-8" href="/">
                 Ver detalles
-              </Link>
+              </Link> */}
+              <JobsModal/>
             </div>
           </div>
         );

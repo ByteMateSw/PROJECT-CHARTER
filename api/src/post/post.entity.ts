@@ -67,7 +67,7 @@ export class Post {
   /**
    * The user who created the post.
    */
-  @ManyToOne(() => User, user => user.posts)
+  @ManyToOne(() => User, user => user.posts, { eager: true })
   user: User;
 
   /**

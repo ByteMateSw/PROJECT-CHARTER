@@ -33,7 +33,7 @@ export default function HirePage() {
         return (
           <div key={index} className="bg-secondary-white rounded-2xl border border-secondary-gray w-96 h-80 relative overflow-hidden">
             <img
-              src={profile.imageBackground}
+              src={profile.backgroundPhoto}
               alt="Imagen de fondo"
               className="w-full h-36 object-cover rounded-t-2xl"
             />
