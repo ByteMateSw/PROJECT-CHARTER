@@ -20,7 +20,7 @@ export default function HireModal({
       <input className="modal-state" id={`modal-${index}`} type="checkbox" />
       <section className="modal">
         <label className="modal-overlay" htmlFor={`modal-${index}`}></label>
-        <article className="modal-content h-full w-full flex flex-col gap-5 p-0 rounded-[2rem] minimal-scrollbar">
+        <article className="modal-content h-full w-[32rem] flex flex-col gap-5 p-0 rounded-[2rem] minimal-scrollbar">
           {/* Foto de perfíl */}
           <div className="flex flex-col w-full justify-center items-center">
             <img
