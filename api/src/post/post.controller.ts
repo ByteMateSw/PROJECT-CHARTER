@@ -151,7 +151,7 @@ export class PostController {
    * @param postId - post id you are applying for
    * @return - The apply data
    */
-  @UseGuards(AccessTokenGuard)
+  //@UseGuards(AccessTokenGuard)
   @Patch('apply')
   async subscribePost(
     @Query('userId') userId: number,

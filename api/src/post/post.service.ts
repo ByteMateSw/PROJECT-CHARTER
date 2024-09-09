@@ -196,6 +196,9 @@ export class PostService {
       relations: ['subscribers'],
     });
     if (!post) throw new NotFoundException('trabajo no encontrado');
+    if (post.subscribers.includes(user)) {
+      throw new NotFoundException('ya postuló ha este trabajo');
+    }
     post.subscribers.push(user);
     return this.postRepository.save(post);
   }

@@ -1,6 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { jwtDecode } from "jwt-decode";
+
+import { subscribePost } from "@/app/api/post";
 
 export default function JobsModal({
   post,
@@ -9,11 +13,22 @@ export default function JobsModal({
   post: any;
   index: number;
 }) {
+
+  const { data: session, status }: any = useSession();
+  const [ postId, setPostId ] = useState<number>(0)
+
+  let decoded: any
+  if (typeof session?.user?.access_token === "string") {
+    decoded = jwtDecode(session?.user?.access_token)
+  }
+
+
   return (
     <div>
     <label
       className=" btn btn-primary rounded-full"
       htmlFor={`modal-${index}`}
+      onClick={() => setPostId(post.id)}
     >
       Ver detalles
     </label>
@@ -60,7 +75,7 @@ export default function JobsModal({
             </span>
           </div>
           <div className=" flex justify-center text-sm font-semibold w-24 h-10">
-            <button className="bg-primary-blue text-white w-full rounded-full">
+            <button onClick={() => subscribePost(decoded.user.id, postId)} className="bg-primary-blue text-white w-full rounded-full">
               Solicitar
             </button>
           </div>

@@ -10,3 +10,14 @@ export const getAllPosts = async (): Promise<any> => {
       throw error;
     }
   };
+
+  export const subscribePost = async (userId: number, postId: number) => {
+    try {
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/apply/?userId=${userId}&postId=${postId}`
+      )
+      return response
+    } catch (error) {
+      console.error(error)
+    }
+  }
