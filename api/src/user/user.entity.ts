@@ -154,5 +154,5 @@ export class User {
   isWorker: boolean;
 
   @ManyToMany(() => Post, (post) => post.suscribers)
-  subscribers: Post[];
+  subscribers?: Post[];
 }

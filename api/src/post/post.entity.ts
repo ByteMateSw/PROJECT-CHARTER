@@ -75,5 +75,5 @@ export class Post {
    */
   @ManyToMany(() => User, (user) => user.subscribers)
   @JoinTable()
-  suscribers: User[];
+  suscribers?: User[];
 }

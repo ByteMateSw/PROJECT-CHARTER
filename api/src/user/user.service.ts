@@ -94,6 +94,15 @@ export class UserService {
     });
   }
 
+  async getUserById(id: number): Promise<User> {
+    try {
+      const user = await this.userRepository.findOneBy({ id });
+      return user;
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
+
   async createUser(user: RegisterDto): Promise<User> {
     const existEmail = await this.existsEmail(user.email);
     if (existEmail) throw new BadRequestException('El Email está en uso');

@@ -47,7 +47,7 @@ export class PostService {
     });
     if (!findedPost)
       throw new NotFoundException('No se ha podido traer el post');
-    findedPost.images.map(image => {
+    findedPost.images.map((image) => {
       image.path = this.s3Service.getURLFile(image.path);
     });
     return findedPost;
@@ -81,7 +81,7 @@ export class PostService {
     const post = await this.getPostBy({ id: postId });
     if (!post) throw new NotFoundException('No se ha encontrado el post');
     return Promise.all(
-      images.map(async image => {
+      images.map(async (image) => {
         const path = await this.s3Service.uploadFile(
           image.originalname,
           `posts/${postId}`,
@@ -145,7 +145,7 @@ export class PostService {
     if (!postDelFound) throw new NotFoundException('La publicacion no existe');
     if (postDelFound.images.length > 0)
       Promise.all(
-        postDelFound.images.map(async image => {
+        postDelFound.images.map(async (image) => {
           await this.s3Service.removeFile(image.path);
           await this.imagePostRepository.remove(image);
         }),
@@ -186,5 +186,17 @@ export class PostService {
       .offset(page)
       .limit(limit)
       .getMany();
+  }
+
+  async subscribePost(postId: number, userId: number): Promise<Post> {
+    const user = await this.userService.getUserById(userId);
+    if (!user) throw new NotFoundException('usuario no existe');
+    const post = await this.postRepository.findOne({
+      where: { id: postId },
+      relations: ['subdcribers'],
+    });
+    if (!post) throw new NotFoundException('trabajo no encontrado');
+    post.suscribers.push(user);
+    return this.postRepository.save(post);
   }
 }
