@@ -193,10 +193,10 @@ export class PostService {
     if (!user) throw new NotFoundException('usuario no existe');
     const post = await this.postRepository.findOne({
       where: { id: postId },
-      relations: ['subdcribers'],
+      relations: ['subscribers'],
     });
     if (!post) throw new NotFoundException('trabajo no encontrado');
-    post.suscribers.push(user);
+    post.subscribers.push(user);
     return this.postRepository.save(post);
   }
 }

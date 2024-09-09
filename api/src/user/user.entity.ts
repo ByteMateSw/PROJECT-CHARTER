@@ -153,6 +153,6 @@ export class User {
   @Column({ default: false })
   isWorker: boolean;
 
-  @ManyToMany(() => Post, (post) => post.suscribers)
+  @ManyToMany(() => Post, (post) => post.subscribers)
   subscribers?: Post[];
 }

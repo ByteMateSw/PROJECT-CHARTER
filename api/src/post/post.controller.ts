@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Patch,
   Query,
   UploadedFiles,
   UseGuards,
@@ -141,6 +142,22 @@ export class PostController {
     @Body(EmptyBodyPipe) updatePostDto: UpdatePostDto,
   ): Promise<PostEntity> {
     return await this.postService.updatePost(id, updatePostDto);
+  }
+
+  /**
+   * Apply for the job
+   *
+   * @param userId - id of apply user
+   * @param postId - post id you are applying for
+   * @return - The apply data
+   */
+  @UseGuards(AccessTokenGuard)
+  @Patch('apply')
+  async subscribePost(
+    @Query('userId') userId: number,
+    @Query('postId') postId: number,
+  ) {
+    return await this.postService.subscribePost(postId, userId);
   }
 
   /**

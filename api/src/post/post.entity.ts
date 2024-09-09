@@ -73,7 +73,7 @@ export class Post {
   /**
    * The users who suscribed to the post.
    */
-  @ManyToMany(() => User, (user) => user.subscribers)
+  @ManyToMany(() => User, (user) => user.subscribers, { eager: true })
   @JoinTable()
-  suscribers?: User[];
+  subscribers?: User[];
 }
