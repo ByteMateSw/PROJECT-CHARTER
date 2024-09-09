@@ -2,30 +2,30 @@ import Link from "next/link";
 import Image from "next/image";
 import React from "react";
 
-export default function JobsModal(/*{
+export default function JobsModal({
   post,
   index,
 }: {
   post: any;
   index: number;
-}*/) {
+}) {
   return (
     <div>
     <label
       className=" btn btn-primary rounded-full"
-      htmlFor={`modal-${1}`}
+      htmlFor={`modal-${index}`}
     >
       Ver detalles
     </label>
-    <input className="modal-state" id={`modal-${1}`} type="checkbox" />
+    <input className="modal-state" id={`modal-${index}`} type="checkbox" />
     <section className="modal">
-      <label className="modal-overlay" htmlFor={`modal-${1}`}></label>
+      <label className="modal-overlay" htmlFor={`modal-${index}`}></label>
       <article className="modal-content h-full w-[990px] grid grid-rows-10 gap-4 p-10 rounded-[2rem] minimal-scrollbar">
         <div className="grid row-span-2 place-content-center gap-2">
-          <p className="flex justify-center text-3xl font-semibold text-primary-blue">Titulo del trabajo</p>
-          <p className="flex justify-center">Nombre del empleador</p>
+          <p className="flex justify-center text-3xl font-semibold text-primary-blue">{post.title}</p>
+          <p className="flex justify-center">{`${post.user.firstName} ${post.user.lastName}`}</p>
         </div>
-        <div className="grid row-span-7 border-t border-b">Jobs</div>
+        <div className="grid row-span-7 border-t border-b">{post.description}</div>
         <div className="flex items-center justify-between row-span-1 place-content-center">
           <div className="flex flex-col">
             <div className="flex items-end">
@@ -60,7 +60,9 @@ export default function JobsModal(/*{
             </span>
           </div>
           <div className=" flex justify-center text-sm font-semibold w-24 h-10">
-            <button className="bg-primary-blue text-white w-full rounded-full">Contactar</button>
+            <button className="bg-primary-blue text-white w-full rounded-full">
+              Solicitar
+            </button>
           </div>
         </div>
       </article>
