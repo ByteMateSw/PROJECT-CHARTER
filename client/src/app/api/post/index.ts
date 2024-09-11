@@ -18,6 +18,6 @@ export const getAllPosts = async (): Promise<any> => {
       )
       return response
     } catch (error) {
-      console.error(error)
+      return error
     }
   }

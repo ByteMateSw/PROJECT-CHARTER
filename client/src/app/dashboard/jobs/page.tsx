@@ -5,6 +5,7 @@ import NanoClamp from "nanoclamp";
 import Image from "next/image";
 import Link from "next/link";
 import JobsModal from "@/app/components/Dashboard/JobsModal";
+import AddPostModal from '@/app/components/Dashboard/AddPostModal';
 
 import { getAllPosts } from '@/app/api/post';
 
@@ -27,6 +28,10 @@ export default function JobsPage() {
 
   console.log(posts)
   return (
+    <>
+    <div className="flex justify-end h-12">
+      <AddPostModal/>
+    </div>
     <article className="h-32 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
       {posts.map((post: any, index: number) => {
         return (
@@ -70,5 +75,7 @@ export default function JobsPage() {
         );
       })}
     </article>
+    
+    </>
   );
 }

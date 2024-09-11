@@ -3,6 +3,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
+import { AxiosResponse } from "axios";
 
 import { subscribePost } from "@/app/api/post";
 
@@ -16,10 +17,21 @@ export default function JobsModal({
 
   const { data: session, status }: any = useSession();
   const [ postId, setPostId ] = useState<number>(0)
+  const [ response, setResponse ] = useState<AxiosResponse>()
 
   let decoded: any
   if (typeof session?.user?.access_token === "string") {
     decoded = jwtDecode(session?.user?.access_token)
+  }
+
+  const handleClick = async () => {
+    const res = await subscribePost(decoded.user.id, postId)
+    if (res.status != 200) {
+      console.log(res.response.data.message)
+    }
+    else {
+      console.log('Postulacion completa!!')
+    }
   }
 
 
@@ -74,10 +86,15 @@ export default function JobsModal({
                 Fecha
             </span>
           </div>
-          <div className=" flex justify-center text-sm font-semibold w-24 h-10">
-            <button onClick={() => subscribePost(decoded.user.id, postId)} className="bg-primary-blue text-white w-full rounded-full">
+          <div className=" flex justify-center text-sm font-semibold w-24 h-10"
+          >
+            <label
+            onClick={handleClick}
+              htmlFor={`modal-${index}`}
+              className="btn bg-primary-blue text-secondary-white rounded-full"
+            >
               Solicitar
-            </button>
+            </label>
           </div>
         </div>
       </article>

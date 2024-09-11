@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  HttpStatus,
+  HttpException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Post } from './post.entity';
@@ -188,7 +193,7 @@ export class PostService {
       .getMany();
   }
 
-  async subscribePost(postId: number, userId: number): Promise<Post> {
+  async subscribePost(postId: number, userId: number) {
     const user = await this.userService.getUserById(userId);
     if (!user) throw new NotFoundException('usuario no existe');
     const post = await this.postRepository.findOne({
@@ -196,8 +201,11 @@ export class PostService {
       relations: ['subscribers'],
     });
     if (!post) throw new NotFoundException('trabajo no encontrado');
-    if (post.subscribers.includes(user)) {
-      throw new NotFoundException('ya postuló ha este trabajo');
+    if (post.subscribers.find((e) => e.id === user.id) != undefined) {
+      throw new HttpException(
+        'Ya postulaste a este trabajo',
+        HttpStatus.CONFLICT,
+      );
     }
     post.subscribers.push(user);
     return this.postRepository.save(post);
