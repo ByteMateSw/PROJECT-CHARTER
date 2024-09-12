@@ -212,4 +212,12 @@ export class PostService {
     post.subscribers.push(user);
     return this.postRepository.save(post);
   }
+
+  async getPostsByUserName(userName: string): Promise<Post[]> {
+    const posts = await this.postRepository.find({
+      relations: { user: true },
+      where: { user: { username: userName } },
+    });
+    return posts;
+  }
 }

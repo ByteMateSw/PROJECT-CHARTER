@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import JobsModal from "@/app/components/Dashboard/JobsModal";
 import AddPostModal from '@/app/components/Dashboard/AddPostModal';
+import { dateDifference } from '@/utils/functions'
 
 import { getAllPosts } from '@/app/api/post';
 
@@ -26,42 +27,39 @@ export default function JobsPage() {
     fetchPosts()
   },[])
 
-  const dateDifference = (date: Date) => {
-    const fecha1 = new Date(date);
-    const fecha2 = new Date();
-    console.log(fecha1)
-    console.log(fecha2)
+  // const dateDifference = (date: Date) => {
+  //   const fecha1 = new Date(date);
+  //   const fecha2 = new Date();
   
-    // Calculamos la diferencia en milisegundos
-    const diferenciaMilisegundos = fecha2.getTime() - fecha1.getTime();
+  //   // Calculamos la diferencia en milisegundos
+  //   const diferenciaMilisegundos = fecha2.getTime() - fecha1.getTime();
   
-    // Convertimos la diferencia a horas y días
-    const diferenciaHoras = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60));
-    const diferenciaDias = Math.floor(diferenciaHoras / 24);
-    console.log(diferenciaMilisegundos)
-    if(diferenciaDias < 24) {
-      if(diferenciaHoras === 1) {
-        return {
-          time: diferenciaHoras,
-          unit: 'hora'
-        }
-      }
-      return {
-        time: diferenciaHoras,
-        unit: 'horas'
-      }
-    }
-    if (diferenciaDias === 1) {
-      return {
-        time: diferenciaDias,
-        unit: 'dia'
-      }
-    }
-    return {
-      time: diferenciaDias,
-      unit: 'dias'
-    }
-  }
+  //   // Convertimos la diferencia a horas y días
+  //   const diferenciaHoras = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60));
+  //   const diferenciaDias = Math.floor(diferenciaHoras / 24);
+  //   if(diferenciaDias < 24) {
+  //     if(diferenciaHoras === 1) {
+  //       return {
+  //         time: diferenciaHoras,
+  //         unit: 'hora'
+  //       }
+  //     }
+  //     return {
+  //       time: diferenciaHoras,
+  //       unit: 'horas'
+  //     }
+  //   }
+  //   if (diferenciaDias === 1) {
+  //     return {
+  //       time: diferenciaDias,
+  //       unit: 'dia'
+  //     }
+  //   }
+  //   return {
+  //     time: diferenciaDias,
+  //     unit: 'dias'
+  //   }
+  // }
 
   //console.log(posts)
   return (

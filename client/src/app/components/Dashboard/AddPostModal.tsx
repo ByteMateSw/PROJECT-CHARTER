@@ -92,7 +92,7 @@ async function handleSubmit(e) {
     return (
         <div>
             <label
-              className=" btn btn-primary rounded-full mt-2 mr-4"
+              className="btn btn-primary rounded-full mt-1 mr-4"
               htmlFor={`modal-add`}
             >
               Agregar post

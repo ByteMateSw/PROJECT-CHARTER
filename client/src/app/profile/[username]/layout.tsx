@@ -65,6 +65,9 @@ export default function Page({
             <Link href="reviews" aria-label="Opiniones">
               Opiniones
             </Link>
+            <Link href="posts" aria-label="Mis_posteos">
+              Mis Posts
+            </Link>
           </div>
         </section>
         <section className="flex w-full pb-8">

@@ -59,6 +59,11 @@ export class PostController {
     return await this.postService.searchPost(query, page, limit);
   }
 
+  @Get('userName')
+  async getPostsByUserName(@Param('userName') userName: string) {
+    return await this.postService.getPostsByUserName(userName);
+  }
+
   /**
    * Retrieves a post by its ID.
    *
