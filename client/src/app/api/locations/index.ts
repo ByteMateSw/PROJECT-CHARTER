@@ -14,15 +14,10 @@ export const getProvinces = async () => {
 };
 
 // Función para obtener las ciudades en función de la provincia seleccionada
-export const getCities = async (provinceId: string | number) => {
+export const getCities = async (provinceName: string) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/cities`,
-      {
-        params: {
-          provinceId: provinceId,
-        },
-      }
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/cities/byProvinceName/${provinceName}`
     );
     return response.data;
   } catch (error) {

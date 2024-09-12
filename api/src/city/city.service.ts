@@ -160,17 +160,17 @@ export class CityService {
 
   async getCitiesByProvinceName(provinceName: string): Promise<City[]> {
     // Buscar la provincia por su nombre
-    const province = await this.provinceRepository.findOne({
-      where: { name: provinceName },
-      relations: ['cities'],
+    const cities = await this.cityRepository.find({
+      relations: { province: true },
+      where: { province: { name: provinceName } },
     });
 
-    if (!province) {
+    if (!cities) {
       throw new NotFoundException('Provincia no encontrada');
     }
 
     // Devolver las ciudades relacionadas
-    return province.cities;
+    return cities;
   }
 
   async updateCityUserByName(cityName: string, userId: number) {

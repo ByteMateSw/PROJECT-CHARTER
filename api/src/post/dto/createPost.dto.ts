@@ -1,5 +1,6 @@
 import {
   IsDefined,
+  IsNumber,
   IsOptional,
   IsPositive,
   IsString,
@@ -33,6 +34,12 @@ export class CreatePostDto {
     message: 'El título del post necesita ser una cadena de carácteres',
   })
   description: string;
+
+  @IsString()
+  searchVector: string;
+
+  @IsNumber()
+  cityId: number;
 
   /**
    * The price of the post.

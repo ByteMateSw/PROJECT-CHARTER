@@ -1,3 +1,4 @@
+import { City } from 'src/city/city.entity';
 import { ImagePost } from '../image/imagePost.entity';
 import { User } from '../user/user.entity';
 import {
@@ -59,15 +60,21 @@ export class Post {
   price?: number;
 
   /**
+   * The city of the post.
+   */
+  @ManyToOne(() => City, (city) => city.id)
+  city?: number;
+
+  /**
    * The images of the post.
    */
-  @OneToMany(() => ImagePost, imagePost => imagePost.post)
+  @OneToMany(() => ImagePost, (imagePost) => imagePost.post)
   images: ImagePost[];
 
   /**
    * The user who created the post.
    */
-  @ManyToOne(() => User, user => user.posts, { eager: true })
+  @ManyToOne(() => User, (user) => user.posts, { eager: true })
   user: User;
 
   /**

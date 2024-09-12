@@ -86,7 +86,7 @@ export class PostController {
   @UseInterceptors(FilesInterceptor('images'))
   @Post()
   async createPost(
-    @InfoParam() createPostDto: CreatePostDto,
+    @Body() createPostDto: CreatePostDto,
     @UserParamID(CustomParseIntPipe) userId: number,
     @UploadedFiles(FilePipeValidator, FilesNamePipe) images: File[],
   ): Promise<PostEntity> {
