@@ -21,7 +21,8 @@ export default function Page() {
   },[user])
 console.log(exp)
   return (
-    <>
+    <div className="flex gap-20">
+      <div>
       <section className="flex flex-col justify-center items-start w-full p-4">
         <h2 className="text-xl font-bold pt-2">Acerca de mí</h2>
           {user?.about}
@@ -39,6 +40,14 @@ console.log(exp)
         <h2 className="text-xl font-bold pt-2">Habilidades y Conocimiento</h2>
         {user?.habilities}
       </section>
-    </>
+      </div>
+      <div className="flex justify-center items-center w-32 text-white font-extrabold text-lg">
+        <button
+        className="bg-primary-blue h-12 px-4 rounded-3xl"
+        >
+          Contratar
+        </button>
+      </div>
+    </div>
   );
 }
