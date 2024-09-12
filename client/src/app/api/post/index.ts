@@ -21,3 +21,26 @@ export const getAllPosts = async (): Promise<any> => {
       return error
     }
   }
+
+  export const createPost = async (
+    userId: string, 
+    title: string,
+    description: string,
+    searchVector: string,
+    cityId: number,
+    price: number
+  ) => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/${userId}`, {
+          title,
+          description,
+          searchVector,
+          city: cityId,
+          price,
+        }
+      )
+    } catch (error) {
+      return error
+    }
+  }

@@ -81,18 +81,18 @@ export class PostController {
    * @param images - An array of files representing the images to be associated with the post.
    * @returns A Promise that resolves to the newly created post entity.
    */
-  @UseGuards(AccessTokenGuard)
+  //@UseGuards(AccessTokenGuard)
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(FilesInterceptor('images'))
-  @Post()
+  @Post('/:userId')
   async createPost(
     @Body() createPostDto: CreatePostDto,
-    @UserParamID(CustomParseIntPipe) userId: number,
-    @UploadedFiles(FilePipeValidator, FilesNamePipe) images: File[],
+    @Param('userId') userId: number,
+    //@UploadedFiles(FilePipeValidator, FilesNamePipe) images?: File[],
   ): Promise<PostEntity> {
     const newPost = await this.postService.createPost(userId, createPostDto);
-    if (images.length > 0)
-      await this.postService.addImagesToPost(newPost.id, images);
+    // if (images.length > 0)
+    //   await this.postService.addImagesToPost(newPost.id, images);
     return newPost;
   }
 

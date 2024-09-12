@@ -69,7 +69,7 @@ export class Post {
    * The images of the post.
    */
   @OneToMany(() => ImagePost, (imagePost) => imagePost.post)
-  images: ImagePost[];
+  images?: ImagePost[];
 
   /**
    * The user who created the post.

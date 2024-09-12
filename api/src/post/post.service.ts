@@ -13,6 +13,7 @@ import { UserService } from '../user/user.service';
 import { UpdatePostDto } from './dto/updatePost.dto';
 import { File, TitleAndOrId } from '../utils/types/functions.type';
 import { S3Service } from 'src/storage/s3.service';
+import { CityService } from 'src/city/city.service';
 
 @Injectable()
 export class PostService {
@@ -21,6 +22,7 @@ export class PostService {
     @InjectRepository(ImagePost)
     private imagePostRepository: Repository<ImagePost>,
     private userService: UserService,
+    private cityService: CityService,
     private s3Service: S3Service,
   ) {}
 

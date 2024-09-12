@@ -34,6 +34,20 @@ export default function JobsModal({
     }
   }
 
+  const formatDate = (date: Date) => {
+    const newDate = new Date(date)
+    const opciones: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      weekday: 'long'
+    };
+
+    const format = new Intl.DateTimeFormat('es-ES', opciones).format(newDate);
+    return format
+  }
+
+  const date = formatDate(post.creationDate)
 
   return (
     <div>
@@ -83,7 +97,7 @@ export default function JobsModal({
               </span>
             </div>
             <span className="ml-1 text-sm font-bold">
-                Fecha
+                {date}
             </span>
           </div>
           <div className=" flex justify-center text-sm font-semibold w-24 h-10"

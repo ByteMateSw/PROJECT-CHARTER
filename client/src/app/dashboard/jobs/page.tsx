@@ -26,14 +26,52 @@ export default function JobsPage() {
     fetchPosts()
   },[])
 
-  console.log(posts)
+  const dateDifference = (date: Date) => {
+    const fecha1 = new Date(date);
+    const fecha2 = new Date();
+    console.log(fecha1)
+    console.log(fecha2)
+  
+    // Calculamos la diferencia en milisegundos
+    const diferenciaMilisegundos = fecha2.getTime() - fecha1.getTime();
+  
+    // Convertimos la diferencia a horas y días
+    const diferenciaHoras = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60));
+    const diferenciaDias = Math.floor(diferenciaHoras / 24);
+    console.log(diferenciaMilisegundos)
+    if(diferenciaDias < 24) {
+      if(diferenciaHoras === 1) {
+        return {
+          time: diferenciaHoras,
+          unit: 'hora'
+        }
+      }
+      return {
+        time: diferenciaHoras,
+        unit: 'horas'
+      }
+    }
+    if (diferenciaDias === 1) {
+      return {
+        time: diferenciaDias,
+        unit: 'dia'
+      }
+    }
+    return {
+      time: diferenciaDias,
+      unit: 'dias'
+    }
+  }
+
+  //console.log(posts)
   return (
     <>
     <div className="flex justify-end h-12">
       <AddPostModal/>
     </div>
-    <article className="h-32 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+    <article className="h-full w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 overflow-auto border">
       {posts.map((post: any, index: number) => {
+        const date = dateDifference(post.creationDate)
         return (
           <div className="flex flex-col justify-around shadow-md p-4 rounded-xl" key={index}>
             <span className="flex md:justify-between min-[1620px]:items-center items-start flex-col-reverse min-[1620px]:flex-row">
@@ -41,7 +79,7 @@ export default function JobsPage() {
                 {post.title}
               </h2>
               <h6 className="flex-end text-xs text-secondary-gray">
-                Publicado hace 17 días
+                {`Publicado hace ${date.time} ${date.unit}`}
               </h6>
             </span>
             <h4 className="text-sm mb-2 text-secondary-gray">{`${post.user.firstName} ${post.user.lastName}`}</h4>

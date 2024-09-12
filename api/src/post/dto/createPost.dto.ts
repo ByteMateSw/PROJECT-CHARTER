@@ -39,7 +39,7 @@ export class CreatePostDto {
   searchVector: string;
 
   @IsNumber()
-  cityId: number;
+  city: number;
 
   /**
    * The price of the post.

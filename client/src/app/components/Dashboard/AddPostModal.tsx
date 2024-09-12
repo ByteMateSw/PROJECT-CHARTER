@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import Select from "react-select";
 import { styleComboBox } from "../Sidebar/SidebarStyles";
 import { getProvinces, getCities } from "@/app/api/locations";
+import { createPost } from "@/app/api/post";
+import { useSession } from "next-auth/react";
+import { jwtDecode } from "jwt-decode";
 
 export default function AddPostModal() {
 
@@ -10,6 +13,18 @@ export default function AddPostModal() {
 
   const [selectProvince, setSelectProvince] = useState<any>()
   const [selectCities, setSelectCities] = useState<any>()
+
+  const [title, setTitle] = useState<string>('')
+  const [area, setArea] = useState<string>('')
+  const [price, setPrice] = useState<number>(0)
+  const [description, setDescription] = useState<string>('')
+
+  const { data: session, status }: any = useSession();
+
+  let decoded: any
+  if (typeof session?.user?.access_token === "string") {
+    decoded = jwtDecode(session?.user?.access_token)
+  }
 
 
   useEffect(() => {
@@ -31,6 +46,11 @@ export default function AddPostModal() {
     provinciesData()
   },[])
 
+  const handleChange = (setter) => (e) => {
+    e.preventDefault()
+    setter(e.target.value)
+  }
+
  async function handleProvinciesChange(selectedOption: any){
   try {
     const response = await getCities(selectedOption.label)
@@ -51,21 +71,24 @@ function handleCitiesChange(selectedOption: any) {
   setSelectCities(selectedOption)
 }
 
-  // useEffect(() => {
-  //   async function citiesData(id: number){
-  //     try {
-  //       const response = await getCities(id)
-  //     } catch (error) {
-  //       console.error(error)
-  //     }
-  //   }
-  //   const id = provincies.id
-  //   citiesData(id)
-  // },[provincies])
+async function handleSubmit(e) {
+  e.preventDefault()
+  try {
+    await createPost(
+      decoded.user.id,
+      title,
+      description,
+      area,
+      selectCities.value,
+      price/1
+    )
+  } catch (error) {
+    console.error(error)
+  }
+}
 
 
-    console.log(provincies)
-    console.log(cities)
+
     return (
         <div>
             <label
@@ -77,26 +100,36 @@ function handleCitiesChange(selectedOption: any) {
             <input className="modal-state" id={`modal-add`} type="checkbox" />
             <section className="modal">
               <label className="modal-overlay" id={`modal-add`}></label>
-              <article className="modal-content h-full w-[990px] grid grid-rows-10 gap-4 p-10 rounded-[2rem] minimal-scrollbar">
+              <article className="modal-content h-full w-[990px] grid grid-rows-10 gap-2 p-10 rounded-[2rem] minimal-scrollbar">
                 <div className="grid row-span-1">
                   <p className="flex justify-center text-3xl font-semibold text-primary-blue">Detalles del trabajo</p>
                 </div>
-                <form action="">
-                <div className="grid row-span-1 gap-1 my-5">
+                <form action="" onSubmit={handleSubmit}>
+                <div className="grid row-span-1 gap-1 my-2">
                   <label htmlFor="title" className="font-bold text-xl">Titulo del trabajo</label>
                   <input type="text" 
                   placeholder="Titulo"
+                  onChange={handleChange(setTitle)}
                   className="rounded-full border border-slate-800 pl-4 py-2"
                   />
                 </div>
-                <div className="grid row-span-1 gap-1 my-5">
+                <div className="grid row-span-1 gap-1 my-2">
                   <label htmlFor="area" className="font-bold text-xl">Area de trabajo</label>
                   <input type="text" 
                   placeholder="Area"
+                  onChange={handleChange(setArea)}
                   className="rounded-full border border-slate-800 pl-4 py-2"
                   />
                 </div>
-                <div className="grid row-span-1 gap-1 my-5">
+                <div className="grid row-span-1 gap-1 my-2">
+                  <label htmlFor="precio" className="font-bold text-xl">Precio</label>
+                  <input type="number" 
+                  placeholder="Precio"
+                  onChange={handleChange(setPrice)}
+                  className="rounded-full border border-slate-800 px-4 py-2"
+                  />
+                </div>
+                <div className="grid row-span-1 gap-1 my-2">
                   <label htmlFor="location" className="font-bold text-xl">Ubicación</label>
                   <div className="grid grid-cols-2 gap-2">
                     {/* <input type="text" 
@@ -124,7 +157,8 @@ function handleCitiesChange(selectedOption: any) {
                   <label htmlFor="area" className="font-bold text-xl">Descripcion</label>
                     <textarea 
                     className="h-full resize-none border border-slate-800 rounded-xl p-2" 
-                    rows={9} 
+                    rows={6} 
+                    onChange={handleChange(setDescription)}
                     placeholder="Descripcion"></textarea>
                 </div>
                 <button type="submit" className="w-full">
