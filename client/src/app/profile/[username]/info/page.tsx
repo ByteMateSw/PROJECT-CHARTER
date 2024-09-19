@@ -21,7 +21,7 @@ export default function Page() {
   },[user])
 console.log(exp)
   return (
-    <div className="flex gap-20">
+    <div className="flex flex-col gap-10">
       <div>
       <section className="flex flex-col justify-center items-start w-full p-4">
         <h2 className="text-xl font-bold pt-2">Acerca de mí</h2>
@@ -41,11 +41,11 @@ console.log(exp)
         {user?.habilities}
       </section>
       </div>
-      <div className="flex justify-center items-center w-32 text-white font-extrabold text-lg">
+      <div className="flex justify-end items-center w-full text-white font-extrabold text-lg">
         <button
         className="bg-primary-blue h-12 px-4 rounded-3xl"
         >
-          Contratar
+          Contactar
         </button>
       </div>
     </div>

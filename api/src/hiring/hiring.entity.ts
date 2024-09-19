@@ -10,9 +10,10 @@ import {
   CreateDateColumn,
 } from 'typeorm';
 import { User } from '../user/user.entity';
-import { StateHiring } from './state/stateHiring.entity';
+//import { StateHiring } from './state/stateHiring.entity';
 import { HistoryDate } from './history/historyDate.entity';
 import { Review } from '../review/review.entity';
+import { StateEnum } from './enums/state.enum';
 
 @Entity()
 export class Hiring {
@@ -22,8 +23,8 @@ export class Hiring {
   @CreateDateColumn({ type: 'date' })
   dateApplication: Date;
 
-  @ManyToOne(() => StateHiring, state => state.hiring)
-  state: StateHiring;
+  @Column()
+  state: StateEnum;
 
   @ManyToMany(() => HistoryDate)
   @JoinTable()
@@ -37,6 +38,6 @@ export class Hiring {
   @JoinColumn({ name: 'contractedId' })
   contracted: User;
 
-  @OneToOne(() => Review, review => review.id, { nullable: true })
+  @OneToOne(() => Review, (review) => review.id, { nullable: true })
   review: Review;
 }
