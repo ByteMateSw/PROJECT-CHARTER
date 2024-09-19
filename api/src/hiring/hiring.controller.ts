@@ -6,20 +6,23 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Put,
 } from '@nestjs/common';
 import { HiringService } from './hiring.service';
 import { UpdateHireDTO } from './dto/uptadeHiring.dto';
 import { CustomParseIntPipe } from '../utils/pipes/parse-int.pipe';
+import { CreateHiringDTO } from './dto/createHiring.dto';
 import { Hiring } from './hiring.entity';
+import { StateEnum } from './enums/state.enum';
 
 @Controller('hirings')
 export class HiringController {
   constructor(private hiringService: HiringService) {}
 
   @Post()
-  async createHiring(@Body() hiring) {
+  async createHiring(@Body() hiring: CreateHiringDTO) {
     await this.hiringService.createHire(hiring);
   }
 
@@ -37,6 +40,11 @@ export class HiringController {
   @Delete(':id')
   async deleteHiring(@Param('id') id: number): Promise<void> {
     await this.hiringService.deleteHire(id);
+  }
+
+  @Patch('state/:id')
+  async updateStateHiring(@Param('id') id: number, @Body() state: StateEnum) {
+    return await this.hiringService.updateStateHiring(id, state);
   }
 
   @Put(':id')

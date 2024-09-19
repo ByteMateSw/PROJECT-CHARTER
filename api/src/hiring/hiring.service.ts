@@ -11,6 +11,7 @@ import { StateHiringService } from './state/stateHiring.service';
 import { ResponseMessage } from '../utils/types/functions.type';
 import { UpdateHireDTO } from './dto/uptadeHiring.dto';
 import { CreateHiringDTO } from './dto/createHiring.dto';
+import { StateEnum } from './enums/state.enum';
 
 @Injectable()
 export class HiringService {
@@ -18,7 +19,7 @@ export class HiringService {
     @InjectRepository(Hiring) private hiringRepository: Repository<Hiring>,
     private stateHiringService: StateHiringService,
     private userService: UserService,
-  ) { }
+  ) {}
 
   /**
    * Creates a new hiring record.
@@ -37,8 +38,7 @@ export class HiringService {
     if (!userContractor || !userContracted)
       throw new BadRequestException('Error al obtener el id de los usuarios');
 
-    const pendingState =
-      await this.stateHiringService.getStatusByName('Pending');
+    const pendingState = StateEnum.HIRED;
 
     const newHiring = this.hiringRepository.create({
       contractor: userContractor,
@@ -84,6 +84,22 @@ export class HiringService {
     if (!hiring) throw new BadRequestException('El contrato no existe');
 
     return await this.hiringRepository.save({ ...hiring, ...updateHiring });
+  }
+
+  /**
+   * Updates a hiring record by its ID.
+   *
+   * @param id - The ID of the hiring record to update.
+   * @param state - The new hiring state record data.
+   * @returns A Promise that resolves to the updated hiring record.
+   * @throws BadRequestException if the hiring record does not exist.
+   */
+  async updateStateHiring(id: number, state: StateEnum): Promise<void> {
+    try {
+      await this.hiringRepository.update({ id }, { state });
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
   }
 
   /**
