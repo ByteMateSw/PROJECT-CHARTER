@@ -43,7 +43,10 @@ export class HiringController {
   }
 
   @Patch('state/:id')
-  async updateStateHiring(@Param('id') id: number, @Body() state: StateEnum) {
+  async updateStateHiring(
+    @Param('id') id: number,
+    @Body('state') state: StateEnum,
+  ) {
     return await this.hiringService.updateStateHiring(id, state);
   }
 

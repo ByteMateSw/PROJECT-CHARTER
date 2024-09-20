@@ -11,3 +11,13 @@ export const createHiring = async (contractorId: number, contractedId: number) =
         console.error(error)
     }
 }
+
+export const updateStateHiring = async (id: number, state: any) => {
+    try {
+        await axios.patch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/hirings/state/${id}`, {
+            state
+        })
+    } catch (error) {
+        console.error(error)
+    }
+}

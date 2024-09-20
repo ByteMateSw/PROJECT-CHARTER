@@ -15,12 +15,12 @@ export default function Page({
   children: React.ReactNode;
   params: { username: string };
 }) {
-  // const { data: session, status }: any = useSession();
+  const { data: session, status }: any = useSession();
 
-  // let decoded: any;
-  // if (typeof session?.user?.access_token === "string") {
-  //   decoded = jwtDecode(session?.user?.access_token);
-  // }
+  let decoded: any;
+  if (typeof session?.user?.access_token === "string") {
+    decoded = jwtDecode(session?.user?.access_token);
+  }
 
   const [user, setUser] = useUser();
 
@@ -65,9 +65,14 @@ export default function Page({
             <Link href="reviews" aria-label="Opiniones">
               Opiniones
             </Link>
-            <Link href="posts" aria-label="Mis_posteos">
-              Mis Posts
-            </Link>
+            {
+              params.username === decoded?.user?.username ?
+              <Link href="posts" aria-label="Mis_posteos">
+                Mis Posts
+              </Link>
+              :
+              <span></span>
+            }
           </div>
         </section>
         <section className="flex w-full pb-8">

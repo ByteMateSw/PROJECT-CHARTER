@@ -1,10 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useUser } from "@/context/userContext";
+import { useSession } from "next-auth/react";
 import { getExperienceByUserId } from '@/app/api/experience/index'
 import { AxiosResponse } from "axios";
+import { jwtDecode } from "jwt-decode";
 
-export default function Page() {
+import ContactModal from '@/app/components/Dashboard/ContactModal'
+
+export default function Page({ params }: { params: { username: string } }) {
   const [user, setUser] = useUser();
   const [exp, setExp] = useState<AxiosResponse<any, any> | undefined>()
 
@@ -19,7 +23,14 @@ export default function Page() {
   }
   getExperiences()
   },[user])
-console.log(exp)
+
+    const { data: session, status }: any = useSession();
+
+  let decoded: any;
+  if (typeof session?.user?.access_token === "string") {
+    decoded = jwtDecode(session?.user?.access_token);
+  }
+
   return (
     <div className="flex flex-col gap-10">
       <div>
@@ -41,13 +52,19 @@ console.log(exp)
         {user?.habilities}
       </section>
       </div>
-      <div className="flex justify-end items-center w-full text-white font-extrabold text-lg">
-        <button
-        className="bg-primary-blue h-12 px-4 rounded-3xl"
-        >
-          Contactar
-        </button>
-      </div>
+      {
+        params.username === decoded?.user?.username ?
+        <span></span>
+          :
+        <div className="flex justify-end items-center w-full text-white font-extrabold text-lg">
+          {/* <button
+          className="bg-primary-blue h-12 px-4 rounded-3xl"
+          >
+            Contactar
+          </button> */}
+          <ContactModal contractorId={decoded?.user?.id} contractedId={user?.id}/>
+        </div>
+      }
     </div>
   );
 }
