@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
+import { createNotification } from '@/app/api/notification/index';
+import { createHiring } from "@/app/api/hiring";
 
 export default function ContactModal({contractorId, contractedId}: {contractorId: number, contractedId: number}) {
 
@@ -29,9 +31,15 @@ export default function ContactModal({contractorId, contractedId}: {contractorId
     }
   
   
-  function handleCitiesChange(selectedOption: any) {
-    setSelectCities(selectedOption)
-  }
+    async function handleSubmit(e) {
+      e.preventDefault()
+      try {
+        await createHiring(contractorId, contractedId)
+        await createNotification(contractedId, contractorId, title, description)
+      } catch (error) {
+        console.error(error)
+      }
+    }
   
       return (
           <div>
@@ -48,7 +56,7 @@ export default function ContactModal({contractorId, contractedId}: {contractorId
                   <div className="grid row-span-1">
                     <p className="flex justify-center text-3xl font-semibold text-primary-blue">Formulario de Contacto</p>
                   </div>
-                  <form action="">
+                  <form action="" onSubmit={handleSubmit}>
                   <div className="grid row-span-1 gap-1 my-2">
                     <label htmlFor="title" className="font-bold text-primary-blue text-xl">Titulo del trabajo</label>
                     <input type="text" 
