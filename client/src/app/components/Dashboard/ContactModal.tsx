@@ -54,13 +54,13 @@ export default function ContactModal({contractorId, contractedId}: {contractorId
                     <input type="text" 
                     placeholder="Titulo"
                     onChange={handleChange(setTitle)}
-                    className="rounded-full border border-slate-800 pl-4 py-2"
+                    className="rounded-full border text-black font-normal border-slate-800 pl-4 py-2"
                     />
                   </div>
                   <div className="grid row-span-4 gap-1 my-5">
                     <label htmlFor="area" className="font-bold text-xl text-primary-blue">Descripcion</label>
                       <textarea 
-                      className="h-full resize-none border border-slate-800 rounded-xl p-2" 
+                      className="h-full text-black font-normal resize-none border border-slate-800 rounded-xl p-2" 
                       rows={6} 
                       onChange={handleChange(setDescription)}
                       placeholder="Descripcion"></textarea>

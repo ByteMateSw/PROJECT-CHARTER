@@ -47,4 +47,7 @@ export class Notifications {
    */
   @ManyToOne(() => User, (user) => user.notifications)
   user: User;
+
+  @ManyToOne(() => User, (user) => user.id)
+  contractor: number;
 }

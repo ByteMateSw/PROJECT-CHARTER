@@ -13,9 +13,9 @@ export class CreateNotificationsDTO {
   title: string;
 
 
-  @IsPositive()
-  @IsDate({message: 'La fecha de creacion debe ser valida'})
-  creationTime: Date;
+  // @IsPositive()
+  // @IsDate({message: 'La fecha de creacion debe ser valida'})
+  // creationTime: Date;
 
   @IsDefined({message:'La descripcion de la notificacion es necesaria'})
   @IsString({message: 'La descripcion debe ser una cadena de caracteres'})

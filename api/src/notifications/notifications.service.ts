@@ -30,9 +30,11 @@ export class NotificationsService {
    */
   async createNotification(
     id: number,
+    contractorId: number,
     notificationDto: CreateNotificationsDTO,
   ): Promise<Notifications> {
     const user = await this.userService.getUserBy({ id });
+    const contractor = await this.userService.getUserBy({ id: contractorId });
     if (!user) {
       throw new NotFoundException('No se ha encontrado el usuario');
     }
@@ -51,6 +53,7 @@ export class NotificationsService {
     expireAt.setDate(expireAt.getDate() + 15);
     notifications.expireAt = expireAt;
     notifications.user = user;
+    notifications.contractor = contractor.id;
     if (!notifications) {
       throw new BadRequestException('No se ha podido crear la notificación');
     }

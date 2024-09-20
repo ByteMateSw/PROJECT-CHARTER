@@ -1,4 +1,15 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
 import { CreateNotificationsDTO } from './dto/notification.dto';
 import { UptadeNotificationsDTO } from './dto/uptadeNotifications.dto';
@@ -6,7 +17,7 @@ import { UptadeNotificationsDTO } from './dto/uptadeNotifications.dto';
 /**
  * Controller for handling notifications-related operations.
  */
-@Controller('Notifications')
+@Controller('notifications')
 export class NotificationsController {
   constructor(private notificationsService: NotificationsService) {}
 
@@ -20,12 +31,14 @@ export class NotificationsController {
    */
   @Post('create')
   async createNotifications(
-    @Body() id: number,
-    notificationDto: CreateNotificationsDTO,
+    @Query('id') id: number,
+    @Query('contractor') contractor: number,
+    @Body() notificationDto: CreateNotificationsDTO,
   ) {
     try {
       return await this.notificationsService.createNotification(
         id,
+        contractor,
         notificationDto,
       );
     } catch (error) {
@@ -39,10 +52,10 @@ export class NotificationsController {
    * @throws HttpException if there is an error deleting the notifications.
    */
   @Delete('deleteNotif')
-  async CleanExpiredNotifications():Promise<string>{
+  async CleanExpiredNotifications(): Promise<string> {
     try {
-      await this.notificationsService.CleanExpiredNotifications()
-      return 'Las notificaciones expiradas han sido borradas con éxito'
+      await this.notificationsService.CleanExpiredNotifications();
+      return 'Las notificaciones expiradas han sido borradas con éxito';
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
@@ -54,10 +67,10 @@ export class NotificationsController {
    * @throws HttpException if there is an error retrieving the notifications.
    */
   @Get('all')
-  async GetAllActiveNotifications():Promise<string>{
+  async GetAllActiveNotifications(): Promise<string> {
     try {
-      await this.notificationsService.getAllActiveNotifications()
-      return 'Se han traido todas las notificaciones'
+      await this.notificationsService.getAllActiveNotifications();
+      return 'Se han traido todas las notificaciones';
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
@@ -70,10 +83,10 @@ export class NotificationsController {
    * @throws HttpException if there is an error retrieving the notification.
    */
   @Get('byId')
-  async GetNotificationsById(@Body('id') id:number):Promise<string>{
+  async GetNotificationsById(@Body('id') id: number): Promise<string> {
     try {
-     await this.notificationsService.getNotificationsById(id)
-     return 'Se ha traido la notificación' 
+      await this.notificationsService.getNotificationsById(id);
+      return 'Se ha traido la notificación';
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.NOT_FOUND);
     }
@@ -87,13 +100,16 @@ export class NotificationsController {
    * @throws HttpException if there is an error updating the notification.
    */
   @Put('id')
-  async uptadeNotifications(@Param('id') id:number, @Body() UptadeNotificationsDTO){
+  async uptadeNotifications(
+    @Param('id') id: number,
+    @Body() UptadeNotificationsDTO,
+  ) {
     try {
       await this.notificationsService.updateNotifications(
         id,
-        UptadeNotificationsDTO
-      )
-      return 'Se ha actualizado de manera correcta la notificación'
+        UptadeNotificationsDTO,
+      );
+      return 'Se ha actualizado de manera correcta la notificación';
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
@@ -106,14 +122,12 @@ export class NotificationsController {
    * @throws HttpException if there is an error deleting the notification.
    */
   @Delete(':id')
-  async deleteNotifications(id: number):Promise<string>{
+  async deleteNotifications(id: number): Promise<string> {
     try {
-      await this.notificationsService.deleteNotifications(id)
-      return 'Se ha borrado correctamente'
+      await this.notificationsService.deleteNotifications(id);
+      return 'Se ha borrado correctamente';
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
 }
-
- 
