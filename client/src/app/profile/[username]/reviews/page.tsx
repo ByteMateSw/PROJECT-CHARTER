@@ -22,17 +22,12 @@ export default function page({params}:{params: {username: string}}) {
   //   })
   // },[user])
 
-  console.log(user)
+  // console.log(user)
 
   return (
     <section className="flex flex-col justify-center items-start p-4 w-full">
       <h2 className="text-xl font-bold pt-2">Opiniones</h2>
-      <p>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veniam
-        recusandae accusantium vitae explicabo! Ullam delectus magni enim
-        necessitatibus, sit ipsa deleniti architecto commodi doloribus
-        voluptatum ab. Quae aliquam perspiciatis dolorum.
-      </p>
+      {user?.reviews.length > 0 ?
       <article className="flex flex-wrap md:justify-start items-center pt-4 gap-4 w-full">
         {user?.reviews?.map((review) => (
         <div key={review.id} className="h-52 max-w-[22rem] rounded-[2.5rem] border border-secondary-gray p-4">
@@ -65,6 +60,9 @@ export default function page({params}:{params: {username: string}}) {
         </div>
         ))}
       </article>
+      :
+      <h2>No hay opiniones</h2>
+      }
     </section>
   );
 }

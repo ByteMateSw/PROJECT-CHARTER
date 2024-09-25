@@ -18,6 +18,8 @@ export default function Page({ params }: { params: { username: string } }) {
 console.log(user?.posts)
     return (
         <section className=" justify-center items-start p-4 w-fullh-full w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-auto">
+        {user?.posts.length > 0 ?
+        <>
         {user?.posts.map((post: any, index: number) => {
         const date = dateDifference(post.creationDate)
         return (
@@ -41,6 +43,7 @@ console.log(user?.posts)
               {post.price}
             </div>
             <div className="flex items-start flex-col min-[1150px]:justify-between min-[1150px]:items-center min-[1150px]:flex-row mt-4">
+
               <div className="flex cursor-default select-none">
                 <span className="ml-1 text-secondary-gray text-xs font-bold">
                   Ubicación
@@ -55,6 +58,11 @@ console.log(user?.posts)
           </div>
         );
       })}
+        
+        </>
+        :
+        <h2>Aun no has creado ningun post</h2>
+        }
         </section >
     )
 }
