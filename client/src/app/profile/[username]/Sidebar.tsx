@@ -1,4 +1,5 @@
 import React from "react";
+import StarRating from '@/app/components/StarRating/StarRating'
 
 export default function Sidebar({ user }: { user: any }) {
   return (
@@ -38,17 +39,7 @@ export default function Sidebar({ user }: { user: any }) {
           })}
         </div>
         <span className="w-full inline-flex items-center justify-center">
-          {[0, 1, 2, 3, 4].map((item, index) => {
-            return (
-              <React.Fragment key={index}>
-                <img
-                  src="/svg/star.svg"
-                  alt="image"
-                  className="inline h-5 w-5"
-                />
-              </React.Fragment>
-            );
-          })}
+              <StarRating starRating={5}/>
           <p className="ml-2 text-secondary-black text-base">
             {!user.reviews ? "3.2" : "4.5"}
           </p>
