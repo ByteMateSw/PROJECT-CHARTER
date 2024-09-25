@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import StarRating from '@/app/components/StarRating/StarRating'
-import { getScore } from '@/app/api/review/index'
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
 
@@ -13,20 +12,13 @@ export default function Sidebar({ user }: { user: any }) {
   if (typeof session?.user?.access_token === "string") {
     decoded = jwtDecode(session?.user?.access_token);
   }
-  const id:number = decoded?.user?.id
+  const id:number = user.id
 
 
   useEffect(() => {
-    async function score() {
-      try {
-        const response = await getScore(id)
-        setScore(response)
-      } catch (error) {
-        console.error(error)
-      }
-    }
-    score()
-  },[])
+    setScore((user.score)/1)
+  },[user])
+
 
   return (
     <>
@@ -65,10 +57,10 @@ export default function Sidebar({ user }: { user: any }) {
           })}
         </div>
         <span className="w-full inline-flex items-center justify-center">
-              <StarRating starRating={score}/>
+              <StarRating starRating={score} size={24}/>
           <p className="ml-2 text-secondary-black text-base">
             {/* {!user.reviews ? "3.2" : "4.5"} */}
-            {score}
+            {Number.isFinite(score) ? score : 0}
           </p>
         </span>
       </section>

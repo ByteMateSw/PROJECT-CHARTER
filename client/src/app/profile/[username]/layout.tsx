@@ -30,7 +30,7 @@ export default function Page({
     });
   }, []);
 
-  console.log(user);
+  //console.log(user);
   
 
   return (

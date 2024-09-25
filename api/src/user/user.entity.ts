@@ -123,6 +123,14 @@ export class User {
   @OneToMany(() => Review, (review) => review.user)
   reviews: Review[];
 
+  @Column({
+    type: 'decimal',
+    precision: 10,
+    scale: 1,
+    default: 0,
+  })
+  score: number;
+
   /**
    * The posts made by the user.
    */

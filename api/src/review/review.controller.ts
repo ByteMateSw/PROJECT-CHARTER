@@ -36,7 +36,7 @@ export class ReviewController {
    * @returns A promise that resolves to the created review.
    */
   //@UseGuards(AccessTokenGuard)
-  @Post('')
+  @Post()
   async createReview(
     @Body() createReviewDto: CreateReviewDTO,
     @Query('userId') userId: number,
@@ -59,8 +59,9 @@ export class ReviewController {
   async getAllReviews(
     @Query('page', QueryNumberPipe) page: number,
     @Query('limit', QueryNumberPipe) limit: number,
+    @Query('userId', QueryNumberPipe) userId: number,
   ): Promise<Review[]> {
-    return await this.reviewService.getAllReviews(page, limit);
+    return await this.reviewService.getAllReviews(page, limit, userId);
   }
 
   @Get('/score/:userId')

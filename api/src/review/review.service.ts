@@ -60,9 +60,14 @@ export class ReviewService {
    * Retrieves all reviews.
    * @returns An array of reviews.
    */
-  async getAllReviews(skip: number, take: number): Promise<Review[]> {
+  async getAllReviews(
+    skip: number,
+    take: number,
+    userId: number,
+  ): Promise<Review[]> {
     return await this.reviewRepository.find({
       relations: { user: true },
+      where: { user: { id: userId } },
       skip,
       take,
     });
