@@ -35,13 +35,18 @@ export class ReviewController {
    * @param userId - The ID of the user creating the review, obtained from the access token.
    * @returns A promise that resolves to the created review.
    */
-  @UseGuards(AccessTokenGuard)
-  @Post()
+  //@UseGuards(AccessTokenGuard)
+  @Post('')
   async createReview(
     @Body() createReviewDto: CreateReviewDTO,
-    @UserParamID() userId: number,
+    @Query('userId') userId: number,
+    @Query('contractor') contractor: number,
   ): Promise<Review> {
-    return await this.reviewService.createReview(createReviewDto, userId);
+    return await this.reviewService.createReview(
+      createReviewDto,
+      userId,
+      contractor,
+    );
   }
 
   /**
@@ -56,6 +61,11 @@ export class ReviewController {
     @Query('limit', QueryNumberPipe) limit: number,
   ): Promise<Review[]> {
     return await this.reviewService.getAllReviews(page, limit);
+  }
+
+  @Get('/score/:userId')
+  async getScore(@Param('userId') userId: number) {
+    return await this.reviewService.getScore(userId);
   }
 
   /**

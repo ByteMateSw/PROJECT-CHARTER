@@ -4,6 +4,7 @@ import {
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
+  JoinColumn,
 } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Hiring } from '../hiring/hiring.entity';
@@ -22,7 +23,7 @@ export class Review {
   /**
    * The score given in the review.
    */
-  @Column()
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
   score: number;
 
   /**
@@ -32,14 +33,21 @@ export class Review {
   description: string;
 
   /**
+   * the reviewed user.
+   */
+  @ManyToOne(() => User, (user) => user.reviews)
+  user: User;
+
+  /**
    * The user who created the review.
    */
-  @ManyToOne(() => User, user => user.reviews)
-  user: User;
+  @ManyToOne(() => User, (user) => user.reviews)
+  contractor: User;
 
   /**
    * The hiring associated with the review.
    */
-  @OneToOne(() => Hiring, hiring => hiring.id, { nullable: true })
-  hiring: Hiring;
+  @OneToOne(() => Hiring, (hiring) => hiring.id, { nullable: true })
+  @JoinColumn()
+  hiring: string;
 }

@@ -30,12 +30,30 @@ export class ReviewService {
   async createReview(
     createReview: CreateReviewDTO,
     userId: number,
+    contractorId: number,
   ): Promise<Review> {
     const newReview = this.reviewRepository.create({
       ...createReview,
       user: { id: userId },
+      contractor: { id: contractorId },
     });
     return await this.reviewRepository.save(newReview);
+  }
+
+  /**
+   * Creates a new review.
+   * @param userId - id of user
+   * @returns The review score.
+   */
+  async getScore(userId: number): Promise<number> {
+    const review = await this.reviewRepository.findBy({
+      user: { id: userId },
+    });
+    const rewiewLength = review.length;
+    let totalScore: number = 0;
+    review.map((rev) => (totalScore += rev.score / 1));
+
+    return totalScore / rewiewLength;
   }
 
   /**
