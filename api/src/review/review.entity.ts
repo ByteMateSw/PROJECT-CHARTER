@@ -41,7 +41,7 @@ export class Review {
   /**
    * The user who created the review.
    */
-  @ManyToOne(() => User, (user) => user.reviews)
+  @ManyToOne(() => User, (user) => user.reviews, { eager: true })
   contractor: User;
 
   /**

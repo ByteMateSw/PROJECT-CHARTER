@@ -44,7 +44,7 @@ export default function page({params}:{params: {username: string}}) {
             />
             <span className="flex flex-col">
               <label htmlFor="username" className="text-sm font-bold">
-                Nombre
+                {`${review.contractor.firstName} ${review.contractor.lastName}`}
               </label>
               <label
                 htmlFor="username"
