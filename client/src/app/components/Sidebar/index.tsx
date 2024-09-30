@@ -6,8 +6,12 @@ import { useSidebarState } from "./hooks/useSidebarState";
 import { useSidebarEffects } from "./hooks/useSidebarEffects";
 import { useSidebarEvents } from "./hooks/useSidebarEvents";
 import { styleComboBox } from "./SidebarStyles";
+import { useFilter } from "@/context/searchContext";
 
 export default function Sidebar(): JSX.Element {
+
+  const {setCity, city, search, setSearch} = useFilter()
+
   const {
     locations,
     setLocations,
@@ -19,9 +23,7 @@ export default function Sidebar(): JSX.Element {
     setProfessions,
     checkedItems,
     setCheckedItems,
-    selectCities,
     selectProvince,
-    setSelectCities,
     setSelectProvince
   } = useSidebarState();
 
@@ -38,15 +40,15 @@ export default function Sidebar(): JSX.Element {
     setCheckedItems,
     setSelectedProfessions,
     professions,
-    setSearchTerm,
+    setSearch,
   });
 
   const measure = 20;
 
-  console.log(locations)
-  console.log(searchTerm)
-  console.log(selectProvince)
-  console.log(locations?.provinces.filter((pro) =>pro.name === selectProvince?.value)[0]?.cities)
+  // console.log(locations)
+  // console.log(searchTerm)
+  // console.log(selectProvince)
+  // console.log(locations?.provinces.filter((pro) =>pro.name === selectProvince?.value)[0]?.cities)
 
   return (
     <>
@@ -72,7 +74,7 @@ export default function Sidebar(): JSX.Element {
           type="text"
           placeholder="Buscar profesión:"
           className="flex-1 focus:outline-none w-5 ml-2 bg-transparent"
-          value={searchTerm}
+          value={search}
           onChange={handleSearchTermChange}
         />
       </section>
@@ -80,7 +82,7 @@ export default function Sidebar(): JSX.Element {
       <ul className="overflow-y-scroll minimal-scrollbar w-full mt-6 select-none">
         {professions
           .filter((profession) =>
-            profession.name.toLowerCase().includes(searchTerm.toLowerCase())
+            profession.name.toLowerCase().includes(search.toLowerCase())
           )
           .map((profession, id) => {
             return (
@@ -143,8 +145,8 @@ export default function Sidebar(): JSX.Element {
           styles={styleComboBox}
         />
         <ComboBox
-          selectedOptions={selectCities}
-          setSelectedOptions={setSelectCities}
+          selectedOptions={city}
+          setSelectedOptions={setCity}
           optionsProps={locations?.provinces.filter((pro) =>pro.name === selectProvince?.value)[0]?.cities}
           placeholder="Localidades"
           styles={styleComboBox}

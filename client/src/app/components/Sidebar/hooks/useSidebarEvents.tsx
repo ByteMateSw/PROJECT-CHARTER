@@ -4,7 +4,7 @@ export const useSidebarEvents = ({
   setCheckedItems,
   setSelectedProfessions,
   professions,
-  setSearchTerm,
+  setSearch,
 }: SidebarEventsArgs) => {
   const handleCheckboxChange = (id: number) => {
     setCheckedItems((prevCheckedItems: CheckedItems) => {
@@ -31,7 +31,7 @@ export const useSidebarEvents = ({
   };
 
   const handleSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
+    setSearch(e.target.value);
     setCheckedItems({});
   };
 

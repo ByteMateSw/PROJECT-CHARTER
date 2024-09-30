@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import Footer from "./components/Footer";
 import SessionAuthProvider from "@/context/SessionAuthProvider";
 import { UserProvider } from "@/context/userContext";
+import { SearchProvider } from "@/context/searchContext"
 import GoogleAdsense from "./GoogleAdsense";
 
 export default function RootLayout({
@@ -28,11 +29,13 @@ export default function RootLayout({
       </head>
       <SessionAuthProvider>
         <UserProvider>
+          <SearchProvider>
           <body className={`${nunito.className} antialiased h-screen w-full`}>
             {hideHeader ? null : <Header />}
             {children}
             {hideFooter ? null : <Footer />}
           </body>
+          </SearchProvider>
         </UserProvider>
       </SessionAuthProvider>
     </html>

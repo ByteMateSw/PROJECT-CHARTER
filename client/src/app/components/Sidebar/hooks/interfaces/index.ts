@@ -36,5 +36,5 @@ export interface SidebarEventsArgs {
   setCheckedItems: Dispatch<SetStateAction<CheckedItems>>;
   setSelectedProfessions: Dispatch<SetStateAction<string[]>>;
   professions: Profession[];
-  setSearchTerm: Dispatch<SetStateAction<string>>;
+  setSearch: Dispatch<SetStateAction<string>>;
 }

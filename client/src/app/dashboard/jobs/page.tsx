@@ -13,11 +13,6 @@ import { useSidebarState } from "@/app/components/Sidebar/hooks/useSidebarState"
 
 export default function JobsPage() {
 
-  const {
-    selectCities,
-    searchTerm,
-  } = useSidebarState
-
   const [posts, setPosts] = useState<any>([])
 
   useEffect(() => {
