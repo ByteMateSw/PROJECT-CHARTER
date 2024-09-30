@@ -1,19 +1,27 @@
 "use client";
-import { getAllUsers, getWorkers } from "@/app/api/user";
+import { getAllUsers, getWorkers, getUsersFilter } from "@/app/api/user";
 import HireModal from "@/app/components/Dashboard/HireModal";
 import { profiles } from "@/data/hireProfiles";
 import React, { useEffect, useState } from "react";
+import { useSidebarState } from "@/app/components/Sidebar/hooks/useSidebarState";
 
 export default function HirePage() {
-
-  const [users, setUsers] = useState<any>([]);
+  const [users, setUsers] = useState<any[]>([]);
   const [page, setPage] = useState<number>(0); // Página inicial
   const [limit, setLimit] = useState<number>(9); // Límite de usuarios por página
+
+  const {
+    searchTerm,
+    selectCities,
+    setSelectCities
+  } = useSidebarState()
+
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const userData = await getAllUsers(page, limit);
+        if (selectCities === undefined) setSelectCities('')
+        const userData = await getUsersFilter(page, limit, searchTerm, selectCities);
         setUsers(userData);
       } catch (error) {
         console.error('Error fetching users:', error);
@@ -21,10 +29,12 @@ export default function HirePage() {
     };
 
     fetchUsers();
-  }, [page, limit]); // Re-fetch users when page or limit changes
+  }, [page, limit, searchTerm, selectCities]); // Re-fetch users when page or limit changes
 
 
   console.log(users);
+  console.log(searchTerm);
+  console.log(typeof selectCities);
 
 
   return (

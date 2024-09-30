@@ -5,7 +5,7 @@ import StarRating from '@/app/components/StarRating/StarRating'
 import { getUserByUsername } from "@/app/api/user";
 import { useUser } from "@/context/userContext";
 
-export default function page({params}:{params: {username: string}}) {
+export default function Page({params}:{params: {username: string}}) {
 
   //const [reviews, setReviews] = useState<any>([])
   const [user, setUser] = useUser()

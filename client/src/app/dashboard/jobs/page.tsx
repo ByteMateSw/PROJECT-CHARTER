@@ -9,8 +9,14 @@ import AddPostModal from '@/app/components/Dashboard/AddPostModal';
 import { dateDifference } from '@/utils/functions'
 
 import { getAllPosts } from '@/app/api/post';
+import { useSidebarState } from "@/app/components/Sidebar/hooks/useSidebarState";
 
 export default function JobsPage() {
+
+  const {
+    selectCities,
+    searchTerm,
+  } = useSidebarState
 
   const [posts, setPosts] = useState<any>([])
 

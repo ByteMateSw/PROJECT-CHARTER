@@ -19,7 +19,6 @@ export default function Sidebar({ user }: { user: any }) {
     setScore((user.score)/1)
   },[user])
 
-
   return (
     <>
       <section className="flex flex-col justify-center items-center w-full md:p-4">

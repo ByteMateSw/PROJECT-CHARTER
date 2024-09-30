@@ -14,7 +14,7 @@ export default function ComboBox({
   isMulti = false,
   optionsToDisable,
 }: {
-  optionsProps: OptionsPropsType[];
+  optionsProps: OptionsPropsType[] | undefined;
   placeholder?: string;
   styles: StylesConfig;
   selectedOptions: unknown;

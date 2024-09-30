@@ -61,6 +61,7 @@ export class UserService {
     const { limit, page } = pagination;
     const query = this.userRepository.createQueryBuilder('user');
     query.leftJoinAndSelect('user.city', 'city');
+    query.leftJoinAndSelect('user.experience', 'experience');
 
     if (habilities) {
       query.andWhere('user.habilities = :habilities', { habilities });

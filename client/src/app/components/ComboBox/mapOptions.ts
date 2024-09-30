@@ -1,7 +1,7 @@
 import { OptionsPropsType } from "./interfaces";
 
 export const mapOptions = (
-  optionsProps: OptionsPropsType[],
+  optionsProps: OptionsPropsType[] | undefined,
   optionsToDisable: { name: string }[] = []
 ) => {
   const disabledNames = optionsToDisable.map((option) => option.name);

@@ -24,7 +24,7 @@ export interface Profession {
 export type CheckedItems = { [key: number]: boolean };
 
 export interface SidebarEffectsArgs {
-  setLocations: Dispatch<SetStateAction<Locations>>;
+  setLocations: Dispatch<SetStateAction<Locations | undefined>>;
   selectedProfessions: string[];
   setSelectedProfessions: Dispatch<SetStateAction<string[]>>;
   professions: Profession[];

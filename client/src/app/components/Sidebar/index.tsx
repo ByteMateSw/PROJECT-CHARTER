@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import ComboBox from "../ComboBox";
+import Select from "react-select";
 import { useSidebarState } from "./hooks/useSidebarState";
 import { useSidebarEffects } from "./hooks/useSidebarEffects";
 import { useSidebarEvents } from "./hooks/useSidebarEvents";
@@ -18,6 +19,10 @@ export default function Sidebar(): JSX.Element {
     setProfessions,
     checkedItems,
     setCheckedItems,
+    selectCities,
+    selectProvince,
+    setSelectCities,
+    setSelectProvince
   } = useSidebarState();
 
   useSidebarEffects({
@@ -37,6 +42,11 @@ export default function Sidebar(): JSX.Element {
   });
 
   const measure = 20;
+
+  console.log(locations)
+  console.log(searchTerm)
+  console.log(selectProvince)
+  console.log(locations?.provinces.filter((pro) =>pro.name === selectProvince?.value)[0]?.cities)
 
   return (
     <>
@@ -110,17 +120,32 @@ export default function Sidebar(): JSX.Element {
             Ubicación
           </span>
         </div>
+        {/* <Select
+          styles={styleComboBox}
+          options={locations.provinces}
+          value={locations.provinces}
+          //onChange={handleProvinciesChange}
+          placeholder={'Provincia'}
+           />
+        <Select 
+          styles={styleComboBox}
+          options={locations.cities}
+          value={locations.cities}
+          placeholder={'Ciudad'}
+          //onChange={handleCitiesChange}
+          //isDisabled={!selectProvince}
+        /> */}
         <ComboBox
-          selectedOptions={locations.provinces}
-          setSelectedOptions={setLocations}
-          optionsProps={locations.provinces}
+          selectedOptions={selectProvince}
+          setSelectedOptions={setSelectProvince}
+          optionsProps={locations?.provinces}
           placeholder="Provincia"
           styles={styleComboBox}
         />
         <ComboBox
-          selectedOptions={locations.cities}
-          setSelectedOptions={setLocations}
-          optionsProps={locations.cities}
+          selectedOptions={selectCities}
+          setSelectedOptions={setSelectCities}
+          optionsProps={locations?.provinces.filter((pro) =>pro.name === selectProvince?.value)[0]?.cities}
           placeholder="Localidades"
           styles={styleComboBox}
         />

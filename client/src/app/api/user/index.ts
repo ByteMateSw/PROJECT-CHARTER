@@ -100,3 +100,13 @@ export const getAllUsers = async (page?: number, limit?: number): Promise<any> =
     throw error;
   }
 };
+
+export const getUsersFilter = async (page: number, limit: number, habilities: string, location: string) => {
+  try {
+    const response = await axios.get(`
+      ${process.env.NEXT_PUBLIC_BACKEND_URL}/users/filter?page=${page}&limit=${limit}&habilities=${habilities}&location=${location}`)
+      return response.data;
+  } catch (error) {
+    console.error(error)
+  }
+}

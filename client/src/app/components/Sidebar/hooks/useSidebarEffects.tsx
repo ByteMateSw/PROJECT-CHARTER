@@ -18,7 +18,6 @@ export const useSidebarEffects = ({
   const professionsParams: string | null = searchParams.get("professions");
   const path = usePathname();
   
-  
   useEffect(() => {
     getProvinces().then((newProvinces: Province[]) => {
       setLocations((prevState: Locations) => ({
