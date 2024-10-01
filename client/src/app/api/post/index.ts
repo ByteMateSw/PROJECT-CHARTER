@@ -55,3 +55,14 @@ export const getAllPosts = async (): Promise<any> => {
       return error
     }
   }
+
+  export const searchPost = async (page: number, limit: number, habilities: string, location: string) => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/search?habilities=${habilities}&location=${location === undefined ? '' : location}&page=${page}&limit=${limit}`
+      )
+      return response.data;
+    } catch (error) {
+      console.error(error)
+    }
+  }

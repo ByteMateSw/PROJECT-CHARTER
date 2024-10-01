@@ -7,18 +7,24 @@ import Link from "next/link";
 import JobsModal from "@/app/components/Dashboard/JobsModal";
 import AddPostModal from '@/app/components/Dashboard/AddPostModal';
 import { dateDifference } from '@/utils/functions'
+import { useFilter } from "@/context/searchContext";
 
-import { getAllPosts } from '@/app/api/post';
-import { useSidebarState } from "@/app/components/Sidebar/hooks/useSidebarState";
+
+import { getAllPosts, searchPost } from '@/app/api/post';
+//import { useSidebarState } from "@/app/components/Sidebar/hooks/useSidebarState";
 
 export default function JobsPage() {
+  const {search, city, setSearch, setCity} = useFilter()
 
   const [posts, setPosts] = useState<any>([])
+  const [page, setPage] = useState<number>(0)
+  const [limit, setLimit] = useState<number>(9)
+
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await getAllPosts()
+        const response = await searchPost(page, limit, search, city.value)
         setPosts(response)
       } catch (error) {
         console.error('Error fetching posts:', error)
@@ -26,7 +32,7 @@ export default function JobsPage() {
     }
 
     fetchPosts()
-  },[])
+  },[page, limit, search, city])
 
   // const dateDifference = (date: Date) => {
   //   const fecha1 = new Date(date);
@@ -62,7 +68,8 @@ export default function JobsPage() {
   //   }
   // }
 
-  //console.log(posts)
+  console.log(posts)
+  console.log(city)
   return (
     <>
     <div className="flex justify-end h-12">

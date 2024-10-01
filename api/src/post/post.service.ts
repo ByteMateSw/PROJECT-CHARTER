@@ -178,21 +178,31 @@ export class PostService {
    * @returns A promise that resolves to an array of Post objects matching the search query.
    */
   async searchPost(
-    query: string,
+    habilities: string,
+    location: string,
     page: number,
     limit: number,
   ): Promise<Post[]> {
-    return this.postRepository
-      .createQueryBuilder('post')
-      .innerJoin('post.user', 'user')
-      .where('"searchVector" @@ websearch_to_tsquery(:query)', {
-        query,
-      })
-      .andWhere('user.isDeleted = :isDeleted', { isDeleted: false })
-      .orderBy('ts_rank("searchVector", websearch_to_tsquery(:query))', 'DESC')
-      .offset(page)
-      .limit(limit)
-      .getMany();
+    const queryPost = this.postRepository.createQueryBuilder('post');
+    queryPost.leftJoinAndSelect('post.user', 'user');
+    queryPost.leftJoinAndSelect('post.city', 'city');
+    console.log(location);
+
+    if (habilities) {
+      queryPost.where('LOWER(post.title) LIKE LOWER(:title)', {
+        title: `%${habilities}%`,
+      });
+    }
+    if (location) {
+      queryPost.andWhere('city.name = :name', {
+        name: location,
+      });
+    }
+    // queryPost
+    //   .andWhere('user.isDeleted = :isDeleted', { isDeleted: false })
+    //   .orderBy('ts_rank("searchVector", websearch_to_tsquery(:query))', 'DESC');
+    const posts = await queryPost.skip(page).take(limit).getMany();
+    return posts;
   }
 
   async subscribePost(postId: number, userId: number) {

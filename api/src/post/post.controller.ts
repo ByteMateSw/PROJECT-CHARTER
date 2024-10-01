@@ -52,11 +52,12 @@ export class PostController {
    */
   @Get('search')
   async getPostByName(
-    @Query('v') query: string,
+    @Query('location') location: string,
+    @Query('habilities') habilities: string,
     @Query('page', QueryNumberPipe) page: number,
     @Query('limit', QueryNumberPipe) limit: number,
   ): Promise<PostEntity[]> {
-    return await this.postService.searchPost(query, page, limit);
+    return await this.postService.searchPost(habilities, location, page, limit);
   }
 
   @Get('userName')

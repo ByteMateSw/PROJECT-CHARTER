@@ -3,7 +3,6 @@ import { getAllUsers, getWorkers, getUsersFilter } from "@/app/api/user";
 import HireModal from "@/app/components/Dashboard/HireModal";
 import { profiles } from "@/data/hireProfiles";
 import React, { useEffect, useState } from "react";
-import { useSidebarState } from "@/app/components/Sidebar/hooks/useSidebarState";
 import { useFilter } from "@/context/searchContext";
 
 export default function HirePage() {
@@ -13,11 +12,7 @@ export default function HirePage() {
   const [page, setPage] = useState<number>(0); // Página inicial
   const [limit, setLimit] = useState<number>(9); // Límite de usuarios por página
 
-  const {
-    searchTerm,
-    selectCities,
-    setSelectCities
-  } = useSidebarState()
+
 
   useEffect(() => {
     setSearch('')

@@ -64,7 +64,9 @@ export class UserService {
     query.leftJoinAndSelect('user.experience', 'experience');
 
     if (habilities) {
-      query.andWhere('user.habilities = :habilities', { habilities });
+      query.where('LOWER(user.habilities) LIKE LOWER(:habilities)', {
+        habilities: `%${habilities}%`,
+      });
     }
 
     if (location) {
@@ -134,8 +136,6 @@ export class UserService {
     await this.userRepository.update({ id }, { isDeleted: true });
   }
 
-  
-
   async updateUser(id: number, updateUser: UpdateUserDto): Promise<User> {
     const user = await this.userRepository.findOneBy({ id });
     if (!user) throw new BadRequestException('El usuario no existe');
@@ -164,7 +164,8 @@ export class UserService {
         updateUser.backgroundPhoto.mimetype,
         updateUser.backgroundPhoto.buffer,
       );
-      updateUser.backgroundPhoto = process.env.R2_PUBLIC_DOMAIN + coverImagePath;
+      updateUser.backgroundPhoto =
+        process.env.R2_PUBLIC_DOMAIN + coverImagePath;
     }
 
     return await this.userRepository.save({ ...user, ...updateUser });
