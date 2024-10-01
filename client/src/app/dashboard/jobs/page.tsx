@@ -72,14 +72,14 @@ export default function JobsPage() {
   console.log(city)
   return (
     <>
-    <div className="flex justify-end h-12">
+    <div className="absolute right-1 top-1 h-12">
       <AddPostModal/>
     </div>
-    <article className="h-full w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 overflow-auto border">
+    <article className="h-full w-full grid grid-cols-2 grid-flow-row sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 mt-14 overflow-auto border">
       {posts.map((post: any, index: number) => {
         const date = dateDifference(post.creationDate)
         return (
-          <div className="flex flex-col justify-around shadow-md p-4 rounded-xl" key={index}>
+          <div className="flex flex-col justify-around h-80 shadow-md p-4 rounded-xl" key={index}>
             <span className="flex md:justify-between min-[1620px]:items-center items-start flex-col-reverse min-[1620px]:flex-row">
               <h2 className="flex-start text-lg text-primary-blue font-bold">
                 {post.title}

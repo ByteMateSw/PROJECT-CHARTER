@@ -23,7 +23,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         {/* Main content */}
         <div className="col-span-full row-span-5 md:col-start-2 md:col-end-3 h-full w-full overflow-hidden">
           <Animate>
-            <section className="h-full w-full flex justify-center flex-wrap overflow-auto delete-scrollbar md:border md:rounded-3xl md:border-secondary-gray">
+            <section className="relative h-full w-full flex justify-center flex-wrap overflow-auto delete-scrollbar md:border md:rounded-3xl md:border-secondary-gray">
               {children}
             </section>
           </Animate>
