@@ -26,13 +26,13 @@ export default function JobsModal({
 
   const handleClick = async () => {
     const res = await subscribePost(decoded.user.id, postId)
-    if (res.status != 200) {
-      console.log(res.response.data.message)
-    }
-    else {
-      console.log('Postulacion completa!!')
-    }
-  }
+  //   if (res.status != 200) {
+  //     console.log(res.response.data.message)
+  //   }
+  //   else {
+  //     console.log('Postulacion completa!!')
+  //   }
+  // }
 
   const formatDate = (date: Date) => {
     const newDate = new Date(date)
@@ -115,4 +115,5 @@ export default function JobsModal({
     </section>
   </div>
   );
+}
 }

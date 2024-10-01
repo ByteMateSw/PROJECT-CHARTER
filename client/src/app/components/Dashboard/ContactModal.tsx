@@ -25,13 +25,13 @@ export default function ContactModal({contractorId, contractedId}: {contractorId
     }
   
   
-    const handleChange = (setter) => (e) => {
+    const handleChange = (setter:any) => (e:any) => {
       e.preventDefault()
       setter(e.target.value)
     }
   
   
-    async function handleSubmit(e) {
+    async function handleSubmit(e:any) {
       e.preventDefault()
       try {
         await createHiring(contractorId, contractedId)

@@ -13,9 +13,8 @@ const StarRating = () => {
   return (
     <div className='flex'>
       {[...Array(5)].map((_, index) => (
-        <div className='cursor-pointer'>
+        <div className='cursor-pointer' key={index}>
             <FaStar
-              key={index}
               size={24} // Ajusta el tamaño de las estrellas
               color={index < selectedStars ? 'gold' : 'gray'}
               onClick={() => handleStarClick(index)}

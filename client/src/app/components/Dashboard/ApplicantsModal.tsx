@@ -20,7 +20,7 @@ export default function({index, applicants}:{index: number, applicants: any}) {
               <p className="flex justify-center text-3xl font-semibold text-primary-blue">Aplicantes</p>
             </div>
             <div className="grid row-span-8 ">
-            {applicants?.map((apply) => (
+            {applicants?.map((apply:any) => (
                 <Link href={`/profile/${apply.username}/info`}>
                     <div className="grid row-span-1 cursor-pointer place-content-center shadow-md border font-bold text-primary-blue h-12 w-full rounded-md">
                         {`${apply.firstName} ${apply.lastName}`}
