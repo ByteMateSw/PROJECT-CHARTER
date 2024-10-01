@@ -46,7 +46,7 @@ export default function AddPostModal() {
     provinciesData()
   },[])
 
-  const handleChange = (setter) => (e) => {
+  const handleChange = (setter:any) => (e:any) => {
     e.preventDefault()
     setter(e.target.value)
   }
@@ -71,7 +71,7 @@ function handleCitiesChange(selectedOption: any) {
   setSelectCities(selectedOption)
 }
 
-async function handleSubmit(e) {
+async function handleSubmit(e:any) {
   e.preventDefault()
   try {
     await createPost(
