@@ -18,5 +18,5 @@ export const initialLocationsState: Locations = {
 };
 
 export const initialProfessionsState: Profession[] = [
-  { id: 1, name: "Programador" },
+  { id: 0, name: "" },
 ];
