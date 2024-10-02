@@ -176,7 +176,7 @@ export default function Page({params}: { params: {username: string}}) {
       }
 
       if (user.experience.length > 0) {
-        user.experience.map(async (exp) => (
+        user.experience.map(async (exp:any) => (
           await createExperience(
             exp.position,
             exp.description,

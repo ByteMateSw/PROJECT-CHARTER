@@ -29,7 +29,7 @@ export default function Page({params}:{params: {username: string}}) {
       <h2 className="text-xl font-bold pt-2">Opiniones</h2>
       {user?.reviews.length > 0 ?
       <article className="flex flex-wrap md:justify-start items-center pt-4 gap-4 w-full">
-        {user?.reviews?.map((review) => (
+        {user?.reviews?.map((review:any) => (
         <div key={review.id} className="h-52 max-w-[22rem] rounded-[2.5rem] border border-secondary-gray p-4">
           <span className="inline-flex">
             <img

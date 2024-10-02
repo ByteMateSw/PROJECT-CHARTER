@@ -32,7 +32,7 @@ export default function JobsModal({
   //   else {
   //     console.log('Postulacion completa!!')
   //   }
-  // }
+   }
 
   const formatDate = (date: Date) => {
     const newDate = new Date(date)
@@ -115,5 +115,5 @@ export default function JobsModal({
     </section>
   </div>
   );
-}
+  
 }
