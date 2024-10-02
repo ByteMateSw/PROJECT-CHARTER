@@ -14,7 +14,7 @@ const StarRating = ({starRating, size}: {starRating: number, size: number}) => {
   return (
     <div className='flex'>
       {[...Array(5)].map((_, index) => (
-        <div className='cursor-pointer'>
+        <div key={index} className='cursor-pointer'>
           {
             starRating - (index ) > 0 ?
             starRating - (index ) < 1 ?
