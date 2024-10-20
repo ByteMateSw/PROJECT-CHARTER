@@ -20,9 +20,9 @@ const MENU_ITEMS = [
 
 export default function Dropdown({ user }: { user: any }) {
 
-  let usernameForId = user?.email.split('@')[0]
+  //let usernameForId = user?.email.split('@')[0]
   let image = user?.photo || user?.image
-  let name = user?.username || usernameForId || user?.name
+  let name = user?.username || user?.name 
 
   return (
     <div className="dropdown dropdown-hover hover:[&>label]:text-primary-blue">
