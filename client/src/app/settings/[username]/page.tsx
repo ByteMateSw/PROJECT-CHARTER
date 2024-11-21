@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { getCities, getProvinces, updateCityUserByName } from "../../api/locations";
 import { StylesConfig } from "react-select";
 import { getProfessions } from "../../api/office";
-import { getUserByUsername, updateUser } from "../../api/user";
+import { getUserByUsername, updateUser, getUserByEmail } from "../../api/user";
 import { createExperience } from "@/app/api/experience";
 import SocialMedia from "./SocialMedia";
 import About from "./About";
@@ -58,6 +58,8 @@ export default function Page({params}: { params: {username: string}}) {
   const [city, setCity] = useState<any>(null);
   const [offices, setOffices] = useState<any>(null);
   const [hasChanges, setHasChanges] = useState(false);
+  const [getUser, setGetUser] = useState<any>()
+  
 
   // Animations using react-spring
   const [styles, api] = useSpring(() => ({
@@ -93,6 +95,26 @@ export default function Page({params}: { params: {username: string}}) {
 
     fetchLocations();
   }, []);
+
+  useEffect(() => {
+
+    async function getUserDataGoogle(){
+      if(true){
+        try {
+          const response = await getUserByEmail(session?.user?.email)
+          setGetUser(response)
+        } catch (error) {
+          console.error(error)
+        }
+      } 
+    }
+    if(session?.user?.provider === "credentials") {
+      if (decoded != undefined) {
+        setGetUser(decoded)
+      }
+    } 
+    getUserDataGoogle()
+  },[session])
 
   const handleProvinceChange = async (selectedProvince: any) => {
     setProvince(selectedProvince);
@@ -167,7 +189,7 @@ export default function Page({params}: { params: {username: string}}) {
         };
 
         // Actualizar la información básica del usuario solo si todos los campos están llenos
-        await updateUser(decoded.user.id, updatedUserData);
+        await updateUser(getUser?.user?.id, updatedUserData);
       }
 
       // Verificar si hubo cambios en la ciudad y actualizar la relación con el usuario
@@ -183,7 +205,7 @@ export default function Page({params}: { params: {username: string}}) {
             exp.company,
             exp.startDate,
             exp.endDate,
-            decoded.user.id
+            getUser?.user?.id
           )
         ))
       }
@@ -306,7 +328,7 @@ export default function Page({params}: { params: {username: string}}) {
         {/* Main content */}
         <div className="col-span-2">
           {/* Sección de selección de imagen */}
-          <Images user={user} userData={decoded.user} />
+          <Images user={user} userData={getUser?.user} />
           {/* Sección de selección básica */}
           <About
             fields={fields}

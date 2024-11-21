@@ -58,6 +58,17 @@ export const getUserByUsername = async (username: string) => {
   }
 };
 
+export const getUserByEmail = async (email: string) => {
+  try{
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/by-email?email=${email}`
+    )
+    return response.data;
+  } catch (error) {
+    return error
+  }
+}
+
 export const updateUser = async (id: number, updateUserDto: any) => {
   try {
     const response = await axios.patch(

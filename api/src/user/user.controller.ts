@@ -81,6 +81,11 @@ export class UserController {
     return await this.userService.getUsersFilter(filter, pagination);
   }
 
+  @Get('by-email')
+  async getUserByEmail(@Query('email') email: string) {
+    return await this.userService.getUserByEmail(email);
+  }
+
   /**
    * Retrieves a user by their ID.
    * @param id - The ID of the user.

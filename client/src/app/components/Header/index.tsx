@@ -8,7 +8,7 @@ import Image from "next/image";
 import { CENTER_NAV_LINKS, NAV_LINKS } from "./links";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
-import { getUserByUsername } from "@/app/api/user";
+import { getUserByUsername, getUserByEmail } from "@/app/api/user";
 
 export default function Header() {
   
@@ -18,19 +18,38 @@ export default function Header() {
   if (typeof session?.user?.access_token === "string") {
     decoded = jwtDecode(session?.user?.access_token);
   }
+  console.log(session)
+  console.log(decoded)
 
     const [getUser, setGetUser] = useState<any>()
 
+
     useEffect(() => {
       async function getUserData(){
-        try {
-          const response = await getUserByUsername(decoded.user.username)
-          setGetUser(response)
-        } catch (error) {
-          console.error(error)
-        }
+        if(decoded != undefined){
+          try {
+            const response = await getUserByUsername(decoded.user.username)
+            setGetUser(response)
+          } catch (error) {
+            console.error(error)
+          }
+        } 
       }
-      getUserData()
+
+      async function getUserDataGoogle(){
+        if(true){
+          try {
+            const response = await getUserByEmail(session?.user?.email)
+            setGetUser(response)
+          } catch (error) {
+            console.error(error)
+          }
+        } 
+      }
+      if(session?.user?.provider === "credentials") {
+        getUserData()
+      } 
+      getUserDataGoogle()
     },[session])
 
   if (status === "loading") {

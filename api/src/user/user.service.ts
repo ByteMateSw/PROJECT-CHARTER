@@ -97,6 +97,17 @@ export class UserService {
     });
   }
 
+  async getUserByEmail(email: string) {
+    try {
+      const user = await this.userRepository.findOneBy({ email });
+      if (user) {
+        return user;
+      }
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
+
   async getUserById(id: number): Promise<User> {
     try {
       const user = await this.userRepository.findOneBy({ id });

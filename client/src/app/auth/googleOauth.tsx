@@ -24,7 +24,7 @@ export default function GoogleOauth({check}: {check: boolean} ) {
           className="mr-2 select-none"
         />
         <button onClick={() => signIn('google', {
-          callbackUrl: '/settings'
+          callbackUrl: '/'
         })} className="text-xl w-full">Continuar con Google</button>
       </span>
     </div>
