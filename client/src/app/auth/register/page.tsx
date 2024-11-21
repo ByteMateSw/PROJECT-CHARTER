@@ -36,7 +36,7 @@ export default function RegisterPage() {
   
   const handleSubmit = async () => {
     if (!user.firstName || !user.lastName || !user.username || !user.email || !user.password || !user.confirmPassword) {
-      console.log(user.firstName, user.lastName, user.username, user.email, user.password, user.confirmPassword);
+      
   
       setWarningMessage("Por favor, complete todos los campos");
       return;
@@ -63,7 +63,7 @@ export default function RegisterPage() {
         redirect: false,
       });
       // router.push('/');
-      console.log(data);
+      
       
     } catch (error) {
       console.error("Error registering user:", error);

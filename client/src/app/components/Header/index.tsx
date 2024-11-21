@@ -18,8 +18,7 @@ export default function Header() {
   if (typeof session?.user?.access_token === "string") {
     decoded = jwtDecode(session?.user?.access_token);
   }
-  console.log(session)
-  console.log(decoded)
+  
 
     const [getUser, setGetUser] = useState<any>()
 

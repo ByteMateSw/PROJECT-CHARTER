@@ -49,7 +49,7 @@ const handler = NextAuth({
     async signIn({user, account, profile}) {
       const data = {name: user.name as string, email: user.email as string}
       const verify:any = await googleAccountVerify(user.email as string)
-      console.log('user', verify.data)
+      //console.log('user', verify.data)
         if(verify.data) {
           if(verify.data.provider === 'credential') {
             return false;

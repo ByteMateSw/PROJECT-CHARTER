@@ -73,7 +73,7 @@ export default function Page({params}: { params: {username: string}}) {
       decoded = jwtDecode(session?.user?.access_token)
       const {username, email, city} = decoded.user;
       const finalUsername = username || email.split("@")[0];
-      console.log(decoded.user)
+      
 
       //getUserByUsername(finalUsername).then(setUserData);
     }
@@ -268,7 +268,6 @@ export default function Page({params}: { params: {username: string}}) {
   };
 
   const handleSaveExperience = (experience: any) => {
-    console.log(experience)
     setUser((prevUser: any) => ({
       ...prevUser,
       experience: [...prevUser.experience, experience] /*prevUser.experience.map((exp: any) => [1,4]*/
@@ -310,11 +309,11 @@ export default function Page({params}: { params: {username: string}}) {
     );
   }
 
-  //console.log(userData);
+  
   
 
   if (status === "authenticated" && user) {
-    console.log(user)
+    
     return (
       <div className="h-screen grid grid-rows-layout grid-cols-3 gap-x-4 pb-4 md:px-4">
         {/* Navbar placeholder */}
