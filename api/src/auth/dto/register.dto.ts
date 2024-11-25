@@ -95,7 +95,6 @@ export class RegisterDto {
    */
   @IsString({ message: 'El DNI debe ser una cadena de caracteres.' })
   @MaxLength(20, { message: 'El DNI debe de tener hasta 20 caracteres.' })
-  dni: string;
-
-
+  @IsOptional()
+  dni?: string;
 }

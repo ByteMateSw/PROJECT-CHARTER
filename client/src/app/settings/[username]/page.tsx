@@ -78,7 +78,7 @@ export default function Page({params}: { params: {username: string}}) {
       //getUserByUsername(finalUsername).then(setUserData);
     }
  
-
+console.log(getUser)
   useEffect(() => {
     const fetchLocations = async () => {
       const [newProvinces, newOffices] = await Promise.all([

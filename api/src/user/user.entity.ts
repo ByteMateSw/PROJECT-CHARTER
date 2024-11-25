@@ -86,7 +86,7 @@ export class User {
   /**
    * The DNI (National Identity Document) of the user.
    */
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   dni: string;
 
   /**

@@ -149,7 +149,6 @@ export class AuthService {
       username: this.separateEmail(data.email),
       firstName: name,
       lastName: lastName,
-      dni: '100000000',
       email: data.email,
       numberPhone: '+100000000000',
       password: 'google.account89',
