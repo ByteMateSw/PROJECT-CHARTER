@@ -7,9 +7,16 @@ import { Role } from '../enums/role.enum';
  */
 export type ResponseMessage = { message: string };
 
+export type ResponseRegisterMessage = {
+  response: {
+    status: number;
+    data: ResponseMessage;
+  };
+};
+
 /**
  * Represents a type that requires only one property from a given object type.
- * 
+ *
  * @template T - The object type.
  * @returns A type that requires only one property from the given object type.
  */
@@ -20,7 +27,7 @@ export type RequireOnlyOne<T> = {
 
 /**
  * Represents a type that requires at least one property from the given type.
- * 
+ *
  * @template T - The type to require at least one property from.
  * @returns A type that requires at least one property from the given object type.
  */

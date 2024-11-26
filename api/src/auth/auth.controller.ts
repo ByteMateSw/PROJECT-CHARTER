@@ -17,7 +17,10 @@ import { HashPasswordPipe } from '../utils/pipes/hash.pipe';
 import { Response } from 'express';
 import { LocalAuthGuard } from './local/local-auth.guard';
 import { AccessToken, Tokens } from './jwt/token.type';
-import { ResponseMessage } from '../utils/types/functions.type';
+import {
+  ResponseMessage,
+  ResponseRegisterMessage,
+} from '../utils/types/functions.type';
 import { RefreshTokenCookie } from './jwt/refresh.param';
 import { RefreshTokenGuard } from './jwt/refresh.guard';
 import { UserParamID } from '../utils/params/user.param';
@@ -43,7 +46,7 @@ export class AuthController {
   @Post('register')
   async registerUser(
     @Body(HashPasswordPipe) registerDto: RegisterDto,
-  ): Promise<ResponseMessage> {
+  ): Promise<ResponseRegisterMessage> {
     const newUser = await this.authService.register(registerDto);
     // se comento esta linea para probar sin el envio del email
     // const verificationToken = await this.authService.getVerificationToken(
@@ -53,7 +56,12 @@ export class AuthController {
     //   newUser.email,
     //   verificationToken,
     // );
-    return { message: 'El usuario a sido creado con éxito' };
+    return {
+      response: {
+        status: 201,
+        data: { message: 'El usuario a sido creado con éxito' },
+      },
+    };
   }
 
   /**
