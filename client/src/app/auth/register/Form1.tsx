@@ -10,7 +10,7 @@ export default function Form1({
   onClickFunction,
 }: {
   fields: Field[];
-  errorMessage: string;
+  errorMessage: string | string[];
   user: User;
   handleChange: HandleChange;
   onClickFunction: OnClickFunction;
@@ -41,8 +41,16 @@ export default function Form1({
       </section>
 
       <div className="w-full flex flex-col justify-center my-2">
-        <div className="text-red-500 w-full flex justify-center mb-4">
-          {errorMessage && <p>{errorMessage}</p>}
+        <div className="text-red-500 w-full flex flex-col items-center justify-center mb-4">
+          {errorMessage && 
+
+            Array.isArray(errorMessage) ? 
+              errorMessage.map((error) => (
+                <p>{error}</p>
+              ))
+            :
+            <p>{errorMessage}</p>
+          }
         </div>
         <button
           id="submit"

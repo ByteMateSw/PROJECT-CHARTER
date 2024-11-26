@@ -61,8 +61,12 @@ export default function RegisterPage() {
         email: finalUser.email,
         password: finalUser.password,
         redirect: false,
+        // callbackUrl: '/'
       });
-      // router.push('/');
+      console.log(data);
+      if (data.response.status === 400) {
+        setWarningMessage(data.response.data.message)
+      }
       
       
     } catch (error) {
@@ -70,7 +74,8 @@ export default function RegisterPage() {
       setWarningMessage("Error al registrar el usuario");
     }
   };
-
+console.log(Array.isArray(warningMessage))
+console.log(warningMessage)
 
   return (
     <>

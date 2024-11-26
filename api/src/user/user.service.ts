@@ -119,7 +119,11 @@ export class UserService {
 
   async createUser(user: RegisterDto): Promise<User> {
     const existEmail = await this.existsEmail(user.email);
+    const existUserName = await this.existsUserName(user.username);
+    console.log(existUserName);
     if (existEmail) throw new BadRequestException('El Email está en uso');
+    if (existUserName)
+      throw new BadRequestException('El Nombre de usuario ya existe');
     const newUser = this.userRepository.create(user);
     const role = await this.roleRepository.findOneBy({ name: RoleEnum.User });
     newUser.role = role;
@@ -129,6 +133,10 @@ export class UserService {
 
   async existsEmail(email: string): Promise<boolean> {
     return await this.userRepository.existsBy({ email });
+  }
+
+  async existsUserName(username: string): Promise<boolean> {
+    return await this.userRepository.existsBy({ username });
   }
 
   async googleAccountVerify(email: string) {
