@@ -46,7 +46,7 @@ export default function Form1({
 
             Array.isArray(errorMessage) ? 
               errorMessage.map((error) => (
-                <p>{error}</p>
+                <p key={error} >{error}</p>
               ))
             :
             <p>{errorMessage}</p>

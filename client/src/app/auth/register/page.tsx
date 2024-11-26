@@ -57,25 +57,22 @@ export default function RegisterPage() {
   
     try {
       const data = await register(finalUser); 
+      if (data.response.status === 400) {
+        setWarningMessage(data.response.data.message)
+        return
+      }
       signIn("credentials", {
         email: finalUser.email,
         password: finalUser.password,
-        redirect: false,
-        // callbackUrl: '/'
+        redirect: true,
+        callbackUrl: '/'
       });
-      console.log(data);
-      if (data.response.status === 400) {
-        setWarningMessage(data.response.data.message)
-      }
-      
       
     } catch (error) {
       console.error("Error registering user:", error);
       setWarningMessage("Error al registrar el usuario");
     }
   };
-console.log(Array.isArray(warningMessage))
-console.log(warningMessage)
 
   return (
     <>
