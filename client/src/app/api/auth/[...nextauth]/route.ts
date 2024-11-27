@@ -26,7 +26,7 @@ const handler = NextAuth({
         );
         // if (res.error) throw res;
 
-        return res.data;
+        return res;
       },
     }),
     GoogleProvider({

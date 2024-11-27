@@ -44,7 +44,8 @@ export default function LoginPage() {
     });
 
     if (responseNextAuth?.error) {
-      setErrorMessage(responseNextAuth.error);
+      setErrorMessage("Credenciales incorrectas");
+      console.log(responseNextAuth)
       return;
     }
 
@@ -52,7 +53,6 @@ export default function LoginPage() {
     router.push('/')
   };
 
-  console.log(errorMessage)
 
   return (
     <section className="min-h-screen flex justify-around items-center bg-secondary-white">
