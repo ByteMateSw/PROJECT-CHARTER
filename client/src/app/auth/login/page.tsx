@@ -45,7 +45,6 @@ export default function LoginPage() {
 
     if (responseNextAuth?.error) {
       setErrorMessage("Credenciales incorrectas");
-      console.log(responseNextAuth)
       return;
     }
 

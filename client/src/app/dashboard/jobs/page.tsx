@@ -42,7 +42,7 @@ export default function JobsPage() {
     <div className="absolute right-1 top-1 h-12">
       <AddPostModal/>
     </div>
-    <article className="h-full w-full grid grid-cols-2 grid-flow-row sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 mt-14 overflow-auto border">
+    <article className="h-full w-full grid grid-cols-2 grid-flow-row sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 mt-14 overflow-auto">
       {posts.map((post: any, index: number) => {
         const date = dateDifference(post.creationDate)
         return (
