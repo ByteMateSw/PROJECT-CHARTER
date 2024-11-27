@@ -52,6 +52,8 @@ export default function LoginPage() {
     router.push('/')
   };
 
+  console.log(errorMessage)
+
   return (
     <section className="min-h-screen flex justify-around items-center bg-secondary-white">
       <article className="w-[700px] px-12 py-12 bg-secondary-white flex flex-col">

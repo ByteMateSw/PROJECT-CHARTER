@@ -47,8 +47,12 @@ export default function Header() {
       }
       if(session?.user?.provider === "credentials") {
         getUserData()
+        return
       } 
-      getUserDataGoogle()
+      else if (session?.user?.provider === "google") { 
+        getUserDataGoogle()
+        return
+      }
     },[session])
 
   if (status === "loading") {
