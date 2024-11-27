@@ -37,7 +37,7 @@ export default function HirePage() {
 
 
   return (
-    <section className="grid grid-flow-row grid-cols-2 h-full overflow-auto w-full gap-6 p-6">
+    <section className="grid grid-flow-row lg:grid-cols-2 grid-cols-1 overflow-auto w-full h-full gap-6 p-6">
       {users.map((profile: any, index: number) => {
         return (
           <div key={index} className="bg-secondary-white rounded-2xl border border-secondary-gray w-96 h-80 relative overflow-hidden">
