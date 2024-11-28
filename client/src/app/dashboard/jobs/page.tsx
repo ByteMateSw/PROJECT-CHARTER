@@ -71,9 +71,14 @@ export default function JobsPage() {
                   width={20}
                   height={20}
                 />
+                <div className="flex flex-col">
                 <span className="ml-1 text-secondary-gray text-xs font-bold">
                   Ubicación
                 </span>
+                <span className="text-xs">
+                  {post.city?.name}
+                </span>
+                </div>
               </div>
               {/* <Link className="btn btn-primary rounded-full h-8" href="/">
                 Ver detalles

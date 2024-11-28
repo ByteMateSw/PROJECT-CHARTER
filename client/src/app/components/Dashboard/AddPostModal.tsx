@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Select from "react-select";
 import { styleComboBox } from "../Sidebar/SidebarStyles";
 import { getProvinces, getCities } from "@/app/api/locations";
+import { getUserByEmail, getUserByUsername } from "@/app/api/user";
 import { createPost } from "@/app/api/post";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
@@ -18,6 +19,8 @@ export default function AddPostModal() {
   const [area, setArea] = useState<string>('')
   const [price, setPrice] = useState<number>(0)
   const [description, setDescription] = useState<string>('')
+
+  const [getUser, setGetUser] = useState<any>()
 
   const { data: session, status }: any = useSession();
 
@@ -45,6 +48,38 @@ export default function AddPostModal() {
 
     provinciesData()
   },[])
+
+  useEffect(() => {
+    async function getUserData(){
+      if(decoded != undefined){
+        try {
+          const response = await getUserByUsername(decoded.user.username)
+          setGetUser(response)
+        } catch (error) {
+          console.error(error)
+        }
+      } 
+    }
+
+    async function getUserDataGoogle(){
+      if(true){
+        try {
+          const response = await getUserByEmail(session?.user?.email)
+          setGetUser(response)
+        } catch (error) {
+          console.error(error)
+        }
+      } 
+    }
+    if(session?.user?.provider === "credentials") {
+      getUserData()
+      return
+    } 
+    else if (session?.user?.provider === "google") { 
+      getUserDataGoogle()
+      return
+    }
+  },[session])
 
   const handleChange = (setter:any) => (e:any) => {
     e.preventDefault()
@@ -75,7 +110,7 @@ async function handleSubmit(e:any) {
   e.preventDefault()
   try {
     await createPost(
-      decoded.user.id,
+      getUser.id,
       title,
       description,
       area,
