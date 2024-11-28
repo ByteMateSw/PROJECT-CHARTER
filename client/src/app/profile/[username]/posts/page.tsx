@@ -10,12 +10,6 @@ export default function Page({ params }: { params: { username: string } }) {
 
     const [user, setUser] = useUser();
 
-    // useEffect(() => {
-    //     async function posts(params:type) {
-            
-    //     }
-    // },[])
-console.log(user?.posts)
     return (
         <section className=" justify-center items-start p-4 w-fullh-full w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-auto">
         {user?.posts.length > 0 ?

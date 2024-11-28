@@ -65,14 +65,14 @@ export default function Page({
             <Link href="reviews" aria-label="Opiniones">
               Opiniones
             </Link>
-            {
-              params.username === decoded?.user?.username ?
+            {/* {
+              params.username === decoded?.user?.username ? */}
               <Link href="posts" aria-label="Mis_posteos">
                 Mis Posts
               </Link>
-              :
+              {/* :
               <span></span>
-            }
+            } */}
           </div>
         </section>
         <section className="flex w-full pb-8">

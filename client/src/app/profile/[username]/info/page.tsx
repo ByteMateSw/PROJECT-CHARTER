@@ -15,8 +15,10 @@ export default function Page({ params }: { params: { username: string } }) {
   useEffect(() => {
     const getExperiences = async () => {
       try {
-        const response = await getExperienceByUserId(user?.id)
-        setExp(response)
+        if (user != null) {
+          const response = await getExperienceByUserId(user?.id)
+          setExp(response)
+        }
       } catch (error) {
         console.error(error)
       }

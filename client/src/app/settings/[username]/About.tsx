@@ -55,7 +55,6 @@ export default function About({
     to: { opacity: 1, transform: "translateY(0)" },
   });
 
-  console.log(experiences)
 
   return (
     <>

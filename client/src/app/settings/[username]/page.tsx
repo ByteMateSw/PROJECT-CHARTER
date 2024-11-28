@@ -78,7 +78,6 @@ export default function Page({params}: { params: {username: string}}) {
       //getUserByUsername(finalUsername).then(setUserData);
     }
  
-console.log(getUser)
   useEffect(() => {
     const fetchLocations = async () => {
       const [newProvinces, newOffices] = await Promise.all([
@@ -189,12 +188,12 @@ console.log(getUser)
         };
 
         // Actualizar la información básica del usuario solo si todos los campos están llenos
-        await updateUser(getUser?.user?.id, updatedUserData);
+        await updateUser(getUser?.id, updatedUserData);
       }
 
       // Verificar si hubo cambios en la ciudad y actualizar la relación con el usuario
       if (city && city !== city) {
-        await updateCityUserByName(city.name, userData.id);
+        await updateCityUserByName(city.name, getUser.id);
       }
 
       if (user.experience.length > 0) {
@@ -205,7 +204,7 @@ console.log(getUser)
             exp.company,
             exp.startDate,
             exp.endDate,
-            getUser?.user?.id
+            getUser?.id
           )
         ))
       }
@@ -309,8 +308,6 @@ console.log(getUser)
     );
   }
 
-  
-  
 
   if (status === "authenticated" && user) {
     
@@ -327,11 +324,11 @@ console.log(getUser)
         {/* Main content */}
         <div className="col-span-2">
           {/* Sección de selección de imagen */}
-          <Images user={user} userData={getUser?.user} />
+          <Images user={user} userData={getUser} />
           {/* Sección de selección básica */}
           <About
             fields={fields}
-            userData={userData}
+            userData={getUser}
             comboBoxOptions={comboBoxOptions}
             styleComboBox={styleComboBox}
             province={province}

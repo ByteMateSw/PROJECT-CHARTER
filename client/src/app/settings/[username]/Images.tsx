@@ -58,7 +58,7 @@ export default function Images({ user, userData }: any) {
                     },
                 }
             );
-            console.log('User updated successfully:', response.data);
+            //console.log('User updated successfully:', response.data);
         } catch (error) {
             console.error('Error updating user:', error);
         }

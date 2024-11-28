@@ -35,8 +35,6 @@ export default function JobsPage() {
   },[page, limit, search, city])
 
 
-  console.log(posts)
-  console.log(city)
   return (
     <>
     <div className="absolute right-1 top-1 h-12">

@@ -3,7 +3,6 @@ import Link from "next/link";
 
 export default function AplicantsModal({index, applicants}:{index: number, applicants: any}) {
 
-    console.log(applicants)
     return(
         <div>
         <label

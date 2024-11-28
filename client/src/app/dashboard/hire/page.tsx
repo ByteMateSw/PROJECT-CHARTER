@@ -31,9 +31,6 @@ export default function HirePage() {
     fetchUsers();
   }, [page, limit, search, city]); // Re-fetch users when page or limit changes
 
-  console.log(users);
-  console.log(search);
-  console.log(city);
 
 
   return (
