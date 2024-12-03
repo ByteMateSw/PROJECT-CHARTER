@@ -63,6 +63,7 @@ export default function Header() {
     );
   }
 
+
   if (status === "unauthenticated") {
     return (
       <header className="absolute w-full md:p-4">

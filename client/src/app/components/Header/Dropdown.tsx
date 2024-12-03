@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 function Menu({ href, text }: { href: string; text: string }): JSX.Element {
   return (
@@ -20,8 +21,10 @@ const MENU_ITEMS = [
 
 export default function Dropdown({ user }: { user: any }) {
 
+  const { data: session, status }: any = useSession();
+
   //let usernameForId = user?.email.split('@')[0]
-  let image = user?.photo || user?.image
+  let image = user?.photo || user?.image || session.user.image
   let name = user?.username || user?.name 
 
   return (

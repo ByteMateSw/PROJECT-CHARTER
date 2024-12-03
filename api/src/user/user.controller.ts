@@ -86,6 +86,11 @@ export class UserController {
     return await this.userService.getUserByEmail(email);
   }
 
+  @Get('score')
+  async getUsersByScore() {
+    return await this.userService.getUsersByScore();
+  }
+
   /**
    * Retrieves a user by their ID.
    * @param id - The ID of the user.

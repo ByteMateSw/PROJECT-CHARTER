@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -114,6 +115,19 @@ export class UserService {
       return user;
     } catch (error) {
       throw new BadRequestException(error);
+    }
+  }
+
+  async getUsersByScore(): Promise<User[]> {
+    try {
+      const users = await this.userRepository.find({
+        order: {
+          score: 'DESC',
+        },
+      });
+      return users;
+    } catch (error) {
+      throw new ForbiddenException(error);
     }
   }
 
