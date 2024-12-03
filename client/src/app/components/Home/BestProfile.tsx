@@ -1,17 +1,20 @@
 "use client";
-
-import { profiles } from "@/data/profiles";
+import { useEffect, useState } from "react";
+import { getUserByScore } from "@/app/api/user";
+//import { profiles } from "@/data/profiles";
 // import { getBestUsers } from "@/app/api/user";
 // import { useEffect, useState } from "react";
 
 export default function BestProfiles() {
-  // const [profiles, setProfiles] = useState([]);
+  const [profiles, setProfiles] = useState([]);
 
-  // useEffect(() => {
-  //     getBestUsers().then((data: any) => {
-  //         setProfiles(data);
-  //     })
-  // }, [])
+  useEffect(() => {
+      getUserByScore().then((data: any) => {
+          setProfiles(data);
+      })
+  }, [])
+
+  console.log(profiles)
 
   return (
     <section className="flex items-center justify-center flex-col w-full mt-5">
@@ -19,20 +22,20 @@ export default function BestProfiles() {
         Descubrí algunos perfiles
       </h1>
       <div className="flex items-center justify-around w-full pt-12">
-        {profiles.map((profile) => (
-          <figure className="h-[200px] w-h-[200px]" key={profile.name}>
+        {profiles.map((profile:any) => (
+          <figure className="h-[200px] w-[200px]" key={profile.firstName}>
             <img
-              src={profile.imageProfile}
-              alt={profile.name}
+              src={profile.photo ? profile.photo : 'https://img.freepik.com/vector-premium/icono-perfil-avatar-predeterminado-imagen-usuario-redes-sociales-icono-avatar-gris-silueta-perfil-blanco-ilustracion-vectorial_561158-3383.jpg'}
+              alt={profile.firstName}
               className="h-[200px] w-h-[200px] rounded-full text-secondary-gray aspect-square"
             />
             <div className="flex-col justify-center items-center flex pt-4">
               <article className="text-center">
                 <h2 className="text-xl text-secondary-black font-bold">
-                  {profile.name}
+                  {profile.firstName}
                 </h2>
                 <h2 className="text-secondary-gray text-base font-semibold">
-                  <p>{profile.profession}</p>
+                  <p>{profile.habilities}</p>
                 </h2>
               </article>
             </div>

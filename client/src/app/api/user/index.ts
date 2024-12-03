@@ -4,7 +4,7 @@ import { User } from "../interface";
 export const getBestUsers = async (): Promise<User[]> => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/best-users`
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/best-users`
     );
     console.log(response.data);
     return response.data;
@@ -13,6 +13,17 @@ export const getBestUsers = async (): Promise<User[]> => {
     throw error;
   }
 };
+
+export const getUserByScore = async () => {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/score`
+    )
+    return response.data;
+  } catch (error) {
+    console.error(error)
+  }
+}
 
 export const register = async (user: any) => {
   try {

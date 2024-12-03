@@ -124,6 +124,7 @@ export class UserService {
         order: {
           score: 'DESC',
         },
+        take: 4,
       });
       return users;
     } catch (error) {
