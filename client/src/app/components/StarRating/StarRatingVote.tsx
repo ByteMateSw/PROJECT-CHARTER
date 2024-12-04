@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 
-const StarRating = () => {
+const StarRatingVote = () => {
   const [selectedStars, setSelectedStars] = useState(0);
 
 
@@ -26,4 +26,4 @@ const StarRating = () => {
   );
 };
 
-export default StarRating;
+export default StarRatingVote;

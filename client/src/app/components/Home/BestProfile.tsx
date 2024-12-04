@@ -1,9 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getUserByScore } from "@/app/api/user";
-//import { profiles } from "@/data/profiles";
-// import { getBestUsers } from "@/app/api/user";
-// import { useEffect, useState } from "react";
+import StarRating from "../StarRating/StarRating";
 
 export default function BestProfiles() {
   const [profiles, setProfiles] = useState([]);
@@ -30,10 +28,11 @@ export default function BestProfiles() {
               className="h-[200px] w-h-[200px] rounded-full text-secondary-gray aspect-square"
             />
             <div className="flex-col justify-center items-center flex pt-4">
-              <article className="text-center">
+              <article className="flex-col justify-center items-center flex text-center">
                 <h2 className="text-xl text-secondary-black font-bold">
                   {profile.firstName}
                 </h2>
+                <StarRating starRating={profile.score} size={18} key={profile.firstName}/>
                 <h2 className="text-secondary-gray text-base font-semibold">
                   <p>{profile.habilities}</p>
                 </h2>
