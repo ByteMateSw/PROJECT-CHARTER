@@ -11,7 +11,7 @@ import { jwtDecode } from "jwt-decode";
 export default function Page({params}:{params: {username: string}}) {
 
   //const [reviews, setReviews] = useState<any>([])
-  const [isMyProfile, setIsMyProfile] = useState<boolean>(false)
+  const [isMyProfile, setIsMyProfile] = useState<boolean>()
   const { data: session, status }: any = useSession();
   const [user, setUser] = useUser()
 
@@ -34,7 +34,7 @@ export default function Page({params}:{params: {username: string}}) {
 
   useEffect(() => {
     if (decoded != undefined) {
-      if (decoded.user.email === user?.email) {
+      if (decoded?.user.email === user?.email) {
         setIsMyProfile(true)
         return
       }
@@ -47,8 +47,7 @@ export default function Page({params}:{params: {username: string}}) {
       setIsMyProfile(false)
     }
 
-  },[isMyProfile])
-
+  },[session, user])
 
 
   return (

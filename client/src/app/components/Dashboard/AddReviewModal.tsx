@@ -1,8 +1,17 @@
+import { useEffect, useState } from "react";
 import StarRatingVote from "../StarRating/StarRatingVote";
 
 function AddReviewModal() {
 
-    const handleSubmit = () => {}
+  const [selectedStars, setSelectedStars] = useState(0);
+
+  const handleSubmit = () => {}
+
+  // useEffect(() => {
+
+  // },[])
+
+  console.log(selectedStars)
 
     return(
         <div>
@@ -15,13 +24,14 @@ function AddReviewModal() {
         <input className="modal-state" id={`modal-add`} type="checkbox" />
         <section className="modal">
           <label className="modal-overlay" id={`modal-add`}></label>
-          <article className="modal-content h-full w-[990px] grid grid-rows-10 gap-2 p-10 rounded-[2rem] minimal-scrollbar">
+          <article className="modal-content h-3/5 w-[990px] grid grid-rows-10 gap-2 p-10 rounded-[2rem] minimal-scrollbar">
             <div className="grid row-span-1">
-              <p className="flex justify-center text-3xl font-semibold text-primary-blue">Detalles del trabajo</p>
+              <p className="flex justify-center text-3xl font-semibold text-primary-blue">Deja tu calificación</p>
             </div>
             <form action="" onSubmit={handleSubmit}>
             <div>
-                <StarRatingVote />
+              <label htmlFor="area" className="font-bold text-xl">Votos</label>
+                <StarRatingVote selectedStars={selectedStars} setSelectedStars={setSelectedStars} />
             </div>
             <div className="grid row-span-4 gap-1 my-5">
               <label htmlFor="area" className="font-bold text-xl">Comentario</label>

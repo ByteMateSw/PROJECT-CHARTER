@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 
-const StarRatingVote = () => {
-  const [selectedStars, setSelectedStars] = useState(0);
+const StarRatingVote = ({selectedStars, setSelectedStars}:{selectedStars: number, setSelectedStars: (index:number)=>void}) => {
+  //const [selectedStars, setSelectedStars] = useState(0);
 
 
   const handleStarClick = (starIndex: number) => {
