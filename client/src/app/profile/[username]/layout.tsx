@@ -68,7 +68,7 @@ export default function Page({
             {/* {
               params.username === decoded?.user?.username ? */}
               <Link href="posts" aria-label="Mis_posteos">
-                Mis Posts
+                Posts
               </Link>
               {/* :
               <span></span>

@@ -24,7 +24,7 @@ export default function Dropdown({ user }: { user: any }) {
   const { data: session, status }: any = useSession();
 
   //let usernameForId = user?.email.split('@')[0]
-  let image = user?.photo || user?.image || session.user.image
+  let image = user?.picture || user?.image || session.user.image
   let name = user?.username || user?.name 
 
   return (

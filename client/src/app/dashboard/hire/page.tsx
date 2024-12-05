@@ -38,14 +38,18 @@ export default function HirePage() {
       {users.map((profile: any, index: number) => {
         return (
           <div key={index} className="bg-secondary-white rounded-2xl border border-secondary-gray w-96 h-80 relative overflow-hidden">
-            <img
+            {profile.backgroundPhoto ?
+              <img
               src={profile.backgroundPhoto}
               alt="Imagen de fondo"
               className="w-full h-36 object-cover rounded-t-2xl"
             />
+              :
+              <div className="w-full h-36 object-cover rounded-t-2xl"></div>
+          }
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
               <img
-                src={profile.photo}
+                src={profile.photo ? profile.photo : 'https://img.freepik.com/vector-premium/icono-perfil-avatar-predeterminado-imagen-usuario-redes-sociales-icono-avatar-gris-silueta-perfil-blanco-ilustracion-vectorial_561158-3383.jpg'}
                 alt="imagen de perfil"
                 className="h-24 w-24 -mt-36 rounded-full bg-secondary-gray border-2 border-secondary-white"
               />

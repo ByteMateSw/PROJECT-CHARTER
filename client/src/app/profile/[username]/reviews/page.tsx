@@ -2,13 +2,23 @@
 import React, {useEffect, useState} from "react";
 import { getAllReviews } from "@/app/api/review";
 import StarRating from '@/app/components/StarRating/StarRating'
+import AddReviewModal from "@/app/components/Dashboard/AddReviewModal";
 import { getUserByUsername } from "@/app/api/user";
 import { useUser } from "@/context/userContext";
+import { useSession } from "next-auth/react";
+import { jwtDecode } from "jwt-decode";
 
 export default function Page({params}:{params: {username: string}}) {
 
   //const [reviews, setReviews] = useState<any>([])
+  const [isMyProfile, setIsMyProfile] = useState<boolean>(false)
+  const { data: session, status }: any = useSession();
   const [user, setUser] = useUser()
+
+  let decoded: any;
+  if (typeof session?.user?.access_token === "string") {
+    decoded = jwtDecode(session?.user?.access_token);
+  }
 
   useEffect(() => {
     getUserByUsername(params.username).then((data) => {
@@ -22,11 +32,31 @@ export default function Page({params}:{params: {username: string}}) {
   //   })
   // },[user])
 
-  // console.log(user)
+  useEffect(() => {
+    if (decoded != undefined) {
+      if (decoded.user.email === user?.email) {
+        setIsMyProfile(true)
+        return
+      }
+      setIsMyProfile(false)
+    } else {
+      if (session?.user?.email === user?.email) {
+        setIsMyProfile(true)
+        return
+      }
+      setIsMyProfile(false)
+    }
+
+  },[isMyProfile])
+
+
 
   return (
     <section className="flex flex-col justify-center items-start p-4 w-full">
-      <h2 className="text-xl font-bold pt-2">Opiniones</h2>
+      <div className="flex justify-between items-center w-full">
+      <h2 className="text-xl font-bold ">Opiniones</h2>
+      {isMyProfile ? <span></span> : <AddReviewModal/>}
+      </div>
       {user?.reviews.length > 0 ?
       <article className="flex flex-wrap md:justify-start items-center pt-4 gap-4 w-full">
         {user?.reviews?.map((review:any) => (
