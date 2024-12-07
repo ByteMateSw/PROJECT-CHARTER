@@ -12,7 +12,7 @@ export default function Page({params}:{params: {username: string}}) {
 
   //const [reviews, setReviews] = useState<any>([])
   const [isMyProfile, setIsMyProfile] = useState<boolean>()
-  const [userSession, setUserSession] = useState()
+  const [userSession, setUserSession] = useState<any>()
   const { data: session, status }: any = useSession();
   const [user, setUser] = useUser()
 
@@ -56,6 +56,7 @@ export default function Page({params}:{params: {username: string}}) {
 
   },[session, user])
 
+  console.log(user)
   console.log(userSession)
 
   return (
@@ -71,7 +72,11 @@ export default function Page({params}:{params: {username: string}}) {
           <span className="inline-flex">
             <img
               className="h-10 w-h-10 border-2 border-secondary-black rounded-full mr-2"
-              src="/svg/profile-circle.svg"
+              src={userSession ? 
+                userSession.photo ? userSession.photo : "/svg/profile-circle.svg"
+                :
+                "/svg/profile-circle.svg"
+              }
               alt="Foto de perfil"
             />
             <span className="flex flex-col">
@@ -89,7 +94,7 @@ export default function Page({params}:{params: {username: string}}) {
           <span className="w-full inline-flex gap-1">
             <StarRating starRating={review?.score} size={15}/>
             <p className="text-secondary-black text-sm">{Math.trunc((review.score) * 10) / 10}</p>
-            <p className="ml-2 text-primary-blue text-sm">Titulo del trabajo</p>
+            <p className="ml-2 text-primary-blue text-sm">{review.hiring ? review.hiring :'Titulo del trabajo'}</p>
           </span>
           <p className="text-sm font-normal">
             {review.description}
