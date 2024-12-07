@@ -25,7 +25,7 @@ export default function BestProfiles() {
             <img
               src={profile.photo ? profile.photo : 'https://img.freepik.com/vector-premium/icono-perfil-avatar-predeterminado-imagen-usuario-redes-sociales-icono-avatar-gris-silueta-perfil-blanco-ilustracion-vectorial_561158-3383.jpg'}
               alt={profile.firstName}
-              className="h-[200px] w-h-[200px] rounded-full text-secondary-gray aspect-square"
+              className="md:h-[200px] md:w-h-[200px] h-[100px] w-h-[100px] rounded-full text-secondary-gray aspect-square"
             />
             <div className="flex-col justify-center items-center flex pt-4">
               <article className="flex-col justify-center items-center flex text-center">

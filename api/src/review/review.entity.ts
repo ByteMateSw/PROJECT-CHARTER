@@ -7,7 +7,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { User } from '../user/user.entity';
-import { Hiring } from '../hiring/hiring.entity';
+//import { Hiring } from '../hiring/hiring.entity';
 
 @Entity()
 /**
@@ -47,7 +47,8 @@ export class Review {
   /**
    * The hiring associated with the review.
    */
-  @OneToOne(() => Hiring, (hiring) => hiring.id, { nullable: true })
-  @JoinColumn()
+  // @OneToOne(() => Hiring, (hiring) => hiring.id, { nullable: true })
+  // @JoinColumn()
+  @Column({ nullable: true })
   hiring: string;
 }

@@ -36,7 +36,7 @@ export class ReviewController {
    * @returns A promise that resolves to the created review.
    */
   //@UseGuards(AccessTokenGuard)
-  @Post()
+  @Post('/create')
   async createReview(
     @Body() createReviewDto: CreateReviewDTO,
     @Query('userId') userId: number,
@@ -55,7 +55,7 @@ export class ReviewController {
    * @param limit - The number of reviews to retrieve per page.
    * @returns A promise that resolves to an array of reviews.
    */
-  @Get()
+  @Get('/')
   async getAllReviews(
     @Query('page', QueryNumberPipe) page: number,
     @Query('limit', QueryNumberPipe) limit: number,

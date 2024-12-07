@@ -6,7 +6,7 @@ export const mapOptions = (
 ) => {
   const disabledNames = optionsToDisable.map((option) => option.name);
   return optionsProps?.map((option) => ({
-    value: option.name,
+    value: option.id || option.name,
     label: option.name,
     isDisabled: disabledNames.includes(option.name),
   }));

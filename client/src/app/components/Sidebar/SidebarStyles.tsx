@@ -16,4 +16,10 @@ export const styleComboBox: StylesConfig = {
     borderRadius: "1rem",
     appearance: "none",
   }),
+  menuList: (styles) => ({
+    ...styles,
+    maxHeight: '110px',
+    overflowY: 'scroll',
+    flexDirection: 'column-reverse',
+  })
 };

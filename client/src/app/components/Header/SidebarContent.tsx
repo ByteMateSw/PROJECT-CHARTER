@@ -84,14 +84,14 @@ export default function SidebarContent({ user }: { user: any }) {
                     <div className="menu-item-collapse">
                       <div className="min-h-0 bg-secondary-white">
                         <Link
-                          href={`/profile/${name}`}
+                          href={`/profile/${name}/info`}
                           className="menu-item ml-5 text-sm flex flex-row items-center justify-start gap-1"
                         >
                           <img src="/svg/person.svg" alt="" className="h-4" />{" "}
                           Perfil
                         </Link>
                         <Link
-                          href="/settings"
+                          href={`/settings/${name}`}
                           tabIndex={-1}
                           className="menu-item ml-5 text-sm flex flex-row items-center justify-start gap-2"
                         >

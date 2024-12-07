@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import { getAllReviews } from "@/app/api/review";
 import StarRating from '@/app/components/StarRating/StarRating'
 import AddReviewModal from "@/app/components/Dashboard/AddReviewModal";
-import { getUserByUsername } from "@/app/api/user";
+import { getUserByUsername, getUserByEmail } from "@/app/api/user";
 import { useUser } from "@/context/userContext";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
@@ -12,6 +12,7 @@ export default function Page({params}:{params: {username: string}}) {
 
   //const [reviews, setReviews] = useState<any>([])
   const [isMyProfile, setIsMyProfile] = useState<boolean>()
+  const [userSession, setUserSession] = useState()
   const { data: session, status }: any = useSession();
   const [user, setUser] = useUser()
 
@@ -38,23 +39,30 @@ export default function Page({params}:{params: {username: string}}) {
         setIsMyProfile(true)
         return
       }
+      getUserByEmail(decoded?.user.email)
+      .then((res) => setUserSession(res))
+      .catch((e) => console.error(e))
       setIsMyProfile(false)
     } else {
       if (session?.user?.email === user?.email) {
         setIsMyProfile(true)
         return
       }
+      getUserByEmail(session?.user?.email)
+      .then((res) => setUserSession(res))
+      .catch((e) => console.error(e))
       setIsMyProfile(false)
     }
 
   },[session, user])
 
+  console.log(userSession)
 
   return (
     <section className="flex flex-col justify-center items-start p-4 w-full">
       <div className="flex justify-between items-center w-full">
       <h2 className="text-xl font-bold ">Opiniones</h2>
-      {isMyProfile ? <span></span> : <AddReviewModal/>}
+      {isMyProfile ? <span></span> : <AddReviewModal userSession={userSession}/>}
       </div>
       {user?.reviews.length > 0 ?
       <article className="flex flex-wrap md:justify-start items-center pt-4 gap-4 w-full">

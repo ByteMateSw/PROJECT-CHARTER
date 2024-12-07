@@ -33,7 +33,9 @@ export class ReviewService {
     contractorId: number,
   ): Promise<Review> {
     const newReview = this.reviewRepository.create({
-      ...createReview,
+      score: createReview.score,
+      description: createReview.description,
+      hiring: createReview.hiring,
       user: { id: userId },
       contractor: { id: contractorId },
     });
