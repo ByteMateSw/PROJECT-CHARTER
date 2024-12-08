@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { User } from 'src/user/user.entity';
 
 @Entity()
 export class SocialNetwork {
@@ -19,4 +26,8 @@ export class SocialNetwork {
 
   @Column({ nullable: true })
   linkedin: string;
+
+  @OneToOne(() => User)
+  @JoinColumn()
+  user: string;
 }
