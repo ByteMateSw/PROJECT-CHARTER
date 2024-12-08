@@ -1,6 +1,6 @@
-import { IsString, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsOptional } from 'class-validator';
 
-export class CreateSocialNetworkDTO {
+export class UpdateSocialNetworkDTO {
   @IsOptional()
   @IsString()
   whatsapp?: string;
@@ -20,7 +20,4 @@ export class CreateSocialNetworkDTO {
   @IsOptional()
   @IsString()
   linkedin?: string;
-
-  @IsNumber()
-  userId: number;
 }

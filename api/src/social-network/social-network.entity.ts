@@ -29,5 +29,5 @@ export class SocialNetwork {
 
   @OneToOne(() => User)
   @JoinColumn()
-  user: string;
+  user: number;
 }
