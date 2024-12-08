@@ -17,7 +17,7 @@ export class SocialNetworkController {
     return await this.socialNetworkService.getSocialNetwork(userId);
   }
 
-  @Put('update')
+  @Put('/update')
   async updateSocialNetwork(
     @Query('userId') userId: number,
     @Body() data: UpdateSocialNetworkDTO,
