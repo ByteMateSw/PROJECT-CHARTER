@@ -32,7 +32,7 @@ export class SocialNetworkService {
 
   async getSocialNetwork(userId: number) {
     try {
-      const social = await this.socialNetworkRepo.findBy({ user: userId });
+      const social = await this.socialNetworkRepo.findOneBy({ user: userId });
       return social;
     } catch (error) {
       throw new BadRequestException(error);

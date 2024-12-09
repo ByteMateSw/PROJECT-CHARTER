@@ -8,6 +8,7 @@ import { StylesConfig } from "react-select";
 import { getProfessions } from "../../api/office";
 import { getUserByUsername, updateUser, getUserByEmail } from "../../api/user";
 import { createExperience } from "@/app/api/experience";
+import { updateSocialNetworks, getSocialNetworks, createSocialNetwork } from "@/app/api/social-networks";
 import SocialMedia from "./SocialMedia";
 import About from "./About";
 import Images from "./Images";
@@ -47,7 +48,11 @@ export default function Page({params}: { params: {username: string}}) {
     experience: [],
     isWorker: false,
     about: "",
-    habilities: ""
+    habilities: "",
+    instagram: "",
+    twitter: "",
+    facebook: "",
+    linkedin: ""
   });
   const [comboBoxOptions, setComboBoxOptions] = useState<any>({
     provinces: [],
@@ -59,6 +64,7 @@ export default function Page({params}: { params: {username: string}}) {
   const [offices, setOffices] = useState<any>(null);
   const [hasChanges, setHasChanges] = useState(false);
   const [getUser, setGetUser] = useState<any>()
+  const [socialNet, setSocialNet] = useState()
   
 
   // Animations using react-spring
@@ -97,19 +103,30 @@ export default function Page({params}: { params: {username: string}}) {
 
   useEffect(() => {
 
+    const fetchSocialNetworks = async (id: number) => {
+      const response = await getSocialNetworks(id)
+      setSocialNet(response)
+    }
+
     async function getUserDataGoogle(){
       if(true){
         try {
           const response = await getUserByEmail(session?.user?.email)
           setGetUser(response)
+          fetchSocialNetworks(response.id)
         } catch (error) {
           console.error(error)
         }
       } 
     }
+
+
     if(session?.user?.provider === "credentials") {
       if (decoded != undefined) {
-        setGetUser(decoded)
+        getUserByEmail(decoded.user.email).then((res) => setGetUser(res)).catch((e) => console.log(e))
+        
+        fetchSocialNetworks(decoded.user.id)
+        return
       }
     } 
     getUserDataGoogle()
@@ -153,6 +170,11 @@ export default function Page({params}: { params: {username: string}}) {
     }
   };
 
+  console.log(getUser)
+  console.log(decoded)
+  console.log(session)
+  
+
   const handleUpdateUser = async () => {
     try {
       // Verificar si todos los campos relevantes están llenos
@@ -164,7 +186,11 @@ export default function Page({params}: { params: {username: string}}) {
           user.numberPhone ||
           user.dni ||
           user.about ||
-          user.habilities) && (
+          user.habilities ||
+          user.instagram || 
+          user.twitter ||
+          user.facebook || 
+          user.linkedin ) && (
           user.firstName.length > 0 ||
           user.lastName.length > 0 ||
           user.username.length > 0 ||
@@ -172,7 +198,11 @@ export default function Page({params}: { params: {username: string}}) {
           user.numberPhone.length > 0 ||
           user.dni.length > 0 ||
           user.about.length > 0 ||
-          user.habilities.length > 0
+          user.habilities.length > 0 ||
+          user.instagram.length > 0 ||
+          user.twitter.length > 0 ||
+          user.facebook.length > 0 ||
+          user.linkedin.length > 0
         ) || user.isWorker === true
       ) {
         const updatedUserData = {
@@ -187,8 +217,29 @@ export default function Page({params}: { params: {username: string}}) {
           ...(user.habilities && { habilities: user.habilities })
         };
 
+        const updateSocialNetworkData = {
+          ...(user.instagram && { instagram: user.instagram }),
+          ...(user.twitter && { twitter: user.twitter }),
+          ...(user.facebook && { facebook: user.facebook }),
+          ...(user.linkedin && { linkedin: user.linkedin })
+        }
+        console.log(updatedUserData)
+        console.log(Object.keys(updatedUserData).length)
+
         // Actualizar la información básica del usuario solo si todos los campos están llenos
-        await updateUser(getUser?.id, updatedUserData);
+        if (Object.keys(updatedUserData).length > 0) {
+          await updateUser(getUser?.id, updatedUserData);
+        }
+
+        // Actualizar la informacion de las redes sociales del usuario
+        if(socialNet) {
+          await updateSocialNetworks(getUser?.id, updateSocialNetworkData)
+          debugger
+        }
+        else await createSocialNetwork({
+          userId: getUser.id,
+          ...updateSocialNetworkData
+        })
       }
 
       // Verificar si hubo cambios en la ciudad y actualizar la relación con el usuario
@@ -228,6 +279,12 @@ export default function Page({params}: { params: {username: string}}) {
       offices: [],
       experience: [],
       isWorker: false,
+      habilities: "",
+      about: "",
+      instagram: "",
+      twitter: "",
+      facebook: "",
+      linkedin: ""
     });
     setProvince(null);
     setCity(null);
