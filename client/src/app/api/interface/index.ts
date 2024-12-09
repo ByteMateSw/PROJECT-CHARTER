@@ -9,3 +9,20 @@ export interface User {
   photo: null;
   city: null;
 }
+
+export type createSocialTypes = {
+  userId: number,
+  whatsapp?: string,
+  instagram?: string,
+  twitter?: string,
+  facebook?: string,
+  linkedin?: string
+}
+
+export type updateSocialNetworkTypes = {
+  whatsapp?: string,
+  instagram?: string,
+  twitter?: string,
+  facebook?: string,
+  linkedin?: string
+}
