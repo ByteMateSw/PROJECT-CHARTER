@@ -2,9 +2,14 @@ import React, {useEffect, useState} from "react";
 import StarRating from '@/app/components/StarRating/StarRating'
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
+import { redes } from "@/app/settings/[username]/fields";
+import { Field } from "@/app/auth/register/interfaces";
+
+import { getSocialNetworks } from "@/app/api/social-networks";
 
 export default function Sidebar({ user }: { user: any }) {
   const [score, setScore] = useState<any>(null)
+  const [social, setSocial] = useState()
 
   const { data: session, status }: any = useSession();
 
@@ -18,6 +23,19 @@ export default function Sidebar({ user }: { user: any }) {
   useEffect(() => {
     setScore((user.score)/1)
   },[user])
+
+  useEffect(() => {
+    const fetchSocial = async () => {
+      try {
+        const response = await getSocialNetworks(user.id)
+        setSocial(response)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    fetchSocial()
+  },[])
+
 
   return (
     <>
@@ -40,7 +58,7 @@ export default function Sidebar({ user }: { user: any }) {
             className="inline h-5 w-5 mr-1"
           />
           <p className="text-secondary-gray text-xs font-bold">
-            {user.location || "Sin Configurar"}
+            {user.city || "Sin Configurar"}
           </p>
         </span>
         <div className="flex text-secondary-gray text-xs text-center font-normal my-2 gap-2">
@@ -73,11 +91,26 @@ export default function Sidebar({ user }: { user: any }) {
       <section className="flex flex-col justify-end items-start w-full p-4">
         <h2 className="text-xl font-bold pt-2">Contacto</h2>
         <ul className="flex w-full flex-col justify-center items-center gap-4 [&>li>img]:h-8 [&>li>img]:mr-2 [&>li]:cursor-pointer [&>li]:border [&>li]:border-secondary-black [&>li]:w-full [&>li]:flex [&>li]:items-center [&>li]:justify-center [&>li]:rounded-full [&>li]:px-4 [&>li]:py-2">
-          <li>
+          <li
+          onClick={() => window.open(`https://wa.me/${user.numberPhone}`)}
+          >
             <img src="/svg/whatsapp-icon.svg" alt="WhatsApp" />
             <span>WhatsApp</span>
           </li>
-          <li>
+          {
+            redes.map(({name, label, iconSrc}:{name: string, label: string, iconSrc: string}) => (
+              social != undefined && social[name] ? 
+              <li key={name}
+              onClick={() => window.open(social[name])}
+              >
+                <img src={iconSrc} alt={label} />
+                <span>{label}</span>
+              </li>
+              :
+              <span></span>
+            ))
+          }
+          {/* <li>
             <img src="/svg/instagram-icon.svg" alt="Instagram" />
             <span>Instagram</span>
           </li>
@@ -92,7 +125,7 @@ export default function Sidebar({ user }: { user: any }) {
           <li>
             <img src="/svg/linkedin-icon.svg" alt="LikedIn" />
             <span>LinkedIn</span>
-          </li>
+          </li> */}
         </ul>
       </section>
     </>

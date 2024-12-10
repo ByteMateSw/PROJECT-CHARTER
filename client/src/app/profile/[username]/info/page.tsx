@@ -55,17 +55,17 @@ export default function Page({ params }: { params: { username: string } }) {
       </section>
       </div>
       {
-        params.username === decoded?.user?.username ?
-        <span></span>
-          :
-        <div className="flex justify-end items-center w-full text-white font-extrabold text-lg">
-          {/* <button
-          className="bg-primary-blue h-12 px-4 rounded-3xl"
-          >
-            Contactar
-          </button> */}
-          <ContactModal contractorId={decoded?.user?.id} contractedId={user?.id}/>
-        </div>
+        // params.username === decoded?.user?.username ?
+        // <span></span>
+        //   :
+        // <div className="flex justify-end items-center w-full text-white font-extrabold text-lg">
+        //   {/* <button
+        //   className="bg-primary-blue h-12 px-4 rounded-3xl"
+        //   >
+        //     Contactar
+        //   </button> */}
+        //   <ContactModal contractorId={decoded?.user?.id} contractedId={user?.id}/>
+        // </div>
       }
     </div>
   );

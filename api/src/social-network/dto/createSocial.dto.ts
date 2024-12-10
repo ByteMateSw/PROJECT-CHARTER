@@ -3,10 +3,6 @@ import { IsString, IsOptional, IsNumber } from 'class-validator';
 export class CreateSocialNetworkDTO {
   @IsOptional()
   @IsString()
-  whatsapp?: string;
-
-  @IsOptional()
-  @IsString()
   instagram?: string;
 
   @IsOptional()

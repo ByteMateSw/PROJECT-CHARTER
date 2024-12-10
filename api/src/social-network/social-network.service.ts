@@ -17,7 +17,6 @@ export class SocialNetworkService {
       const socialData: Omit<SocialNetwork, 'id'> = {
         user: data.userId,
         facebook: data.facebook,
-        whatsapp: data.whatsapp,
         twitter: data.twitter,
         instagram: data.instagram,
         linkedin: data.linkedin,

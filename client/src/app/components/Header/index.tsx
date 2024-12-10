@@ -27,7 +27,7 @@ export default function Header() {
       async function getUserData(){
         if(decoded != undefined){
           try {
-            const response = await getUserByUsername(decoded.user.username)
+            const response = await getUserByEmail(decoded.user.email)
             setGetUser(response)
           } catch (error) {
             console.error(error)

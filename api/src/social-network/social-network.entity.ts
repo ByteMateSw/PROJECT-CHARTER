@@ -13,9 +13,6 @@ export class SocialNetwork {
   id: string;
 
   @Column({ nullable: true })
-  whatsapp: string;
-
-  @Column({ nullable: true })
   instagram: string;
 
   @Column({ nullable: true })

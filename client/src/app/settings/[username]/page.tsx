@@ -102,11 +102,22 @@ export default function Page({params}: { params: {username: string}}) {
   }, []);
 
   useEffect(() => {
-
+    
     const fetchSocialNetworks = async (id: number) => {
       const response = await getSocialNetworks(id)
       setSocialNet(response)
     }
+    
+    // const fetchUser = async () => {
+    //   try {
+    //     const response = await getUserByUsername(params.username)
+    //     setGetUser(response)
+    //     fetchSocialNetworks(response.id)
+    //   } catch (error) {
+    //     console.error(error)
+    //   }
+    // }
+    // fetchUser()
 
     async function getUserDataGoogle(){
       if(true){
@@ -131,6 +142,7 @@ export default function Page({params}: { params: {username: string}}) {
     } 
     getUserDataGoogle()
   },[session])
+
 
   const handleProvinceChange = async (selectedProvince: any) => {
     setProvince(selectedProvince);
@@ -170,9 +182,7 @@ export default function Page({params}: { params: {username: string}}) {
     }
   };
 
-  console.log(getUser)
-  console.log(decoded)
-  console.log(session)
+
   
 
   const handleUpdateUser = async () => {
@@ -223,8 +233,6 @@ export default function Page({params}: { params: {username: string}}) {
           ...(user.facebook && { facebook: user.facebook }),
           ...(user.linkedin && { linkedin: user.linkedin })
         }
-        console.log(updatedUserData)
-        console.log(Object.keys(updatedUserData).length)
 
         // Actualizar la información básica del usuario solo si todos los campos están llenos
         if (Object.keys(updatedUserData).length > 0) {
