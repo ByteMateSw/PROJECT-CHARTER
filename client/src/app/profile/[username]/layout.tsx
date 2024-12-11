@@ -74,7 +74,7 @@ export default function Page({
             } */}
           </div>
         </section>
-        <section className="flex w-full pb-8">
+        <section className="flex w-full">
           <Animate>{children}</Animate>
         </section>
       </div>

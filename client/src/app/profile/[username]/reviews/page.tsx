@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import { getAllReviews } from "@/app/api/review";
 import StarRating from '@/app/components/StarRating/StarRating'
 import AddReviewModal from "@/app/components/Dashboard/AddReviewModal";
+import Pagination from "@/app/components/pagination/Pagination";
 import { getUserByUsername, getUserByEmail } from "@/app/api/user";
 import { useUser } from "@/context/userContext";
 import { useSession } from "next-auth/react";
@@ -13,6 +14,9 @@ export default function Page({params}:{params: {username: string}}) {
   //const [reviews, setReviews] = useState<any>([])
   const [isMyProfile, setIsMyProfile] = useState<boolean>()
   const [userSession, setUserSession] = useState<any>()
+  const [reviews, setReviews] = useState([])
+  const [changePage, setChangePage] = useState<number>(1)
+  const [limit, setLimit] = useState<number>(1)
   const { data: session, status }: any = useSession();
   const [user, setUser] = useUser()
 
@@ -54,8 +58,15 @@ export default function Page({params}:{params: {username: string}}) {
       setIsMyProfile(false)
     }
 
+    setReviews(user.reviews)
   },[session, user])
 
+
+  const indexOfLastItem = changePage * 4
+  const indexOfFirstItem = indexOfLastItem - 4;
+  const currentItems = reviews.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPage = Math.ceil(reviews.length / 4)
 
   return (
     <section className="flex flex-col justify-center items-start p-4 w-full">
@@ -65,7 +76,7 @@ export default function Page({params}:{params: {username: string}}) {
       </div>
       {user?.reviews.length > 0 ?
       <article className="flex flex-wrap md:justify-start items-center pt-4 gap-4 w-full">
-        {user?.reviews?.map((review:any) => (
+        {currentItems.map((review:any) => (
         <div key={review.id} className="h-52 max-w-[22rem] rounded-[2.5rem] border border-secondary-gray p-4">
           <span className="inline-flex">
             <img
@@ -99,6 +110,9 @@ export default function Page({params}:{params: {username: string}}) {
           </p>
         </div>
         ))}
+      <div className="flex justify-center items-center w-full">
+        <Pagination currentPage={changePage} totalPages={totalPage} onPageChange={setChangePage}/>
+      </div>
       </article>
       :
       <h2>No hay opiniones</h2>
