@@ -57,12 +57,13 @@ export class UserService {
   async getUsersFilter(
     filter: UserFilter,
     pagination: UserPagination,
-  ): Promise<User[]> {
+  ): Promise<{ count: number; users: User[] }> {
     const { habilities, location } = filter;
     const { limit, page } = pagination;
     const query = this.userRepository.createQueryBuilder('user');
     query.leftJoinAndSelect('user.city', 'city');
     query.leftJoinAndSelect('user.experience', 'experience');
+    const usersCount = await this.userRepository.countBy({});
 
     if (habilities) {
       query.where('LOWER(user.habilities) LIKE LOWER(:habilities)', {
@@ -74,7 +75,10 @@ export class UserService {
       query.andWhere('city.name = :name', { name: location });
     }
     const users = await query.skip(page).take(limit).getMany();
-    return users;
+    return {
+      count: usersCount,
+      users,
+    };
   }
 
   async getUserBy({
