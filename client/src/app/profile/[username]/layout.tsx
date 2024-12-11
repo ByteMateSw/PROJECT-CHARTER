@@ -30,7 +30,6 @@ export default function Page({
     });
   }, []);
 
-  //console.log(user);
   
 
   return (

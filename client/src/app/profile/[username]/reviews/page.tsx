@@ -56,8 +56,6 @@ export default function Page({params}:{params: {username: string}}) {
 
   },[session, user])
 
-  console.log(user)
-  console.log(userSession)
 
   return (
     <section className="flex flex-col justify-center items-start p-4 w-full">

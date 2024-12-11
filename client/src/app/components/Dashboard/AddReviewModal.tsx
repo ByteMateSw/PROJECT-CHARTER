@@ -23,9 +23,6 @@ function AddReviewModal({userSession}:{userSession:any}) {
     }
     }
 
-  console.log(selectedStars)
-  console.log(user)
-  console.log(userSession)
  
   
   let optionsPost: {id: number | string, name: string}[] = []

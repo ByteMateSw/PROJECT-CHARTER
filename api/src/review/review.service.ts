@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -32,14 +33,30 @@ export class ReviewService {
     userId: number,
     contractorId: number,
   ): Promise<Review> {
-    const newReview = this.reviewRepository.create({
-      score: createReview.score,
-      description: createReview.description,
-      hiring: createReview.hiring,
-      user: { id: userId },
-      contractor: { id: contractorId },
-    });
-    return await this.reviewRepository.save(newReview);
+    let newScore: number;
+    let totalScore: number = 0;
+    try {
+      //const user = await this.userService.getUserById(userId);
+      const reviews = await this.reviewRepository.findBy({
+        user: { id: userId },
+      });
+      for (let i = 0; i < reviews.length; i++) {
+        totalScore = parseFloat(reviews[i].score.toString()) + totalScore;
+      }
+      newScore = (totalScore + createReview.score) / (reviews.length + 1);
+    } catch (error) {
+      throw new BadRequestException(error);
+    } finally {
+      const newReview = this.reviewRepository.create({
+        score: createReview.score,
+        description: createReview.description,
+        hiring: createReview.hiring,
+        user: { id: userId },
+        contractor: { id: contractorId },
+      });
+      await this.userService.updateUser(userId, { score: newScore });
+      return await this.reviewRepository.save(newReview);
+    }
   }
 
   /**

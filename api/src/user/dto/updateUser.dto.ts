@@ -4,6 +4,7 @@ import {
   IsEmail,
   IsPhoneNumber,
   IsBoolean,
+  IsNumber,
 } from 'class-validator';
 
 export class UpdateUserDto {
@@ -50,6 +51,10 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString()
   habilities?: string;
+
+  @IsNumber()
+  @IsOptional()
+  score?: number;
 }
 
 interface CustomFile extends File {
