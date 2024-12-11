@@ -182,11 +182,11 @@ export class PostService {
     location: string,
     page: number,
     limit: number,
-  ): Promise<Post[]> {
+  ): Promise<{ count: number; posts: Post[] }> {
     const queryPost = this.postRepository.createQueryBuilder('post');
     queryPost.leftJoinAndSelect('post.user', 'user');
     queryPost.leftJoinAndSelect('post.city', 'city');
-    console.log(location);
+    const postCount = await this.postRepository.count();
 
     if (habilities) {
       queryPost.where('LOWER(post.title) LIKE LOWER(:title)', {
@@ -202,7 +202,10 @@ export class PostService {
     //   .andWhere('user.isDeleted = :isDeleted', { isDeleted: false })
     //   .orderBy('ts_rank("searchVector", websearch_to_tsquery(:query))', 'DESC');
     const posts = await queryPost.skip(page).take(limit).getMany();
-    return posts;
+    return {
+      count: postCount,
+      posts,
+    };
   }
 
   async subscribePost(postId: number, userId: number) {

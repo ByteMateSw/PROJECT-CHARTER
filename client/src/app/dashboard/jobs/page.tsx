@@ -5,6 +5,7 @@ import NanoClamp from "nanoclamp";
 import Image from "next/image";
 import Link from "next/link";
 import JobsModal from "@/app/components/Dashboard/JobsModal";
+import Pagination from "@/app/components/pagination/Pagination";
 import AddPostModal from '@/app/components/Dashboard/AddPostModal';
 import { dateDifference } from '@/utils/functions'
 import { useFilter } from "@/context/searchContext";
@@ -18,27 +19,33 @@ export default function JobsPage() {
 
   const [posts, setPosts] = useState<any>([])
   const [page, setPage] = useState<number>(0)
-  const [limit, setLimit] = useState<number>(9)
+  const [changePage, setChangePage] = useState<number>(1)
+  const [count, setCount] = useState<number>(0)
+  const limit: number = 6
 
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const response = await searchPost(page, limit, search, city.value)
-        setPosts(response)
+        setPosts(response.posts)
+        setCount(Math.ceil(response.count / limit))
       } catch (error) {
         console.error('Error fetching posts:', error)
       }
     }
-
+    setPage((changePage - 1)*limit)
     fetchPosts()
-  },[page, limit, search, city])
+  },[page, limit, search, city, changePage])
 
 
   return (
     <>
-    <div className="absolute right-1 top-1 h-12">
+    <div className="absolute top-1 h-12 w-full">
+      <div className="flex justify-between items-center px-4">
+      <Pagination totalPages={count} currentPage={changePage} onPageChange={setChangePage}/>
       <AddPostModal/>
+      </div>
     </div>
     <article className="h-full w-full grid grid-cols-2 grid-flow-row sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 mt-14 overflow-auto">
       {posts.map((post: any, index: number) => {

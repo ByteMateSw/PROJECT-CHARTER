@@ -12,7 +12,8 @@ export default function HirePage() {
   const [users, setUsers] = useState<any[]>([]);
   const [page, setPage] = useState<number>(0); // Página inicial
   const [changePage, setChangePage] = useState<number>(1)
-  const limit: number = 3 // Límite de usuarios por página
+  const [count, setCount] = useState<number>(0)
+  const limit: number = 6 // Límite de usuarios por página
 
 
 
@@ -25,7 +26,8 @@ export default function HirePage() {
       try {
         if (city === undefined) setCity('')
         const userData = await getUsersFilter(page, limit, search, city);
-        setUsers(userData);
+        setUsers(userData.users);
+        setCount(Math.ceil(userData.count / limit))
       } catch (error) {
         console.error('Error fetching users:', error);
       }
@@ -34,13 +36,11 @@ export default function HirePage() {
     fetchUsers();
   }, [page, limit, search, city, changePage]); // Re-fetch users when page or limit changes
 
-//console.log(changePage - 1)
-console.log(page)
 
   return (
     <>
     <div className="absolute left-7 top-1 h-12">
-      <Pagination currentPage={changePage} totalPages={10} onPageChange={setChangePage}/>
+      <Pagination currentPage={changePage} totalPages={count} onPageChange={setChangePage}/>
     </div>
     <section className="grid grid-flow-row lg:grid-cols-2 grid-cols-1 overflow-auto w-full h-full mt-14 gap-6 p-6">
       {users.map((profile: any, index: number) => {
