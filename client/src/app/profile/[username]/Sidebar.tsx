@@ -107,7 +107,7 @@ export default function Sidebar({ user }: { user: any }) {
                 <span>{label}</span>
               </li>
               :
-              <span></span>
+              <span key={name}></span>
             ))
           }
           {/* <li>
