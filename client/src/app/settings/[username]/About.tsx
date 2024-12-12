@@ -55,7 +55,6 @@ export default function About({
     to: { opacity: 1, transform: "translateY(0)" },
   });
 
-console.log(userData)
   return (
     <>
       <section className="flex flex-col gap-6 w-3/4 pb-8 pt-20">

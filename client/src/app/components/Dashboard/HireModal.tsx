@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import React from "react";
+import StarRating from "../StarRating/StarRating";
 
 export default function HireModal({
   user,
@@ -9,6 +10,7 @@ export default function HireModal({
   user: any;
   index: number;
 }) {
+  console.log(user)
   return (
     <>
       <label
@@ -29,7 +31,7 @@ export default function HireModal({
               className="w-full h-36 object-cover rounded-t-[2rem]"
             />
             <img
-              src={user.photo}
+              src={user.photo ? user.photo : 'https://img.freepik.com/vector-premium/icono-perfil-avatar-predeterminado-imagen-usuario-redes-sociales-icono-avatar-gris-silueta-perfil-blanco-ilustracion-vectorial_561158-3383.jpg'}
               alt="imagen de perfil"
               className="h-36 w-36 rounded-full flex justify-center items-center flex-col -mt-20 space-x-4 bg-secondary-gray border-2 border-secondary-white select-none"
             />
@@ -58,7 +60,8 @@ export default function HireModal({
               ))}
             </p>
             <span className="w-full inline-flex items-center justify-center">
-              {[0, 1, 2, 3, 4].map((item, index) => {
+              <StarRating size={20} starRating={user.score} key={user.id}/>
+              {/* {[0, 1, 2, 3, 4].map((item, index) => {
                 return (
                   <React.Fragment key={index}>
                     <img
@@ -68,7 +71,7 @@ export default function HireModal({
                     />
                   </React.Fragment>
                 );
-              })}
+              })} */}
               <p className="ml-2 text-secondary-black text-xs font-bold">
                 {user.review}
               </p>
@@ -93,13 +96,13 @@ export default function HireModal({
               possimus dolorum ut minima! Optio, ex.
             </p>
           </div>
-          <ul className="inline-flex py-4 justify-center items-center gap-x-10">
+          {/* <ul className="inline-flex py-4 justify-center items-center gap-x-10">
             <li>1</li>
             <li>2</li>
             <li>3</li>
             <li>4</li>
             <li>5</li>
-          </ul>
+          </ul> */}
           <div className="flex justify-center items-center gap-x-6">
             <label
               htmlFor={`modal-${index}`}
