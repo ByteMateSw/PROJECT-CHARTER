@@ -10,7 +10,7 @@ export default function HireModal({
   user: any;
   index: number;
 }) {
-  console.log(user)
+ 
   return (
     <>
       <label

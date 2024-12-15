@@ -12,7 +12,6 @@ export default function BestProfiles() {
       })
   }, [])
 
-  console.log(profiles)
 
   return (
     <section className="flex items-center justify-center flex-col w-full mt-5">

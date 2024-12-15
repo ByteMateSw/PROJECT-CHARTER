@@ -12,7 +12,7 @@ import { jwtDecode } from "jwt-decode";
 export default function Page({params}:{params: {username: string}}) {
 
   //const [reviews, setReviews] = useState<any>([])
-  const [isMyProfile, setIsMyProfile] = useState<boolean>()
+  const [isMyProfile, setIsMyProfile] = useState<boolean>(true)
   const [userSession, setUserSession] = useState<any>()
   const [reviews, setReviews] = useState([])
   const [changePage, setChangePage] = useState<number>(1)
@@ -59,7 +59,8 @@ export default function Page({params}:{params: {username: string}}) {
     }
 
     setReviews(user.reviews)
-  },[session, user])
+  },[user])
+
 
 
   const indexOfLastItem = changePage * 4
