@@ -11,7 +11,6 @@ export default function HireModal({
   index: number;
 }) {
 
-  console.log(user)
  
   return (
     <>

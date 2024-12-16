@@ -1,16 +1,20 @@
 import React from "react"
 import Link from "next/link";
 
-export default function AplicantsModal({index, applicants}:{index: number, applicants: any}) {
+export default function AplicantsModal({index, applicants, sameUser}:{index: number, applicants: any, sameUser: boolean}) {
 
     return(
         <div>
+          {sameUser ?
         <label
           className="btn btn-primary rounded-full mt-1 mr-4"
           htmlFor={`modal-${index}`}
         >
           Aplicantes
         </label>
+          :
+          <span></span>
+          }
         <input className="modal-state" id={`modal-${index}`} type="checkbox" />
         <section className="modal">
           <label className="modal-overlay" id={`modal-${index}`}></label>

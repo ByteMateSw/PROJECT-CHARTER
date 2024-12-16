@@ -1,14 +1,42 @@
 'use client'
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import { useUser } from "../../../../context/userContext";
 import { getPostsByUserName } from '../../../api/post/index'
 import NanoClamp from "nanoclamp";
 import { dateDifference } from '../../../../utils/functions'
 import ApplicantsModal from "../../../components/Dashboard/ApplicantsModal";
+import { useSession } from "next-auth/react";
+import { jwtDecode } from "jwt-decode";
 
 export default function Page({ params }: { params: { username: string } }) {
 
     const [user, setUser] = useUser();
+    const { data: session, status }: any = useSession();
+    const [isMyProfile, setIsMyProfile] = useState<boolean>(true)
+
+
+    let decoded: any;
+    if (typeof session?.user?.access_token === "string") {
+      decoded = jwtDecode(session?.user?.access_token);
+    }
+
+    useEffect(() => {
+      if (decoded != undefined) {
+        if (decoded?.user.email === user?.email) {
+          setIsMyProfile(true)
+          return
+        }
+        setIsMyProfile(false)
+      } else {
+        if (session?.user?.email === user?.email) {
+          setIsMyProfile(true)
+          return
+        }
+
+        setIsMyProfile(false)
+      }
+    },[user])
+
 
     return (
         <section className=" justify-center items-start p-4 w-fullh-full w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-auto">
@@ -47,7 +75,7 @@ export default function Page({ params }: { params: { username: string } }) {
                 Ver detalles
               </Link> */}
               {/* <JobsModal post={post} index={index}/> */}
-              <ApplicantsModal index={index} applicants={post.subscribers}/>
+              <ApplicantsModal index={index} applicants={post.subscribers} sameUser={true}/>
             </div>
           </div>
         );
