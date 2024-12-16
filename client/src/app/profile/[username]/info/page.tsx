@@ -42,12 +42,38 @@ export default function Page({ params }: { params: { username: string } }) {
       </section>
       <section className="flex flex-col justify-center items-start w-full p-4">
       <h2 className="text-xl font-bold pt-2">Experiencia</h2>
-        {exp?.data.map(({company, title}:{company: string, title: string}) => (
-          <div key={company}>
-          <h3 className="text-base font-semibold">{title}</h3>
-          <span className="text-sm font-normal text-secondary-gray">{company}</span>
+        {exp?.data.map(({company, title, endDate, startDate}:{company: string, title: string, endDate: string, startDate: string}) => {
+          const inicio = new Date(startDate)
+          const final = new Date(endDate)
+          return (
+          <div className="my-1" key={company}>
+            <h3 className="text-base font-semibold">{title}</h3>
+            <span className="text-sm font-normal text-secondary-gray">{company}</span>
+            <div className="flex flex-col">
+              <span className="text-sm font-normal">Inicio: {
+                <span className="text-sm font-normal text-secondary-gray">{
+                  inicio.toLocaleDateString('es-ES', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                })
+                  }</span>
+                }
+              </span>
+              <span className="text-sm font-normal">Hasta: {
+                <span className="text-sm font-normal text-secondary-gray">{
+                  final.toLocaleDateString('es-ES', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                })
+                  }</span>
+              }
+              </span>
+            </div>
           </div>
-        ))}
+          )
+        })}
       </section>
       <section className="flex flex-col justify-center items-start w-full p-4">
         <h2 className="text-xl font-bold pt-2">Habilidades y Conocimiento</h2>
