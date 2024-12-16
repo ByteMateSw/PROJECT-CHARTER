@@ -10,6 +10,8 @@ export default function HireModal({
   user: any;
   index: number;
 }) {
+
+  console.log(user)
  
   return (
     <>
@@ -25,11 +27,15 @@ export default function HireModal({
         <article className="modal-content h-full w-[32rem] flex flex-col gap-5 p-0 rounded-[2rem] minimal-scrollbar">
           {/* Foto de perfíl */}
           <div className="flex flex-col w-full justify-center items-center">
-            <img
-              src={user.backgroundPhoto}
-              alt="Imagen de fondo"
-              className="w-full h-36 object-cover rounded-t-[2rem]"
-            />
+            {user.backgrounPhoto ?
+              <img
+                src={user.backgroundPhoto}
+                alt="Imagen de fondo"
+                className="w-full h-36 object-cover rounded-t-[2rem]"
+              /> 
+              :
+              <div className="w-full h-36 object-cover rounded-t-2xl"></div>
+            }
             <img
               src={user.photo ? user.photo : 'https://img.freepik.com/vector-premium/icono-perfil-avatar-predeterminado-imagen-usuario-redes-sociales-icono-avatar-gris-silueta-perfil-blanco-ilustracion-vectorial_561158-3383.jpg'}
               alt="imagen de perfil"
@@ -86,7 +92,7 @@ export default function HireModal({
             </p>
           </div>
           <div className="pt-2 px-9 text-justify">
-            <h2 className="text-secondary-black text-2xl font-bold">
+            {/* <h2 className="text-secondary-black text-2xl font-bold">
               Servicios
             </h2>
             <p>
@@ -94,7 +100,7 @@ export default function HireModal({
               cupiditate modi deserunt dolor laudantium perspiciatis? Qui
               reiciendis at omnis sed architecto quia nihil, consequatur
               possimus dolorum ut minima! Optio, ex.
-            </p>
+            </p> */}
           </div>
           {/* <ul className="inline-flex py-4 justify-center items-center gap-x-10">
             <li>1</li>
@@ -103,7 +109,7 @@ export default function HireModal({
             <li>4</li>
             <li>5</li>
           </ul> */}
-          <div className="flex justify-center items-center gap-x-6">
+          <div className="flex fixed bottom-8 left-0 right-0 justify-center items-center gap-x-6">
             <label
               htmlFor={`modal-${index}`}
               className="btn bg-primary-blue text-secondary-white rounded-full"

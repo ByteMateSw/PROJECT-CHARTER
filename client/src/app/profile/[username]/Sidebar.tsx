@@ -81,13 +81,13 @@ export default function Sidebar({ user }: { user: any }) {
           </p>
         </span>
       </section>
-      <section className="flex flex-col justify-center items-start w-full p-4">
+      {/* <section className="flex flex-col justify-center items-start w-full p-4">
         <h2 className="text-xl font-bold pt-2">Servicios</h2>
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic nostrum
         qui ad animi dolor, et nisi minus voluptatem fugit at modi temporibus
         optio exercitationem? Deleniti quibusdam officiis sapiente odit
         nesciunt?
-      </section>
+      </section> */}
       <section className="flex flex-col justify-end items-start w-full p-4">
         <h2 className="text-xl font-bold pt-2">Contacto</h2>
         <ul className="flex w-full flex-col justify-center items-center gap-4 [&>li>img]:h-8 [&>li>img]:mr-2 [&>li]:cursor-pointer [&>li]:border [&>li]:border-secondary-black [&>li]:w-full [&>li]:flex [&>li]:items-center [&>li]:justify-center [&>li]:rounded-full [&>li]:px-4 [&>li]:py-2">
