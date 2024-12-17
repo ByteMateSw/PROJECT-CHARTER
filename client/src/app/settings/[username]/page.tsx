@@ -149,7 +149,7 @@ export default function Page({params}: { params: {username: string}}) {
     setCity(null); // Resetea la ciudad seleccionada cuando cambia la provincia
 
     if (selectedProvince) {
-      const newCities = await getCities(selectedProvince.value);
+      const newCities = await getCities(selectedProvince.label);
       setComboBoxOptions((prevOptions: any) => ({
         ...prevOptions,
         cities: newCities,
@@ -200,7 +200,7 @@ export default function Page({params}: { params: {username: string}}) {
           user.instagram || 
           user.twitter ||
           user.facebook || 
-          user.linkedin ) && (
+          user.linkedin) && (
           user.firstName.length > 0 ||
           user.lastName.length > 0 ||
           user.username.length > 0 ||
@@ -233,7 +233,6 @@ export default function Page({params}: { params: {username: string}}) {
           ...(user.facebook && { facebook: user.facebook }),
           ...(user.linkedin && { linkedin: user.linkedin })
         }
-
         // Actualizar la información básica del usuario solo si todos los campos están llenos
         if (Object.keys(updatedUserData).length > 0) {
           await updateUser(getUser?.id, updatedUserData);
@@ -242,7 +241,6 @@ export default function Page({params}: { params: {username: string}}) {
         // Actualizar la informacion de las redes sociales del usuario
         if(socialNet) {
           await updateSocialNetworks(getUser?.id, updateSocialNetworkData)
-          debugger
         }
         else await createSocialNetwork({
           userId: getUser.id,
@@ -251,8 +249,8 @@ export default function Page({params}: { params: {username: string}}) {
       }
 
       // Verificar si hubo cambios en la ciudad y actualizar la relación con el usuario
-      if (city && city !== city) {
-        await updateCityUserByName(city.name, getUser.id);
+      if (city != null) {
+        await updateUser(getUser.id, {city: city.label});
       }
 
       if (user.experience.length > 0) {
@@ -359,6 +357,8 @@ export default function Page({params}: { params: {username: string}}) {
     setHasChanges(true);
     api.start({ transform: "translateY(0%)", opacity: 1 });
   };
+console.log(user)
+console.log(city != null)
 
   if (status === "loading") {
     return (

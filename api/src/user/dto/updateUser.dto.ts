@@ -6,6 +6,7 @@ import {
   IsBoolean,
   IsNumber,
 } from 'class-validator';
+import { City } from 'src/city/city.entity';
 
 export class UpdateUserDto {
   @IsOptional()
@@ -55,6 +56,9 @@ export class UpdateUserDto {
   @IsNumber()
   @IsOptional()
   score?: number;
+
+  @IsOptional()
+  city?: City;
 }
 
 interface CustomFile extends File {

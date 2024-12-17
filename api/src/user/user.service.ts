@@ -20,12 +20,14 @@ import { UserPagination } from './dto/userpagination.dto';
 import { UserRepository } from './repository/user.repository';
 import { S3Service } from 'src/storage/s3.service';
 import 'dotenv/config';
+import { City } from 'src/city/city.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: UserRepository,
     @InjectRepository(Role) private roleRepository: Repository<Role>,
+    @InjectRepository(City) private cityRepository: Repository<City>,
     private s3Service: S3Service,
   ) {}
 
@@ -207,6 +209,15 @@ export class UserService {
     }
 
     return await this.userRepository.save({ ...user, ...updateUser });
+  }
+
+  async updateCity(userId: number, cityId: number) {
+    try {
+      const city = await this.cityRepository.findOneBy({ id: cityId });
+      await this.userRepository.update(userId, { city });
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
   }
 
   async getRole(id: number): Promise<string> {

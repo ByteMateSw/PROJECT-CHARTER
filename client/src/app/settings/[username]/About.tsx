@@ -55,6 +55,10 @@ export default function About({
     to: { opacity: 1, transform: "translateY(0)" },
   });
 
+  console.log(comboBoxOptions)
+  console.log(province)
+  console.log(city)
+
   return (
     <>
       <section className="flex flex-col gap-6 w-3/4 pb-8 pt-20">

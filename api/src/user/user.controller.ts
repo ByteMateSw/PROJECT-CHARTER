@@ -170,6 +170,11 @@ export class UserController {
     return await this.userService.updateUser(id, updateUserDto);
   }
 
+  @Patch('update-city/:id')
+  async updateCity(@Param('id') id: number, @Param('cityId') cityId: number) {
+    return await this.userService.updateCity(id, cityId);
+  }
+
   @Get('workers')
   async getAllWorkers() {
     return this.userService.getAllWorkers();
