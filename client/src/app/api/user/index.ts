@@ -132,3 +132,13 @@ export const getUsersFilter = async (page: number, limit: number, habilities: st
     console.error(error)
   }
 }
+
+export const updateCity = async (userId: number, cityId: number) => {
+  try {
+    const response = await axios.patch(`
+      ${process.env.NEXT_PUBLIC_BACKEND_URL}/users/update-city/${userId}?cityId=${cityId}`)
+      return response.data;
+  } catch (error) {
+    console.error(error)
+  }
+}

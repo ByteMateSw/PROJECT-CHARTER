@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { getCities, getProvinces, updateCityUserByName } from "../../api/locations";
 import { StylesConfig } from "react-select";
 import { getProfessions } from "../../api/office";
-import { getUserByUsername, updateUser, getUserByEmail } from "../../api/user";
+import { getUserByUsername, updateUser, getUserByEmail, updateCity } from "../../api/user";
 import { createExperience } from "@/app/api/experience";
 import { updateSocialNetworks, getSocialNetworks, createSocialNetwork } from "@/app/api/social-networks";
 import SocialMedia from "./SocialMedia";
@@ -250,7 +250,7 @@ export default function Page({params}: { params: {username: string}}) {
 
       // Verificar si hubo cambios en la ciudad y actualizar la relación con el usuario
       if (city != null) {
-        await updateUser(getUser.id, {city: city.label});
+        await updateCity(getUser.id, city.value);
       }
 
       if (user.experience.length > 0) {

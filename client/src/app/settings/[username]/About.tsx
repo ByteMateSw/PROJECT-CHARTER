@@ -57,7 +57,7 @@ export default function About({
 
   console.log(comboBoxOptions)
   console.log(province)
-  console.log(city)
+  console.log(typeof city.value)
 
   return (
     <>

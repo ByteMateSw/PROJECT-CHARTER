@@ -171,7 +171,7 @@ export class UserController {
   }
 
   @Patch('update-city/:id')
-  async updateCity(@Param('id') id: number, @Param('cityId') cityId: number) {
+  async updateCity(@Param('id') id: number, @Query('cityId') cityId: number) {
     return await this.userService.updateCity(id, cityId);
   }
 
