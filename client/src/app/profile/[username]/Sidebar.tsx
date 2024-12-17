@@ -58,7 +58,7 @@ export default function Sidebar({ user }: { user: any }) {
             className="inline h-5 w-5 mr-1"
           />
           <p className="text-secondary-gray text-xs font-bold">
-            {user.city.name || "Sin Configurar"}
+            {user.city ? user.city.name : "Sin Configurar"}
           </p>
         </span>
         <div className="flex text-secondary-gray text-xs text-center font-normal my-2 gap-2">
