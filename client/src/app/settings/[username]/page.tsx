@@ -357,8 +357,6 @@ export default function Page({params}: { params: {username: string}}) {
     setHasChanges(true);
     api.start({ transform: "translateY(0%)", opacity: 1 });
   };
-console.log(user)
-console.log(city != null)
 
   if (status === "loading") {
     return (

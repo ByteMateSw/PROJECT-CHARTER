@@ -55,9 +55,6 @@ export default function About({
     to: { opacity: 1, transform: "translateY(0)" },
   });
 
-  console.log(comboBoxOptions)
-  console.log(province)
-  console.log(typeof city.value)
 
   return (
     <>
