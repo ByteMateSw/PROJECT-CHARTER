@@ -53,7 +53,7 @@ export default function HireModal({
                 className="inline h-5 w-5 mr-1"
               />
               <p className="text-secondary-black text-xs font-bold">
-                {user.city}
+                {user.city? user.city.name : ''}
               </p>
             </span>
             <p className="text-secondary-gray text-center text-base font-semibold my-2">

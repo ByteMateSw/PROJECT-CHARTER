@@ -36,7 +36,8 @@ export default function HirePage() {
     fetchUsers();
   }, [page, limit, search, city, changePage]); // Re-fetch users when page or limit changes
 
-
+  console.log(users)
+  console.log(page)
   return (
     <>
     <div className="absolute left-7 top-1 h-12">
@@ -71,7 +72,7 @@ export default function HirePage() {
                   alt="image"
                   className="inline h-5 w-5 mr-1"
                 />
-                <p className="text-secondary-black text-xs font-bold">{profile.city}</p>
+                <p className="text-secondary-black text-xs font-bold">{profile.city ? profile.city.name : ""}</p>
                 <img
                   src="/svg/star.svg"
                   alt="image"
