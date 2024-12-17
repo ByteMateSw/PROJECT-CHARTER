@@ -30,7 +30,6 @@ export default function Page({
     });
   }, []);
 
-  console.log(user)
 
   return (
     <div className="h-screen grid grid-rows-layout grid-cols-3 gap-x-4 pb-4 md:px-4">
