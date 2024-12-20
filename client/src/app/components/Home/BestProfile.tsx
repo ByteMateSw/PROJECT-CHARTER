@@ -23,8 +23,9 @@ export default function BestProfiles() {
         {profiles.map((profile:any) => (
           <Link 
           href={`/profile/${profile.username}/info`}
+          key={profile.firstName}
           >
-          <figure className="h-[200px] w-[200px] transform transition duration-300 ease-in-out cursor-pointer hover:scale-105" key={profile.firstName}>
+          <figure className="h-[200px] w-[200px] transform transition duration-300 ease-in-out cursor-pointer hover:scale-105" >
             <img
               src={profile.photo ? profile.photo : 'https://img.freepik.com/vector-premium/icono-perfil-avatar-predeterminado-imagen-usuario-redes-sociales-icono-avatar-gris-silueta-perfil-blanco-ilustracion-vectorial_561158-3383.jpg'}
               alt={profile.firstName}
