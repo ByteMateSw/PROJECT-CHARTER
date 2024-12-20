@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { getUserByScore } from "@/app/api/user";
 import StarRating from "../StarRating/StarRating";
 
@@ -20,7 +21,10 @@ export default function BestProfiles() {
       </h1>
       <div className="flex items-center justify-around w-full pt-12">
         {profiles.map((profile:any) => (
-          <figure className="h-[200px] w-[200px]" key={profile.firstName}>
+          <Link 
+          href={`/profile/${profile.username}/info`}
+          >
+          <figure className="h-[200px] w-[200px] transform transition duration-300 ease-in-out cursor-pointer hover:scale-105" key={profile.firstName}>
             <img
               src={profile.photo ? profile.photo : 'https://img.freepik.com/vector-premium/icono-perfil-avatar-predeterminado-imagen-usuario-redes-sociales-icono-avatar-gris-silueta-perfil-blanco-ilustracion-vectorial_561158-3383.jpg'}
               alt={profile.firstName}
@@ -38,6 +42,7 @@ export default function BestProfiles() {
               </article>
             </div>
           </figure>
+          </Link>
         ))}
       </div>
     </section>
