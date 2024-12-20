@@ -1,3 +1,4 @@
+import { useState } from "react";
 import InputField from "@/app/components/auth/register/InputField";
 import { Field, User, HandleChange, OnClickFunction } from "./interfaces";
 import GoogleOauth from "../googleOauth";
@@ -15,6 +16,10 @@ export default function Form1({
   handleChange: HandleChange;
   onClickFunction: OnClickFunction;
 }) {
+
+  const [check, setcheck] = useState<boolean>(false)
+
+  console.log(check)
   return (
     <>
       <section className="flex flex-wrap w-full justify-center">
@@ -41,6 +46,10 @@ export default function Form1({
       </section>
 
       <div className="w-full flex flex-col justify-center my-2">
+        <div className="flex justify-center gap-1">
+          <input type="checkbox" checked={check} onChange={() => setcheck(!check)}/>
+          <label htmlFor="">Acepto los términos y condiciones</label>
+        </div>
         <div className="text-red-500 w-full flex flex-col items-center justify-center mb-4">
           {errorMessage && 
 
@@ -55,15 +64,19 @@ export default function Form1({
         <button
           id="submit"
           type="submit"
-          className=" w-full h-12 bg-primary-blue rounded-3xl text-secondary-white text-xl mb-2 hover:scale-105 duration-150"
+          className={check ? 
+            "w-full h-12 bg-primary-blue rounded-3xl text-secondary-white text-xl mb-2 hover:scale-105 duration-150"
+            : "w-full h-12 bg-primary-blue rounded-3xl text-secondary-white text-xl mb-2 opacity-35"
+          }
           onClick={onClickFunction}
+          disabled={!check}
         >
           Registrarse
         </button>
       </div>
       <div className="divider divider-horizontal">o</div>
       {/* <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID as string}> */}
-        <GoogleOauth check={false}/>
+        <GoogleOauth check={check}/>
       {/* </GoogleOAuthProvider> */}
     </>
   );

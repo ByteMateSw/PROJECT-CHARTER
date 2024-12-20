@@ -69,11 +69,16 @@ export default function Page({params}:{params: {username: string}}) {
 
   const totalPage = Math.ceil(reviews.length / 4)
 
+
   return (
     <section className="flex flex-col justify-center items-start p-4 w-full">
       <div className="flex justify-between items-center w-full">
       <h2 className="text-xl font-bold ">Opiniones</h2>
-      {isMyProfile ? <span></span> : <AddReviewModal userSession={userSession}/>}
+      {session ? 
+        isMyProfile ? <span></span> : <AddReviewModal userSession={userSession}/>
+      :
+      <span></span>
+    }
       </div>
       {user?.reviews.length > 0 ?
       <article className="flex flex-wrap md:justify-start items-center pt-4 gap-4 w-full">
