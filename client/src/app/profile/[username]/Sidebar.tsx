@@ -42,7 +42,7 @@ export default function Sidebar({ user }: { user: any }) {
       <section className="flex flex-col justify-center items-center w-full md:p-4">
         <img
           className="block md:hidden h-24 w-full"
-          src="/img/bg-image.jpg"
+          src={user.backgroundPhoto ? user.backgroundPhoto : "/img/bg-image.jpg"}
           alt="Fondo de Perfil"
         />
         <img
