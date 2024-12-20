@@ -19,7 +19,6 @@ export default function Form1({
 
   const [check, setcheck] = useState<boolean>(false)
 
-  console.log(check)
   return (
     <>
       <section className="flex flex-wrap w-full justify-center">
