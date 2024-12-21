@@ -47,7 +47,7 @@ export default function Form1({
       <div className="w-full flex flex-col justify-center my-2">
         <div className="flex justify-center gap-1">
           <input type="checkbox" checked={check} onChange={() => setcheck(!check)}/>
-          <label htmlFor="">Acepto los términos y condiciones</label>
+          <label htmlFor="">Acepto los <a href="" className="text-blue-700">términos y condiciones</a></label>
         </div>
         <div className="text-red-500 w-full flex flex-col items-center justify-center mb-4">
           {errorMessage && 

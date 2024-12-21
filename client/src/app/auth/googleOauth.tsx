@@ -4,16 +4,6 @@ import { signIn } from 'next-auth/react';
 
 export default function GoogleOauth({check}: {check: boolean} ) {
 
-  
-  //console.log(session)
-
-
-  // const login = useGoogleLogin({
-  //   onSuccess: tokenResponse => console.log(tokenResponse),
-  // });
-  // const register = useGoogleLogin({
-  //   onSuccess: tokenResponse => console.log(tokenResponse),
-  // });
 
   return (
     <div className="my-2">

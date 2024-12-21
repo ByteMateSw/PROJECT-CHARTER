@@ -126,7 +126,7 @@ export default function LoginPage() {
           </button>
         </div>
         <div className="divider divider-horizontal">o</div>
-        <GoogleOauth check={false}/>
+        <GoogleOauth check={true}/>
       </article>
 
       <picture className="hidden md:flex justify-around ">
