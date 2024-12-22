@@ -1,6 +1,6 @@
 export default function page() {
   return (
-    <section className="flex flex-col justify-center items-start p-4 w-full">
+    <section className="flex md:h-full min-h-72  items-start p-4 w-full">
 
       <h2 className="text-xl font-bold pt-2">En progreso...</h2>
       {/* <h2 className="text-xl font-bold pt-2">Galería</h2>

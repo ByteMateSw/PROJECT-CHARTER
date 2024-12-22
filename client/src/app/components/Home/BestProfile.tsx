@@ -21,29 +21,29 @@ export default function BestProfiles() {
       </h1>
       <div className="flex items-center justify-around w-full pt-12">
         {profiles.map((profile:any) => (
-          <Link 
-          href={`/profile/${profile.username}/info`}
-          key={profile.firstName}
-          >
-          <figure className="h-[200px] w-[200px] transform transition duration-300 ease-in-out cursor-pointer hover:scale-105" >
+          <figure className="h-[200px] w-[200px] transform transition duration-300 ease-in-out cursor-pointer hover:scale-105" key={profile.username}>
+            <Link 
+            href={`/profile/${profile.username}/info`}
+            key={profile.firstName}
+            >
             <img
               src={profile.photo ? profile.photo : 'https://img.freepik.com/vector-premium/icono-perfil-avatar-predeterminado-imagen-usuario-redes-sociales-icono-avatar-gris-silueta-perfil-blanco-ilustracion-vectorial_561158-3383.jpg'}
               alt={profile.firstName}
               className="md:h-[200px] md:w-h-[200px] h-[100px] w-h-[100px] rounded-full text-secondary-gray aspect-square"
             />
             <div className="flex-col justify-center items-center flex pt-4">
-              <article className="flex-col justify-center items-center flex text-center">
+              <article className="flex-col m-2 justify-center items-center flex text-center">
                 <h2 className="text-xl text-secondary-black font-bold">
                   {profile.firstName}
                 </h2>
-                <StarRating starRating={profile.score} size={18} key={profile.firstName}/>
-                <h2 className="text-secondary-gray text-base font-semibold">
+                <StarRating starRating={profile.score} size={17} key={profile.firstName}/>
+                <h2 className="text-secondary-gray md:text-base text-sm font-semibold overflow-visible">
                   <p>{profile.habilities}</p>
                 </h2>
               </article>
             </div>
-          </figure>
           </Link>
+          </figure>
         ))}
       </div>
     </section>

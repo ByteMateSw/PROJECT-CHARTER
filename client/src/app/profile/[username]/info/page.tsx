@@ -35,7 +35,7 @@ export default function Page({ params }: { params: { username: string } }) {
 
   return (
     <div className="flex flex-col gap-10">
-      <div>
+      <div className="min-h-10">
       <section className="flex flex-col justify-center items-start w-full p-4">
         <h2 className="text-xl font-bold pt-2">Acerca de mí</h2>
           {user?.about}

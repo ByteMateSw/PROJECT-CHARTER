@@ -53,7 +53,7 @@ export default function Page({
             src={user?.backgroundPhoto || "/img/bg-image.jpg"}
             alt="Fondo de Perfil"
           />
-          <div className="flex space-x-4 mt-4 [&>a]:px-4 [&>a]:py-2 [&>a]:rounded-full [&>a]:bg-primary-blue [&>a]:w-32 [&>a]:md:w-40 text-secondary-white [&>a]:flex [&>a]:justify-center [&>a]:items-center">
+          <div className="flex space-x-4 mt-4 [&>a]:px-4 [&>a]:py-2 [&>a]:rounded-full [&>a]:bg-primary-blue [&>a]:w-20 [&>a]:md:w-40 text-secondary-white [&>a]:flex [&>a]:justify-center [&>a]:items-center">
             <Link href="info" aria-label="Información">
               Info
             </Link>

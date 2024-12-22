@@ -39,7 +39,7 @@ export default function Page({ params }: { params: { username: string } }) {
 
 
     return (
-        <section className=" justify-center items-start p-4 w-fullh-full w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-auto">
+        <section className=" justify-center items-start p-4 md:h-full min-h-72 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-auto">
         {user?.posts.length > 0 ?
         <>
         {user?.posts.map((post: any, index: number) => {

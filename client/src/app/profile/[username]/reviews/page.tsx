@@ -71,7 +71,7 @@ export default function Page({params}:{params: {username: string}}) {
 
 
   return (
-    <section className="flex flex-col justify-center items-start p-4 w-full">
+    <section className="flex flex-col justify-center items-start p-4 w-full min-h-72 md:h-full ">
       <div className="flex justify-between items-center w-full">
       <h2 className="text-xl font-bold ">Opiniones</h2>
       {session ? 
