@@ -5,6 +5,7 @@ import Pagination from "@/app/components/pagination/Pagination";
 import { profiles } from "@/data/hireProfiles";
 import React, { useEffect, useState } from "react";
 import { useFilter } from "@/context/searchContext";
+import { useSearchParams } from "next/navigation";
 
 export default function HirePage() {
   const {search, city, setSearch, setCity} = useFilter()
@@ -15,9 +16,15 @@ export default function HirePage() {
   const [count, setCount] = useState<number>(0)
   const limit: number = 6 // Límite de usuarios por página
 
+  const querys = useSearchParams()
+
 
 
   useEffect(() => {
+    if(querys.get("profession") != null) {
+      setSearch(querys.get("profession"))
+      return
+    }
     setSearch('')
   }, [])
 
@@ -36,7 +43,8 @@ export default function HirePage() {
     fetchUsers();
   }, [page, limit, search, city, changePage]); // Re-fetch users when page or limit changes
 
-
+console.log(querys.get("profession"))
+console.log(search)
   return (
     <>
     <div className="absolute left-7 top-1 h-12">

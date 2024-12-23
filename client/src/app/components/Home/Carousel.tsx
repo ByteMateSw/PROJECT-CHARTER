@@ -16,7 +16,7 @@ export default function Carousel() {
             return (
               <Link
               key={index}
-              href={`/dashboard/hire?job=${card.title.toLowerCase()}`}
+              href={`/dashboard/hire?profession=${card.title.toLowerCase()}`}
               >
                 <Card src={card.imgUrl} alt={card.title} text={card.title} />
               </Link>
@@ -28,7 +28,7 @@ export default function Carousel() {
             return (
               <Link
               key={index}
-              href={`/dashboard/hire?job=${card.title.toLowerCase()}`}
+              href={`/dashboard/hire?profession=${card.title.toLowerCase()}`}
               >
                 <Card src={card.imgUrl} alt={card.title} text={card.title} />
               </Link>
