@@ -43,8 +43,6 @@ export default function HirePage() {
     fetchUsers();
   }, [page, limit, search, city, changePage]); // Re-fetch users when page or limit changes
 
-console.log(querys.get("profession"))
-console.log(search)
   return (
     <>
     <div className="absolute left-7 top-1 h-12">
