@@ -45,10 +45,6 @@ export default function Sidebar(): JSX.Element {
 
   const measure = 20;
 
-  // console.log(locations)
-  // console.log(searchTerm)
-  // console.log(selectProvince)
-  // console.log(locations?.provinces.filter((pro) =>pro.name === selectProvince?.value)[0]?.cities)
 
   return (
     <>
@@ -147,7 +143,7 @@ export default function Sidebar(): JSX.Element {
         <ComboBox
           selectedOptions={city}
           setSelectedOptions={setCity}
-          optionsProps={locations?.provinces.filter((pro) =>pro.name === selectProvince?.value)[0]?.cities}
+          optionsProps={locations?.provinces.filter((pro) =>pro.name === selectProvince?.label)[0]?.cities}
           placeholder="Localidades"
           styles={styleComboBox}
         />

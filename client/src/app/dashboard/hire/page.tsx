@@ -14,6 +14,7 @@ export default function HirePage() {
   const [page, setPage] = useState<number>(0); // Página inicial
   const [changePage, setChangePage] = useState<number>(1)
   const [count, setCount] = useState<number>(0)
+  const [selectCity, setSelectCity] = useState<string>('')
   const limit: number = 6 // Límite de usuarios por página
 
   const querys = useSearchParams()
@@ -31,8 +32,8 @@ export default function HirePage() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        if (city === undefined) setCity('')
-        const userData = await getUsersFilter(page, limit, search, city);
+        if (city.label != undefined) setSelectCity(city.label)
+        const userData = await getUsersFilter(page, limit, search, selectCity);
         setUsers(userData.users);
         setCount(Math.ceil(userData.count / limit))
       } catch (error) {
@@ -41,7 +42,7 @@ export default function HirePage() {
     };
     setPage((changePage - 1)*limit)
     fetchUsers();
-  }, [page, limit, search, city, changePage]); // Re-fetch users when page or limit changes
+  }, [page, limit, search, selectCity, city, changePage]); // Re-fetch users when page or limit changes
 
   return (
     <>
