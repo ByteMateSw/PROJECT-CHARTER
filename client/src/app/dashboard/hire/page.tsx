@@ -36,8 +36,7 @@ export default function HirePage() {
     fetchUsers();
   }, [page, limit, search, city, changePage]); // Re-fetch users when page or limit changes
 
-  console.log(users)
-  console.log(page)
+
   return (
     <>
     <div className="absolute left-7 top-1 h-12">

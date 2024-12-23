@@ -37,10 +37,10 @@ export const useSidebarEffects = ({
     if (professionsParams) setSelectedProfessions(professionsParams.split("-"));
   }, [professionsParams]);
 
-  useEffect(() => {
-    if (selectedProfessions.length === 0 && path === "/dashboard/hire") router.replace("/dashboard/hire");
-    else router.push(`?professions=${selectedProfessions.join("-")}`);
-  }, [selectedProfessions, router]);
+  // useEffect(() => {
+  //   if (selectedProfessions.length === 0 && path === "/dashboard/hire") router.replace("/dashboard/hire");
+  //   else router.push(`?professions=${selectedProfessions.join("-")}`);
+  // }, [selectedProfessions, router]);
 
   useEffect(() => {
     const newCheckedItems: CheckedItems = selectedProfessions.reduce(
