@@ -67,7 +67,9 @@ export default function About({
                 {field.label}
                 {userData ? (
                   userData[field.name] && (
-                    <em className="text-secondary-gray text-base">: {userData[field.name]}</em>
+                    <em className="text-secondary-gray text-base">: {
+                      userData[field.name] === '+100000000000' ? "Agregar numero de telefono" : userData[field.name]
+                      }</em>
                   )
                 ) : (
                   ""

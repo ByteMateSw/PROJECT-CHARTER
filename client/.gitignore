@@ -37,3 +37,5 @@ next-env.d.ts
 
 # Envioroment Variables
 .env
+
+to-do.txt
