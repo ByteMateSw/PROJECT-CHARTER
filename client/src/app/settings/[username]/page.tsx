@@ -38,6 +38,7 @@ const styleComboBox: StylesConfig = {
 export default function Page({params}: { params: {username: string}}) {
   const { data: session, status }: any = useSession();
   const [userData, setUserData] = useState<any>(null);
+  const [getUser, setGetUser] = useState<any>()
   const [user, setUser] = useState<any>({
     firstName: "",
     lastName: "",
@@ -63,7 +64,6 @@ export default function Page({params}: { params: {username: string}}) {
   const [city, setCity] = useState<any>(null);
   const [offices, setOffices] = useState<any>(null);
   const [hasChanges, setHasChanges] = useState(false);
-  const [getUser, setGetUser] = useState<any>()
   const [socialNet, setSocialNet] = useState()
   
 
@@ -124,6 +124,10 @@ export default function Page({params}: { params: {username: string}}) {
         try {
           const response = await getUserByEmail(session?.user?.email)
           setGetUser(response)
+          setUser((prevUser:any) => ({
+            ...prevUser,
+            isWorker: response.isWorker
+          }))
           fetchSocialNetworks(response.id)
         } catch (error) {
           console.error(error)
@@ -134,9 +138,22 @@ export default function Page({params}: { params: {username: string}}) {
 
     if(session?.user?.provider === "credentials") {
       if (decoded != undefined) {
-        getUserByEmail(decoded.user.email).then((res) => setGetUser(res)).catch((e) => console.log(e))
-        
-        fetchSocialNetworks(decoded.user.id)
+        try {
+          getUserByEmail(decoded.user.email)
+          .then((res) => {
+            setGetUser(res)
+            setUser((prevUser:any) => ({
+              ...prevUser,
+              isWorker: res.isWorker
+            }))
+          })
+          .catch((e) => console.log(e))
+          
+          fetchSocialNetworks(decoded.user.id)
+          
+        } catch (error) {
+          console.error(error)
+        }
         return
       }
     } 
