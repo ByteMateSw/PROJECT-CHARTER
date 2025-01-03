@@ -138,6 +138,10 @@ export default function JobsModal({
           </div>
           <div className=" flex justify-center text-sm font-semibold w-24 h-10"
           >
+            {
+             getUser?.email === post.user.email ?
+             <span></span>
+             : 
             <label
             onClick={handleClick}
               htmlFor={`modal-${index}`}
@@ -145,6 +149,7 @@ export default function JobsModal({
             >
               Solicitar
             </label>
+            }
           </div>
         </div>
       </article>
