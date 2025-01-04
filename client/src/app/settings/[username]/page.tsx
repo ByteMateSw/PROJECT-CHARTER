@@ -425,7 +425,7 @@ export default function Page({params}: { params: {username: string}}) {
             handleToggleIsWorker={handleToggleIsWorker}
           />
           {/* Redes de Contacto */}
-          <SocialMedia redes={redes} user={user} handleChange={handleChange} />
+          <SocialMedia redes={redes} user={user} socialNet={socialNet} handleChange={handleChange} />
           {/* Botones flotantes */}
           {hasChanges && (
             <animated.div

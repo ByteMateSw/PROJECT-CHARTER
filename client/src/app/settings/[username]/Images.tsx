@@ -65,7 +65,7 @@ export default function Images({ user, userData }: any) {
     };
 
     return (
-        <section className="flex gap-6 w-full pb-8 pt-20">
+        <section id="image" className="flex gap-6 w-full pb-8 pt-20">
             <form onSubmit={handleSubmit} className="w-full">
                 <span className="text-xl font-bold">Imagen de Perfil</span>
                 <div className="flex">

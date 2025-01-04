@@ -58,7 +58,7 @@ export default function About({
 
   return (
     <>
-      <section className="flex flex-col gap-6 w-3/4 pb-8 pt-20">
+      <section id="about" className="flex flex-col gap-6 w-3/4 pb-8 pt-20">
         <h2 className="text-xl font-bold">Información básica</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {fields.map((field: any, index: any) => (

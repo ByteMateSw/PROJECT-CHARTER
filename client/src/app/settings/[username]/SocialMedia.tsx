@@ -1,8 +1,9 @@
 import InputField1 from "../../components/Inputs/InputField1";
 
-export default function SocialMedia({ redes, user, handleChange }: any) {
+export default function SocialMedia({ redes, user, socialNet, handleChange }: any) {
+    
     return (
-        <section className="flex flex-col gap-6 w-3/4 pb-8 pt-20">
+        <section id="social" className="flex flex-col gap-6 w-3/4 pb-8 pt-20">
             <h2 className="text-xl font-bold">Redes de Contacto</h2>
             {redes.map(({ name, iconSrc, label, autoComplete, type, placeholder }: any, index: any) => (
                 <div key={index}>
@@ -20,7 +21,7 @@ export default function SocialMedia({ redes, user, handleChange }: any) {
                         autoComplete={autoComplete}
                         type={type || "text"}
                         name={name}
-                        placeholder={placeholder}
+                        placeholder={socialNet[name] ? socialNet[name] : placeholder}
                         value={user[name]}
                         iconSrc=""
                         onChange={handleChange}
