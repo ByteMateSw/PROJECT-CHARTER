@@ -21,7 +21,7 @@ export default function SocialMedia({ redes, user, socialNet, handleChange }: an
                         autoComplete={autoComplete}
                         type={type || "text"}
                         name={name}
-                        placeholder={socialNet[name] ? socialNet[name] : placeholder}
+                        placeholder={socialNet && (socialNet[name] !== null ? socialNet[name] : placeholder)}
                         value={user[name]}
                         iconSrc=""
                         onChange={handleChange}

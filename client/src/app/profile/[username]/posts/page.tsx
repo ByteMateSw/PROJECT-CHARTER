@@ -75,7 +75,7 @@ export default function Page({ params }: { params: { username: string } }) {
                 Ver detalles
               </Link> */}
               {/* <JobsModal post={post} index={index}/> */}
-              <ApplicantsModal index={index} applicants={post.subscribers} sameUser={true}/>
+              <ApplicantsModal index={index} applicants={post.subscribers} sameUser={isMyProfile}/>
             </div>
           </div>
         );

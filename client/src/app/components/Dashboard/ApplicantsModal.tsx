@@ -3,6 +3,7 @@ import Link from "next/link";
 
 export default function AplicantsModal({index, applicants, sameUser}:{index: number, applicants: any, sameUser: boolean}) {
 
+  console.log(sameUser)
     return(
         <div>
           {sameUser ?
