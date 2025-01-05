@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSpring, animated } from "@react-spring/web";
+import { getExperienceByUserId } from "@/app/api/experience";
 import InputField from "../../components/auth/register/InputField";
 import ComboBox from "../../components/ComboBox";
+import { AxiosResponse } from "axios";
 
 export default function About({
   fields,
@@ -24,6 +26,8 @@ export default function About({
   const [experiences, setExperiences] = useState(
     user.experience || [{ position: "", description: "", startDate: "", endDate: "", company: "" }]
   );
+  const [exp, setExp] = useState([])
+  
 
   //console.log(user)
   const handleChangeExperience = (index: any, e: any) => {
@@ -55,6 +59,26 @@ export default function About({
     to: { opacity: 1, transform: "translateY(0)" },
   });
 
+  useEffect(() => {
+    const getExperiences = async () => {
+      try {
+        if (userData != null) {
+          const response = await getExperienceByUserId(userData?.id)
+          setExp(response?.data.sort((a: any, b: any): number => {
+            const fechaA: Date = typeof a.startDate === 'string' ? new Date(a.startDate) : a.startDate;
+            const fechaB: Date = typeof b.startDate === 'string' ? new Date(b.startDate) : b.startDate;
+            return fechaA.getTime() - fechaB.getTime();
+          }))
+        }
+      } catch (error) {
+        console.error(error)
+      }
+  }
+  getExperiences()
+  },[userData])
+
+  console.log(userData)
+  console.log(exp)
 
   return (
     <>
@@ -172,6 +196,48 @@ export default function About({
           />
         </span>
         <h2 className="text-xl font-bold">Experiencia Laboral</h2>
+        {exp?.map(({company, title, endDate, startDate}:{company: string, title: string, endDate: string, startDate: string}) => {
+          const inicio = new Date(startDate)
+          const final = new Date(endDate)
+          return (
+          <div className="grid grid-cols-2 my-1" key={company}>
+            <div className="my-1">
+            <h3 className="text-base font-semibold">{title}</h3>
+            <span className="text-sm font-normal text-secondary-gray">{company}</span>
+            <div className="flex flex-col">
+              <span className="text-sm font-normal">Inicio: {
+                <span className="text-sm font-normal text-secondary-gray">{
+                  inicio.toLocaleDateString('es-ES', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                })
+                  }</span>
+                }
+              </span>
+              <span className="text-sm font-normal">Hasta: {
+                <span className="text-sm font-normal text-secondary-gray">{
+                  final.toLocaleDateString('es-ES', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                })
+                  }</span>
+              }
+              </span>
+            </div>
+            </div>
+            <div className="flex items-center p-2 gap-2">
+              <button className="bg-primary-blue text-white text-sm rounded p-2 mt-2">
+                Editar
+              </button>
+              <button className="bg-red-600 text-white text-sm rounded p-2 mt-2">
+                Eliminar
+              </button>
+            </div>
+          </div>
+          )
+        })}
         {experiences.map((experience: any, index: number) => (
           <animated.div key={index} style={springs} className="flex flex-col gap-4 mb-4">
             <div className="flex flex-col gap-2">
