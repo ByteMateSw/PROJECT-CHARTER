@@ -77,8 +77,6 @@ export default function About({
   getExperiences()
   },[userData])
 
-  console.log(userData)
-  console.log(exp)
 
   return (
     <>

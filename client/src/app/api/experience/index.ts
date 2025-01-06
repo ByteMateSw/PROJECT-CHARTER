@@ -34,3 +34,25 @@ export const createExperience = async (
             console.error(error)
         }
 }
+
+export const updateExperience = async (id: number, data: any) => {
+    try {
+        const response = await axios.patch(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/experience/update/${id}`, 
+            data
+        )
+        return response.data;
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export const deleteExperience = async (id: number) => {
+    try {
+        const response = await axios.delete(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/experience/delete/${id}`
+        )
+    } catch (error) {
+        console.error(error)
+    }
+}

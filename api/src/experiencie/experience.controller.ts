@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ExperienceService } from './experience.service';
 import { CreateExperienceDTO, UpdateExperienceDTO } from './dto/experience.dto';
 
@@ -26,15 +35,15 @@ export class ExperienceController {
     return await this.experienceService.getExperienceByUserId(id);
   }
 
-  @Patch(':id')
+  @Patch('update/:id')
   async updateExperience(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateExperience: UpdateExperienceDTO
+    @Body() updateExperience: UpdateExperienceDTO,
   ) {
     return await this.experienceService.updateExperience(id, updateExperience);
   }
 
-  @Delete(':id')
+  @Delete('delete/:id')
   async deleteExperience(@Param('id', ParseIntPipe) id: number) {
     return await this.experienceService.deleteExperience(id);
   }

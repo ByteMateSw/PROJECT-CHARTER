@@ -397,7 +397,7 @@ export default function Page({params}: { params: {username: string}}) {
         <div className="col-span-3 h-24 flex-shrink-0"></div>
 
         {/* Sidebar */}
-        <div className="h-full col-span-1 pl-20 pt-16">
+        <div className="h-full col-span-1 pl-5 md:pl-20 pt-16">
           <Sidebar />
         </div>
 
