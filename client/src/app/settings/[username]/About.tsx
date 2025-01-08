@@ -3,6 +3,8 @@ import { useSpring, animated } from "@react-spring/web";
 import { getExperienceByUserId } from "@/app/api/experience";
 import InputField from "../../components/auth/register/InputField";
 import ComboBox from "../../components/ComboBox";
+import UpdateExpModal from "./UpdateExpModal";
+import DeleteModel from "./DeleteModal";
 import { AxiosResponse } from "axios";
 
 export default function About({
@@ -194,7 +196,7 @@ export default function About({
           />
         </span>
         <h2 className="text-xl font-bold">Experiencia Laboral</h2>
-        {exp?.map(({company, title, endDate, startDate}:{company: string, title: string, endDate: string, startDate: string}) => {
+        {exp?.map(({id, company, title, endDate, startDate}:{id:number, company: string, title: string, endDate: string, startDate: string}) => {
           const inicio = new Date(startDate)
           const final = new Date(endDate)
           return (
@@ -226,12 +228,8 @@ export default function About({
             </div>
             </div>
             <div className="flex items-center p-2 gap-2">
-              <button className="bg-primary-blue text-white text-sm rounded p-2 mt-2">
-                Editar
-              </button>
-              <button className="bg-red-600 text-white text-sm rounded p-2 mt-2">
-                Eliminar
-              </button>
+              <UpdateExpModal id={id} userId={userData.id}/>
+              <DeleteModel id={id}/>
             </div>
           </div>
           )
