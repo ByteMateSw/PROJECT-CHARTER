@@ -16,14 +16,6 @@ export default function UpdateExpModal({id, userId}:{id: number, userId: number}
 
     const handleSubmit = async () => {
         try {
-            // const data = {
-            //     title: position,
-            //     description,
-            //     company,
-            //     startDate,
-            //     endDate,
-            //     userId
-            // }
             const data = {
               ...position && {title: position},
               ...description && {description},
@@ -105,6 +97,16 @@ export default function UpdateExpModal({id, userId}:{id: number, userId: number}
                 className="border rounded p-2"
               />
             </div>
+            {startDate === "" || endDate === "" ?
+            <span></span>
+            :
+            new Date(endDate).getTime() - new Date(startDate).getTime() > 0 ?
+            <span></span>
+            :
+            <span className="text-red-600 font-bold">
+              La fecha de finalizacion no puede ser menor a la de inicio
+            </span>
+            }
 
             <button type="submit" className="w-full">
             <label
