@@ -16,17 +16,24 @@ export default function UpdateExpModal({id, userId}:{id: number, userId: number}
 
     const handleSubmit = async () => {
         try {
+            // const data = {
+            //     title: position,
+            //     description,
+            //     company,
+            //     startDate,
+            //     endDate,
+            //     userId
+            // }
             const data = {
-                position,
-                description,
-                company,
-                startDate,
-                endDate,
-                userId
+              ...position && {title: position},
+              ...description && {description},
+              ...company && {company},
+              ...startDate && {startDate},
+              ...endDate && {endDate},
+              userId
             }
             await updateExperience(id, data)
-
-            window.location.reload()
+            //window.location.reload()
         } catch (error) {
             console.error(error)
         }

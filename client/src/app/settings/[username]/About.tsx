@@ -79,7 +79,6 @@ export default function About({
   getExperiences()
   },[userData])
 
-
   return (
     <>
       <section id="about" className="flex flex-col gap-6 w-3/4 pb-8 pt-20">
@@ -288,6 +287,16 @@ export default function About({
                 className="border rounded p-2"
               />
             </div>
+            {experience.startDate === "" || experience.endDate === "" ?
+            <span></span>
+            :
+            new Date(experience.endDate).getTime() - new Date(experience.startDate).getTime() > 0 ?
+            <span></span>
+            :
+            <span className="text-red-600 font-bold">
+              La fecha de finalizacion no puede ser menor a la de inicio
+            </span>
+            }
             <div className="flex flex-col gap-2">
               <label htmlFor={`company-${index}`} className="font-bold">
                 Empresa:

@@ -70,9 +70,15 @@ export class ExperienceService {
         );
       }
       experience.user = user;
+      console.log(experience);
     }
     Object.assign(experience, updateExperience);
     return await this.experienceRepository.save(experience);
+    // try {
+    //   await this.experienceRepository.update(id, updateExperience);
+    // } catch (error) {
+    //   throw new BadRequestException(error);
+    // }
   }
 
   async deleteExperience(id: number): Promise<void> {
