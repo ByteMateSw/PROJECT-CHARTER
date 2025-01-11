@@ -54,31 +54,22 @@ export default function LoginPage() {
 
 
   return (
-    <section className="min-h-screen flex justify-around items-center bg-secondary-white">
-      <article className="w-[700px] px-12 py-12 bg-secondary-white flex flex-col">
-        <div className="flex justify-center items-center flex-col">
-          <img
-            className="mb-6 "
-            src="/svg/BIENVENIDO! (1).svg"
-            alt="svgimgg"
-          ></img>
-          <section className="flex items-center">
-            <div className="font-bold text-xl my-6 mr-7 pb-2 border-b-4 border-black select-none">
-              Iniciar Sesión
-            </div>
-            <a href="/auth/register">
-              <button className="font-bold text-xl my-6 ml-7 text-secondary-gray pb-2 border-b-4 hover:scale-105 duration-150">
-                Registrarse
-              </button>
-            </a>
-          </section>
+    <section className="min-h-screen flex justify-around items-center bg-secondary-lightgray">
+      <div className="absolute left-0 top-0 ml-4 mt-4">
+        <Link href="/">
+          <img src="/svg/conectando-icon.svg" alt="Logo" className="h-10" />
+        </Link>
+      </div>
+      <article className="w-[538px] px-12 py-12 bg-secondary-white shadow-md flex flex-col rounded-3xl">
+        <div className="flex w-full justify-center items-center flex-col">
+          <h2 className="text-5xl font-extrabold text-primary-blue">¡Hola de nuevo!</h2>
         </div>
 
         {fields3.map((field, index) => (
           <div key={index} className="w-full my-4">
             <label
               htmlFor={field.name}
-              className="block mb-1 ml-4 font-bold text-xl"
+              className="block mb-1 font-bold text-base"
             >
               {field.label}
             </label>
@@ -95,43 +86,28 @@ export default function LoginPage() {
           </div>
         ))}
 
-        <div className="flex w-full justify-between font-semibold items-center">
-          <input
-            type="checkbox"
-            id="SesiónIniciada"
-            name="InicSes"
-            className="hidden"
-            checked={keepLoggedIn}
-            onChange={(e) => setKeepLoggedIn(e.target.checked)}
-          />
-          <label htmlFor="InicSes" className="flex items-center">
-            <input className="switch mx-2" type="checkbox" name="" id="" />
-            Mantener sesión iniciada
-          </label>
-          <button className="w-[180px] h-[35px] text-primary-blue font-semibold hover:border-primary-blue hover:border-b duration-150">
-            Restablecer contraseña
-          </button>
-        </div>
-        <div className="w-full flex flex-col justify-center mt-4">
-          <div className="text-red-500 w-full flex justify-center mb-4">
+        <button className="w-full h-[35px] text-primary-blue font-semibold text-xs text-left">
+          Restablecer contraseña
+        </button>
+
+        <div className="w-full flex flex-col justify-center">
+          <div className="text-red-500 w-full flex justify-center">
             {errorMessage && <p>{errorMessage}</p>}
           </div>
           <button
             id="submit"
             type="submit"
-            className=" w-full h-[40px] bg-primary-blue rounded-xl text-secondary-white text-xl mb-2 hover:scale-105 duration-150"
+            className=" w-full h-[40px] bg-primary-blue rounded-full text-secondary-white mb-2 hover:scale-105 duration-150 text-lg"
             onClick={handleLogin}
           >
-            Continuar
+            Iniciar Sesión
           </button>
         </div>
-        <div className="divider divider-horizontal">o</div>
-        <GoogleOauth check={true}/>
+        <GoogleOauth check={true} />
+        <button className="w-full h-[35px] text-sm cursor-default">
+          Necesitas una cuenta? <Link className="text-primary-blue font-semibold cursor-pointer" href='/auth/register'>Registrate</Link>
+        </button>
       </article>
-
-      <picture className="hidden md:flex justify-around ">
-        <img src="/svg/Imagotype.svg" alt="Logotype" />
-      </picture>
     </section>
   );
 }

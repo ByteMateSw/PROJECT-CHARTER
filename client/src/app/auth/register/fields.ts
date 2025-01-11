@@ -82,7 +82,7 @@ export const fields3: Field[] = [
   {
     name: "email",
     label: "Correo electrónico",
-    placeholder: "correo@correo.com",
+    placeholder: "conectando@talentos.com",
     iconSrc: "/svg/Mail-Icon.svg",
     autoComplete: "on",
   },

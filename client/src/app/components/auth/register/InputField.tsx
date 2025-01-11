@@ -20,7 +20,7 @@ export default function InputField({
   autoComplete,
 }: InputFieldProps) {
   return (
-    <span className="w-full h-12 flex items-center border border-secondary-gray rounded-3xl p-3 bg-secondary-white">
+    <span className="w-full h-12 flex items-center border border-secondary-gray rounded-lg p-3 bg-secondary-white">
       {iconSrc.length > 1 ? (
         <img src={iconSrc} alt="Icon" className="mr-2 mt-2 select-none" />
       ) : null}

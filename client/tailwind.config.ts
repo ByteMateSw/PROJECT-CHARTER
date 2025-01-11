@@ -22,6 +22,7 @@ const config: Config = {
           black: "#171717",
           white: "#FBFCFF",
           gray: "#97989B",
+          lightgray: "#E9EEFC",
         },
       },
       backgroundImage: {
