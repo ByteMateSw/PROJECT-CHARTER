@@ -7,6 +7,9 @@ import { register } from "@/app/api/user";
 import Alert from "./Alert";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import InputField from "@/app/components/auth/register/InputField";
+import Link from "next/link";
+import GoogleOauth from "../googleOauth";
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -33,11 +36,11 @@ export default function RegisterPage() {
       [name]: value
     });
   }
-  
+
   const handleSubmit = async () => {
     if (!user.firstName || !user.lastName || !user.username || !user.email || !user.password || !user.confirmPassword) {
-      
-  
+
+
       setWarningMessage("Por favor, complete todos los campos");
       return;
     }
@@ -54,9 +57,9 @@ export default function RegisterPage() {
       dni: user.dni,
       numberPhone: "+549" + user.numberPhone
     };
-  
+
     try {
-      const data = await register(finalUser); 
+      const data = await register(finalUser);
       if (data.response.status === 400) {
         setWarningMessage(data.response.data.message)
         return
@@ -67,7 +70,7 @@ export default function RegisterPage() {
         redirect: true,
         callbackUrl: '/settings'
       });
-      
+
     } catch (error) {
       console.error("Error registering user:", error);
       setWarningMessage("Error al registrar el usuario");
@@ -79,33 +82,63 @@ export default function RegisterPage() {
       {showAlert && (
         <Alert message={errorMessage} onClose={() => setShowAlert(false)} />
       )}
-      <section className="min-h-screen flex justify-around items-center bg-secondary-white">
-        <picture className="hidden md:flex justify-around ">
-          <img src="/svg/Imagotype.svg" alt="Logotype" />
-        </picture>
+      <section className="min-h-screen flex justify-around items-center bg-secondary-lightgray">
+        <div className="absolute left-0 top-0 ml-4 mt-4">
+          <Link href="/">
+            <img src="/svg/conectando-icon.svg" alt="Logo" className="h-10" />
+          </Link>
+        </div>
+        <article className="w-[538px] px-12 py-12 bg-secondary-white shadow-md flex flex-col rounded-3xl">
+          <div className="flex w-full justify-center items-center flex-col">
+            <h2 className="text-5xl font-extrabold text-primary-blue">¡Bienvenido!</h2>
+          </div>
 
-        <article className="w-[700px] px-12 py-12 bg-secondary-white flex flex-col">
-          <section className="flex justify-center items-center flex-col">
-            <img className="mb-6 " src="/svg/BIENVENIDO! (1).svg" alt="svg-img" />
-            <div className="flex items-center">
-              <a href="/auth/login">
-                <button className="font-bold text-xl my-6 mr-7 text-secondary-gray pb-2 border-b-4 hover:scale-105 duration-150">
-                  Iniciar Sesión
-                </button>
-              </a>
-              <div className="font-bold text-xl my-6 ml-7 pb-2 border-b-4 border-black select-none">
-                Registrarse
-              </div>
+          {fields.map((field, index) => (
+            <div key={index} className="my-4 w-full">
+              <label
+                htmlFor={field.name}
+                className="block font-bold text-xl"
+              >
+                {field.label}
+              </label>
+              <InputField
+                id={field.name}
+                autoComplete={field.autoComplete}
+                type={field.type || "text"}
+                name={field.name}
+                placeholder={field.placeholder}
+                value={user[field.name]}
+                onChange={handleChange}
+                iconSrc={field.iconSrc}
+              />
             </div>
-          </section>
-
-
-          <Form1 fields={fields}
+          ))}
+          <div className="w-full flex flex-col justify-center">
+            <div className="text-red-500 w-full flex justify-center">
+              {errorMessage && <p>{errorMessage}</p>}
+            </div>
+            <button
+              id="submit"
+              type="submit"
+              className=" w-full h-[40px] bg-primary-blue rounded-full text-secondary-white mb-2 hover:scale-105 duration-150 text-lg"
+              onClick={handleSubmit}
+            >
+              Crear cuenta
+            </button>
+          </div>
+          <GoogleOauth check={true} />
+          <button className="w-full h-[35px] text-sm cursor-default">
+            Al registrarte, aceptas nuestras <Link className="text-primary-blue font-semibold cursor-pointer" href='/policy'>Condiciones</Link> y la <Link className="text-primary-blue font-semibold cursor-pointer" href='/policy'>Política de privacidad</Link>
+          </button>
+          <button className="w-full h-[35px] text-sm cursor-default">
+            Ya tienes una cuenta? <Link className="text-primary-blue font-semibold cursor-pointer" href='/auth/login'>Inicia sesión</Link>
+          </button>
+          {/* <Form1 fields={fields}
             errorMessage={warningMessage}
             user={user}
             handleChange={handleChange}
             onClickFunction={handleSubmit}
-          />
+          /> */}
         </article>
       </section>
     </>

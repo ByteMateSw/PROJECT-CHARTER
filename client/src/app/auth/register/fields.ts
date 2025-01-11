@@ -18,7 +18,7 @@ export const fields: Field[] = [
   {
     name: "email",
     label: "Correo electrónico",
-    placeholder: "correo@correo.com",
+    placeholder: "conectando@talentos.com",
     iconSrc: "/svg/Mail-Icon.svg",
     autoComplete: "off",
   },
@@ -37,28 +37,28 @@ export const fields: Field[] = [
     type: "password",
     autoComplete: "off",
   },
-  {
-    name: "confirmPassword",
-    label: "Confirmar Contraseña",
-    placeholder: "····················",
-    iconSrc: "/svg/Lock-Icon.svg",
-    type: "password",
-    autoComplete: "on",
-  },
-  {
-    name: "dni",
-    label: "DNI",
-    placeholder: "xxxxxxxx",
-    iconSrc: "/svg/person.svg",
-    autoComplete: "off",
-  },
-  {
-    name: "numberPhone",
-    label: "Celular",
-    placeholder: "Celular",
-    iconSrc: "/svg/cell-phone.svg",
-    autoComplete: "off",
-  },
+  // {
+  //   name: "confirmPassword",
+  //   label: "Confirmar Contraseña",
+  //   placeholder: "····················",
+  //   iconSrc: "/svg/Lock-Icon.svg",
+  //   type: "password",
+  //   autoComplete: "on",
+  // },
+  // {
+  //   name: "dni",
+  //   label: "DNI",
+  //   placeholder: "xxxxxxxx",
+  //   iconSrc: "/svg/person.svg",
+  //   autoComplete: "off",
+  // },
+  // {
+  //   name: "numberPhone",
+  //   label: "Celular",
+  //   placeholder: "Celular",
+  //   iconSrc: "/svg/cell-phone.svg",
+  //   autoComplete: "off",
+  // },
 ];
 
 export const fields2: Field[] = [
