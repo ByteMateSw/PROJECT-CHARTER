@@ -29,8 +29,6 @@ export default function SidebarContent({ user }: { user: any }) {
                     key={link.href}
                     title={link.title}
                     href={link.href}
-                    src={link.src}
-                    alt={link.alt}
                   />
                 ))}
                 {!user ? (

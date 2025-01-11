@@ -36,6 +36,7 @@ export default function Sidebar({ user }: { user: any }) {
     fetchSocial()
   },[])
 
+console.log(session);
 
   return (
     <>
@@ -46,7 +47,7 @@ export default function Sidebar({ user }: { user: any }) {
           alt="Fondo de Perfil"
         />
         <img
-          className="h-20 w-20 border-2 -mt-[5.5rem] mb-2 md:m-0 md:h-36 md:w-36 md:border-4 border-secondary-black rounded-full"
+          className="h-20 w-20 border -mt-[5.5rem] mb-2 md:m-0 md:h-36 md:w-36 md:border-4 border-secondary-lightgray rounded-full"
           src={!user.photo ? "/svg/profile-circle.svg" : user.photo}
           alt="Foto de perfil"
         />

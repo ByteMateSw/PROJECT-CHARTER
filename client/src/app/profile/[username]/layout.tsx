@@ -32,15 +32,14 @@ export default function Page({
 
 
   return (
-    <div className="h-screen grid grid-rows-layout grid-cols-3 gap-x-4 pb-4 md:px-4">
+    <div className="h-screen grid grid-rows-layout grid-cols-3 md:pl-4">
       {/* Navbar placeholder */}
-      <div className="col-span-3 h-24 flex-shrink-0"></div>
+      <div className="col-span-3 h-16 flex-shrink-0"></div>
 
       {/* Sidebar */}
       <div
-        className={`h-full col-span-full md:col-span-1 ${
-          !user && "skeleton"
-        } md:border md:border-secondary-gray md:rounded-[2rem] -mt-8 md:m-0`}
+        className={`h-full col-span-full md:col-span-1 ${!user && "skeleton"
+          } md:border-x md:border-secondary-lightgray -mt-8 md:m-0`}
       >
         {user && <Sidebar user={user} />}
       </div>
@@ -49,29 +48,31 @@ export default function Page({
       <div className="col-span-full md:col-span-2">
         <section className="flex flex-col w-full justify-center items-center">
           <img
-            className="hidden md:block h-44 w-full rounded-2xl"
+            className="hidden md:block h-44 w-full"
             src={user?.backgroundPhoto || "/img/bg-image.jpg"}
             alt="Fondo de Perfil"
           />
-          <div className="flex space-x-4 mt-4 [&>a]:px-4 [&>a]:py-2 [&>a]:rounded-full [&>a]:bg-primary-blue [&>a]:w-20 [&>a]:md:w-40 text-secondary-white [&>a]:flex [&>a]:justify-center [&>a]:items-center">
-            <Link href="info" aria-label="Información">
-              Info
-            </Link>
-            <Link href="jobs" aria-label="Trabajos">
-              Trabajos
-            </Link>
-            <Link href="reviews" aria-label="Opiniones">
-              Opiniones
-            </Link>
-            {/* {
-              params.username === decoded?.user?.username ? */}
-              <Link href="posts" aria-label="Mis_posteos">
-                Posts
+          <div className="flex items-start justify-start space-x-4 mt-4">
+            {[
+              { href: "jobs", label: "Trabajos" },
+              { href: "posts", label: "Posts" },
+              { href: "reviews", label: "Opiniones" },
+              { href: "info", label: "Info" },
+            ].map((tab) => (
+              <Link
+                key={tab.href}
+                href={tab.href}
+                aria-label={tab.label}
+                className={`px-4 py-2 rounded-full border flex justify-center items-center w-20 ${tab.label === "Trabajos"
+                    ? "border-blue-500 text-blue-500"
+                    : "border-gray-300 text-gray-500"
+                  }`}
+              >
+                {tab.label}
               </Link>
-              {/* :
-              <span></span>
-            } */}
+            ))}
           </div>
+
         </section>
         <section className="flex w-full">
           <Animate>{children}</Animate>

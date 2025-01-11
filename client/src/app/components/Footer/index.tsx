@@ -44,8 +44,9 @@ function Footer(): JSX.Element {
       <section className="flex justify-center gap-4">
         <Links description="Desarrollado por ByteMate" />
         <Links description="© 2025 All rights reserved." />
-        <Links description="Términos y condiciones" />
-        <Links description="Privacidad" />
+        <a href="/terms" className="text-center text-slate-50 text-xs font-medium">
+          Bases y condiciones de Uso
+        </a>
         <Links description="contact@conectando.com" />
       </section>
       <section className="flex items-center gap-8">

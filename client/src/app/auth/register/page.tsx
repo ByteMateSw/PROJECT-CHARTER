@@ -128,7 +128,7 @@ export default function RegisterPage() {
           </div>
           <GoogleOauth check={true} />
           <button className="w-full h-[35px] text-sm cursor-default">
-            Al registrarte, aceptas nuestras <Link className="text-primary-blue font-semibold cursor-pointer" href='/policy'>Condiciones</Link> y la <Link className="text-primary-blue font-semibold cursor-pointer" href='/policy'>Política de privacidad</Link>
+            Al registrarte, aceptas nuestras <Link className="text-primary-blue font-semibold cursor-pointer" href='/terms'>Bases y condiciones de uso</Link>
           </button>
           <button className="w-full h-[35px] text-sm cursor-default">
             Ya tienes una cuenta? <Link className="text-primary-blue font-semibold cursor-pointer" href='/auth/login'>Inicia sesión</Link>

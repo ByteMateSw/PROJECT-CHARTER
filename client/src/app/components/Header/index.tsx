@@ -124,8 +124,6 @@ export default function Header() {
                 key={link.href}
                 title={link.title}
                 href={link.href}
-                src={link.src}
-                alt={link.alt}
               />
             ))}
           </ul>
@@ -134,16 +132,12 @@ export default function Header() {
               key="/auth/register"
               title="Registrarse"
               href="auth/register"
-              src={"/svg/login-blue.svg"}
-              alt="Registro"
               textcolor="primary-blue"
             />
             <NavbarLink
               key="/auth/login"
               title="Iniciar sesión"
               href="auth/login"
-              src={"/svg/login-blue.svg"}
-              alt="Login"
               bgcolor="primary-blue"
               textcolor="secondary-white"
             />
