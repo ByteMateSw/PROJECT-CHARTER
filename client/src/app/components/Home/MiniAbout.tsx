@@ -4,6 +4,7 @@ interface MiniAboutProps {
   pImg: string;
   paragraphsText: Paragraph[];
   tittle: string;
+  reverse: boolean; // Nueva variable booleana
 }
 
 interface Paragraph {
@@ -17,24 +18,36 @@ export default function MiniAbout({
   pImg,
   paragraphsText,
   tittle,
+  reverse,
 }: MiniAboutProps) {
   return (
-    <section className={`flex flex-col justify-center items-center w-full ${className} px-8`}>
-      <article className={`${pText}`}>
-        <h1 className="text-start text-secondary-black text-5xl font-extrabold">
+    <section
+      className={`flex flex-col md:flex-row ${
+        reverse ? "md:flex-row-reverse" : ""
+      } justify-between items-center w-full ${className} px-8 py-8 bg-gray-50`}
+    >
+      {/* Texto */}
+      <article
+        className={`flex-1 ${pText} ${
+          reverse ? "md:ml-8" : "md:mr-8"
+        }`} // Ajuste del margen
+      >
+        <h1 className="text-start text-secondary-black text-4xl font-bold mb-6">
           {tittle}
         </h1>
-        <div className="flex flex-col text-start content-center text-secondary-black font-semibold text-2xl pt-10 gap-y-6 max-w-[720px]">
+        <ul className="flex flex-col text-secondary-black font-medium text-lg space-y-4">
           {paragraphsText.map((item, index) => (
-            <span key={index} className="flex flex-row items-center">
-              <img src={item.svg} alt="svg" className="h-8 mr-2" />
+            <li key={index} className="flex items-start">
+              <img src={item.svg} alt="icono" className="h-6 w-6 mr-4 mt-1" />
               <p>{item.text}</p>
-            </span>
+            </li>
           ))}
-        </div>
+        </ul>
       </article>
-      <article className={`${pImg} my-8`}>
-        <img src="/img/default.png" alt="img" className="h-[13.5rem] w-full" />
+
+      {/* Imagen */}
+      <article className={`flex-1 ${pImg} mt-8 md:mt-0`}>
+        <div className="w-full h-[13.5rem] bg-gray-200 rounded-lg"></div>
       </article>
     </section>
   );

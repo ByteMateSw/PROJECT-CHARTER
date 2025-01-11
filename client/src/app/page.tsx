@@ -45,8 +45,8 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <BestProfiles />
-      <Carousel />
+      {/* <BestProfiles />
+      <Carousel /> */}
       <AdBanner
         dataAdFormat="auto"
         dataFullWidthResponsive={true}
@@ -58,6 +58,7 @@ export default function Home() {
         pImg=""
         paragraphsText={paragraphs1}
         tittle="Potencia tu perfil"
+        reverse={false}
       />
       <MiniAbout
         className=""
@@ -65,6 +66,7 @@ export default function Home() {
         pText=""
         paragraphsText={paragraphs2}
         tittle="Encuentra o publica trabajos"
+        reverse={true}
       />
     </>
   );

@@ -43,7 +43,7 @@ function Footer(): JSX.Element {
       </section>
       <section className="flex justify-center gap-4">
         <Links description="Desarrollado por ByteMate" />
-        <Links description="© 2024 All rights reserved." />
+        <Links description="© 2025 All rights reserved." />
         <Links description="Términos y condiciones" />
         <Links description="Privacidad" />
         <Links description="contact@conectando.com" />
