@@ -19,6 +19,7 @@ export default function AddPostModal() {
   const [area, setArea] = useState<string>('')
   const [price, setPrice] = useState<number>(0)
   const [description, setDescription] = useState<string>('')
+  const [mode, setMode] = useState({value: 1, label: 'remoto'})
 
   const [getUser, setGetUser] = useState<any>()
 
@@ -29,6 +30,11 @@ export default function AddPostModal() {
     decoded = jwtDecode(session?.user?.access_token)
   }
 
+  const workingMode = [
+    { value: 1, label: 'remoto' },
+    { value: 2, label: 'presencial' },
+    { value: 3, label: 'hibrido' },
+  ]
 
   useEffect(() => {
     async function provinciesData() {
@@ -115,7 +121,8 @@ async function handleSubmit(e:any) {
       description,
       area,
       selectCities.value,
-      price/1
+      price/1,
+      mode.label,
     )
   } catch (error) {
     console.error(error)
@@ -135,7 +142,7 @@ async function handleSubmit(e:any) {
             <input className="modal-state" id={`modal-add`} type="checkbox" />
             <section className="modal">
               <label className="modal-overlay" id={`modal-add`}></label>
-              <article className="modal-content h-full w-[990px] grid grid-rows-10 gap-2 p-10 rounded-[2rem] minimal-scrollbar">
+              <article className="modal-content h-full w-[990px] grid grid-rows-10 gap-1 p-10 rounded-[2rem] minimal-scrollbar">
                 <div className="grid row-span-1">
                   <p className="flex justify-center text-3xl font-semibold text-primary-blue">Detalles del trabajo</p>
                 </div>
@@ -164,6 +171,14 @@ async function handleSubmit(e:any) {
                   className="rounded-full border border-slate-800 px-4 py-2"
                   />
                 </div>
+                <label htmlFor="location" className="font-bold text-xl">Modalidad</label>
+                <Select
+                    styles={styleComboBox}
+                    options={workingMode}
+                    value={mode}
+                    onChange={(selectedOption:any) => setMode(selectedOption)}
+                    placeholder={'Modalidad'}
+                     />
                 <div className="grid row-span-1 gap-1 my-2">
                   <label htmlFor="location" className="font-bold text-xl">Ubicación</label>
                   <div className="grid grid-cols-2 gap-2">

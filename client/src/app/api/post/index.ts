@@ -39,7 +39,8 @@ export const getAllPosts = async (): Promise<any> => {
     description: string,
     searchVector: string,
     cityId: number,
-    price: number
+    price: number,
+    working_modality: string,
   ) => {
     try {
       const response = await axios.post(
@@ -49,6 +50,7 @@ export const getAllPosts = async (): Promise<any> => {
           searchVector,
           city: cityId,
           price,
+          working_modality
         }
       )
     } catch (error) {
