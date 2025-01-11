@@ -57,8 +57,8 @@ export default function Header() {
 
   if (status === "loading") {
     return (
-      <header className="absolute w-full md:p-4">
-        <nav className="skeleton h-16 p-4 w-full shadow-md md:rounded-full"></nav>
+      <header className="absolute w-full">
+        <nav className="skeleton h-16 p-4 w-full shadow-md"></nav>
       </header>
     );
   }
@@ -66,8 +66,8 @@ export default function Header() {
 
   if (status === "unauthenticated") {
     return (
-      <header className="absolute w-full md:p-4">
-        <nav className="h-16 p-4 w-full inline-flex justify-between items-center border md:rounded-full border-secondary-gray bg-secondary-white shadow-md">
+      <header className="absolute w-full z-20">
+        <nav className="h-16 p-4 w-full inline-flex justify-between items-center border-b border-secondary-gray bg-secondary-white shadow-md">
           <div className="flex flex-start md:hidden justify-start">
             <input type="checkbox" id="drawer-left" className="drawer-toggle" />
             <label htmlFor="drawer-left" className="btn bg-secondary-white">
@@ -131,11 +131,21 @@ export default function Header() {
           </ul>
           <ul className="hidden md:flex justify-end items-center gap-2">
             <NavbarLink
+              key="/auth/register"
+              title="Registrarse"
+              href="auth/register"
+              src={"/svg/login-blue.svg"}
+              alt="Registro"
+              textcolor="primary-blue"
+            />
+            <NavbarLink
               key="/auth/login"
-              title="Acceder"
+              title="Iniciar sesión"
               href="auth/login"
               src={"/svg/login-blue.svg"}
-              alt="Acceder"
+              alt="Login"
+              bgcolor="primary-blue"
+              textcolor="secondary-white"
             />
           </ul>
         </nav>
@@ -145,8 +155,8 @@ export default function Header() {
 
   if (status === "authenticated") {
     return (
-      <header className="absolute w-full md:p-4">
-        <nav className="h-16 p-4 w-full inline-flex justify-between items-center border md:rounded-full border-secondary-gray bg-secondary-white shadow-md">
+      <header className="absolute w-full">
+        <nav className="h-16 p-4 w-full inline-flex justify-between items-center border-b border-secondary-gray bg-secondary-white shadow-md">
           <div className="flex flex-start md:hidden justify-start">
             <input type="checkbox" id="drawer-left" className="drawer-toggle" />
             <label htmlFor="drawer-left" className="btn bg-secondary-white">
@@ -205,6 +215,7 @@ export default function Header() {
                 href={link.href}
                 src={link.src}
                 alt={link.alt}
+                extra="hover:text-primary-blue"
               />
             ))}
           </ul>

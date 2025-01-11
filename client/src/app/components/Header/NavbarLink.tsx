@@ -12,15 +12,21 @@ export default function NavbarLink({
   href,
   src,
   alt,
+  bgcolor,
+  textcolor,
+  extra,
 }: {
   title: string;
   href: string;
   src: string;
   alt: string;
+  bgcolor?: string;
+  textcolor?: string;
+  extra?: string;
 }): JSX.Element {
   return (
-    <Link className="menu-toggle flex md:flex-col gap-2 md:gap-0 items-start md:items-center px-4 text-secondary-black hover:text-primary-blue duration-300 rounded-lg link" href={`/${href}`}>
-      <img className="h-6 filter-white" src={src} alt={alt} />
+    /*hover:text-primary-blue*/
+    <Link className={`menu-toggle flex md:flex-col gap-2 md:gap-0 items-start md:items-center px-4 py-2 border border-secondary-gray rounded-full duration-300 bg-${bgcolor} text-${textcolor} ${extra}`} href={`/${href}`}>
       <li className="font-bold text-base">
         {title}
       </li>
