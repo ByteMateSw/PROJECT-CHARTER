@@ -57,7 +57,7 @@ export default function Header() {
 
   if (status === "loading") {
     return (
-      <header className="absolute w-full">
+      <header className="absolute w-full z-20">
         <nav className="skeleton h-16 p-4 w-full shadow-md"></nav>
       </header>
     );
@@ -155,7 +155,7 @@ export default function Header() {
 
   if (status === "authenticated") {
     return (
-      <header className="absolute w-full">
+      <header className="absolute w-full z-20">
         <nav className="h-16 p-4 w-full inline-flex justify-between items-center border-b border-secondary-gray bg-secondary-white shadow-md">
           <div className="flex flex-start md:hidden justify-start">
             <input type="checkbox" id="drawer-left" className="drawer-toggle" />
@@ -213,8 +213,6 @@ export default function Header() {
                 key={link.href}
                 title={link.title}
                 href={link.href}
-                src={link.src}
-                alt={link.alt}
                 extra="hover:text-primary-blue"
               />
             ))}
@@ -225,8 +223,6 @@ export default function Header() {
                 key={link.href}
                 title={link.title}
                 href={link.href}
-                src={link.src}
-                alt={link.alt}
               />
             ))}
             <Dropdown user={getUser} />

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Hero() {
   const floatingImages = [
     { src: "/path-to-image1.jpg", alt: "Image 1", width: 100, top: "5%", left: "10%" },
@@ -26,7 +28,7 @@ export default function Hero() {
           Donde el talento y <br /> las oportunidades conectan
         </h1>
         <button className="mt-6 px-6 py-3 bg-primary-blue text-secondary-white font-medium rounded-full hover:bg-blue-700 transition-all">
-          Registrarse!
+          <Link href="/auth/register">Registrarse!</Link>
         </button>
       </article>
 
