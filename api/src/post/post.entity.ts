@@ -12,6 +12,7 @@ import {
   PrimaryGeneratedColumn,
   Index,
 } from 'typeorm';
+import { WorkingMode } from './enum/enum.post';
 
 /**
  *  * Represents a Post entity.
@@ -54,6 +55,9 @@ export class Post {
   @Column({ type: 'tsvector', select: false })
   @Index({ fulltext: true })
   searchVector: string;
+
+  @Column({ default: WorkingMode.IN_PERSON })
+  working_modality: WorkingMode;
 
   /**
    * The price estimated of the post.

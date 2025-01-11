@@ -68,7 +68,7 @@ export default function RegisterPage() {
         email: finalUser.email,
         password: finalUser.password,
         redirect: true,
-        callbackUrl: '/settings'
+        callbackUrl: `/settings/${user.username}`
       });
 
     } catch (error) {

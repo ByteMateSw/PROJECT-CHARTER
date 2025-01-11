@@ -1,11 +1,13 @@
 import {
   IsDefined,
+  IsEnum,
   IsNumber,
   IsOptional,
   IsPositive,
   IsString,
   Max,
 } from 'class-validator';
+import { WorkingMode } from '../enum/enum.post';
 
 /**
  * Represents the data transfer object for create a post.
@@ -52,4 +54,8 @@ export class CreatePostDto {
   @IsPositive({ message: 'El precio debe ser un número positivo.' })
   @Max(1000000, { message: 'El precio no puede sobrepasar los $1000000' })
   price?: number;
+
+  @IsEnum(WorkingMode)
+  @IsOptional()
+  workin_modality?: WorkingMode;
 }
