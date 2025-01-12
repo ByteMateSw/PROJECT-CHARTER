@@ -6,7 +6,7 @@ export default function Hero() {
         <span className="text-2xl">Un lugar donde podés</span>
           <h1>
             <span>Conectarte</span> con los mejores.<br />
-            <span>Contratr</span> habilidades.<br />
+            <span>Contratar</span> habilidades.<br />
             <span>Encontrar</span> talento.<br />
           </h1>
         </div>
