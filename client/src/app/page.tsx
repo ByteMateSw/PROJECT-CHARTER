@@ -45,8 +45,8 @@ export default function Home() {
   return (
     <>
       <Hero />
-      {/* <BestProfiles />
-      <Carousel /> */}
+      <BestProfiles />
+      <Carousel />
       <AdBanner
         dataAdFormat="auto"
         dataFullWidthResponsive={true}
