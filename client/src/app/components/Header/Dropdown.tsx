@@ -46,7 +46,7 @@ export default function Dropdown({ user }: { user: any }) {
             alt="Profile Image"
           />
         )}
-        {name}
+        
         <span className="menu-icon">
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -38,11 +38,11 @@ export default function Page({ params }: { params: { username: string } }) {
       <div className="min-h-10">
       <section className="flex flex-col justify-center items-start w-full p-4">
         <h2 className="text-xl font-bold pt-2">Acerca de mí</h2>
-          {user?.about}
+          {user?.about ? user.about : "El usuario no ha escrito nada aún."}
       </section>
       <section className="flex flex-col justify-center items-start w-full p-4">
       <h2 className="text-xl font-bold pt-2">Experiencia</h2>
-        {exp?.data.map(({company, title, endDate, startDate}:{company: string, title: string, endDate: string, startDate: string}) => {
+        {exp?.data.length > 0 ? exp?.data.map(({company, title, endDate, startDate}:{company: string, title: string, endDate: string, startDate: string}) => {
           const inicio = new Date(startDate)
           const final = new Date(endDate)
           return (
@@ -73,11 +73,11 @@ export default function Page({ params }: { params: { username: string } }) {
             </div>
           </div>
           )
-        })}
+        }) : "El usuario no ha escrito nada aún."}
       </section>
       <section className="flex flex-col justify-center items-start w-full p-4">
         <h2 className="text-xl font-bold pt-2">Habilidades y Conocimiento</h2>
-        {user?.habilities}
+        {user?.habilities ? user.habilities : "El usuario no ha escrito nada aún."}
       </section>
       </div>
       {

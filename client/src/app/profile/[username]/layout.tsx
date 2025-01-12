@@ -7,6 +7,7 @@ import { getUserByUsername } from "@/app/api/user";
 import Link from "next/link";
 import Animate from "./template";
 import { useUser } from "@/context/userContext";
+import { usePathname } from "next/navigation";
 
 export default function Page({
   children,
@@ -16,6 +17,7 @@ export default function Page({
   params: { username: string };
 }) {
   const { data: session, status }: any = useSession();
+  const pathname = usePathname();
 
   let decoded: any;
   if (typeof session?.user?.access_token === "string") {
@@ -29,8 +31,7 @@ export default function Page({
       setUser(data);
     });
   }, []);
-
-
+  
   return (
     <div className="h-screen grid grid-rows-layout grid-cols-3 md:pl-4">
       {/* Navbar placeholder */}
@@ -46,13 +47,13 @@ export default function Page({
 
       {/* Main content */}
       <div className="col-span-full md:col-span-2">
-        <section className="flex flex-col w-full justify-center items-center">
+        <section className="flex flex-col w-full items-start">
           <img
             className="hidden md:block h-44 w-full"
             src={user?.backgroundPhoto || "/img/bg-image.jpg"}
             alt="Fondo de Perfil"
           />
-          <div className="flex items-start justify-start space-x-4 mt-4">
+          <div className="flex items-start justify-start space-x-4 mt-4 pl-4">
             {[
               { href: "jobs", label: "Trabajos" },
               { href: "posts", label: "Posts" },
@@ -63,16 +64,15 @@ export default function Page({
                 key={tab.href}
                 href={tab.href}
                 aria-label={tab.label}
-                className={`px-4 py-2 rounded-full border flex justify-center items-center w-20 ${tab.label === "Trabajos"
-                    ? "border-blue-500 text-blue-500"
-                    : "border-gray-300 text-gray-500"
-                  }`}
+                className={`px-4 py-2 rounded-full border flex justify-center items-center w-20 ${pathname.includes(tab.href)
+                  ? "border-primary-blue text-primary-blue"
+                  : "border-secondary-lightgray text-secondary-gray"
+                }`}
               >
                 {tab.label}
               </Link>
             ))}
           </div>
-
         </section>
         <section className="flex w-full">
           <Animate>{children}</Animate>
