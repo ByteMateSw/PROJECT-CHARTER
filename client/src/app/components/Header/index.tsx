@@ -11,49 +11,49 @@ import { jwtDecode } from "jwt-decode";
 import { getUserByUsername, getUserByEmail } from "@/app/api/user";
 
 export default function Header() {
-  
+
   const { data: session, status }: any = useSession();
 
   let decoded: any;
   if (typeof session?.user?.access_token === "string") {
     decoded = jwtDecode(session?.user?.access_token);
   }
-  
-
-    const [getUser, setGetUser] = useState<any>()
 
 
-    useEffect(() => {
-      async function getUserData(){
-        if(decoded != undefined){
-          try {
-            const response = await getUserByEmail(decoded.user.email)
-            setGetUser(response)
-          } catch (error) {
-            console.error(error)
-          }
-        } 
+  const [getUser, setGetUser] = useState<any>()
+
+
+  useEffect(() => {
+    async function getUserData() {
+      if (decoded != undefined) {
+        try {
+          const response = await getUserByEmail(decoded.user.email)
+          setGetUser(response)
+        } catch (error) {
+          console.error(error)
+        }
       }
+    }
 
-      async function getUserDataGoogle(){
-        if(true){
-          try {
-            const response = await getUserByEmail(session?.user?.email)
-            setGetUser(response)
-          } catch (error) {
-            console.error(error)
-          }
-        } 
+    async function getUserDataGoogle() {
+      if (true) {
+        try {
+          const response = await getUserByEmail(session?.user?.email)
+          setGetUser(response)
+        } catch (error) {
+          console.error(error)
+        }
       }
-      if(session?.user?.provider === "credentials") {
-        getUserData()
-        return
-      } 
-      else if (session?.user?.provider === "google") { 
-        getUserDataGoogle()
-        return
-      }
-    },[session])
+    }
+    if (session?.user?.provider === "credentials") {
+      getUserData()
+      return
+    }
+    else if (session?.user?.provider === "google") {
+      getUserDataGoogle()
+      return
+    }
+  }, [session])
 
   if (status === "loading") {
     return (
@@ -150,7 +150,7 @@ export default function Header() {
   if (status === "authenticated") {
     return (
       <header className="absolute w-full z-20">
-        <nav className="h-16 p-4 w-full inline-flex justify-between items-center border-b border-secondary-gray bg-secondary-white shadow-md">
+        <nav className="h-16 p-4 w-full inline-flex justify-between items-center bg-secondary-white shadow">
           <div className="flex flex-start md:hidden justify-start">
             <input type="checkbox" id="drawer-left" className="drawer-toggle" />
             <label htmlFor="drawer-left" className="btn bg-secondary-white">
@@ -212,13 +212,16 @@ export default function Header() {
             ))}
           </ul>
           <ul className="hidden md:flex justify-end items-center gap-2">
-            {NAV_LINKS.map((link) => (
-              <NavbarLink
-                key={link.href}
-                title={link.title}
-                href={link.href}
-              />
-            ))}
+            <li className="font-bold text-base">
+              <button className="border border-secondary-gray rounded-full p-2">
+                <img className="h-6 filter-white" src="/svg/add.svg" alt="Añadir Post" />
+              </button>
+            </li>
+            <li className="font-bold text-base">
+              <button className="border border-secondary-gray rounded-full p-2">
+                <img className="h-6 filter-white" src="/svg/notification.svg" alt="Notificaciones" />
+              </button>
+            </li>
             <Dropdown user={getUser} />
           </ul>
         </nav>

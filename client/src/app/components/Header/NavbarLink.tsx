@@ -9,7 +9,7 @@ export default function NavbarLink({
   textcolor,
   extra,
 }: {
-  title: string;
+  title?: string;
   href: string;
   src?: string;
   alt?: string;
@@ -22,7 +22,7 @@ export default function NavbarLink({
     <Link className={`menu-toggle flex md:flex-col gap-2 md:gap-0 items-start md:items-center px-4 py-2 ${ alt ? "" : "border"} border-secondary-gray rounded-full duration-300 bg-${bgcolor} text-${textcolor} ${extra}`} href={`/${href}`}>
       <li className="font-bold text-base">
         {src != undefined ? <img className="h-6 filter-white" src={src} alt={alt} /> : <></>}
-        {title}
+        {title && title}
       </li>
     </Link>
   );
