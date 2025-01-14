@@ -10,14 +10,19 @@ import ContactModal from '@/app/components/Dashboard/ContactModal'
 
 export default function Page({ params }: { params: { username: string } }) {
   const [user, setUser] = useUser();
-  const [exp, setExp] = useState<AxiosResponse<any, any> | undefined>()
+  const [exp, setExp] = useState([])
 
   useEffect(() => {
     const getExperiences = async () => {
       try {
-        if (user != null) {
-          const response = await getExperienceByUserId(user?.id)
-          setExp(response)
+        if (user.id != undefined) {
+          const id: number = user.id
+          const response = await getExperienceByUserId(id)
+          setExp(response?.data.sort((a: any, b: any): number => {
+            const fechaA: Date = typeof a.startDate === 'string' ? new Date(a.startDate) : a.startDate;
+            const fechaB: Date = typeof b.startDate === 'string' ? new Date(b.startDate) : b.startDate;
+            return fechaA.getTime() - fechaB.getTime();
+          }))
         }
       } catch (error) {
         console.error(error)
@@ -42,7 +47,7 @@ export default function Page({ params }: { params: { username: string } }) {
       </section>
       <section className="flex flex-col justify-center items-start w-full p-4">
       <h2 className="text-xl font-bold pt-2">Experiencia</h2>
-        {exp?.data.length > 0 ? exp?.data.map(({company, title, endDate, startDate}:{company: string, title: string, endDate: string, startDate: string}) => {
+        {exp.length > 0 ? exp.map(({company, title, endDate, startDate}:{company: string, title: string, endDate: string, startDate: string}) => {
           const inicio = new Date(startDate)
           const final = new Date(endDate)
           return (
