@@ -64,8 +64,9 @@ export default function About({
   useEffect(() => {
     const getExperiences = async () => {
       try {
-        if (userData != null) {
-          const response = await getExperienceByUserId(userData?.id)
+        if (userData.id != undefined) {
+          const id: number = userData.id
+          const response = await getExperienceByUserId(id)
           setExp(response?.data.sort((a: any, b: any): number => {
             const fechaA: Date = typeof a.startDate === 'string' ? new Date(a.startDate) : a.startDate;
             const fechaB: Date = typeof b.startDate === 'string' ? new Date(b.startDate) : b.startDate;

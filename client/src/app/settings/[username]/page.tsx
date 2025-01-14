@@ -230,7 +230,7 @@ export default function Page({params}: { params: {username: string}}) {
           user.twitter.length > 0 ||
           user.facebook.length > 0 ||
           user.linkedin.length > 0
-        ) || user.isWorker === true
+        ) || user.isWorker === true || false
       ) {
         const updatedUserData = {
           ...(user.firstName && { firstName: user.firstName }),
@@ -239,7 +239,7 @@ export default function Page({params}: { params: {username: string}}) {
           ...(user.email && { email: user.email }),
           ...(user.numberPhone && { numberPhone: user.numberPhone }),
           ...(user.dni && { dni: user.dni }),
-          ...(user.isWorker && { isWorker: user.isWorker }),
+          isWorker: user.isWorker,
           ...(user.about && { about: user.about }),
           ...(user.habilities && { habilities: user.habilities })
         };
@@ -250,6 +250,7 @@ export default function Page({params}: { params: {username: string}}) {
           ...(user.facebook && { facebook: user.facebook }),
           ...(user.linkedin && { linkedin: user.linkedin })
         }
+        console.log(Object.keys(updatedUserData).length > 0)
         // Actualizar la información básica del usuario solo si todos los campos están llenos
         if (Object.keys(updatedUserData).length > 0) {
           await updateUser(getUser?.id, updatedUserData);
