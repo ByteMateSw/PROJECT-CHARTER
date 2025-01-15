@@ -21,6 +21,7 @@ import { UserRepository } from './repository/user.repository';
 import { S3Service } from 'src/storage/s3.service';
 import 'dotenv/config';
 import { City } from 'src/city/city.entity';
+import { Office } from 'src/office/office.entity';
 
 @Injectable()
 export class UserService {
@@ -28,6 +29,7 @@ export class UserService {
     @InjectRepository(User) private userRepository: UserRepository,
     @InjectRepository(Role) private roleRepository: Repository<Role>,
     @InjectRepository(City) private cityRepository: Repository<City>,
+    @InjectRepository(Office) private officeRepository: Repository<Office>,
     private s3Service: S3Service,
   ) {}
 
@@ -215,6 +217,27 @@ export class UserService {
     try {
       const city = await this.cityRepository.findOneBy({ id: cityId });
       await this.userRepository.update(userId, { city });
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
+
+  async updateUserOffice(userId: number, officeData: Office[]) {
+    try {
+      const offices = [];
+      for (let i = 0; i < officeData.length; i++) {
+        const office = await this.officeRepository.findOneBy({
+          id: officeData[i].id,
+        });
+        offices.push(office);
+      }
+      await this.userRepository.update(
+        { id: userId },
+        {
+          offices,
+        },
+      );
+      return offices;
     } catch (error) {
       throw new BadRequestException(error);
     }

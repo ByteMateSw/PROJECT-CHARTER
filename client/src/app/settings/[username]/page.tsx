@@ -46,6 +46,7 @@ export default function Page({params}: { params: {username: string}}) {
     dni: "",
     email: "",
     numberPhone: "",
+    offices: [],
     experience: [],
     isWorker: false,
     about: "",
@@ -213,6 +214,7 @@ export default function Page({params}: { params: {username: string}}) {
           user.numberPhone ||
           user.dni ||
           user.about ||
+          user.offices ||
           user.habilities ||
           user.instagram || 
           user.twitter ||
@@ -224,6 +226,7 @@ export default function Page({params}: { params: {username: string}}) {
           user.email.length > 0 ||
           user.numberPhone.length > 0 ||
           user.dni.length > 0 ||
+          user.offices.length > 0 ||
           user.about.length > 0 ||
           user.habilities.length > 0 ||
           user.instagram.length > 0 ||
@@ -241,6 +244,7 @@ export default function Page({params}: { params: {username: string}}) {
           ...(user.dni && { dni: user.dni }),
           isWorker: user.isWorker,
           ...(user.about && { about: user.about }),
+          ...(user.offices && { offices: user.offices }),
           ...(user.habilities && { habilities: user.habilities })
         };
 
@@ -250,7 +254,6 @@ export default function Page({params}: { params: {username: string}}) {
           ...(user.facebook && { facebook: user.facebook }),
           ...(user.linkedin && { linkedin: user.linkedin })
         }
-        console.log(Object.keys(updatedUserData).length > 0)
         // Actualizar la información básica del usuario solo si todos los campos están llenos
         if (Object.keys(updatedUserData).length > 0) {
           await updateUser(getUser?.id, updatedUserData);
@@ -283,7 +286,6 @@ export default function Page({params}: { params: {username: string}}) {
           )
         ))
       }
-
       // Recargar la página después de la actualización
       window.location.reload();
 

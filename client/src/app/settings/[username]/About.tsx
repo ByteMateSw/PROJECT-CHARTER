@@ -5,7 +5,7 @@ import InputField from "../../components/auth/register/InputField";
 import ComboBox from "../../components/ComboBox";
 import UpdateExpModal from "./UpdateExpModal";
 import DeleteModel from "./DeleteModal";
-import { AxiosResponse } from "axios";
+import { officesData } from "@/data/offices";
 
 export default function About({
   fields,
@@ -79,7 +79,7 @@ export default function About({
   }
   getExperiences()
   },[userData])
-
+console.log(user)
   return (
     <>
       <section id="about" className="flex flex-col gap-6 w-3/4 pb-8 pt-20">
@@ -147,7 +147,7 @@ export default function About({
               setSelectedOptions={handleChangeOffices}
             />
             <div className="flex gap-2 mt-2">
-              {/* {user.offices.map((office: any) => {
+              {user.offices.map((office: any) => {
                 return (
                   <span
                     className="border text-xs text-secondary-gray rounded-full px-2 py-1 cursor-pointer"
@@ -157,7 +157,7 @@ export default function About({
                     {office.name} X
                   </span>
                 );
-              })} */}
+              })}
             </div>
           </div>
         </div>

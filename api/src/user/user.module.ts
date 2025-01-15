@@ -7,6 +7,8 @@ import { Role } from '../role/role.entity';
 import { UserRepository } from './repository/user.repository';
 import { S3Module } from 'src/storage/s3.module';
 import { City } from 'src/city/city.entity';
+import { Office } from 'src/office/office.entity';
+import { OfficeModule } from 'src/office/office.module';
 
 /**
  * Represents the User module of the application.
@@ -15,8 +17,9 @@ import { City } from 'src/city/city.entity';
  */
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Role, City, UserRepository]),
+    TypeOrmModule.forFeature([User, Role, City, UserRepository, Office]),
     S3Module,
+    OfficeModule,
   ],
   controllers: [UserController],
   providers: [UserService],

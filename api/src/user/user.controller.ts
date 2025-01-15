@@ -28,6 +28,7 @@ import { QueryNumberPipe } from '../utils/pipes/query-number.pipe';
 import { UserFilter } from './dto/userFilter.dto';
 import { UserPagination } from './dto/userpagination.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { Office } from 'src/office/office.entity';
 
 /**
  * Controller for handling user-related operations.
@@ -155,7 +156,11 @@ export class UserController {
   )
   async updateUserImages(
     @Param('id', CustomParseIntPipe) id: number,
-    @UploadedFiles() files: { profileImage?: Express.Multer.File[], coverImage?: Express.Multer.File[] },
+    @UploadedFiles()
+    files: {
+      profileImage?: Express.Multer.File[];
+      coverImage?: Express.Multer.File[];
+    },
   ): Promise<User> {
     const updateUserDto = new UpdateUserDto();
 
@@ -173,6 +178,14 @@ export class UserController {
   @Patch('update-city/:id')
   async updateCity(@Param('id') id: number, @Query('cityId') cityId: number) {
     return await this.userService.updateCity(id, cityId);
+  }
+
+  @Patch('update-office/:id')
+  async updateUserOffice(
+    @Param('id') id: number,
+    @Body() officeData: Office[],
+  ) {
+    return await this.userService.updateUserOffice(id, officeData);
   }
 
   @Get('workers')

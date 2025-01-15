@@ -7,6 +7,7 @@ import {
   IsNumber,
 } from 'class-validator';
 import { City } from 'src/city/city.entity';
+import { Office } from 'src/office/office.entity';
 
 export class UpdateUserDto {
   @IsOptional()
@@ -48,6 +49,9 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString()
   about?: string;
+
+  @IsOptional()
+  offices?: Office[];
 
   @IsOptional()
   @IsString()
