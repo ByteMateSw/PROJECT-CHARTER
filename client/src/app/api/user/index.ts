@@ -69,6 +69,17 @@ export const getUserByUsername = async (username: string) => {
   }
 };
 
+export const getUserOffices = async (userId: number) => {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/offices/${userId}`
+    )
+    return response.data;
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const getUserByEmail = async (email: string) => {
   try{
     const response = await axios.get(

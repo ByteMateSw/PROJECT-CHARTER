@@ -79,9 +79,8 @@ export default function About({
   }
   getExperiences()
   },[userData])
-  
-  console.log(user)
-console.log(offices)
+
+
   return (
     <>
       <section id="about" className="flex flex-col gap-6 w-3/4 pb-8 pt-20">

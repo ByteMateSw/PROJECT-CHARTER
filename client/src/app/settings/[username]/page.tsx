@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { getCities, getProvinces, updateCityUserByName } from "../../api/locations";
 import { StylesConfig } from "react-select";
 import { getProfessions } from "../../api/office";
-import { getUserByUsername, updateUser, getUserByEmail, updateCity } from "../../api/user";
+import { getUserByUsername, updateUser, getUserByEmail, updateCity, getUserOffices } from "../../api/user";
 import { createExperience } from "@/app/api/experience";
 import { updateSocialNetworks, getSocialNetworks, createSocialNetwork } from "@/app/api/social-networks";
 import SocialMedia from "./SocialMedia";
@@ -63,7 +63,7 @@ export default function Page({params}: { params: {username: string}}) {
   });
   const [province, setProvince] = useState<any>(null);
   const [city, setCity] = useState<any>(null);
-  const [offices, setOffices] = useState<any>(null);
+  const [offices, setOffices] = useState<any>([]);
   const [hasChanges, setHasChanges] = useState(false);
   const [socialNet, setSocialNet] = useState()
   
@@ -124,12 +124,14 @@ export default function Page({params}: { params: {username: string}}) {
       if(true){
         try {
           const response = await getUserByEmail(session?.user?.email)
+          const userOffices = await getUserOffices(session?.user?.id)
           setGetUser(response)
           setUser((prevUser:any) => ({
             ...prevUser,
             isWorker: response.isWorker
           }))
-          //setOffices(response.offices)
+          // setOffices(() => 
+          //   userOffices.map((item:any) => ({...item, isDisabled: false})))
           fetchSocialNetworks(response.id)
         } catch (error) {
           console.error(error)
@@ -147,6 +149,17 @@ export default function Page({params}: { params: {username: string}}) {
             setUser((prevUser:any) => ({
               ...prevUser,
               isWorker: res.isWorker
+            }))
+          })
+          .catch((e) => console.log(e))
+
+          getUserOffices(decoded.user.id)
+          .then((res) => {
+            setOffices(() => 
+            res.map((item:any) => ({...item, isDisabled: false})))
+            setUser((prevUser:any) => ({
+              ...prevUser,
+              offices: res
             }))
           })
           .catch((e) => console.log(e))
