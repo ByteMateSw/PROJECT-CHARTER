@@ -106,6 +106,18 @@ export class UserService {
     });
   }
 
+  async getUserOffices(userId: number): Promise<Office[]> {
+    try {
+      const user = await this.userRepository.findOne({
+        relations: ['offices'],
+        where: { id: userId },
+      });
+      return user.offices;
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
+
   async getUserByEmail(email: string) {
     try {
       const user = await this.userRepository.findOneBy({ email });
@@ -217,27 +229,6 @@ export class UserService {
     try {
       const city = await this.cityRepository.findOneBy({ id: cityId });
       await this.userRepository.update(userId, { city });
-    } catch (error) {
-      throw new BadRequestException(error);
-    }
-  }
-
-  async updateUserOffice(userId: number, officeData: Office[]) {
-    try {
-      const offices = [];
-      for (let i = 0; i < officeData.length; i++) {
-        const office = await this.officeRepository.findOneBy({
-          id: officeData[i].id,
-        });
-        offices.push(office);
-      }
-      await this.userRepository.update(
-        { id: userId },
-        {
-          offices,
-        },
-      );
-      return offices;
     } catch (error) {
       throw new BadRequestException(error);
     }

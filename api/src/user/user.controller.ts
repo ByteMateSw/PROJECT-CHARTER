@@ -8,8 +8,6 @@ import {
   Param,
   Patch,
   Query,
-  Req,
-  UnauthorizedException,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -103,6 +101,16 @@ export class UserController {
   }
 
   /**
+   * Retrieves a offices by their userID.
+   * @param id - The ID of the user.
+   * @returns A promise that resolves to the array Offices object.
+   */
+  @Get('offices/:id')
+  async getUserOffices(@Param('id') id: number): Promise<Office[]> {
+    return await this.userService.getUserOffices(id);
+  }
+
+  /**
    * Deletes a user. Only the user themselves can delete their account.
    * @param user - The user to be deleted.
    */
@@ -178,14 +186,6 @@ export class UserController {
   @Patch('update-city/:id')
   async updateCity(@Param('id') id: number, @Query('cityId') cityId: number) {
     return await this.userService.updateCity(id, cityId);
-  }
-
-  @Patch('update-office/:id')
-  async updateUserOffice(
-    @Param('id') id: number,
-    @Body() officeData: Office[],
-  ) {
-    return await this.userService.updateUserOffice(id, officeData);
   }
 
   @Get('workers')

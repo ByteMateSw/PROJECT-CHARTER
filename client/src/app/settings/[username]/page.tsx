@@ -129,6 +129,7 @@ export default function Page({params}: { params: {username: string}}) {
             ...prevUser,
             isWorker: response.isWorker
           }))
+          //setOffices(response.offices)
           fetchSocialNetworks(response.id)
         } catch (error) {
           console.error(error)
