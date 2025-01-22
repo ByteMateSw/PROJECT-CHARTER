@@ -42,7 +42,7 @@ export default function Sidebar({ user }: { user: any }) {
   console.log("user", user);
 
   return (
-    <section className="">
+    <section className="-mt-24 z-50">
       <section className="flex flex-col justify-center items-center w-full md:p-4 gap-2">
         <img
           className="block md:hidden h-24 w-full"

@@ -33,10 +33,10 @@ export default function Page({
   }, []);
   
   return (
-    <div className="h-screen grid grid-rows-layout grid-cols-3 md:pl-4">
+    <div className="h-screen grid grid-rows-10">
       {/* Navbar placeholder */}
       <div className="col-span-3 h-16 flex-shrink-0"></div>
-      <div className="col-span-3">
+      <div className="col-span-3 row-span-2 h-44">
           <img
             className="hidden md:block h-44 w-full"
             src={user?.backgroundPhoto || "/img/bg-image.jpg"}
@@ -44,17 +44,17 @@ export default function Page({
             />
       </div>
       <div className="col-span-3">
-      <div className="grid grid-flow-col">
+      <div className="grid grid-flow-col grid-cols-12">
       {/* Sidebar */}
       <div
-        className={` h-full col-span-full md:col-span-1 ${!user && "skeleton"
+        className={`relative h-full col-span-full md:col-span-3 ${!user && "skeleton"
         } md:border-x md:border-secondary-lightgray -mt-8 md:m-0`}
         >
         {user && <Sidebar user={user} />}
       </div>
 
       {/* Main content */}
-      <div className="col-span-full md:col-span-2">
+      <div className="col-span-full md:col-span-9">
         <section className="flex flex-col w-full items-start">
 
           <div className="flex items-start justify-start space-x-4 mt-4 pl-4">
