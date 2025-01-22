@@ -36,23 +36,27 @@ export default function Page({
     <div className="h-screen grid grid-rows-layout grid-cols-3 md:pl-4">
       {/* Navbar placeholder */}
       <div className="col-span-3 h-16 flex-shrink-0"></div>
-
+      <div className="col-span-3">
+          <img
+            className="hidden md:block h-44 w-full"
+            src={user?.backgroundPhoto || "/img/bg-image.jpg"}
+            alt="Fondo de Perfil"
+            />
+      </div>
+      <div className="col-span-3">
+      <div className="grid grid-flow-col">
       {/* Sidebar */}
       <div
-        className={`h-full col-span-full md:col-span-1 ${!user && "skeleton"
-          } md:border-x md:border-secondary-lightgray -mt-8 md:m-0`}
-      >
+        className={` h-full col-span-full md:col-span-1 ${!user && "skeleton"
+        } md:border-x md:border-secondary-lightgray -mt-8 md:m-0`}
+        >
         {user && <Sidebar user={user} />}
       </div>
 
       {/* Main content */}
       <div className="col-span-full md:col-span-2">
         <section className="flex flex-col w-full items-start">
-          <img
-            className="hidden md:block h-44 w-full"
-            src={user?.backgroundPhoto || "/img/bg-image.jpg"}
-            alt="Fondo de Perfil"
-          />
+
           <div className="flex items-start justify-start space-x-4 mt-4 pl-4">
             {[
               { href: "jobs", label: "Trabajos" },
@@ -68,7 +72,7 @@ export default function Page({
                   ? "border-primary-blue text-primary-blue"
                   : "border-secondary-lightgray text-secondary-gray"
                 }`}
-              >
+                >
                 {tab.label}
               </Link>
             ))}
@@ -77,6 +81,8 @@ export default function Page({
         <section className="flex w-full">
           <Animate>{children}</Animate>
         </section>
+      </div>
+      </div>
       </div>
     </div>
   );

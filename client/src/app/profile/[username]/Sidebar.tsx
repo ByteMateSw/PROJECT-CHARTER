@@ -42,8 +42,8 @@ export default function Sidebar({ user }: { user: any }) {
   console.log("user", user);
 
   return (
-    <>
-      <section className="flex flex-col justify-center items-center w-full md:p-4">
+    <section className="">
+      <section className="flex flex-col justify-center items-center w-full md:p-4 gap-2">
         <img
           className="block md:hidden h-24 w-full"
           src={user.backgroundPhoto ? user.backgroundPhoto : "/img/bg-image.jpg"}
@@ -65,40 +65,28 @@ export default function Sidebar({ user }: { user: any }) {
               /> : null
           }
         </div>
-
+        <div className="flex flex-col gap-4">
         <h2 className="text-xl font-bold pt-2">{user?.firstName} {user?.lastName}</h2>
-        <p className="text-secondary-black text-xs font-bold">
+        {/* <p className="text-secondary-black text-xs font-bold">
           {(user.offices.lenght < 1) ? user.offices.map((office: any, index: number) => {
             return (
               <span key={office.id}>
-                {office.name}
-                {index < user.offices.length - 1 ? ", " : ""}
+              {office.name}
+              {index < user.offices.length - 1 ? ", " : ""}
               </span>
-            );
-          }) : "Sin profesiones configuradas"}
-        </p>
+              );
+              }) : "Sin profesiones configuradas"}
+              </p> */}
         <span className="flex justify-center items-center">
           <img
             src="/svg/Location-Icon.svg"
             alt="image"
             className="inline h-5 w-5 mr-1"
-          />
+            />
           <p className="text-secondary-gray text-xs font-bold">
             {user.city ? user.city.name : "Sin Configurar"}
           </p>
         </span>
-        <div className="flex text-secondary-gray text-xs text-center font-normal my-2 gap-2">
-          {user.offices.map((office: any, index: number) => {
-            return (
-              <p
-                className="border border-secondary-gray p-1 rounded-full flex justify-center items-center"
-                key={office.id}
-              >
-                {office.name}
-              </p>
-            );
-          })}
-        </div>
         <span className="w-full inline-flex items-center justify-center font-bold">
           <StarRating starRating={score} size={24} />
           <p className="ml-2 text-secondary-black text-base">
@@ -106,6 +94,7 @@ export default function Sidebar({ user }: { user: any }) {
             {Number.isFinite(score) ? score : 0}
           </p>
         </span>
+        </div>
       </section>
       {/* <section className="flex flex-col justify-center items-start w-full p-4">
         <h2 className="text-xl font-bold pt-2">Servicios</h2>
@@ -114,14 +103,34 @@ export default function Sidebar({ user }: { user: any }) {
         optio exercitationem? Deleniti quibusdam officiis sapiente odit
         nesciunt?
       </section> */}
-      <section className="flex flex-col justify-end items-start w-full p-4">
+      <section className="flex flex-col justify-end items-start w-full p-4 gap-2">
+        <p className="font-bold w-16 h-6">
+          Habilidades
+        </p>
+        <div className="flex text-secondary-gray text-xs text-center font-normal gap-2">
+          {user.offices.map((office: any, index: number) => {
+            return (
+              <div
+                className="border border-secondary-gray text-black rounded-lg px-2 py-1 flex justify-center items-center"
+                key={office.id}
+              >
+                {office.name}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+      <section className="flex flex-col justify-end items-start w-full p-4 gap-2">
+        <p className="font-bold w-16 h-6">
+          Contacto
+        </p>
         <ul className="flex w-full flex-col justify-evenly items-center gap-4 [&>li]:h-8 [&>li>img]:h-5 [&>li>img]:mr-2 [&>li]:cursor-pointer [&>li]:border [&>li]:border-secondary-lightgray [&>li]:w-full [&>li]:flex [&>li]:items-center [&>li]:justify-between [&>li]:rounded-full [&>li]:px-4 [&>li]:py-2">
           <li onClick={() => window.open(`https://wa.me/${user.numberPhone}`)}>
             <div className="flex items-center">
               <img src="/svg/whatsapp-icon.svg" alt="WhatsApp" style={{ height: 20, width: 20 }} />
               <span className="ml-2 text-sm">WhatsApp</span>
             </div>
-            <img src="/svg/diagonal-arrow.svg" alt="->" style={{ height: 20, width: 20 }} />
+            <img src="/svg/diagonal-arrow.svg" alt="->" style={{ height: 20, width: 20}} />
 
           </li>
           {redes.map(
@@ -136,8 +145,11 @@ export default function Sidebar({ user }: { user: any }) {
             }) =>
               social != undefined && social[name] ? (
                 <li key={name} onClick={() => window.open(social[name])}>
-                  <img src={iconSrc} alt={label} />
-                  <span>{label}</span>
+                  <div className="flex items-center">
+                    <img src={iconSrc} alt={label} style={{ height: 20, width: 20 }}/>
+                    <span className="ml-2 text-sm">{label}</span>
+                  </div>
+                  <img src="/svg/diagonal-arrow.svg" alt="->" style={{ height: 20, width: 20 }} />
                 </li>
               ) : (
                 <span key={name}></span>
@@ -161,6 +173,6 @@ export default function Sidebar({ user }: { user: any }) {
           </li> */}
         </ul>
       </section >
-    </>
+    </section>
   );
 }
