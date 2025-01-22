@@ -58,7 +58,7 @@ export default function Sidebar({ user }: { user: any }) {
           {
             user.isWorker ?
               <img
-                className="absolute top-0 right-0 h-12 w-12 bg-primary-blue rounded-full p-2"
+                className="absolute -top-24 right-0 md:top-0 md:right-0 h-8 w-8 md:h-12 md:w-12 bg-primary-blue rounded-full p-2"
                 src="/svg/briefcase.svg"
                 alt="Es trabajador"
                 title="Este usuario está activo como trabajador"
