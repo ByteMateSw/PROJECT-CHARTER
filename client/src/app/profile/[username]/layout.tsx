@@ -36,7 +36,7 @@ export default function Page({
     <div className="h-screen grid grid-rows-10">
       {/* Navbar placeholder */}
       <div className="col-span-3 h-16 flex-shrink-0"></div>
-      <div className="col-span-3 row-span-2 h-44">
+      <div className="col-span-3 row-span-2 h-44 shadow-sm">
           <img
             className="hidden md:block h-44 w-full"
             src={user?.backgroundPhoto || "/img/bg-image.jpg"}

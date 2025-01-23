@@ -96,13 +96,15 @@ export default function Sidebar({ user }: { user: any }) {
         </span>
         </div>
       </section>
-      {/* <section className="flex flex-col justify-center items-start w-full p-4">
-        <h2 className="text-xl font-bold pt-2">Servicios</h2>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic nostrum
-        qui ad animi dolor, et nisi minus voluptatem fugit at modi temporibus
-        optio exercitationem? Deleniti quibusdam officiis sapiente odit
-        nesciunt?
-      </section> */}
+      <section className="flex flex-col justify-center items-start w-full p-4 gap-2">
+        <h2 className="font-bold h-6">Sitio Web</h2>
+        <div className="flex text-sm text-center font-normal gap-2">
+          <span>
+            <img src="/svg/web-site.svg" alt="" />
+          </span>
+          www.pedro.com
+        </div>
+      </section>
       <section className="flex flex-col justify-end items-start w-full p-4 gap-2">
         <p className="font-bold w-16 h-6">
           Habilidades
