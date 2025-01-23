@@ -45,7 +45,7 @@ export default function Page({ params }: { params: { username: string } }) {
         {user?.posts.map((post: any, index: number) => {
         const date = dateDifference(post.creationDate)
         return (
-          <div className="flex flex-col justify-around shadow-md p-4 rounded-xl" key={index}>
+          <div className="flex flex-col justify-around shadow-md p-4 rounded-2xl" key={index}>
             <span className="flex md:justify-between min-[1620px]:items-center items-start flex-col-reverse min-[1620px]:flex-row">
               <h2 className="flex-start text-lg text-primary-blue font-bold">
                 {post.title}
