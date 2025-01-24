@@ -18,6 +18,7 @@ import { AppController } from './app.controller';
 import { S3Module } from './storage/s3.module';
 import { ExperienceModule } from './experiencie/experience.module';
 import { SocialNetworkModule } from './social-network/social-network.module';
+import { JobsModule } from './jobs/jobs.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { SocialNetworkModule } from './social-network/social-network.module';
     S3Module,
     ExperienceModule,
     SocialNetworkModule,
+    JobsModule,
   ],
   controllers: [AppController],
 })
