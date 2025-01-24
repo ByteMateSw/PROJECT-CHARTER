@@ -28,3 +28,8 @@ export type updateSocialNetworkTypes = {
   linkedin?: string,
   web?: string
 }
+
+export type createJobTypes = {
+  title: string,
+  user: number
+}

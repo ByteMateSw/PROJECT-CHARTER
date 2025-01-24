@@ -5,8 +5,14 @@ export class CreateJobDTO {
   title: string;
 
   @IsString()
-  img: string;
+  img: CustomFile | any;
 
   @IsString()
   user: number;
+}
+
+interface CustomFile extends File {
+  originalname: string;
+  mimetype: string;
+  buffer: Buffer;
 }
