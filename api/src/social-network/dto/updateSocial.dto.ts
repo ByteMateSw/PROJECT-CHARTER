@@ -16,4 +16,8 @@ export class UpdateSocialNetworkDTO {
   @IsOptional()
   @IsString()
   linkedin?: string;
+
+  @IsOptional()
+  @IsString()
+  web?: string;
 }

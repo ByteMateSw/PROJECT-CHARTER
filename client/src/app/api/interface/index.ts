@@ -16,7 +16,8 @@ export type createSocialTypes = {
   instagram?: string,
   twitter?: string,
   facebook?: string,
-  linkedin?: string
+  linkedin?: string,
+  web?: string
 }
 
 export type updateSocialNetworkTypes = {
@@ -24,5 +25,6 @@ export type updateSocialNetworkTypes = {
   instagram?: string,
   twitter?: string,
   facebook?: string,
-  linkedin?: string
+  linkedin?: string,
+  web?: string
 }

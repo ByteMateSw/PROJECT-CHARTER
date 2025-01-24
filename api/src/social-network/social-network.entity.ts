@@ -24,6 +24,9 @@ export class SocialNetwork {
   @Column({ nullable: true })
   linkedin: string;
 
+  @Column({ nullable: true })
+  web: string;
+
   @OneToOne(() => User)
   @JoinColumn()
   user: number;

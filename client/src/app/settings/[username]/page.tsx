@@ -54,7 +54,8 @@ export default function Page({params}: { params: {username: string}}) {
     instagram: "",
     twitter: "",
     facebook: "",
-    linkedin: ""
+    linkedin: "",
+    web: ""
   });
   const [comboBoxOptions, setComboBoxOptions] = useState<any>({
     provinces: [],
@@ -233,7 +234,8 @@ export default function Page({params}: { params: {username: string}}) {
           user.instagram || 
           user.twitter ||
           user.facebook || 
-          user.linkedin) && (
+          user.linkedin ||
+          user.web) && (
           user.firstName.length > 0 ||
           user.lastName.length > 0 ||
           user.username.length > 0 ||
@@ -246,7 +248,8 @@ export default function Page({params}: { params: {username: string}}) {
           user.instagram.length > 0 ||
           user.twitter.length > 0 ||
           user.facebook.length > 0 ||
-          user.linkedin.length > 0
+          user.linkedin.length > 0 ||
+          user.web.length > 0
         ) || user.isWorker === true || false
       ) {
         const updatedUserData = {
@@ -266,7 +269,8 @@ export default function Page({params}: { params: {username: string}}) {
           ...(user.instagram && { instagram: user.instagram }),
           ...(user.twitter && { twitter: user.twitter }),
           ...(user.facebook && { facebook: user.facebook }),
-          ...(user.linkedin && { linkedin: user.linkedin })
+          ...(user.linkedin && { linkedin: user.linkedin }),
+          ...(user.web && { web: user.web })
         }
         // Actualizar la información básica del usuario solo si todos los campos están llenos
         if (Object.keys(updatedUserData).length > 0) {
@@ -324,7 +328,8 @@ export default function Page({params}: { params: {username: string}}) {
       instagram: "",
       twitter: "",
       facebook: "",
-      linkedin: ""
+      linkedin: "",
+      web: ""
     });
     setProvince(null);
     setCity(null);

@@ -20,6 +20,7 @@ export class SocialNetworkService {
         twitter: data.twitter,
         instagram: data.instagram,
         linkedin: data.linkedin,
+        web: data.web,
       };
       const newSocials = this.socialNetworkRepo.create(socialData);
       await this.socialNetworkRepo.save(newSocials);

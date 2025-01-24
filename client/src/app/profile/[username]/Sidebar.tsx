@@ -41,6 +41,8 @@ export default function Sidebar({ user }: { user: any }) {
   console.log("----------------------");
   console.log("user", user);
 
+  console.log(social)
+
   return (
     <section className="-mt-24 z-50">
       <section className="flex flex-col justify-center items-center w-full md:p-4 gap-2">
@@ -98,11 +100,15 @@ export default function Sidebar({ user }: { user: any }) {
       </section>
       <section className="flex flex-col justify-center items-start w-full p-4 gap-2">
         <h2 className="font-bold h-6">Sitio Web</h2>
-        <div className="flex text-sm text-center font-normal gap-2">
+        <div className="flex text-sm text-center items-center font-normal gap-2">
           <span>
             <img src="/svg/web-site.svg" alt="" />
           </span>
-          www.pedro.com
+            {social != undefined && social['web'] ? 
+            <a href={social['web']}>{social['web']}</a>
+            : 
+            <span>No hay sitio web</span>
+            }
         </div>
       </section>
       <section className="flex flex-col justify-end items-start w-full p-4 gap-2">

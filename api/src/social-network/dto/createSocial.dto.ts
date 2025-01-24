@@ -17,6 +17,10 @@ export class CreateSocialNetworkDTO {
   @IsString()
   linkedin?: string;
 
+  @IsOptional()
+  @IsString()
+  web?: string;
+
   @IsNumber()
   userId: number;
 }
