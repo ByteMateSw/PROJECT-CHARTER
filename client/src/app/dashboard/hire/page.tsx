@@ -6,6 +6,7 @@ import { profiles } from "@/data/hireProfiles";
 import React, { useEffect, useState } from "react";
 import { useFilter } from "@/context/searchContext";
 import { useSearchParams } from "next/navigation";
+import StarRating from "@/app/components/StarRating/StarRating";
 
 export default function HirePage() {
   const {search, city, setSearch, setCity} = useFilter()
@@ -44,15 +45,16 @@ export default function HirePage() {
     fetchUsers();
   }, [page, limit, search, selectCity, city, changePage]); // Re-fetch users when page or limit changes
 
+  console.log(users)
   return (
     <>
     <div className="absolute left-7 top-1 h-12">
       <Pagination currentPage={changePage} totalPages={count} onPageChange={setChangePage}/>
     </div>
-    <section className="grid grid-flow-row lg:grid-cols-2 grid-cols-1 overflow-auto w-full h-full mt-14 gap-6 p-6">
+    <section className="grid grid-flow-row md:grid-cols-2 2xl:grid-cols-4 grid-cols-1 overflow-auto w-full h-full mt-14 gap-6 p-6">
       {users.map((profile: any, index: number) => {
         return (
-          <div key={index} className="bg-secondary-white rounded-2xl border border-secondary-gray w-96 h-80 relative overflow-hidden">
+          <div key={index} className="bg-secondary-white rounded-2xl border border-secondary-gray w-96 h-80 3xl:w-72 2xl:h-80 relative overflow-hidden">
             {profile.backgroundPhoto ?
               <img
               src={profile.backgroundPhoto}
@@ -64,29 +66,14 @@ export default function HirePage() {
           }
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
               <img
-                src={profile.photo ? profile.photo : 'https://img.freepik.com/vector-premium/icono-perfil-avatar-predeterminado-imagen-usuario-redes-sociales-icono-avatar-gris-silueta-perfil-blanco-ilustracion-vectorial_561158-3383.jpg'}
+                src={profile.photo ? profile.photo : "/svg/profile-circle.svg"}
                 alt="imagen de perfil"
-                className="h-24 w-24 -mt-36 rounded-full bg-secondary-gray border-2 border-secondary-white"
+                className="h-24 w-24 -mt-36 rounded-full border-2 border-secondary-white"
               />
             </div>
-
             <div className="px-4 pt-4 pb-2">
               <h2 className="text-secondary-black text-center text-3xl font-bold">{profile.firstName} {profile.lastName}</h2>
-              <span className="flex justify-center items-center">
-                <img
-                  src="/svg/Location-Icon.svg"
-                  alt="image"
-                  className="inline h-5 w-5 mr-1"
-                />
-                <p className="text-secondary-black text-xs font-bold">{profile.city ? profile.city.name : ""}</p>
-                <img
-                  src="/svg/star.svg"
-                  alt="image"
-                  className="inline h-5 w-5 ml-2"
-                />
-                <p className="text-secondary-black text-xs font-bold">{profile.review}</p>
-              </span>
-              <p className="text-secondary-gray font-semibold text-center text-base mt-4">
+              <p className="text-secondary-gray font-semibold text-center text-base mt-1">
                 {profile.experience.map((experience: any, index: number) => (
                   <React.Fragment key={index}>
                     {experience.title}
@@ -94,11 +81,23 @@ export default function HirePage() {
                   </React.Fragment>
                 ))}
               </p>
+              <span className="flex flex-col justify-center items-center gap-2 mt-4">
+                <img
+                  src="/svg/Location-Icon.svg"
+                  alt="image"
+                  className="inline h-5 w-5"
+                />
+                <div className="flex justify-center items-center gap-2">
+                  <p className="text-secondary-black text-xs font-bold">{profile.city ? profile.city.name : ""}</p>
+                    <StarRating size={18} starRating={profile.score}/>
+                  <p className="text-secondary-black text-sm font-bold">{profile.score}</p>
+                </div>
+              </span>
 
             </div>
-            <div className="w-full px-3">
+            {/* <div className="w-full px-3">
               <HireModal user={profile} index={index} />
-            </div>
+            </div> */}
           </div>
 
         );

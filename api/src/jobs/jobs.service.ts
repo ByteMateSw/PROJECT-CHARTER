@@ -21,7 +21,7 @@ export class JobsService {
         data.img.buffer,
       );
       console.log(imagePath);
-      //data.img = process.env.R2_PUBLIC_DOMAIN + imagePath;
+      data.img = process.env.R2_PUBLIC_DOMAIN + imagePath;
       //const newJob = this.jobsRepository.create(data);
       //await this.jobsRepository.save(newJob);
       return data;

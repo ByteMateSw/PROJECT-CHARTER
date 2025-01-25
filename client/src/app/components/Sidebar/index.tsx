@@ -45,6 +45,24 @@ export default function Sidebar(): JSX.Element {
 
   const measure = 20;
 
+  const modalidad = [
+  {
+    id: 1,
+    name: 'presencial',
+    label: 'Presencial'
+  },
+  {
+    id: 2,
+    name: 'remoto',
+    label: 'Remoto'
+  },
+  {
+    id: 3,
+    name: 'hibrido',
+    label: 'Híbrido'
+  }
+]
+
 
   return (
     <>
@@ -107,6 +125,44 @@ export default function Sidebar(): JSX.Element {
       </ul>
       <hr className="w-full mt-6" />
       <section className="w-full flex flex-col flex-1 justify-end items-start py-6 gap-4">
+        <div className="flex cursor-default select-none">
+        <Image
+            src="/svg/home.svg"
+            alt="Location Icon"
+            width={measure}
+            height={measure}
+          />
+          <span className="ml-1 text-secondary-black text-xl font-bold">
+            Modalidad
+          </span> 
+        </div>
+        <ul className="overflow-y-scroll minimal-scrollbar w-full select-none">
+        {modalidad.map(({id, label}) => {
+            return (
+              <li
+                key={id}
+                className="flex items-center py-1 w-fit hover:underline cursor-pointer"
+                //onClick={() => handleCheckboxChange(id)}
+              >
+                <input
+                  className={`ml-2 rounded-full appearance-none w-2 h-2 ring-2 ring-offset-2 ring-secondary-black items-center justify-center cursor-pointer ${
+                    checkedItems[id]
+                      ? " bg-primary-blue ring-2"
+                      : "bg-secondary-white"
+                  }`}
+                  id={`${id}`}
+                  type="checkbox"
+                  checked={checkedItems[id] || false}
+                  onChange={() => {}}
+                />
+                <label className="text-secondary-black text-base ml-2 cursor-pointer">
+                  {label}
+                </label>
+              </li>
+            );
+          })}
+      </ul>
+      <hr className="w-full mt-6" />
         <div className="flex cursor-default select-none">
           <Image
             src="/svg/location.svg"

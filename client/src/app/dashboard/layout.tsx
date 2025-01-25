@@ -6,13 +6,13 @@ import Filters from "./Filters";
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <Suspense fallback="loading...">
-      <div className="h-screen grid grid-rows-6 grid-cols-layout justify-between gap-x-4 px-4 pb-4">
+      <div className="h-screen grid grid-rows-12 grid-cols-layout  ">
         {/* Navbar placeholder */}
-        <div className="col-span-full h-24"></div>
+        <div className="col-span-full h-16"></div>
 
         {/* Sidebar */}
-        <div className="hidden row-span-5 md:block md:col-start-1 md:col-end-2 h-full">
-          <nav className="flex h-full w-80 p-6 flex-col items-start flex-1 border rounded-3xl border-secondary-gray">
+        <div className="hidden row-span-12 md:block md:col-start-1 md:col-end-2 h-full -mt-3 border ">
+          <nav className="flex h-full w-80 p-6 flex-col items-start flex-1 ">
             <Sidebar />
           </nav>
         </div>
@@ -21,9 +21,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <Filters />
         </div>
         {/* Main content */}
-        <div className="col-span-full row-span-5 md:col-start-2 md:col-end-3 h-full w-full overflow-hidden">
+        <div className="col-span-full row-span-12 md:col-start-2 md:col-end-3 h-full w-full overflow-hidden -mt-3">
           <Animate>
-            <section className="relative h-full w-full flex justify-center flex-wrap overflow-auto delete-scrollbar md:border md:rounded-3xl md:border-secondary-gray">
+            <section className="relative h-full w-full flex justify-center flex-wrap overflow-auto delete-scrollbar ">
               {children}
             </section>
           </Animate>

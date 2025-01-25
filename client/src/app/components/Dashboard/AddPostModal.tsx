@@ -134,10 +134,13 @@ async function handleSubmit(e:any) {
     return (
         <div>
             <label
-              className="btn btn-primary rounded-full mt-1 mr-4"
+              className="flex justify-center items-center btn btn-primary text-base rounded-full mt-1 mr-4"
               htmlFor={`modal-add`}
             >
-              Agregar post
+              <div className="flex ">
+              <p className="text-xl pr-3">+</p>
+              <p className="flex justify-center items-center">Publicar vacantes</p>
+              </div>
             </label>
             <input className="modal-state" id={`modal-add`} type="checkbox" />
             <section className="modal">
