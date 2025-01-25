@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
 import { AxiosResponse } from "axios";
@@ -11,9 +11,11 @@ import { getUserByEmail, getUserByUsername } from "@/app/api/user";
 export default function JobsModal({
   post,
   index,
+  children
 }: {
   post: any;
   index: number;
+  children: ReactNode
 }) {
 
   const { data: session, status }: any = useSession();
@@ -88,11 +90,11 @@ export default function JobsModal({
   return (
     <div>
     <label
-      className=" btn btn-primary rounded-full"
+      className=""
       htmlFor={`modal-${index}`}
       onClick={() => setPostId(post.id)}
     >
-      Ver detalles
+      {children}
     </label>
     <input className="modal-state" id={`modal-${index}`} type="checkbox" />
     <section className="modal">

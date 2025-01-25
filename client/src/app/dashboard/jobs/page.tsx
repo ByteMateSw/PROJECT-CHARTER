@@ -47,11 +47,12 @@ export default function JobsPage() {
       <AddPostModal/>
       </div>
     </div>
-    <article className="h-full w-full grid grid-cols-2 grid-flow-row sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 mt-14 overflow-auto">
+    <article className="h-full w-full grid grid-cols-1 grid-flow-row grid-rows-none md:grid-rows-3 xl:grid-rows-4 3xl:grid-rows-6 sm:grid-cols-2 md:grid-cols-2 2xl:grid-cols-3 gap-4 p-4 mt-14 overflow-auto">
       {posts.map((post: any, index: number) => {
         const date = dateDifference(post.creationDate)
         return (
-          <div className="flex flex-col justify-around h-80 shadow-md p-4 rounded-xl" key={index}>
+          <JobsModal key={index} post={post} index={index}>
+          <div className="flex flex-col justify-around h-52 shadow-md p-4 rounded-xl hover:cursor-pointer" key={index}>
             <span className="flex md:justify-between min-[1620px]:items-center items-start flex-col-reverse min-[1620px]:flex-row">
               <h2 className="flex-start text-lg text-primary-blue font-bold">
                 {post.title}
@@ -90,9 +91,10 @@ export default function JobsPage() {
               {/* <Link className="btn btn-primary rounded-full h-8" href="/">
                 Ver detalles
               </Link> */}
-              <JobsModal post={post} index={index}/>
+              {/* <JobsModal post={post} index={index}/> */}
             </div>
           </div>
+          </JobsModal>
         );
       })}
     </article>
