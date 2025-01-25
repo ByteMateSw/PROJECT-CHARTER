@@ -1,24 +1,26 @@
 "use client";
 import Link from "next/link";
-import React from "react";
+import React, { Children, ReactNode } from "react";
 import StarRating from "../StarRating/StarRating";
 
 export default function HireModal({
   user,
   index,
+  children
 }: {
   user: any;
   index: number;
+  children: ReactNode
 }) {
 
  
   return (
     <>
       <label
-        className="w-full btn btn-primary rounded-full"
+        className=""
         htmlFor={`modal-${index}`}
       >
-        Ver Perfil
+        {children}
       </label>
       <input className="modal-state" id={`modal-${index}`} type="checkbox" />
       <section className="modal">

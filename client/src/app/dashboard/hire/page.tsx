@@ -54,7 +54,8 @@ export default function HirePage() {
     <section className="grid grid-flow-row md:grid-cols-2 2xl:grid-cols-4 grid-cols-1 overflow-auto w-full h-full mt-14 gap-6 p-6">
       {users.map((profile: any, index: number) => {
         return (
-          <div key={index} className="bg-secondary-white rounded-2xl border border-secondary-gray w-96 h-80 3xl:w-72 2xl:h-80 relative overflow-hidden">
+          <HireModal key={index} user={profile} index={index}>
+          <div key={index} className="bg-secondary-white rounded-2xl border border-secondary-gray w-96 h-80 3xl:w-72 2xl:h-80 relative overflow-hidden hover:cursor-pointer">
             {profile.backgroundPhoto ?
               <img
               src={profile.backgroundPhoto}
@@ -99,7 +100,7 @@ export default function HirePage() {
               <HireModal user={profile} index={index} />
             </div> */}
           </div>
-
+          </HireModal>
         );
       })}
     </section>
