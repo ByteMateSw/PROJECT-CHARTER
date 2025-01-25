@@ -7,7 +7,7 @@ import { jwtDecode } from "jwt-decode";
 import { useSession } from "next-auth/react";
 import { useUser } from "@/context/userContext";
 
-export default function page() {
+export default function Page() {
 
   const { data: session, status }: any = useSession();
   const [user, setUser] = useUser();
@@ -63,13 +63,13 @@ export default function page() {
       }
     },[user])
 
-    // useEffect(() => {
-    //   async function getJobs() {
-    //     const response = await getJobsByUser(user?.id)
-    //     setJobs(response)
-    //   }
-    //   getJobs()
-    // }, [user])
+    useEffect(() => {
+      async function getJobs() {
+        const response = await getJobsByUser(user?.id)
+        setJobs(response)
+      }
+      getJobs()
+    }, [user])
 
 console.log(jobs)
 console.log(user)
