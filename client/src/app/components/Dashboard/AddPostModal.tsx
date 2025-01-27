@@ -122,7 +122,7 @@ async function handleSubmit(e:any) {
       area,
       selectCities.value,
       price/1,
-      mode.label,
+      //mode.label,
     )
   } catch (error) {
     console.error(error)

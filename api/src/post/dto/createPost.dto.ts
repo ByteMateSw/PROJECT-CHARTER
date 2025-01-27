@@ -7,7 +7,7 @@ import {
   IsString,
   Max,
 } from 'class-validator';
-import { WorkingMode } from '../enum/enum.post';
+//import { WorkingMode } from '../enum/enum.post';
 
 /**
  * Represents the data transfer object for create a post.
@@ -55,7 +55,7 @@ export class CreatePostDto {
   @Max(1000000, { message: 'El precio no puede sobrepasar los $1000000' })
   price?: number;
 
-  @IsEnum(WorkingMode)
-  @IsOptional()
-  workin_modality?: WorkingMode;
+  // @IsEnum(WorkingMode)
+  // @IsOptional()
+  // workin_modality?: WorkingMode;
 }

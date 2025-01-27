@@ -61,7 +61,7 @@ export default function RegisterPage() {
     try {
       const data = await register(finalUser);
       if (data.response.status === 400) {
-        setWarningMessage(data.response.data.message)
+        setErrorMessage(data.response.data.message)
         return
       }
       signIn("credentials", {
@@ -76,7 +76,7 @@ export default function RegisterPage() {
       setWarningMessage("Error al registrar el usuario");
     }
   };
-
+console.log(warningMessage)
   return (
     <>
       {showAlert && (
@@ -116,6 +116,7 @@ export default function RegisterPage() {
           <div className="w-full flex flex-col justify-center">
             <div className="text-red-500 w-full flex justify-center">
               {errorMessage && <p>{errorMessage}</p>}
+              {warningMessage && <p>{warningMessage}</p>}
             </div>
             <button
               id="submit"
