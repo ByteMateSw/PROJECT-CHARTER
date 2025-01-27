@@ -31,3 +31,35 @@ export const dateDifference = (date: Date) => {
       unit: 'dias'
     }
   }
+
+  export function validatePhone(telefono: string): boolean {
+    if (!telefono) {
+      return false; // Teléfono vacío
+    }
+  
+    // Limpiar el teléfono: quitar espacios, guiones, paréntesis y el signo +
+    telefono = telefono.replace(/[\s\-\(\)\+]/g, '');
+  
+    // Expresión regular para validar el formato
+    const regex = /^(549?|00549?|54|0054)?(11|[23]\d{2,3})\d{6,8}$/;
+  
+    if (!regex.test(telefono)) {
+      return false; // Formato inválido
+    }
+  
+    //Validaciones adicionales para casos especificos
+  
+    if(telefono.startsWith("15")){
+      return false; // El prefijo 15 no es válido.
+    }
+  
+    if(telefono.startsWith("5415") || telefono.startsWith("005415")){
+        return false; // El prefijo 15 no es válido.
+    }
+  
+    if (telefono.startsWith("54915") || telefono.startsWith("0054915")) {
+      return false; // El prefijo 15 no es válido.
+    }
+  
+    return true; // Teléfono válido
+  }

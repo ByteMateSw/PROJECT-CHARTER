@@ -174,14 +174,14 @@ async function handleSubmit(e:any) {
                   className="rounded-full border border-slate-800 px-4 py-2"
                   />
                 </div>
-                <label htmlFor="location" className="font-bold text-xl">Modalidad</label>
+                {/* <label htmlFor="location" className="font-bold text-xl">Modalidad</label>
                 <Select
                     styles={styleComboBox}
                     options={workingMode}
                     value={mode}
                     onChange={(selectedOption:any) => setMode(selectedOption)}
                     placeholder={'Modalidad'}
-                     />
+                     /> */}
                 <div className="grid row-span-1 gap-1 my-2">
                   <label htmlFor="location" className="font-bold text-xl">Ubicación</label>
                   <div className="grid grid-cols-2 gap-2">

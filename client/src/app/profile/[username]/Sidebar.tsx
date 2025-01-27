@@ -37,11 +37,11 @@ export default function Sidebar({ user }: { user: any }) {
     fetchSocial()
   }, [])
 
-  console.log("session", session);
-  console.log("----------------------");
-  console.log("user", user);
+  // console.log("session", session);
+  // console.log("----------------------");
+  // console.log("user", user);
 
-  console.log(social)
+  // console.log(social)
 
   return (
     <section className="-mt-24 z-50">
@@ -54,7 +54,7 @@ export default function Sidebar({ user }: { user: any }) {
         <div className="relative">
           <img
             className="h-20 w-20 border -mt-[5.5rem] mb-2 md:m-0 md:h-36 md:w-36 md:border-4 border-secondary-lightgray rounded-full"
-            src={!user.photo ? session?.user.image || "/svg/profile-circle.svg" : user.photo}
+            src={!user.photo ? "/svg/profile-circle.svg" : user.photo}
             alt="Foto de perfil"
           />
           {

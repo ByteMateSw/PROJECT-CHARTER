@@ -125,7 +125,7 @@ export default function Sidebar(): JSX.Element {
       </ul>
       <hr className="w-full mt-6" />
       <section className="w-full flex flex-col flex-1 justify-end items-start py-6 gap-4">
-        <div className="flex cursor-default select-none">
+        {/* <div className="flex cursor-default select-none">
         <Image
             src="/svg/home.svg"
             alt="Location Icon"
@@ -135,8 +135,8 @@ export default function Sidebar(): JSX.Element {
           <span className="ml-1 text-secondary-black text-xl font-bold">
             Modalidad
           </span> 
-        </div>
-        <ul className="overflow-y-scroll minimal-scrollbar w-full select-none">
+        </div> */}
+        {/* <ul className="overflow-y-scroll minimal-scrollbar w-full select-none">
         {modalidad.map(({id, label}) => {
             return (
               <li
@@ -161,7 +161,7 @@ export default function Sidebar(): JSX.Element {
               </li>
             );
           })}
-      </ul>
+      </ul> */}
       <hr className="w-full mt-6" />
         <div className="flex cursor-default select-none">
           <Image
