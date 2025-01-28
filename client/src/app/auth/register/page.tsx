@@ -77,7 +77,6 @@ export default function RegisterPage() {
       setWarningMessage("Error al registrar el usuario");
     }
   };
-console.log(warningMessage)
   return (
     <>
       {showAlert && (
@@ -119,8 +118,8 @@ console.log(warningMessage)
               {errorMessage && <p>
                 <ul>
               {
-              errorMessage.map((error) => (
-                <li>{error}</li>
+              errorMessage.map((error, index) => (
+                <li key={index}>{error}</li>
               ))
               }
               </ul>
