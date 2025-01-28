@@ -84,8 +84,8 @@ export class RegisterDto {
   // @IsPhoneNumber(undefined, {
   //   message: 'El número de teléfono debe de tener un formato válido',
   // })
-  @IsString()
-  numberPhone: string;
+  // @IsString()
+  // numberPhone: string;
 
   /**
    * The DNI (National Identity Document) of the user.
@@ -93,8 +93,8 @@ export class RegisterDto {
    * - Must be a string.
    * - Cannot exceed 20 characters.
    */
-  @IsString({ message: 'El DNI debe ser una cadena de caracteres.' })
-  @MaxLength(20, { message: 'El DNI debe de tener hasta 20 caracteres.' })
-  @IsOptional()
-  dni?: string;
+  // @IsString({ message: 'El DNI debe ser una cadena de caracteres.' })
+  // @MaxLength(20, { message: 'El DNI debe de tener hasta 20 caracteres.' })
+  // @IsOptional()
+  // dni?: string;
 }

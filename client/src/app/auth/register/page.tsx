@@ -30,6 +30,7 @@ export default function RegisterPage() {
 
   const handleChange = (e: any) => {
     setWarningMessage("");
+    setErrorMessage([])
     const { name, value } = e.target;
     setUser({
       ...user,
@@ -54,8 +55,8 @@ export default function RegisterPage() {
       username: user.username,
       email: user.email,
       password: user.password,
-      dni: user.dni,
-      numberPhone: "+549" + user.numberPhone
+      // dni: user.dni,
+      // numberPhone: "+549" + user.numberPhone
     };
 
     try {
@@ -115,8 +116,16 @@ console.log(warningMessage)
           ))}
           <div className="w-full flex flex-col justify-center">
             <div className="text-red-500 w-full flex justify-center">
-              {errorMessage && <p>{errorMessage}</p>}
-              {warningMessage && <p>{warningMessage}</p>}
+              {errorMessage && <p>
+                <ul>
+              {
+              errorMessage.map((error) => (
+                <li>{error}</li>
+              ))
+              }
+              </ul>
+              </p>}
+              {/* {warningMessage && <p>{warningMessage}</p>} */}
             </div>
             <button
               id="submit"

@@ -37,14 +37,14 @@ export const fields: Field[] = [
     type: "password",
     autoComplete: "off",
   },
-  // {
-  //   name: "confirmPassword",
-  //   label: "Confirmar Contraseña",
-  //   placeholder: "····················",
-  //   iconSrc: "/svg/Lock-Icon.svg",
-  //   type: "password",
-  //   autoComplete: "on",
-  // },
+  {
+    name: "confirmPassword",
+    label: "Confirmar Contraseña",
+    placeholder: "····················",
+    iconSrc: "/svg/Lock-Icon.svg",
+    type: "password",
+    autoComplete: "on",
+  },
   // {
   //   name: "dni",
   //   label: "DNI",
