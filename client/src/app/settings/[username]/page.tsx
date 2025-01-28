@@ -411,7 +411,7 @@ export default function Page({params}: { params: {username: string}}) {
   }
 
 
-  if (status === "authenticated" && user) {
+  if (status === "authenticated" && getUser) {
     
     return (
       <div className="h-screen grid grid-rows-layout grid-cols-3 gap-x-4 pb-4 md:px-4">
