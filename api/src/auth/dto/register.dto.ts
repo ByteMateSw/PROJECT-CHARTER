@@ -23,7 +23,6 @@ export class RegisterDto {
    */
   @IsString({ message: 'El nombre debe ser una cadena de caracteres.' })
   @IsNotEmpty({ message: 'El nombre no puede estar vacío.' })
-  @IsAlpha('es-ES', { message: 'El nombre debe contener solo letras.' })
   firstName: string;
 
   /**
