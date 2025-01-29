@@ -40,6 +40,9 @@ export class CreatePostDto {
   @IsString()
   searchVector: string;
 
+  @IsString()
+  contact: string;
+
   @IsNumber()
   city: number;
 

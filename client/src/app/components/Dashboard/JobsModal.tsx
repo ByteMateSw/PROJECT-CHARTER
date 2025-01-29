@@ -87,6 +87,8 @@ export default function JobsModal({
     }
   },[session])
 
+  console.log(post)
+
   return (
     <div>
     <label
@@ -144,13 +146,20 @@ export default function JobsModal({
              getUser?.email === post.user.email ?
              <span></span>
              : 
-            <label
-            onClick={handleClick}
-              htmlFor={`modal-${index}`}
-              className="btn bg-primary-blue text-secondary-white rounded-full"
-            >
-              Solicitar
-            </label>
+             <label 
+             onClick={() => window.open(`https://wa.me/${post.contact}`)}
+             htmlFor={`modal-${index}`}
+             className="btn bg-primary-blue text-secondary-white rounded-full"
+             >
+              Contactar
+             </label>
+            // <label
+            // onClick={handleClick}
+            //   htmlFor={`modal-${index}`}
+            //   className="btn bg-primary-blue text-secondary-white rounded-full"
+            // >
+            //   Solicitar
+            // </label>
             }
           </div>
         </div>

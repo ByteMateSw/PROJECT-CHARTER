@@ -66,6 +66,18 @@ export class Post {
   price?: number;
 
   /**
+   * The contact Number
+   */
+  @Column({ nullable: true })
+  contact: string;
+
+  /**
+   * the post is valid or not
+   */
+  @Column({ default: true })
+  isValid: boolean;
+
+  /**
    * The city of the post.
    */
   @ManyToOne(() => City, (city) => city.id)

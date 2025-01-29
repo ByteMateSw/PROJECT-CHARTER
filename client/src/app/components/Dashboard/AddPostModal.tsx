@@ -3,6 +3,7 @@ import Select from "react-select";
 import { styleComboBox } from "../Sidebar/SidebarStyles";
 import { getProvinces, getCities } from "@/app/api/locations";
 import { getUserByEmail, getUserByUsername } from "@/app/api/user";
+import { getSocialNetworks } from "@/app/api/social-networks";
 import { createPost } from "@/app/api/post";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
@@ -19,6 +20,8 @@ export default function AddPostModal() {
   const [area, setArea] = useState<string>('')
   const [price, setPrice] = useState<number>(0)
   const [description, setDescription] = useState<string>('')
+  const [contact, setContact] = useState<string>('')
+  const [check, setCheck] = useState<boolean>(false)
   const [mode, setMode] = useState({value: 1, label: 'remoto'})
 
   const [getUser, setGetUser] = useState<any>()
@@ -112,6 +115,11 @@ function handleCitiesChange(selectedOption: any) {
   setSelectCities(selectedOption)
 }
 
+function handleContact() {
+  setCheck(!check)
+  setContact(getUser.numberPhone)
+}
+
 async function handleSubmit(e:any) {
   e.preventDefault()
   try {
@@ -122,6 +130,7 @@ async function handleSubmit(e:any) {
       area,
       selectCities.value,
       price/1,
+      contact
       //mode.label,
     )
   } catch (error) {
@@ -129,8 +138,8 @@ async function handleSubmit(e:any) {
   }
 }
 
-
-
+if(getUser != undefined) 
+  {
     return (
         <div>
             <label
@@ -173,6 +182,26 @@ async function handleSubmit(e:any) {
                   onChange={handleChange(setPrice)}
                   className="rounded-full border border-slate-800 px-4 py-2"
                   />
+                </div>
+                <div className="grid row-span-1 gap-1 my-2">
+                  <label htmlFor="contacto" className="font-bold text-xl">Contacto</label>
+                  <input type="text"
+                  disabled={check}
+                  placeholder={check ? getUser.numberPhone : "Contacto"}
+                  value={check ? getUser.numberPhone : contact}
+                  onChange={handleChange(setContact)}
+                  className="rounded-full border border-slate-800 px-4 py-2"
+                  />
+                  <div className="flex gap-3 mt-3 pl-3">
+                  <input type="checkbox"
+                  disabled={!(getUser.numberPhone != '')}
+                  checked={check} 
+                  onChange={handleContact}
+                  className="rounded-full cursor-pointer ring-offset-2"
+                  />
+                  <p>{getUser.numberPhone != '' ? 'Usar tu numero de telefono' :
+                   'No has configurado tu numero de telefono'}</p>
+                  </div>
                 </div>
                 {/* <label htmlFor="location" className="font-bold text-xl">Modalidad</label>
                 <Select
@@ -233,4 +262,5 @@ async function handleSubmit(e:any) {
             </section>
         </div>
     )
+  }
 }
