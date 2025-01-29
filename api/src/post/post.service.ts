@@ -189,6 +189,9 @@ export class PostService {
     const queryPost = this.postRepository.createQueryBuilder('post');
     queryPost.leftJoinAndSelect('post.user', 'user');
     queryPost.leftJoinAndSelect('post.city', 'city');
+    queryPost.where('post.endPostDate > :actualDate', {
+      actualDate: new Date(),
+    });
     const postCount = await this.postRepository.count();
 
     if (habilities) {
