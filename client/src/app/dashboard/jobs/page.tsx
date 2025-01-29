@@ -41,13 +41,13 @@ export default function JobsPage() {
 
   return (
     <>
-    <div className="absolute top-1 h-12 w-full">
+    <div className="absolute top-1 left-7 h-12 w-full">
       <div className="flex justify-between items-center px-4">
       <Pagination totalPages={count} currentPage={changePage} onPageChange={setChangePage}/>
       <AddPostModal/>
       </div>
     </div>
-    <article className="h-full w-full grid grid-cols-1 grid-flow-row grid-rows-none md:grid-rows-3 xl:grid-rows-4 3xl:grid-rows-6 sm:grid-cols-2 md:grid-cols-2 2xl:grid-cols-3 gap-4 p-4 mt-14 overflow-auto">
+    <article className="absolute left-6 h-full w-full grid grid-cols-1 grid-flow-row grid-rows-none md:grid-rows-3 xl:grid-rows-4 3xl:grid-rows-6 sm:grid-cols-2 md:grid-cols-2 2xl:grid-cols-3 gap-4 p-4 mt-14 overflow-auto">
       {posts.map((post: any, index: number) => {
         const date = dateDifference(post.creationDate)
         return (

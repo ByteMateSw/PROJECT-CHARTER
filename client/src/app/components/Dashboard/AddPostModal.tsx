@@ -194,12 +194,12 @@ if(getUser != undefined)
                   />
                   <div className="flex gap-3 mt-3 pl-3">
                   <input type="checkbox"
-                  disabled={!(getUser.numberPhone != '')}
+                  disabled={!(getUser.numberPhone != null)}
                   checked={check} 
                   onChange={handleContact}
                   className="rounded-full cursor-pointer ring-offset-2"
                   />
-                  <p>{getUser.numberPhone != '' ? 'Usar tu numero de telefono' :
+                  <p>{getUser.numberPhone != null ? 'Usar tu numero de telefono' :
                    'No has configurado tu numero de telefono'}</p>
                   </div>
                 </div>
