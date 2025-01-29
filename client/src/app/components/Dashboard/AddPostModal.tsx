@@ -130,7 +130,7 @@ async function handleSubmit(e:any) {
       area,
       selectCities.value,
       price/1,
-      contact
+      contact,
       //mode.label,
     )
   } catch (error) {

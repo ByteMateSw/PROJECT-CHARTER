@@ -161,6 +161,6 @@ export class User {
   @Column({ default: false })
   isWorker: boolean;
 
-  @ManyToMany(() => Post, (post) => post.subscribers)
+  @ManyToMany(() => Post, (post) => post.subscribers, { onDelete: 'CASCADE' })
   subscribers?: Post[];
 }

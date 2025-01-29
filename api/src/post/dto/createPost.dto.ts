@@ -1,6 +1,6 @@
 import {
+  IsDate,
   IsDefined,
-  IsEnum,
   IsNumber,
   IsOptional,
   IsPositive,

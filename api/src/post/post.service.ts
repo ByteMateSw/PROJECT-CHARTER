@@ -72,7 +72,10 @@ export class PostService {
     const user = await this.userService.getUserBy({ id: userId });
     if (!user) throw new NotFoundException('No se ha encontrado el usuario');
     const newPost = this.postRepository.create(postDto);
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() + 10);
     newPost.user = user;
+    newPost.endPostDate = currentDate;
     return await this.postRepository.save(newPost);
   }
 

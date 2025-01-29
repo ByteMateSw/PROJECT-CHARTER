@@ -71,11 +71,14 @@ export class Post {
   @Column({ nullable: true })
   contact: string;
 
-  /**
-   * the post is valid or not
-   */
-  @Column({ default: true })
-  isValid: boolean;
+  // /**
+  //  * the post is valid or not
+  //  */
+  // @Column({ default: true })
+  // isValid: boolean;
+
+  @Column()
+  endPostDate: Date;
 
   /**
    * The city of the post.
@@ -98,7 +101,10 @@ export class Post {
   /**
    * The users who suscribed to the post.
    */
-  @ManyToMany(() => User, (user) => user.subscribers, { eager: true })
+  @ManyToMany(() => User, (user) => user.subscribers, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
   @JoinTable()
   subscribers?: User[];
 }

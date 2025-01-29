@@ -40,7 +40,7 @@ export const getAllPosts = async (): Promise<any> => {
     searchVector: string,
     cityId: number,
     price: number,
-    contact: string
+    contact: string,
     //working_modality: string,
   ) => {
     try {
@@ -51,7 +51,7 @@ export const getAllPosts = async (): Promise<any> => {
           searchVector,
           city: cityId,
           price,
-          contact
+          contact,
           //working_modality
         }
       )
