@@ -87,8 +87,6 @@ export default function JobsModal({
     }
   },[session])
 
-  console.log(post)
-
   return (
     <div>
     <label

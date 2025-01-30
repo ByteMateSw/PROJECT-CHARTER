@@ -65,14 +65,11 @@ export const getAllPosts = async (): Promise<any> => {
     limit: number, 
     habilities: string, 
     location: string,
-    //professions: string[]
+    professions: string[]
     ) => {
-      const data = {
-        data: ['']
-      }
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/search?habilities=${habilities}&location=${location === undefined ? '' : location}&page=${page}&limit=${limit}`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/search?habilities=${habilities}&location=${location === undefined ? '' : location}&page=${page}&limit=${limit}&professions=${JSON.stringify(professions)}`
       )
       return response.data;
     } catch (error) {

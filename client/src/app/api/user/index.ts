@@ -1,5 +1,6 @@
 import axios from "axios";
 import { User } from "../interface";
+import { json } from "stream/consumers";
 
 export const getBestUsers = async (): Promise<User[]> => {
   try {
@@ -134,10 +135,10 @@ export const getAllUsers = async (page?: number, limit?: number): Promise<any> =
   }
 };
 
-export const getUsersFilter = async (page: number, limit: number, habilities: string, location: string) => {
+export const getUsersFilter = async (page: number, limit: number, habilities: string, location: string, offices: string[]) => {
   try {
     const response = await axios.get(`
-      ${process.env.NEXT_PUBLIC_BACKEND_URL}/users/filter?page=${page}&limit=${limit}&habilities=${habilities}&location=${location}`)
+      ${process.env.NEXT_PUBLIC_BACKEND_URL}/users/filter?page=${page}&limit=${limit}&habilities=${habilities}&location=${location}&offices=${JSON.stringify(offices)}`)
       return response.data;
   } catch (error) {
     console.error(error)

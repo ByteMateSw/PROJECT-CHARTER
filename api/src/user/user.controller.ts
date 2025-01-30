@@ -68,7 +68,7 @@ export class UserController {
     @Query('page') page: number,
     @Query('habilities') habilities: string,
     @Query('location') location: string,
-    @Body() offices: { data: string[] },
+    @Query('offices') offices: string,
   ) {
     const filter: UserFilter = {
       habilities,

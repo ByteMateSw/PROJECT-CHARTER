@@ -9,7 +9,7 @@ import { useSearchParams } from "next/navigation";
 import StarRating from "@/app/components/StarRating/StarRating";
 
 export default function HirePage() {
-  const {search, city, setSearch, setCity} = useFilter()
+  const {search, city, setSearch, setCity, selectedProfessions} = useFilter()
 
   const [users, setUsers] = useState<any[]>([]);
   const [page, setPage] = useState<number>(0); // Página inicial
@@ -34,7 +34,7 @@ export default function HirePage() {
     const fetchUsers = async () => {
       try {
         if (city.label != undefined) setSelectCity(city.label)
-        const userData = await getUsersFilter(page, limit, search, selectCity);
+        const userData = await getUsersFilter(page, limit, search, selectCity, selectedProfessions);
         setUsers(userData.users);
         setCount(Math.ceil(userData.count / limit))
       } catch (error) {
@@ -43,7 +43,7 @@ export default function HirePage() {
     };
     setPage((changePage - 1)*limit)
     fetchUsers();
-  }, [page, limit, search, selectCity, city, changePage]); // Re-fetch users when page or limit changes
+  }, [page, limit, search, selectCity, city, changePage, selectedProfessions]); // Re-fetch users when page or limit changes
 
   //console.log(users)
   return (
