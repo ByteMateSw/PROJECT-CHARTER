@@ -3,6 +3,7 @@ import Select from "react-select";
 import { styleComboBox } from "../Sidebar/SidebarStyles";
 import { getProvinces, getCities } from "@/app/api/locations";
 import { getUserByEmail, getUserByUsername } from "@/app/api/user";
+import { getProfessions } from "@/app/api/office";
 import { getSocialNetworks } from "@/app/api/social-networks";
 import { createPost } from "@/app/api/post";
 import { useSession } from "next-auth/react";
@@ -15,9 +16,10 @@ export default function AddPostModal() {
 
   const [selectProvince, setSelectProvince] = useState<any>()
   const [selectCities, setSelectCities] = useState<any>()
+  const [offices, setOffices] = useState<any>()
 
   const [title, setTitle] = useState<string>('')
-  const [area, setArea] = useState<string>('')
+  const [area, setArea] = useState({value: 1, label: ''})
   const [price, setPrice] = useState<number>(0)
   const [description, setDescription] = useState<string>('')
   const [contact, setContact] = useState<string>('')
@@ -55,6 +57,21 @@ export default function AddPostModal() {
       }
     }
 
+    async function getOffices() {
+      try {
+        const response = await getProfessions()
+        let data = []
+        for (let i of response){
+          const obj = { value: i.id, label: i.name }
+          data.push(obj)
+        }
+        setOffices(data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    getOffices()
     provinciesData()
   },[])
 
@@ -127,7 +144,7 @@ async function handleSubmit(e:any) {
       getUser.id,
       title,
       description,
-      area,
+      area.label,
       selectCities.value,
       price/1,
       contact,
@@ -169,11 +186,18 @@ if(getUser != undefined)
                 </div>
                 <div className="grid row-span-1 gap-1 my-2">
                   <label htmlFor="area" className="font-bold text-xl">Area de trabajo</label>
-                  <input type="text" 
+                  <Select
+                    styles={styleComboBox}
+                    options={offices}
+                    value={area}
+                    onChange={(selectOption:any) => setArea(selectOption)}
+                    placeholder={'Area'}
+                     />
+                  {/* <input type="text" 
                   placeholder="Area"
                   onChange={handleChange(setArea)}
                   className="rounded-full border border-slate-800 pl-4 py-2"
-                  />
+                  /> */}
                 </div>
                 <div className="grid row-span-1 gap-1 my-2">
                   <label htmlFor="precio" className="font-bold text-xl">Precio</label>
