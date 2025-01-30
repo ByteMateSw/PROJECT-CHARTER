@@ -47,7 +47,7 @@ export default function MiniAbout({
 
       {/* Imagen */}
       <article className={`flex-1 ${pImg} mt-8 md:mt-0`}>
-        <div className="w-full h-[13.5rem] bg-gray-200 rounded-lg"></div>
+        <img src={pImg} alt="img" className="w-[700px] rounded-lg object-contain" />
       </article>
     </section>
   );

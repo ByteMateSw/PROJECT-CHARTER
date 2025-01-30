@@ -46,7 +46,7 @@ export default function Home() {
     <>
       <Hero />
       <BestProfiles />
-      <Carousel />
+      {/* <Carousel /> */}
       <AdBanner
         dataAdFormat="auto"
         dataFullWidthResponsive={true}
@@ -55,14 +55,14 @@ export default function Home() {
       <MiniAbout
         className=""
         pText=""
-        pImg=""
+        pImg="/img/first-about.webp"
         paragraphsText={paragraphs1}
         tittle="Potencia tu perfil"
         reverse={false}
       />
       <MiniAbout
         className=""
-        pImg=""
+        pImg="/img/second-about.webp"
         pText=""
         paragraphsText={paragraphs2}
         tittle="Encuentra o publica trabajos"
