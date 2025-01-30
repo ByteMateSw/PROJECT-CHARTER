@@ -145,6 +145,9 @@ export class UserService {
           score: 'DESC',
         },
         take: 4,
+        relations: {
+          offices: true,
+          },
       });
       return users;
     } catch (error) {

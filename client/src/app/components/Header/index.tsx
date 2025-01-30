@@ -217,11 +217,11 @@ export default function Header() {
                 <img className="h-6 filter-white" src="/svg/add.svg" alt="Añadir Post" />
               </button>
             </li>
-            <li className="font-bold text-base">
+            {/* <li className="font-bold text-base">
               <button className="border border-secondary-gray rounded-full p-2">
                 <img className="h-6 filter-white" src="/svg/notification.svg" alt="Notificaciones" />
               </button>
-            </li>
+            </li> */}
             <Dropdown user={getUser} />
           </ul>
         </nav>

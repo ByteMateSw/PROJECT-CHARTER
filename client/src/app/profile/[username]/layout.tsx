@@ -59,18 +59,18 @@ export default function Page({
 
           <div className="flex items-start justify-start space-x-4 mt-4 pl-4">
             {[
-              { href: "jobs", label: "Trabajos" },
+              { href: "info", label: "Info" },
+              // { href: "jobs", label: "Trabajos" },
               { href: "posts", label: "Posts" },
               { href: "reviews", label: "Opiniones" },
-              { href: "info", label: "Info" },
             ].map((tab) => (
               <Link
                 key={tab.href}
                 href={tab.href}
                 aria-label={tab.label}
-                className={`px-4 py-2 rounded-full border flex justify-center items-center w-20 ${pathname.includes(tab.href)
-                  ? "border-primary-blue text-primary-blue"
-                  : "border-secondary-lightgray text-secondary-gray"
+                className={`px-6 py-1 rounded-full border flex justify-center items-center w-28 ${pathname.includes(tab.href)
+                  ? "border-primary-blue text-primary-blue bg-primary-blue bg-opacity-10"
+                  : "border-secondary-gray text-secondary-black"
                 }`}
                 >
                 {tab.label}

@@ -1,10 +1,10 @@
 export const NAV_LINKS = [
-  {
-    title: "Notificaciones",
-    href: "dashboard/hire",
-    src: "/svg/notification.svg",
-    alt: "Notification",
-  },
+  // {
+  //   title: "Notificaciones",
+  //   href: "dashboard/hire",
+  //   src: "/svg/notification.svg",
+  //   alt: "Notification",
+  // },
 ];
 
 export const CENTER_NAV_LINKS = [

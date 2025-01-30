@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import StarRating from '@/app/components/StarRating/StarRating'
+import StarRating from "@/app/components/StarRating/StarRating";
 import { useSession } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
 import { redes } from "@/app/settings/[username]/fields";
@@ -9,8 +9,8 @@ import { getSocialNetworks } from "@/app/api/social-networks";
 import Link from "next/link";
 
 export default function Sidebar({ user }: { user: any }) {
-  const [score, setScore] = useState<any>(null)
-  const [social, setSocial] = useState()
+  const [score, setScore] = useState<any>(null);
+  const [social, setSocial] = useState();
 
   const { data: session, status }: any = useSession();
 
@@ -18,24 +18,23 @@ export default function Sidebar({ user }: { user: any }) {
   if (typeof session?.user?.access_token === "string") {
     decoded = jwtDecode(session?.user?.access_token);
   }
-  const id: number = user.id
-
+  const id: number = user.id;
 
   useEffect(() => {
-    setScore((user.score) / 1)
-  }, [user])
+    setScore(user.score / 1);
+  }, [user]);
 
   useEffect(() => {
     const fetchSocial = async () => {
       try {
-        const response = await getSocialNetworks(user.id)
-        setSocial(response)
+        const response = await getSocialNetworks(user.id);
+        setSocial(response);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
-    }
-    fetchSocial()
-  }, [])
+    };
+    fetchSocial();
+  }, []);
 
   // console.log("session", session);
   // console.log("----------------------");
@@ -48,28 +47,31 @@ export default function Sidebar({ user }: { user: any }) {
       <section className="flex flex-col justify-center items-center w-full md:p-4 gap-2">
         <img
           className="block md:hidden h-24 w-full"
-          src={user.backgroundPhoto ? user.backgroundPhoto : "/img/bg-image.jpg"}
+          src={
+            user.backgroundPhoto ? user.backgroundPhoto : "/img/bg-image.jpg"
+          }
           alt="Fondo de Perfil"
         />
         <div className="relative">
           <img
-            className="h-20 w-20 border -mt-[5.5rem] mb-2 md:m-0 md:h-36 md:w-36 md:border-4 border-secondary-lightgray rounded-full"
-            src={!user.photo ? "/svg/profile-circle.svg" : user.photo}
+            className="h-20 w-20 border -mt-[5.5rem] mb-2 md:m-0 md:h-36 md:w-36 md:border-4 border-secondary-lightgray rounded-full bg-secondary-white"
+            src={!user.photo ? "/svg/avatar.svg" : user.photo}
             alt="Foto de perfil"
           />
-          {
-            user.isWorker ?
-              <img
-                className="absolute -top-24 right-0 md:top-0 md:right-0 h-8 w-8 md:h-12 md:w-12 bg-primary-blue rounded-full p-2"
-                src="/svg/briefcase.svg"
-                alt="Es trabajador"
-                title="Este usuario está activo como trabajador"
-              /> : null
-          }
+          {user.isWorker ? (
+            <img
+              className="absolute -top-24 right-0 md:top-0 md:right-0 h-8 w-8 md:h-12 md:w-12 bg-primary-blue rounded-full p-2"
+              src="/svg/briefcase.svg"
+              alt="Es trabajador"
+              title="Este usuario está activo como trabajador"
+            />
+          ) : null}
         </div>
         <div className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold pt-2">{user?.firstName} {user?.lastName}</h2>
-        {/* <p className="text-secondary-black text-xs font-bold">
+          <h2 className="text-xl font-bold pt-2">
+            {user?.firstName} {user?.lastName}
+          </h2>
+          {/* <p className="text-secondary-black text-xs font-bold">
           {(user.offices.lenght < 1) ? user.offices.map((office: any, index: number) => {
             return (
               <span key={office.id}>
@@ -79,23 +81,23 @@ export default function Sidebar({ user }: { user: any }) {
               );
               }) : "Sin profesiones configuradas"}
               </p> */}
-        <span className="flex justify-center items-center">
-          <img
-            src="/svg/Location-Icon.svg"
-            alt="image"
-            className="inline h-5 w-5 mr-1"
+          <span className="flex justify-center items-center">
+            <img
+              src="/svg/Location-Icon.svg"
+              alt="image"
+              className="inline h-5 w-5 mr-1"
             />
-          <p className="text-secondary-gray text-xs font-bold">
-            {user.city ? user.city.name : "Sin Configurar"}
-          </p>
-        </span>
-        <span className="w-full inline-flex items-center justify-center font-bold">
-          <StarRating starRating={score} size={24} />
-          <p className="ml-2 text-secondary-black text-base">
-            {/* {!user.reviews ? "3.2" : "4.5"} */}
-            {Number.isFinite(score) ? score : 0}
-          </p>
-        </span>
+            <p className="text-secondary-gray text-xs font-bold">
+              {user.city ? user.city.name : "Sin Configurar"}
+            </p>
+          </span>
+          <span className="w-full inline-flex items-center justify-center font-bold">
+            <StarRating starRating={score} size={24} />
+            <p className="ml-2 text-secondary-black text-base">
+              {/* {!user.reviews ? "3.2" : "4.5"} */}
+              {Number.isFinite(score) ? score : 0}
+            </p>
+          </span>
         </div>
       </section>
       <section className="flex flex-col justify-center items-start w-full p-4 gap-2">
@@ -104,19 +106,17 @@ export default function Sidebar({ user }: { user: any }) {
           <span>
             <img src="/svg/web-site.svg" alt="" />
           </span>
-            {social != undefined && social['web'] ? 
-            <a href={social['web']}>{social['web']}</a>
-            : 
+          {social != undefined && social["web"] ? (
+            <a href={social["web"]}>{social["web"]}</a>
+          ) : (
             <span>No hay sitio web</span>
-            }
+          )}
         </div>
       </section>
       <section className="flex flex-col justify-end items-start w-full p-4 gap-2">
-        <p className="font-bold w-16 h-6">
-          Habilidades
-        </p>
+        <p className="font-bold w-16 h-6">Profesiones</p>
         <div className="flex text-secondary-gray text-xs text-center font-normal gap-2">
-          {user.offices.map((office: any, index: number) => {
+          {user.offices.length > 0 ? user.offices.map((office: any, index: number) => {
             return (
               <div
                 className="border border-secondary-gray text-black rounded-lg px-2 py-1 flex justify-center items-center"
@@ -125,22 +125,31 @@ export default function Sidebar({ user }: { user: any }) {
                 {office.name}
               </div>
             );
-          })}
+          }) : "Sin profesiones configuradas"}
         </div>
       </section>
       <section className="flex flex-col justify-end items-start w-full p-4 gap-2">
-        <p className="font-bold w-16 h-6">
-          Contacto
-        </p>
+        <p className="font-bold w-16 h-6">Contacto</p>
         <ul className="flex w-full flex-col justify-evenly items-center gap-4 [&>li]:h-8 [&>li>img]:h-5 [&>li>img]:mr-2 [&>li]:cursor-pointer [&>li]:border [&>li]:border-secondary-lightgray [&>li]:w-full [&>li]:flex [&>li]:items-center [&>li]:justify-between [&>li]:rounded-full [&>li]:px-4 [&>li]:py-2">
-          <li onClick={() => window.open(`https://wa.me/${user.numberPhone}`)}>
-            <div className="flex items-center">
-              <img src="/svg/whatsapp-icon.svg" alt="WhatsApp" style={{ height: 20, width: 20 }} />
-              <span className="ml-2 text-sm">WhatsApp</span>
-            </div>
-            <img src="/svg/diagonal-arrow.svg" alt="->" style={{ height: 20, width: 20}} />
-
-          </li>
+          {user.numberPhone != "+100000000000" ? (
+            <li
+              onClick={() => window.open(`https://wa.me/${user.numberPhone}`)}
+            >
+              <div className="flex items-center">
+                <img
+                  src="/svg/whatsapp-icon.svg"
+                  alt="WhatsApp"
+                  style={{ height: 20, width: 20 }}
+                />
+                <span className="ml-2 text-sm">WhatsApp</span>
+              </div>
+              <img
+                src="/svg/diagonal-arrow.svg"
+                alt="->"
+                style={{ height: 20, width: 20 }}
+              />
+            </li>
+          ) : "Sin contacto"}
           {redes.map(
             ({
               name,
@@ -154,10 +163,18 @@ export default function Sidebar({ user }: { user: any }) {
               social != undefined && social[name] ? (
                 <li key={name} onClick={() => window.open(social[name])}>
                   <div className="flex items-center">
-                    <img src={iconSrc} alt={label} style={{ height: 20, width: 20 }}/>
+                    <img
+                      src={iconSrc}
+                      alt={label}
+                      style={{ height: 20, width: 20 }}
+                    />
                     <span className="ml-2 text-sm">{label}</span>
                   </div>
-                  <img src="/svg/diagonal-arrow.svg" alt="->" style={{ height: 20, width: 20 }} />
+                  <img
+                    src="/svg/diagonal-arrow.svg"
+                    alt="->"
+                    style={{ height: 20, width: 20 }}
+                  />
                 </li>
               ) : (
                 <span key={name}></span>
@@ -180,7 +197,7 @@ export default function Sidebar({ user }: { user: any }) {
             <span>LinkedIn</span>
           </li> */}
         </ul>
-      </section >
+      </section>
     </section>
   );
 }
