@@ -19,8 +19,9 @@ const SearchContext = createContext<any>(undefined);
 export function SearchProvider({children}: {children: ReactNode}) {
     const [search, setSearch] = useState('')
     const [city, setCity] = useState('')
+    const [selectedProfessions, setSelectedProfessions] = useState<string[]>([]);
 
-    return <SearchContext.Provider value={{search, city, setSearch, setCity}}>{children}</SearchContext.Provider>
+    return <SearchContext.Provider value={{search, city, selectedProfessions, setSearch, setCity, setSelectedProfessions}}>{children}</SearchContext.Provider>
 }
 
 export const useFilter = () => {

@@ -185,7 +185,9 @@ export class PostService {
     location: string,
     page: number,
     limit: number,
+    professions: { data: string[] },
   ): Promise<{ count: number; posts: Post[] }> {
+    const profData = professions.data;
     const queryPost = this.postRepository.createQueryBuilder('post');
     queryPost.leftJoinAndSelect('post.user', 'user');
     queryPost.leftJoinAndSelect('post.city', 'city');
@@ -202,6 +204,11 @@ export class PostService {
     if (location) {
       queryPost.andWhere('city.name = :name', {
         name: location,
+      });
+    }
+    if (profData.length > 0) {
+      queryPost.andWhere('post.searchVector IN (:...professions)', {
+        professions: profData,
       });
     }
     // queryPost

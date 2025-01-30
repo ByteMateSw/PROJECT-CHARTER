@@ -4,7 +4,6 @@ import { IsOptional, IsPositive, IsString, Max } from 'class-validator';
  * Represents the data transfer object for updating a post.
  */
 export class UpdatePostDto {
-
   /**
    * The title of the post.
    * @remarks

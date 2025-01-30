@@ -53,7 +53,6 @@ export class Post {
    * The search vector of the post.
    */
   @Column({ type: 'tsvector', select: false })
-  @Index({ fulltext: true })
   searchVector: string;
 
   @Column({ default: WorkingMode.IN_PERSON })

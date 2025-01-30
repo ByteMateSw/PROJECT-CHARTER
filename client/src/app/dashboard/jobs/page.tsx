@@ -15,7 +15,7 @@ import { getAllPosts, searchPost } from '@/app/api/post';
 //import { useSidebarState } from "@/app/components/Sidebar/hooks/useSidebarState";
 
 export default function JobsPage() {
-  const {search, city, setSearch, setCity} = useFilter()
+  const {search, city, setSearch, setCity, selectedProfessions} = useFilter()
 
   const [posts, setPosts] = useState<any>([])
   const [page, setPage] = useState<number>(0)
@@ -38,7 +38,7 @@ export default function JobsPage() {
     fetchPosts()
   },[page, limit, search, city, changePage])
 
-
+console.log(selectedProfessions)
   return (
     <>
     <div className="absolute top-1 left-7 h-12 w-full">

@@ -10,15 +10,15 @@ import { useFilter } from "@/context/searchContext";
 
 export default function Sidebar(): JSX.Element {
 
-  const {setCity, city, search, setSearch} = useFilter()
+  const {setCity, city, search, setSearch, setSelectedProfessions, selectedProfessions} = useFilter()
 
   const {
     locations,
     setLocations,
     searchTerm,
     setSearchTerm,
-    selectedProfessions,
-    setSelectedProfessions,
+    //selectedProfessions,
+    //setSelectedProfessions,
     professions,
     setProfessions,
     checkedItems,

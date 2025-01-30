@@ -56,8 +56,15 @@ export class PostController {
     @Query('habilities') habilities: string,
     @Query('page', QueryNumberPipe) page: number,
     @Query('limit', QueryNumberPipe) limit: number,
+    @Body() professions: { data: string[] },
   ): Promise<{ count: number; posts: PostEntity[] }> {
-    return await this.postService.searchPost(habilities, location, page, limit);
+    return await this.postService.searchPost(
+      habilities,
+      location,
+      page,
+      limit,
+      professions,
+    );
   }
 
   @Get('userName')
