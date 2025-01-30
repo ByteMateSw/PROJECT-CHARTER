@@ -59,7 +59,7 @@ export default function HirePage() {
             <HireModal key={index} user={profile} index={index}>
               <div
                 key={index}
-                className="bg-secondary-white rounded-2xl border border-secondary-gray w-96 h-80 3xl:w-72 2xl:h-80 relative overflow-hidden hover:cursor-pointer"
+                className="bg-secondary-white rounded-2xl border border-secondary-gray/60 min-w-72 max-w-96 h-60 3xl:w-72 2xl:h-80 relative overflow-hidden hover:cursor-pointer"
               >
                 {profile.backgroundPhoto ? (
                   <img
@@ -73,10 +73,10 @@ export default function HirePage() {
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
                   <img
                     src={
-                      profile.photo ? profile.photo : "/svg/profile-circle.svg"
+                      profile.photo ? profile.photo : "/svg/avatar.svg"
                     }
                     alt="imagen de perfil"
-                    className="h-24 w-24 -mt-36 rounded-full border-2 border-secondary-white"
+                    className="h-32 w-32 -mt-36 rounded-full border object-cover border-secondary-gray"
                   />
                 </div>
                 <div className="px-4 pt-4 pb-2">
@@ -100,13 +100,13 @@ export default function HirePage() {
                         alt="image"
                         className="inline h-5 w-5"
                       />
-                      <p className="text-secondary-black text-xs font-bold">
+                      <p className="text-secondary-gray text-xs font-bold">
                         {profile.city ? profile.city.name : "Sin configurar"}
                       </p>
                     </div>
                     <div className="flex justify-center items-center gap-2">
                       <StarRating size={18} starRating={profile.score} />
-                      <p className="text-secondary-black text-sm font-bold">
+                      <p className="text-secondary-black text-sm font-semibold">
                         {profile.score}
                       </p>
                     </div>
