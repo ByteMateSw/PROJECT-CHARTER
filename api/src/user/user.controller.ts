@@ -68,6 +68,7 @@ export class UserController {
     @Query('page') page: number,
     @Query('habilities') habilities: string,
     @Query('location') location: string,
+    @Body() offices: { data: string[] },
   ) {
     const filter: UserFilter = {
       habilities,
@@ -77,7 +78,7 @@ export class UserController {
       limit,
       page,
     };
-    return await this.userService.getUsersFilter(filter, pagination);
+    return await this.userService.getUsersFilter(filter, pagination, offices);
   }
 
   @Get('by-email')

@@ -206,7 +206,7 @@ export class PostService {
         name: location,
       });
     }
-    if (profData.length > 0) {
+    if (profData) {
       queryPost.andWhere('post.searchVector IN (:...professions)', {
         professions: profData,
       });

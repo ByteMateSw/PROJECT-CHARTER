@@ -61,12 +61,21 @@ export class UserService {
   async getUsersFilter(
     filter: UserFilter,
     pagination: UserPagination,
+    offices: { data: string[] },
   ): Promise<{ count: number; users: User[] }> {
     const { habilities, location } = filter;
     const { limit, page } = pagination;
+    const dataOfi = offices.data;
     const query = this.userRepository.createQueryBuilder('user');
     query.leftJoinAndSelect('user.city', 'city');
     query.leftJoinAndSelect('user.experience', 'experience');
+    query.leftJoinAndSelect('user.offices', 'offices');
+    // query.innerJoinAndSelect(
+    //   'user.offices',
+    //   'offices',
+    //   'offices.name IN (:...dataOfi)',
+    //   { dataOfi },
+    // );
     const usersCount = await this.userRepository.countBy({});
 
     if (habilities) {
@@ -77,6 +86,10 @@ export class UserService {
 
     if (location) {
       query.andWhere('city.name = :name', { name: location });
+    }
+
+    if (dataOfi.length > 0) {
+      query.andWhere('offices.name IN (:...dataOfi)', { dataOfi });
     }
     const users = await query.skip(page).take(limit).getMany();
     return {
@@ -147,7 +160,7 @@ export class UserService {
         take: 4,
         relations: {
           offices: true,
-          },
+        },
       });
       return users;
     } catch (error) {

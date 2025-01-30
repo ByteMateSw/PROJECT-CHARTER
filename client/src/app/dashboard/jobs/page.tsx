@@ -36,9 +36,9 @@ export default function JobsPage() {
     }
     setPage((changePage - 1)*limit)
     fetchPosts()
-  },[page, limit, search, city, changePage])
+  },[page, limit, search, city, changePage, selectedProfessions])
 
-console.log(selectedProfessions)
+
   return (
     <>
     <div className="absolute top-1 left-7 h-12 w-full">

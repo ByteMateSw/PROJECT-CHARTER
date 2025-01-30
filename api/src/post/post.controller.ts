@@ -57,7 +57,8 @@ export class PostController {
     @Query('page', QueryNumberPipe) page: number,
     @Query('limit', QueryNumberPipe) limit: number,
     @Body() professions: { data: string[] },
-  ): Promise<{ count: number; posts: PostEntity[] }> {
+  ) /*: Promise<{ count: number; posts: PostEntity[] }>*/ {
+    console.log(professions);
     return await this.postService.searchPost(
       habilities,
       location,
