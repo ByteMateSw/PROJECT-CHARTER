@@ -43,13 +43,13 @@ function Footer(): JSX.Element {
       </section>
       <section className="flex justify-center gap-4">
         <Links description="Desarrollado por ByteMate" />
-        <Links description="© 2025 All rights reserved." />
+        <Links description="© 2025 All rights reserved" />
         <a href="/terms" className="text-center text-slate-50 text-xs font-medium">
           Bases y condiciones de Uso
         </a>
-        <Links description="contact@conectando.com" />
+        <Links description="contacto@conectandoarg.com" />
       </section>
-      <section className="flex items-center gap-8">
+      {/* <section className="flex items-center gap-8">
         <SocialMedia
           src="/svg/instagram-icon.svg"
           alt="Instagram"
@@ -66,7 +66,7 @@ function Footer(): JSX.Element {
           alt="LinkedIn"
           measure={measure}
         />
-      </section>
+      </section> */}
     </footer>
   );
 }
