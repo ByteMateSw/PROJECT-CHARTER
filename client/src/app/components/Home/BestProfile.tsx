@@ -14,7 +14,7 @@ export default function BestProfiles() {
   }, []);
 
   console.log(profiles);
-  
+
   return (
     <section className="flex items-center justify-center flex-col w-full mt-5">
       <h1 className="text-center text-secondary-black text-2xl font-extrabold">
@@ -31,13 +31,9 @@ export default function BestProfiles() {
               key={profile.firstName}
             >
               <img
-                src={
-                  profile.photo
-                    ? profile.photo
-                    : "https://img.freepik.com/vector-premium/icono-perfil-avatar-predeterminado-imagen-usuario-redes-sociales-icono-avatar-gris-silueta-perfil-blanco-ilustracion-vectorial_561158-3383.jpg"
-                }
+                src={profile.photo ? profile.photo : "/svg/avatar.svg"}
                 alt={profile.firstName}
-                className="md:h-[200px] md:w-h-[200px] h-[100px] w-h-[100px] rounded-full text-secondary-gray aspect-square"
+                className="md:h-[200px] md:w-h-[200px] h-[100px] w-h-[100px] rounded-full border object-cover border-secondary-gray text-secondary-gray aspect-square"
               />
               <div className="flex-col justify-center items-center flex pt-4">
                 <article className="flex-col m-2 justify-center items-center flex text-center">
@@ -49,17 +45,10 @@ export default function BestProfiles() {
                     size={17}
                     key={profile.firstName}
                   />
-                  <h2 className="text-secondary-gray md:text-base text-sm font-semibold overflow-visible">
+                  <h2 className="flex text-secondary-gray md:text-sm text-sm font-semibold overflow-visible gap-2 pt-2">
                     {profile?.offices && profile?.offices.length > 0
                       ? profile.offices.map((office: any, index: number) => {
-                          return (
-                            <div
-                              className="border border-secondary-gray text-black rounded-lg px-2 py-1 flex justify-center items-center"
-                              key={office.id}
-                            >
-                              {office.name}
-                            </div>
-                          );
+                          return <p key={office.id}>{office.name}</p>;
                         })
                       : "Sin profesiones configuradas"}
                   </h2>
