@@ -14,13 +14,12 @@ function AddReviewModal({userSession}:{userSession:any}) {
   const [user, setUser] = useUser()
 
   const handleSubmit = async () => {
-    if(selectOptions) {
       try {
-        await createReview(user?.id, userSession?.id, selectedStars, descriptionCont, selectOptions.label)
+        await createReview(user?.id, userSession?.id, selectedStars, descriptionCont)
       } catch (error) {
         console.error(error)
       }
-    }
+  
     }
 
  
@@ -50,7 +49,7 @@ function AddReviewModal({userSession}:{userSession:any}) {
               <label htmlFor="area" className="font-bold text-xl">Votos</label>
                 <StarRatingVote selectedStars={selectedStars} setSelectedStars={setSelectedStars} />
             </div>
-            <div className="my-5">
+            {/* <div className="my-5">
             <label htmlFor="area" className="font-bold text-xl">Trabajo realizado</label>
             <ComboBox
               optionsProps={optionsPost}
@@ -59,7 +58,7 @@ function AddReviewModal({userSession}:{userSession:any}) {
               selectedOptions={selectOptions}
               placeholder="trabajo"
             />
-            </div>
+            </div> */}
             <div className="grid row-span-4 gap-1 my-5">
               <label htmlFor="area" className="font-bold text-xl">Comentario</label>
                 <textarea 

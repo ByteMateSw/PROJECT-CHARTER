@@ -24,14 +24,14 @@ export const createReview = async (
     contractor: number,
     score: number,
     description: string,
-    hiring: string
+    //hiring: string
 ) => {
     try {
         const response = await axios.post(`
             ${process.env.NEXT_PUBLIC_BACKEND_URL}/reviews/create?userId=${userId}&contractor=${contractor}`, {
                 score,
                 description,
-                hiring
+                //hiring
             })
             return response.data;
     } catch (error) {

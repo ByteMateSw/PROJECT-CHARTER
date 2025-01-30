@@ -49,6 +49,6 @@ export class Review {
    */
   // @OneToOne(() => Hiring, (hiring) => hiring.id, { nullable: true })
   // @JoinColumn()
-  @Column({ nullable: true })
-  hiring: string;
+  // @Column({ nullable: true })
+  // hiring: string;
 }

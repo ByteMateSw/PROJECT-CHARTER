@@ -15,6 +15,6 @@ export class CreateReviewDTO {
   @IsString({ message: 'La descripción debe ser un string' })
   description: string;
 
-  @IsString()
-  hiring: string;
+  // @IsString()
+  // hiring: string;
 }

@@ -50,7 +50,6 @@ export class ReviewService {
       const newReview = this.reviewRepository.create({
         score: createReview.score,
         description: createReview.description,
-        hiring: createReview.hiring,
         user: { id: userId },
         contractor: { id: contractorId },
       });
