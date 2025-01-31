@@ -21,7 +21,7 @@ export class RegisterDto {
    * - Cannot be empty.
    * - Must contain only letters.
    */
-  @IsString({ message: 'El nombre debe ser una cadena de caracteres.' })
+  //@IsString({ message: 'El nombre debe ser una cadena de caracteres.' })
   @IsNotEmpty({ message: 'El nombre no puede estar vacío.' })
   firstName: string;
 
@@ -32,9 +32,9 @@ export class RegisterDto {
    * - Cannot be empty.
    * - Must contain only letters.
    */
-  @IsString({ message: 'El apellido debe ser una cadena de caracteres.' })
+  //@IsString({ message: 'El apellido debe ser una cadena de caracteres.' })
   @IsNotEmpty({ message: 'El apellido no puede estar vacío.' })
-  @IsAlpha('es-ES', { message: 'El apellido debe contener solo letras.' })
+  //@IsAlpha('es-ES', { message: 'El apellido debe contener solo letras.' })
   lastName: string;
 
   /**
