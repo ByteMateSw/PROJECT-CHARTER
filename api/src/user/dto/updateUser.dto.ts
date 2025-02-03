@@ -27,9 +27,9 @@ export class UpdateUserDto {
   email?: string;
 
   @IsOptional()
-  @IsPhoneNumber(null, {
-    message: 'El número de teléfono debe de tener un formato válido',
-  })
+  // @IsPhoneNumber(null, {
+  //   message: 'El número de teléfono debe de tener un formato válido',
+  // })
   numberPhone?: string;
 
   @IsOptional()
