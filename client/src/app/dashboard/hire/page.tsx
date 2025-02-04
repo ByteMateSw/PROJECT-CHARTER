@@ -34,7 +34,7 @@ export default function HirePage() {
       try {
 
         if (city.label != undefined) setSelectCity(city.label)
-        const userData = await getUsersFilter(page, limit, search, selectCity, selectedProfessions);
+        const userData = await getUsersFilter(page, limit, '', selectCity, selectedProfessions);
 
         setUsers(userData.users);
         setCount(Math.ceil(userData.count / limit));
