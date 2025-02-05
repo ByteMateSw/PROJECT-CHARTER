@@ -25,12 +25,12 @@ export default function RegisterPage() {
     numberPhone: ""
   });
   const [warningMessage, setWarningMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
   const [showAlert, setShowAlert] = useState(false);
 
   const handleChange = (e: any) => {
     setWarningMessage("");
-    setErrorMessage([])
+    setErrorMessage('')
     const { name, value } = e.target;
     setUser({
       ...user,
@@ -77,11 +77,14 @@ export default function RegisterPage() {
       setWarningMessage("Error al registrar el usuario");
     }
   };
+
+
+  console.log(errorMessage)
   return (
     <>
-      {showAlert && (
+      {/* {showAlert && (
         <Alert message={errorMessage} onClose={() => setShowAlert(false)} />
-      )}
+      )} */}
       <section className="min-h-screen flex justify-around items-center bg-secondary-lightgray">
         <div className="absolute left-0 top-0 ml-4 mt-4">
           <Link href="/">
@@ -115,7 +118,7 @@ export default function RegisterPage() {
           ))}
           <div className="w-full flex flex-col justify-center">
             <div className="text-red-500 w-full flex justify-center">
-              {errorMessage && <p>
+              {/* {errorMessage && <p>
                 <ul>
               {
               errorMessage.map((error, index) => (
@@ -123,8 +126,9 @@ export default function RegisterPage() {
               ))
               }
               </ul>
-              </p>}
-              {/* {warningMessage && <p>{warningMessage}</p>} */}
+              </p>} */}
+              {errorMessage && <p>{errorMessage}</p>}
+              {warningMessage && <p>{warningMessage}</p>}
             </div>
             <button
               id="submit"

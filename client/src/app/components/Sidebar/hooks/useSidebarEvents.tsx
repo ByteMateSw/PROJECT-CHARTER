@@ -17,16 +17,19 @@ export const useSidebarEvents = ({
       return updatedCheckedItems;
     });
 
-    setSelectedProfessions((prevSelectedProfessions: string[]) => {
-      const professionName = professions[id].name;
+    setSelectedProfessions((prevSelectedProfessions: string[]): string[] => {
+      // const professionName = professions[id].name;
+      const professionName = professions.find(obj => obj.id === id);
 
-      if (prevSelectedProfessions.includes(professionName)) {
-        return prevSelectedProfessions.filter(
-          (profession) => profession !== professionName
-        );
+      if (professionName != undefined) {
+        if (prevSelectedProfessions.includes(professionName.name)) {
+          return prevSelectedProfessions.filter(
+            (profession) => profession !== professionName.name
+          );
+        }
+        return prevSelectedProfessions.concat(professionName.name);
       }
-
-      return prevSelectedProfessions.concat(professionName);
+      return prevSelectedProfessions
     });
   };
 

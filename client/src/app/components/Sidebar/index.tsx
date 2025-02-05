@@ -63,7 +63,6 @@ export default function Sidebar(): JSX.Element {
   }
 ]
 
-
   return (
     <>
       <div className="flex cursor-default select-none mb-4 ml-1">
@@ -103,17 +102,17 @@ export default function Sidebar(): JSX.Element {
               <li
                 key={id}
                 className="flex items-center py-1 w-fit hover:underline cursor-pointer"
-                onClick={() => handleCheckboxChange(id)}
+                onClick={() => handleCheckboxChange(profession.id)}
               >
                 <input
                   className={`ml-2 rounded-full appearance-none w-2 h-2 ring-2 ring-offset-2 ring-secondary-black items-center justify-center cursor-pointer ${
-                    checkedItems[id]
+                    selectedProfessions.includes(profession.name)
                       ? " bg-primary-blue ring-2"
                       : "bg-secondary-white"
                   }`}
-                  id={`${id}`}
+                  id={`${profession.id}`}
                   type="checkbox"
-                  checked={checkedItems[id] || false}
+                  checked={selectedProfessions.includes(profession.name) || false}
                   onChange={() => {}}
                 />
                 <label className="text-secondary-black text-base ml-2 cursor-pointer">

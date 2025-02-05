@@ -27,7 +27,7 @@ export default function JobsPage() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await searchPost(page, limit, search, city.label, selectedProfessions)
+        const response = await searchPost(page, limit, '', city.label, selectedProfessions)
         setPosts(response.posts)
         setCount(Math.ceil(response.count / limit))
       } catch (error) {
