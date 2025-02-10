@@ -77,8 +77,10 @@ export default function Page({params}: { params: {username: string}}) {
 
 
     let decoded: any
+    let refre: any
     if (typeof session?.user?.access_token === "string") {
       decoded = jwtDecode(session?.user?.access_token)
+      refre = jwtDecode(session?.user?.refresh_token)
       const {username, email, city} = decoded.user;
       const finalUsername = username || email.split("@")[0];
       
@@ -409,7 +411,6 @@ export default function Page({params}: { params: {username: string}}) {
       </div>
     );
   }
-
 
   if (status === "authenticated" && getUser) {
     
