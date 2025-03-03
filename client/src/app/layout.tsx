@@ -24,8 +24,9 @@ export default function RootLayout({
   return (
     <html lang="es" className="bg-secondary-white text-secondary-black">
       <head>
-        <GoogleAdsense pId={process.env.NEXT_PUBLIC_GOOGLEADS as string} />
+        {/* <GoogleAdsense pId={process.env.NEXT_PUBLIC_GOOGLEADS as string} /> */}
         <meta name="google-adsense-account" content="ca-pub-2868851941806861"></meta>
+        {/* <script async data-cfasync="false" src="//pl26016389.effectiveratecpm.com/488d3100fddbe57811e8fa6e0875087a/invoke.js"></script> */}
       </head>
       <SessionAuthProvider>
         <UserProvider>
