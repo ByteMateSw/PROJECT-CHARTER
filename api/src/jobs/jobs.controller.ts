@@ -10,7 +10,9 @@ import {
 import { JobsService } from './jobs.service';
 import { CreateJobDTO } from './dto/createJob.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('jobs')
 @Controller('jobs')
 export class JobsController {
   constructor(private jobsService: JobsService) {}

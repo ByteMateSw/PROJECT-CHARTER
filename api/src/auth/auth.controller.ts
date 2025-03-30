@@ -26,10 +26,12 @@ import { RefreshTokenGuard } from './jwt/refresh.guard';
 import { UserParamID } from '../utils/params/user.param';
 import { MailService } from '../mailer/mailer.service';
 import { GoogleAuthGuard } from './google/google.guard';
+import { ApiTags } from '@nestjs/swagger';
 
 /**
  * Controller responsible for handling authentication-related requests.
  */
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(

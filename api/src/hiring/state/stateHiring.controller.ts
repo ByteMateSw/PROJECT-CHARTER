@@ -14,7 +14,9 @@ import { StateHiringService } from './stateHiring.service';
 import { stateHiringDTO } from './dto/stateHiring.dto';
 import { StateHiring } from './stateHiring.entity';
 import { CustomParseIntPipe } from 'src/utils/pipes/parse-int.pipe';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('hirings/states')
 @Controller('hirings/states')
 export class StateHiringController {
   constructor(private readonly stateHiringService: StateHiringService) {}

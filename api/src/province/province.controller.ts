@@ -15,10 +15,12 @@ import {
 import { ProvinceService } from './province.service';
 import { CustomParseIntPipe } from '../utils/pipes/parse-int.pipe';
 import { Province } from './province.entity';
+import { ApiTags } from '@nestjs/swagger';
 
 /**
  * Controller for handling province-related operations.
  */
+@ApiTags('provinces')
 @Controller('provinces')
 export class ProvinceController {
   constructor(private provinceService: ProvinceService) {}

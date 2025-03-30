@@ -16,7 +16,9 @@ import { CustomParseIntPipe } from '../utils/pipes/parse-int.pipe';
 import { CreateHiringDTO } from './dto/createHiring.dto';
 import { Hiring } from './hiring.entity';
 import { StateEnum } from './enums/state.enum';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('hirings')
 @Controller('hirings')
 export class HiringController {
   constructor(private hiringService: HiringService) {}

@@ -16,10 +16,12 @@ import { City } from './city.entity';
 import { Roles } from '../role/role.decorator';
 import { Role } from '../utils/enums/role.enum';
 import { CustomParseIntPipe } from 'src/utils/pipes/parse-int.pipe';
+import { ApiTags } from '@nestjs/swagger';
 
 /**
  * Controller for handling city-related operations.
  */
+@ApiTags('cities')
 @Controller('cities')
 export class CityController {
   constructor(private cityService: CityService) {}

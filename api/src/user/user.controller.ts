@@ -27,10 +27,12 @@ import { UserFilter } from './dto/userFilter.dto';
 import { UserPagination } from './dto/userpagination.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { Office } from 'src/office/office.entity';
+import { ApiTags } from '@nestjs/swagger';
 
 /**
  * Controller for handling user-related operations.
  */
+@ApiTags('users')
 @Controller('users')
 export class UserController {
   constructor(private userService: UserService) {}

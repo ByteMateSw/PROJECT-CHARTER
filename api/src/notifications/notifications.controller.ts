@@ -13,10 +13,12 @@ import {
 import { NotificationsService } from './notifications.service';
 import { CreateNotificationsDTO } from './dto/notification.dto';
 import { UptadeNotificationsDTO } from './dto/uptadeNotifications.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 /**
  * Controller for handling notifications-related operations.
  */
+@ApiTags('notifications')
 @Controller('notifications')
 export class NotificationsController {
   constructor(private notificationsService: NotificationsService) {}

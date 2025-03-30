@@ -16,10 +16,12 @@ import { OfficeDto } from './dto/office.dto';
 import { Roles } from '../role/role.decorator';
 import { Role } from '../utils/enums/role.enum';
 import { CustomParseIntPipe } from 'src/utils/pipes/parse-int.pipe';
+import { ApiTags } from '@nestjs/swagger';
 
 /**
  * Controller for managing offices.
  */
+@ApiTags('offices')
 @Controller('offices')
 export class OfficeController {
   constructor(private officeService: OfficeService) {}

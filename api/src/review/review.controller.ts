@@ -21,10 +21,12 @@ import { UptadeReviewDTO } from './dto/uptade-review.dto';
 import { CustomParseIntPipe } from '../utils/pipes/parse-int.pipe';
 import { QueryNumberPipe } from '../utils/pipes/query-number.pipe';
 import { EmptyBodyPipe } from 'src/utils/pipes/empty-body.pipe';
+import { ApiTags } from '@nestjs/swagger';
 
 /**
  * Controller for managing reviews.
  */
+@ApiTags('reviews')
 @Controller('reviews')
 export class ReviewController {
   constructor(private reviewService: ReviewService) {}

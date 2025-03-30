@@ -10,7 +10,9 @@ import {
 } from '@nestjs/common';
 import { ExperienceService } from './experience.service';
 import { CreateExperienceDTO, UpdateExperienceDTO } from './dto/experience.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('experience')
 @Controller('experience')
 export class ExperienceController {
   constructor(private experienceService: ExperienceService) {}

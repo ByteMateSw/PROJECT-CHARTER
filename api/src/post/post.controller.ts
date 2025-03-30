@@ -28,7 +28,9 @@ import { InfoParam } from '../utils/params/info.param';
 import { EmptyBodyPipe } from '../utils/pipes/empty-body.pipe';
 import { QueryNumberPipe } from '../utils/pipes/query-number.pipe';
 import { ImagePost } from '../image/imagePost.entity';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('posts')
 @Controller('posts')
 export class PostController {
   constructor(private postService: PostService) {}

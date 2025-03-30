@@ -2,7 +2,9 @@ import { Controller, Post, Body, Get, Param, Put, Query } from '@nestjs/common';
 import { SocialNetworkService } from './social-network.service';
 import { CreateSocialNetworkDTO } from './dto/createSocial.dto';
 import { UpdateSocialNetworkDTO } from './dto/updateSocial.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('social-network')
 @Controller('social-network')
 export class SocialNetworkController {
   constructor(private socialNetworkService: SocialNetworkService) {}
